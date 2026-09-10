@@ -1960,6 +1960,11 @@ skia_source_set("core") {
   configs = skia_library_configs
   public = skia_core_public
   sources = skia_core_sources
+  # Build from CMake.
+  sources -= [
+    "//src/core/SkMD5.cpp",
+    "//src/core/SkBase64.cpp",
+  ]
 
   # These deps don't belong to :core, but they are currently needed to support (de)serialization.
   deps = [
@@ -1971,9 +1976,13 @@ skia_source_set("core") {
     ":typeface_fontations",
     ":typeface_freetype",
   ]
+
+  libs = [ "vividx-core-partial" ]
+  lib_dirs = [ "//build" ]
 }
 
 skia_component("skia") {
+  output_name = "vividx"
   public_configs = [ ":skia_public" ]
   configs = skia_library_configs
 
