@@ -15,6 +15,8 @@
 #include <cmath>
 #include <cstdint>
 
+#include <vividx/core/point.h>
+
 struct SkIPoint;
 
 /** SkIVector provides an alternative name for SkIPoint. SkIVector and SkIPoint
@@ -190,7 +192,9 @@ struct SK_API SkPoint {
 
         @return  true if fX is zero and fY is zero
     */
-    bool isZero() const { return (0 == fX) & (0 == fY); }
+    bool isZero() const {
+        return vx_point_is_zero(*this);
+    }
 
     /** Sets fX to x and fY to y.
 
@@ -555,6 +559,10 @@ struct SK_API SkPoint {
         return DotProduct(*this, vec);
     }
 
+    operator vx_point_t() const
+    {
+        return vx_point_make(fX, fY);
+    }
 };
 
 #endif
