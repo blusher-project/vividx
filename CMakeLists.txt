@@ -19,5 +19,5 @@ target_include_directories(vividx-core-partial
 )
 
 set_target_properties(vividx-core-partial PROPERTIES
-    POSITION_INDEPENDENT_CODE ON
+    POSITION_INDEPENDENT_CODE ON    # -fPIC
 )

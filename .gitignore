@@ -77,3 +77,6 @@ bazel/user/buildrc
 
 # CMake.
 build
+
+# VividX development.
+TRACE
