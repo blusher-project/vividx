@@ -2082,6 +2082,7 @@ skia_component("skia") {
     "-Wl,--whole-archive",
     "-l:libvividx-core-partial.a",
     "-Wl,--no-whole-archive",
+    "-Wl,--allow-multiple-definition",
   ]
 
   if (is_win && sanitize == "ASAN") {
