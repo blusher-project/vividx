@@ -28,6 +28,8 @@ bool vx_point_is_zero(vx_point_t p);
 
 vx_point_i_t vx_point_i_make(int32_t x, int32_t y);
 
+bool vx_point_i_is_zero(vx_point_t p);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -1019,6 +1019,11 @@ optional("gpu") {
     }
     public += skia_gpu_gl_public
     sources += skia_gpu_gl_private
+    # Build from CMake.
+    sources -= [
+      "//src/gpu/ganesh/GrDirectContext.cpp",
+      "//src/gpu/ganesh/gl/GrGLBackendSurface.cpp",
+    ]
   }
 
   if (skia_use_vulkan) {

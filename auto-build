@@ -1,0 +1,8 @@
+#!/bin/sh
+
+mkdir -p build
+cd build ; cmake -G Ninja .. ; ninja
+cd ..
+
+bin/gn gen out/Shared --args="$(cat gn-args.txt)"
+ninja -C out/Shared
