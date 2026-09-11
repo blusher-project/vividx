@@ -11,6 +11,8 @@ typedef struct vx_direct_context_t vx_direct_context_t;
 
 vx_direct_context_t* vx_direct_context_new_gl(vx_gl_interface_t *gl_interface);
 
+void* vx_direct_context_sk_sp(const vx_direct_context_t *direct_context);
+
 void vx_direct_context_free(vx_direct_context_t *direct_context);
 
 #ifdef __cplusplus

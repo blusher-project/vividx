@@ -28,6 +28,11 @@ vx_direct_context_t* vx_direct_context_new_gl(vx_gl_interface_t *gl_interface)
     return direct_context;
 }
 
+void* vx_direct_context_sk_sp(const vx_direct_context_t *direct_context)
+{
+    return (void*)&direct_context->p;
+}
+
 void vx_direct_context_free(vx_direct_context_t *direct_context)
 {
     // TODO.

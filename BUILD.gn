@@ -2078,6 +2078,11 @@ skia_component("skia") {
 
   defines = []
   libs = []
+  ldflags = [
+    "-Wl,--whole-archive",
+    "-l:libvividx-core-partial.a",
+    "-Wl,--no-whole-archive",
+  ]
 
   if (is_win && sanitize == "ASAN") {
     deps += [ "gn/skia:copy_asan_runtime" ]
