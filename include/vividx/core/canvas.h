@@ -7,6 +7,10 @@ extern "C" {
 
 typedef struct vx_canvas_t vx_canvas_t;
 
+vx_canvas_t* vx_canvas_new_from_SkCanvas(void *p_SkCanvas);
+
+void vx_canvas_free(vx_canvas_t *canvas);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

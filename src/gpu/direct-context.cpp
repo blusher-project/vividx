@@ -18,8 +18,7 @@ struct vx_direct_context_t {
 
 vx_direct_context_t* vx_direct_context_new_gl(vx_gl_interface_t *gl_interface)
 {
-    vx_direct_context_t *direct_context =
-        static_cast<vx_direct_context_t*>(malloc(sizeof(vx_direct_context_t)));
+    vx_direct_context_t *direct_context = new vx_direct_context_t;
 
     direct_context->p = GrDirectContexts::MakeGL(
         *(sk_sp<GrGLInterface>*)vx_gl_interface_sk_sp(gl_interface)
@@ -35,7 +34,7 @@ void* vx_direct_context_sk_sp(const vx_direct_context_t *direct_context)
 
 void vx_direct_context_free(vx_direct_context_t *direct_context)
 {
-    // TODO.
+    delete direct_context;
 }
 
 #ifdef __cplusplus

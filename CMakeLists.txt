@@ -4,18 +4,30 @@ project(vividx
     LANGUAGES C CXX
 )
 
-set(VIVIDX_CORE_HEADERS
+set(VIVIDX_PUBLIC_HEADERS
+    include/vividx/core/canvas.h
+    include/vividx/core/color-type.h
     include/vividx/core/point.h
+    include/vividx/core/surface.h
+    include/vividx/gpu/backend-render-target.h
     include/vividx/gpu/backend-surface.h
     include/vividx/gpu/direct-context.h
     include/vividx/gpu/gl-interface.h
+    include/vividx/gpu/gpu-surfaces.h
+    include/vividx/gpu/types.h
 )
 
 set(VIVIDX_CORE_SOURCES
+    src/core/canvas.cpp
+    src/core/converts.h
     src/core/point.c
+    src/core/surface.cpp
+    src/gpu/backend-render-target.cpp
     src/gpu/backend-surface.cpp
+    src/gpu/converts.h
     src/gpu/direct-context.cpp
     src/gpu/gl-interface.cpp
+    src/gpu/gpu-surfaces.cpp
 )
 
 set(VIVIDX_CORE_PARTIAL_SOURCES
