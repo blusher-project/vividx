@@ -906,6 +906,13 @@ optional("gpu_shared") {
   sources += skia_sksl_pipeline_sources
   sources += skia_sksl_codegen_sources
 
+  ldflags = [
+    "-Wl,--whole-archive",
+    "-l:libvividx-core-partial.a",
+    "-Wl,--no-whole-archive",
+    "-Wl,--allow-multiple-definition",
+  ]
+
   if (skia_use_dawn) {
     public_defines += [ "SK_DAWN" ]
     public_deps += [ "//third_party/dawn" ]
@@ -1021,8 +1028,22 @@ optional("gpu") {
     sources += skia_gpu_gl_private
     # Build from CMake.
     sources -= [
+      "//src/gpu/ganesh/GrBackendSurface.cpp",
+      "//src/gpu/ganesh/GrContext_Base.cpp",
       "//src/gpu/ganesh/GrDirectContext.cpp",
+      "//src/gpu/ganesh/GrRecordingContext.cpp",
+      "//src/gpu/ganesh/GrImageContext.cpp",
       "//src/gpu/ganesh/gl/GrGLBackendSurface.cpp",
+      "//src/gpu/ganesh/gl/GrGLDirectContext.cpp",
+
+      "//src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp"
+    ]
+
+    ldflags = [
+      "-Wl,--whole-archive",
+      "-l:libvividx-core-partial.a",
+      "-Wl,--no-whole-archive",
+      "-Wl,--allow-multiple-definition",
     ]
   }
 
@@ -1967,8 +1988,12 @@ skia_source_set("core") {
   sources = skia_core_sources
   # Build from CMake.
   sources -= [
-    "//src/core/SkMD5.cpp",
     "//src/core/SkBase64.cpp",
+    "//src/core/SkMD5.cpp",
+    "//src/core/SkCPURecorder.cpp",
+    # "//src/core/SkStream.cpp",
+
+    "//src/image/SkSurface_Base.cpp",
   ]
 
   # These deps don't belong to :core, but they are currently needed to support (de)serialization.

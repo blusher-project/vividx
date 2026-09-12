@@ -33,11 +33,25 @@ set(VIVIDX_CORE_SOURCES
 set(VIVIDX_CORE_PARTIAL_SOURCES
     src/core/SkMD5.cpp
     src/core/SkBase64.cpp
+    src/core/SkCPURecorder.cpp
+    src/core/SkStream.cpp
 )
 
 set(VIVIDX_GPU_PARTIAL_SOURCES
+    src/gpu/GlobalResourceStats.cpp
+    src/gpu/ganesh/GrBackendSurface.cpp
+    src/gpu/ganesh/GrContext_Base.cpp
+    src/gpu/ganesh/GrDirectContext.cpp
+    src/gpu/ganesh/GrImageContext.cpp
+    src/gpu/ganesh/GrRecordingContext.cpp
     src/gpu/ganesh/gl/GrGLBackendSurface.cpp
     src/gpu/ganesh/gl/GrGLDirectContext.cpp
+
+    # DEBUG
+    src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp
+
+    src/image/SkSurface_Base.cpp
+    src/image/SkSurface_Raster.cpp
 )
 
 add_library(vividx-core-partial STATIC
@@ -53,6 +67,10 @@ target_include_directories(vividx-core-partial
 target_include_directories(vividx-core-partial
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_options(vividx-core-partial
+    PRIVATE -fno-rtti
 )
 
 set_target_properties(vividx-core-partial PROPERTIES

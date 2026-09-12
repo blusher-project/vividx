@@ -24,6 +24,11 @@ void vx_surface_set_SkSurface(vx_surface_t *surface, void *sk_sp_SkSurface_p)
     surface->p = *(sk_sp<SkSurface>*)sk_sp_SkSurface_p;
 }
 
+void* vx_surface_cxx_ptr(const vx_surface_t *surface)
+{
+    return (void*)(surface->p.get());
+}
+
 vx_canvas_t* vx_surface_canvas(const vx_surface_t *surface)
 {
     vx_canvas_t *canvas = vx_canvas_new_from_SkCanvas(surface->p->getCanvas());

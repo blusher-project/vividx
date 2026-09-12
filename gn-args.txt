@@ -13,4 +13,5 @@ skia_use_system_expat=true
 skia_enable_fontmgr_android=false
 skia_use_metal=false
 skia_enable_skparagraph=false
+skia_enable_skshaper=false
 skia_enable_spirv_validation=false

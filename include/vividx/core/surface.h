@@ -13,6 +13,8 @@ vx_surface_t* vx_surface_new();
 
 void vx_surface_set_SkSurface(vx_surface_t *surface, void *sk_sp_SkSurface_p);
 
+void* vx_surface_cxx_ptr(const vx_surface_t *surface);
+
 vx_canvas_t* vx_surface_canvas(const vx_surface_t *surface);
 
 void vx_surface_free(vx_surface_t *surface);
