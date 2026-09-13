@@ -5,6 +5,7 @@ project(vividx
 )
 
 set(VIVIDX_PUBLIC_HEADERS
+    include/vividx/common.h
     include/vividx/core/canvas.h
     include/vividx/core/color-type.h
     include/vividx/core/point.h
@@ -38,41 +39,54 @@ set(VIVIDX_CORE_PARTIAL_SOURCES
 )
 
 set(VIVIDX_GPU_PARTIAL_SOURCES
-    src/gpu/GlobalResourceStats.cpp
-    src/gpu/ganesh/GrBackendSurface.cpp
-    src/gpu/ganesh/GrContext_Base.cpp
-    src/gpu/ganesh/GrDirectContext.cpp
-    src/gpu/ganesh/GrImageContext.cpp
-    src/gpu/ganesh/GrRecordingContext.cpp
-    src/gpu/ganesh/gl/GrGLBackendSurface.cpp
-    src/gpu/ganesh/gl/GrGLDirectContext.cpp
+    # src/gpu/GlobalResourceStats.cpp
+    # src/gpu/ganesh/GrBackendSurface.cpp
+    # src/gpu/ganesh/GrContext_Base.cpp
+    # src/gpu/ganesh/GrDirectContext.cpp
+    # src/gpu/ganesh/GrImageContext.cpp
+    # src/gpu/ganesh/GrRecordingContext.cpp
+    # src/gpu/ganesh/gl/GrGLBackendSurface.cpp
+    # src/gpu/ganesh/gl/GrGLDirectContext.cpp
 
     # DEBUG
-    src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp
+    # src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp
 
-    src/image/SkSurface_Base.cpp
-    src/image/SkSurface_Raster.cpp
+    # src/image/SkSurface_Base.cpp
+    # src/image/SkSurface_Raster.cpp
 )
 
-add_library(vividx-core-partial STATIC
+add_library(vividx-partial STATIC
     ${VIVIDX_CORE_SOURCES}
     ${VIVIDX_CORE_PARTIAL_SOURCES}
     ${VIVIDX_GPU_PARTIAL_SOURCES}
 )
 
-target_include_directories(vividx-core-partial
+target_compile_definitions(vividx-partial PRIVATE
+    SK_GL
+    SK_GANESH
+    SKIA_DLL
+    SKIA_IMPLEMENTATION=1
+)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    target_compile_definitions(vividx-partial PRIVATE
+        SK_R32_SHIFT=16
+    )
+endif()
+
+target_include_directories(vividx-partial
     PRIVATE ./include
 )
 
-target_include_directories(vividx-core-partial
+target_include_directories(vividx-partial
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_options(vividx-core-partial
+target_link_options(vividx-partial
     PRIVATE -fno-rtti
 )
 
-set_target_properties(vividx-core-partial PROPERTIES
+set_target_properties(vividx-partial PROPERTIES
     POSITION_INDEPENDENT_CODE ON    # -fPIC
 )

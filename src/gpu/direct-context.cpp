@@ -29,9 +29,14 @@ vx_direct_context_t* vx_direct_context_new_gl(vx_gl_interface_t *gl_interface)
 {
     vx_direct_context_t *direct_context = new vx_direct_context_t;
 
-    direct_context->p = GrDirectContexts::MakeGL(
-        *(sk_sp<const GrGLInterface>*)vx_gl_interface_sk_sp(gl_interface)
-    );
+    sk_sp<const GrGLInterface> iface =
+        *(sk_sp<const GrGLInterface>*)vx_gl_interface_sk_sp(gl_interface);
+    if (iface == nullptr) {
+        delete direct_context;
+        return nullptr;
+    }
+
+    direct_context->p = GrDirectContexts::MakeGL(iface);
 
     return direct_context;
 }

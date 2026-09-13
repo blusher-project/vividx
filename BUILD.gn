@@ -951,13 +951,13 @@ optional("gpu") {
     sources += skia_gpu_gl_private
     # Build from CMake.
     sources -= [
-      "//src/gpu/ganesh/GrBackendSurface.cpp",
-      "//src/gpu/ganesh/GrContext_Base.cpp",
-      "//src/gpu/ganesh/GrDirectContext.cpp",
-      "//src/gpu/ganesh/GrRecordingContext.cpp",
-      "//src/gpu/ganesh/GrImageContext.cpp",
-      "//src/gpu/ganesh/gl/GrGLBackendSurface.cpp",
-      "//src/gpu/ganesh/gl/GrGLDirectContext.cpp",
+      # "//src/gpu/ganesh/GrBackendSurface.cpp",
+      # "//src/gpu/ganesh/GrContext_Base.cpp",
+      # "//src/gpu/ganesh/GrDirectContext.cpp",
+      # "//src/gpu/ganesh/GrRecordingContext.cpp",
+      # "//src/gpu/ganesh/GrImageContext.cpp",
+      # "//src/gpu/ganesh/gl/GrGLBackendSurface.cpp",
+      # "//src/gpu/ganesh/gl/GrGLDirectContext.cpp",
 
       # "//src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp"
     ]
@@ -1909,7 +1909,7 @@ skia_source_set("core") {
     "//src/core/SkCPURecorder.cpp",
     # "//src/core/SkStream.cpp",
 
-    "//src/image/SkSurface_Base.cpp",
+    # "//src/image/SkSurface_Base.cpp",
   ]
 
   # These deps don't belong to :core, but they are currently needed to support (de)serialization.
@@ -1923,7 +1923,7 @@ skia_source_set("core") {
     ":typeface_freetype",
   ]
 
-  libs = [ "vividx-core-partial" ]
+  libs = [ "vividx-partial" ]
   lib_dirs = [ "//build" ]
 }
 
