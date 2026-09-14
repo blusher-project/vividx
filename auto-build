@@ -4,5 +4,16 @@ mkdir -p build
 cd build ; cmake -G Ninja .. ; ninja
 cd ..
 
-bin/gn gen out/Shared --args="$(cat gn-args.txt)"
-ninja -C out/Shared
+case "$1" in
+    debug)
+        OUT_DIR="out/Debug"
+        ARGS_FILE="gn-args.trace.txt"
+        ;;
+    *)
+        OUT_DIR="out/Shared"
+        ARGS_FILE="gn-args.txt"
+        ;;
+esac
+
+bin/gn gen "$OUT_DIR" --args="$(cat "$ARGS_FILE")"
+ninja -C "$OUT_DIR"

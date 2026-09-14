@@ -126,6 +126,13 @@ vx_rect_i_t vx_rect_i_sorted(vx_rect_i_t rect)
     );
 }
 
+bool vx_rect_i_contains_rect(vx_rect_i_t lhs, vx_rect_t rhs)
+{
+    return !vx_rect_is_empty(rhs) && !vx_rect_i_is_empty(lhs) &&     // check for empties
+            lhs.left <= rhs.left && lhs.top <= rhs.top &&
+            lhs.right >= rhs.right && lhs.bottom >= rhs.bottom;
+}
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

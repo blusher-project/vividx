@@ -13,6 +13,7 @@ extern "C" {
 #endif // __cplusplus
 
 /// \struct vx_rect_t
+///
 /// vx_rect_t holds four float coordinates describing the upper and
 /// lower bounds of a rectangle. vx_rect_t may be created from outer bounds or
 /// from position, width, and height. vx_rect_t describes an area; if its right
@@ -21,12 +22,17 @@ extern "C" {
 typedef struct vx_rect_t vx_rect_t;
 
 /// \struct vx_rect_i
+///
 /// SkIRect holds four 32-bit integer coordinates describing the upper and
 /// lower bounds of a rectangle. SkIRect may be created from outer bounds or
 /// from position, width, and height. SkIRect describes an area; if its right
 /// is less than or equal to its left, or if its bottom is less than or equal to
 /// its top, it is considered empty.
 typedef struct vx_rect_i_t vx_rect_i_t;
+
+//!<==================
+//!< Integer Rect
+//!<==================
 
 struct vx_rect_i_t {
     int32_t left;   //!< smaller x-axis bounds
@@ -504,6 +510,9 @@ static bool vx_rect_i_contains(vx_rect_i_t lhs, vx_rect_i_t rhs)
         lhs.right >= rhs.right && lhs.bottom >= rhs.bottom;
 }
 
+VX_PUBLIC
+bool vx_rect_i_contains_rect(vx_rect_i_t lhs, vx_rect_t rhs);
+
 #if 0
 /** Returns true if SkIRect contains construction.
     Asserts if SkIRect is empty or construction is empty, and if SK_DEBUG is defined.
@@ -563,6 +572,10 @@ vx_rect_i_t vx_rect_i_joined(vx_rect_i_t lhs, vx_rect_i_t rhs);
 VX_PUBLIC
 vx_rect_i_t vx_rect_i_sorted(vx_rect_i_t rect);
 
+
+//!<==================
+//!< Float Rect
+//!<==================
 
 struct vx_rect_t {
     float left;     //!< smaller x-axis bounds
@@ -1303,12 +1316,6 @@ vx_rect_t vx_rect_sorted(vx_rect_t r);
     void dumpHex() const { this->dump(true); }
 #endif
 
-static bool vx_rect_i_contains_rect(vx_rect_i_t lhs, vx_rect_t rhs)
-{
-    return !vx_rect_is_empty(rhs) && !vx_rect_i_is_empty(lhs) &&     // check for empties
-            lhs.left <= rhs.left && lhs.top <= rhs.top &&
-            lhs.right >= rhs.right && lhs.bottom >= rhs.bottom;
-}
 
 #ifdef __cplusplus
 }

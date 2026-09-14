@@ -7,20 +7,223 @@
 
 #include "include/core/SkRect.h"
 
+#include <stdint.h>
+
 #include "include/core/SkM44.h"
 #include "include/private/SkDebug.h"
 #include "include/private/SkTPin.h"
 #include "src/core/SkRectPriv.h"
+#include "vividx/core/rect.h"
 
 class SkMatrix;
 
-bool SkIRect::intersect(const SkIRect& a, const SkIRect& b) {
-    SkIRect tmp = {
-        std::max(a.fLeft,   b.fLeft),
-        std::max(a.fTop,    b.fTop),
-        std::min(a.fRight,  b.fRight),
-        std::min(a.fBottom, b.fBottom)
-    };
+//!<==================
+//!< SkIRect
+//!<==================
+
+SkIRect::SkIRect()
+{
+    fLeft = 0;
+    fTop = 0;
+    fRight = 0;
+    fBottom = 0;
+}
+
+SkIRect::SkIRect(vx_rect_i_t rect)
+{
+    fLeft   = rect.left;
+    fTop    = rect.top;
+    fRight  = rect.right;
+    fBottom = rect.bottom;
+}
+
+SkIRect SkIRect::MakeEmpty() {
+    return vx_rect_i_make();
+}
+
+SkIRect SkIRect::MakeWH(int32_t w, int32_t h) {
+    return vx_rect_i_make_wh(w, h);
+}
+
+SkIRect SkIRect::MakeSize(const SkISize& size)
+{
+    SkIRect iRect = SkIRect::MakeEmpty();
+    iRect.fLeft = 0;
+    iRect.fTop = 0,
+    iRect.fRight = size.fWidth;
+    iRect.fBottom = size.fHeight;
+    return iRect;
+}
+
+SkIRect SkIRect::MakePtSize(SkIPoint pt, SkISize size)
+{
+    return MakeXYWH(pt.x(), pt.y(), size.width(), size.height());
+}
+
+SkIRect SkIRect::MakeLTRB(int32_t l, int32_t t, int32_t r, int32_t b)
+{
+    return vx_rect_i_make_ltrb(l, t, r, b);
+}
+
+SkIRect SkIRect::MakeXYWH(int32_t x, int32_t y, int32_t w, int32_t h)
+{
+    return vx_rect_i_make_xywh(x, y, w, h);
+}
+
+int32_t SkIRect::left() const { return fLeft; }
+
+int32_t SkIRect::top() const { return fTop; }
+
+int32_t SkIRect::right() const { return fRight; }
+
+int32_t SkIRect::bottom() const { return fBottom; }
+
+int32_t SkIRect::x() const { return fLeft; }
+
+int32_t SkIRect::y() const { return fTop; }
+
+// Experimental
+SkIPoint SkIRect::topLeft() const { return {fLeft, fTop}; }
+
+int32_t SkIRect::width() const
+{
+    return vx_rect_i_width(*this);
+}
+
+int32_t SkIRect::height() const
+{
+    return vx_rect_i_height(*this);
+}
+
+SkISize SkIRect::size() const { return SkISize::Make(this->width(), this->height()); }
+
+int64_t SkIRect::width64() const { return (int64_t)fRight - (int64_t)fLeft; }
+
+int64_t SkIRect::height64() const { return (int64_t)fBottom - (int64_t)fTop; }
+
+bool SkIRect::isEmpty64() const { return fRight <= fLeft || fBottom <= fTop; }
+
+bool SkIRect::isEmpty() const
+{
+    return vx_rect_i_is_empty(*this);
+}
+
+bool operator==(const SkIRect& a, const SkIRect& b)
+{
+    return vx_rect_i_eq(a, b);
+}
+
+bool operator!=(const SkIRect& a, const SkIRect& b)
+{
+    return vx_rect_i_ne(a, b);
+}
+
+void SkIRect::setEmpty() { memset(this, 0, sizeof(*this)); }
+
+void SkIRect::setLTRB(int32_t left, int32_t top, int32_t right, int32_t bottom) {
+    fLeft   = left;
+    fTop    = top;
+    fRight  = right;
+    fBottom = bottom;
+}
+
+void SkIRect::setXYWH(int32_t x, int32_t y, int32_t width, int32_t height) {
+    fLeft   = x;
+    fTop    = y;
+    fRight  = Sk32_sat_add(x, width);
+    fBottom = Sk32_sat_add(y, height);
+}
+
+void SkIRect::setWH(int32_t width, int32_t height) {
+    fLeft   = 0;
+    fTop    = 0;
+    fRight  = width;
+    fBottom = height;
+}
+
+void SkIRect::setSize(SkISize size) {
+    fLeft = 0;
+    fTop = 0;
+    fRight = size.width();
+    fBottom = size.height();
+}
+
+SkIRect SkIRect::makeOffset(int32_t dx, int32_t dy) const
+{
+    return vx_rect_i_offset(*this, dx, dy);
+}
+
+SkIRect SkIRect::makeOffset(SkIVector offset) const
+{
+    return this->makeOffset(offset.x(), offset.y());
+}
+
+SkIRect SkIRect::makeInset(int32_t dx, int32_t dy) const
+{
+    return vx_rect_i_inset(*this, dx, dy);
+}
+
+SkIRect SkIRect::makeOutset(int32_t dx, int32_t dy) const
+{
+    return vx_rect_i_outset(*this, dx, dy);
+}
+
+void SkIRect::offset(int32_t dx, int32_t dy)
+{
+    vx_rect_i_t r = vx_rect_i_offset(*this, dx, dy);
+    *this = r;
+}
+
+void SkIRect::offset(const SkIPoint& delta) {
+    this->offset(delta.fX, delta.fY);
+}
+
+void SkIRect::offsetTo(int32_t newX, int32_t newY)
+{
+    vx_rect_i_t r = vx_rect_i_offset_to(*this, newX, newY);
+    *this = r;
+}
+
+void SkIRect::inset(int32_t dx, int32_t dy)
+{
+    *this = vx_rect_i_inset(*this, dx, dy);
+}
+
+void SkIRect::outset(int32_t dx, int32_t dy)
+{
+    this->inset(-dx, -dy);
+}
+
+void SkIRect::adjust(int32_t dL, int32_t dT, int32_t dR, int32_t dB)
+{
+    *this = vx_rect_i_adjusted(*this, dL, dT, dR, dB);
+}
+
+bool SkIRect::contains(int32_t x, int32_t y) const
+{
+    return vx_rect_i_contains_xy(*this, x, y);
+}
+
+bool SkIRect::contains(const SkIRect& r) const
+{
+    return vx_rect_i_contains(*this, r);
+}
+
+bool SkIRect::containsNoEmptyCheck(const SkIRect& r) const
+{
+    SkASSERT(fLeft < fRight && fTop < fBottom);
+    SkASSERT(r.fLeft < r.fRight && r.fTop < r.fBottom);
+    return fLeft <= r.fLeft && fTop <= r.fTop && fRight >= r.fRight && fBottom >= r.fBottom;
+}
+
+bool SkIRect::intersect(const SkIRect& r)
+{
+    return this->intersect(*this, r);
+}
+
+bool SkIRect::intersect(const SkIRect& a, const SkIRect& b)
+{
+    SkIRect tmp = vx_rect_i_intersected(a, b);
     if (tmp.isEmpty()) {
         return false;
     }
@@ -28,26 +231,380 @@ bool SkIRect::intersect(const SkIRect& a, const SkIRect& b) {
     return true;
 }
 
-void SkIRect::join(const SkIRect& r) {
-    // do nothing if the params are empty
-    if (r.fLeft >= r.fRight || r.fTop >= r.fBottom) {
-        return;
-    }
+bool SkIRect::Intersects(const SkIRect& a, const SkIRect& b)
+{
+    return SkIRect::MakeEmpty().intersect(a, b);
+}
 
+void SkIRect::join(const SkIRect& r)
+{
+    *this = vx_rect_i_joined(*this, r);
+}
+
+void SkIRect::sort()
+{
+    *this = vx_rect_i_sorted(*this);
+}
+
+SkIRect SkIRect::makeSorted() const
+{
+    return vx_rect_i_sorted(*this);
+}
+
+const int32_t* SkIRect::asInt32s() const { return &fLeft; }
+
+SkIRect::operator vx_rect_i_t() const
+{
+    return vx_rect_i_make_ltrb(fLeft, fTop, fRight, fBottom);
+}
+
+
+//!<==================
+//!< SkRect
+//!<==================
+
+SkRect::SkRect()
+{
+    fLeft = 0;
+    fTop = 0;
+    fRight = 0;
+    fBottom = 0;
+}
+
+SkRect::SkRect(vx_rect_t r)
+    : fLeft(r.left), fTop(r.top), fRight(r.right), fBottom(r.bottom)
+{
+}
+
+SkRect SkRect::MakeEmpty() {
+    return vx_rect_make_ltrb(0, 0, 0, 0);
+}
+
+SkRect SkRect::MakeWH(float w, float h) {
+    return vx_rect_make_wh(w, h);
+}
+
+SkRect SkRect::MakeIWH(int w, int h) {
+    return SkRect::MakeLTRB(0, 0, static_cast<float>(w), static_cast<float>(h));
+}
+
+SkRect SkRect::MakeSize(const SkSize& size) {
+    return SkRect::MakeLTRB(0, 0, size.fWidth, size.fHeight);
+}
+
+SkRect SkRect::MakeLTRB(float l, float t, float r, float b) {
+    return vx_rect_make_ltrb(l, t, r, b);
+}
+
+SkRect SkRect::MakeXYWH(float x, float y, float w, float h) {
+    return vx_rect_make_xywh(x, y, w, h);
+}
+
+SkRect SkRect::Make(const SkISize& size) {
+    return MakeIWH(size.width(), size.height());
+}
+
+SkRect SkRect::Make(const SkIRect& irect) {
+    return SkRect::MakeLTRB(
+        static_cast<float>(irect.fLeft), static_cast<float>(irect.fTop),
+        static_cast<float>(irect.fRight), static_cast<float>(irect.fBottom)
+    );
+}
+
+bool SkRect::isEmpty() const {
+    // We write it as the NOT of a non-empty rect, so we will return true if any values
+    // are NaN.
+    return !(fLeft < fRight && fTop < fBottom);
+}
+
+bool SkRect::isSorted() const { return fLeft <= fRight && fTop <= fBottom; }
+
+bool SkRect::isFinite() const {
+    return SkIsFinite(fLeft, fTop, fRight, fBottom);
+}
+
+float SkRect::x() const { return fLeft; }
+
+float SkRect::y() const { return fTop; }
+
+float SkRect::left() const { return fLeft; }
+
+float SkRect::top() const { return fTop; }
+
+float SkRect::right() const { return fRight; }
+
+float SkRect::bottom() const { return fBottom; }
+
+float SkRect::width() const { return fRight - fLeft; }
+
+float SkRect::height() const { return fBottom - fTop; }
+
+float SkRect::centerX() const {
+    return vx_float_midpoint(fLeft, fRight);
+}
+
+float SkRect::centerY() const {
+    return vx_float_midpoint(fTop, fBottom);
+}
+
+SkPoint SkRect::center() const { return {this->centerX(), this->centerY()}; }
+
+bool operator==(const SkRect& a, const SkRect& b) {
+    return a.fLeft == b.fLeft &&
+            a.fTop == b.fTop &&
+            a.fRight == b.fRight &&
+            a.fBottom == b.fBottom;
+}
+
+bool operator!=(const SkRect& a, const SkRect& b) {
+    return !(a == b);
+}
+
+SkPoint SkRect::TL() const { return {fLeft,  fTop}; }
+SkPoint SkRect::TR() const { return {fRight, fTop}; }
+SkPoint SkRect::BL() const { return {fLeft,  fBottom}; }
+SkPoint SkRect::BR() const { return {fRight, fBottom}; }
+
+std::array<SkPoint, 4> SkRect::toQuad(SkPathDirection dir) const {
+    std::array<SkPoint, 4> storage;
+    this->copyToQuad(storage, dir);
+    return storage;
+}
+
+// Same as toQuad(), but copies the 4 points into the specified storage
+// which must be at least a size of 4.
+void SkRect::copyToQuad(SkSpan<SkPoint> pts, SkPathDirection dir) const {
+    SkASSERT(pts.size() >= 4);
+    pts[0] = this->TL();
+    pts[2] = this->BR();
+    if (dir == SkPathDirection::kCW) {
+        pts[1] = this->TR();
+        pts[3] = this->BL();
+    } else {
+        pts[1] = this->BL();
+        pts[3] = this->TR();
+    }
+}
+
+// DEPRECATED: use std::array or copyToQuad versions
+void SkRect::toQuad(SkPoint quad[4]) const {
+    this->copyToQuad({quad, 4});
+}
+
+void SkRect::setEmpty() { *this = MakeEmpty(); }
+
+void SkRect::set(const SkIRect& src) {
+    fLeft   = src.fLeft;
+    fTop    = src.fTop;
+    fRight  = src.fRight;
+    fBottom = src.fBottom;
+}
+
+void SkRect::setLTRB(float left, float top, float right, float bottom) {
+    fLeft   = left;
+    fTop    = top;
+    fRight  = right;
+    fBottom = bottom;
+}
+
+SkRect SkRect::BoundsOrEmpty(SkSpan<const SkPoint> pts) {
+    if (auto bounds = Bounds(pts)) {
+        return bounds.value();
+    } else {
+        return MakeEmpty();
+    }
+}
+
+void SkRect::setBounds(SkSpan<const SkPoint> pts) {
+    (void)this->setBoundsCheck(pts);
+}
+
+void SkRect::set(const SkPoint& p0, const SkPoint& p1) {
+    fLeft =   std::min(p0.fX, p1.fX);
+    fRight =  std::max(p0.fX, p1.fX);
+    fTop =    std::min(p0.fY, p1.fY);
+    fBottom = std::max(p0.fY, p1.fY);
+}
+
+void SkRect::setXYWH(float x, float y, float width, float height) {
+    fLeft = x;
+    fTop = y;
+    fRight = x + width;
+    fBottom = y + height;
+}
+
+void SkRect::setWH(float width, float height) {
+    fLeft = 0;
+    fTop = 0;
+    fRight = width;
+    fBottom = height;
+}
+
+void SkRect::setIWH(int32_t width, int32_t height) {
+    this->setWH(width, height);
+}
+
+SkRect SkRect::makeOffset(float dx, float dy) const {
+    return MakeLTRB(fLeft + dx, fTop + dy, fRight + dx, fBottom + dy);
+}
+
+SkRect SkRect::makeOffset(SkVector v) const { return this->makeOffset(v.x(), v.y()); }
+
+SkRect SkRect::makeInset(float dx, float dy) const {
+    return MakeLTRB(fLeft + dx, fTop + dy, fRight - dx, fBottom - dy);
+}
+
+SkRect SkRect::makeOutset(float dx, float dy) const {
+    return MakeLTRB(fLeft - dx, fTop - dy, fRight + dx, fBottom + dy);
+}
+
+void SkRect::offset(float dx, float dy) {
+    fLeft   += dx;
+    fTop    += dy;
+    fRight  += dx;
+    fBottom += dy;
+}
+
+void SkRect::offset(const SkPoint& delta) {
+    this->offset(delta.fX, delta.fY);
+}
+
+void SkRect::offsetTo(float newX, float newY) {
+    fRight += newX - fLeft;
+    fBottom += newY - fTop;
+    fLeft = newX;
+    fTop = newY;
+}
+
+void SkRect::inset(float dx, float dy)  {
+    fLeft   += dx;
+    fTop    += dy;
+    fRight  -= dx;
+    fBottom -= dy;
+}
+
+void SkRect::outset(float dx, float dy)  { this->inset(-dx, -dy); }
+
+bool SkRect::Intersects(float al, float at, float ar, float ab,
+                        float bl, float bt, float br, float bb) {
+    float L = std::max(al, bl);
+    float R = std::min(ar, br);
+    float T = std::max(at, bt);
+    float B = std::min(ab, bb);
+    return L < R && T < B;
+}
+
+bool SkRect::intersects(const SkRect& r) const {
+    return Intersects(fLeft, fTop, fRight, fBottom,
+                        r.fLeft, r.fTop, r.fRight, r.fBottom);
+}
+
+bool SkRect::Intersects(const SkRect& a, const SkRect& b) {
+    return Intersects(a.fLeft, a.fTop, a.fRight, a.fBottom,
+                        b.fLeft, b.fTop, b.fRight, b.fBottom);
+}
+
+void SkRect::joinNonEmptyArg(const SkRect& r) {
+    SkASSERT(!r.isEmpty());
     // if we are empty, just assign
     if (fLeft >= fRight || fTop >= fBottom) {
         *this = r;
     } else {
-        if (r.fLeft < fLeft)     fLeft = r.fLeft;
-        if (r.fTop < fTop)       fTop = r.fTop;
-        if (r.fRight > fRight)   fRight = r.fRight;
-        if (r.fBottom > fBottom) fBottom = r.fBottom;
+        this->joinPossiblyEmptyRect(r);
     }
 }
 
-/////////////////////////////////////////////////////////////////////////////
+void SkRect::joinPossiblyEmptyRect(const SkRect& r) {
+    fLeft   = std::min(fLeft, r.left());
+    fTop    = std::min(fTop, r.top());
+    fRight  = std::max(fRight, r.right());
+    fBottom = std::max(fBottom, r.bottom());
+}
 
-std::optional<SkRect> SkRect::Bounds(SkSpan<const SkPoint> points) {
+bool SkRect::contains(float x, float y) const {
+    return x >= fLeft && x < fRight && y >= fTop && y < fBottom;
+}
+
+bool SkRect::contains(const SkRect& r) const {
+    // todo: can we eliminate the this->isEmpty check?
+    return  !r.isEmpty() && !this->isEmpty() &&
+            fLeft <= r.fLeft && fTop <= r.fTop &&
+            fRight >= r.fRight && fBottom >= r.fBottom;
+}
+
+bool SkRect::contains(const SkIRect& r) const {
+    // todo: can we eliminate the this->isEmpty check?
+    return  !r.isEmpty() && !this->isEmpty() &&
+            fLeft <= r.fLeft && fTop <= r.fTop &&
+            fRight >= r.fRight && fBottom >= r.fBottom;
+}
+
+void SkRect::round(SkIRect* dst) const {
+    SkASSERT(dst);
+    dst->setLTRB(sk_float_round2int(fLeft),  sk_float_round2int(fTop),
+                    sk_float_round2int(fRight), sk_float_round2int(fBottom));
+}
+
+void SkRect::roundOut(SkIRect* dst) const {
+    SkASSERT(dst);
+    dst->setLTRB(sk_float_floor2int(fLeft), sk_float_floor2int(fTop),
+                    sk_float_ceil2int(fRight), sk_float_ceil2int(fBottom));
+}
+
+void SkRect::roundOut(SkRect* dst) const {
+    dst->setLTRB(std::floor(fLeft), std::floor(fTop),
+                    std::ceil(fRight), std::ceil(fBottom));
+}
+
+void SkRect::roundIn(SkIRect* dst) const {
+    SkASSERT(dst);
+    dst->setLTRB(sk_float_ceil2int(fLeft),   sk_float_ceil2int(fTop),
+                    sk_float_floor2int(fRight), sk_float_floor2int(fBottom));
+}
+
+SkIRect SkRect::round() const {
+    SkIRect ir = SkIRect::MakeEmpty();
+    this->round(&ir);
+    return ir;
+}
+
+SkIRect SkRect::roundOut() const {
+    SkIRect ir = SkIRect::MakeEmpty();
+    this->roundOut(&ir);
+    return ir;
+}
+
+SkIRect SkRect::roundIn() const {
+    SkIRect ir = SkIRect::MakeEmpty();
+    this->roundIn(&ir);
+    return ir;
+}
+
+void SkRect::sort() {
+    using std::swap;
+    if (fLeft > fRight) {
+        swap(fLeft, fRight);
+    }
+
+    if (fTop > fBottom) {
+        swap(fTop, fBottom);
+    }
+}
+
+SkRect SkRect::makeSorted() const {
+    return MakeLTRB(std::min(fLeft, fRight), std::min(fTop, fBottom),
+                    std::max(fLeft, fRight), std::max(fTop, fBottom));
+}
+
+const float* SkRect::asScalars() const { return &fLeft; }
+
+void SkRect::dump() const { this->dump(false); }
+
+void SkRect::dumpHex() const { this->dump(true); }
+
+
+std::optional<SkRect> SkRect::Bounds(SkSpan<const SkPoint> points)
+{
     if (points.empty()) {
         return SkRect::MakeEmpty();
     }
@@ -77,7 +634,8 @@ std::optional<SkRect> SkRect::Bounds(SkSpan<const SkPoint> points) {
 
         // if this is true, all our values were finite
         if (nx == 0 && ny == 0) {
-            return {{L, T, R, B}};
+            return {SkRect::MakeLTRB(L, T, R, B)};
+            // return {{L, T, R, B}};
         }
     } else {
         auto count = points.size();
@@ -208,7 +766,16 @@ void SkRect::dump(bool asHex) const {
     SkDebugf("%s\n", this->dumpToString(asHex).c_str());
 }
 
+SkRect::operator vx_rect_t() const
+{
+    return vx_rect_make_ltrb(fLeft, fTop, fRight, fBottom);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
+
+//!<==================
+//!< SkRectPriv
+//!<==================
 
 template<typename R>
 static bool subtract(const R& a, const R& b, R* out) {
