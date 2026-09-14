@@ -9,6 +9,8 @@ set(VIVIDX_PUBLIC_HEADERS
     include/vividx/core/canvas.h
     include/vividx/core/color-type.h
     include/vividx/core/point.h
+    include/vividx/core/rect.h
+    include/vividx/core/size.h
     include/vividx/core/surface.h
     include/vividx/gpu/backend-render-target.h
     include/vividx/gpu/backend-surface.h
@@ -19,9 +21,12 @@ set(VIVIDX_PUBLIC_HEADERS
 )
 
 set(VIVIDX_CORE_SOURCES
+    src/common.cpp
     src/core/canvas.cpp
     src/core/converts.h
     src/core/point.c
+    src/core/rect.c
+    src/core/size.c
     src/core/surface.cpp
     src/gpu/backend-render-target.cpp
     src/gpu/backend-surface.cpp

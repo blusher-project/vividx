@@ -13,6 +13,9 @@ extern "C" {
 typedef struct vx_point_t vx_point_t;
 typedef struct vx_point_i_t vx_point_i_t;
 
+typedef vx_point_t vx_vector_t;
+typedef vx_point_i_t vx_vector_i_t;
+
 struct vx_point_t {
     float x;
     float y;
