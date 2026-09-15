@@ -84,10 +84,7 @@ struct vx_rect_i_t {
     @param h  height of constructed SkIRect
     @return   bounds (0, 0, w, h)
 */
-[[nodiscard]] static vx_rect_i_t vx_rect_i_make_wh(int32_t w, int32_t h)
-{
-    return vx_rect_i_make_xywh(0, 0, w, h);
-}
+[[nodiscard]] VX_PUBLIC vx_rect_i_t vx_rect_i_make_wh(int32_t w, int32_t h);
 
 /** Returns constructed SkIRect set to (0, 0, size.width(), size.height()).
     Does not validate input; size.width() or size.height() may be negative.
@@ -95,24 +92,7 @@ struct vx_rect_i_t {
     @param size  values for SkIRect width and height
     @return      bounds (0, 0, size.width(), size.height())
 */
-[[nodiscard]] static vx_rect_i_t vx_rect_i_make_from_size(vx_size_i_t size)
-{
-    return vx_rect_i_make_xywh(0, 0, size.width, size.height);
-}
-
-/** Returns constructed SkIRect set to (pt.x(), pt.y(), pt.x() + size.width(),
-    pt.y() + size.height()). Does not validate input; size.width() or size.height() may be
-    negative.
-
-    @param pt    values for SkIRect fLeft and fTop
-    @param size  values for SkIRect width and height
-    @return      bounds at pt with width and height of size
-*/
-#if 0
-[[nodiscard]] static vx_rect_i_t vx_rect_i_make_PtSize(SkIPoint pt, SkISize size) {
-    return MakeXYWH(pt.x(), pt.y(), size.width(), size.height());
-}
-#endif
+[[nodiscard]] VX_PUBLIC vx_rect_i_t vx_rect_i_make_from_size(vx_size_i_t size);
 
 /** Returns constructed SkIRect set to (l, t, r, b). Does not sort input; SkIRect may
     result in fLeft greater than fRight, or fTop greater than fBottom.
@@ -123,18 +103,10 @@ struct vx_rect_i_t {
     @param b  integer stored in fBottom
     @return   bounds (l, t, r, b)
 */
-[[nodiscard]] static vx_rect_i_t vx_rect_i_make_ltrb(int32_t l,
-                                                     int32_t t,
-                                                     int32_t r,
-                                                     int32_t b)
-{
-    vx_rect_i_t rect;
-    rect.left = l;
-    rect.top = t;
-    rect.right = r;
-    rect.bottom = b;
-    return rect;
-}
+[[nodiscard]] VX_PUBLIC vx_rect_i_t vx_rect_i_make_ltrb(int32_t l,
+                                                        int32_t t,
+                                                        int32_t r,
+                                                        int32_t b);
 
 
 /** Returns left edge of SkIRect, if sorted.
@@ -361,17 +333,9 @@ void setSize(SkISize size) {
     \param dy  offset added to fTop and fBottom
     \return    SkIRect offset by dx and dy, with original width and height
 */
-static inline vx_rect_i_t vx_rect_i_offset(vx_rect_i_t rect,
-                                           int32_t dx,
-                                           int32_t dy)
-{
-    return vx_rect_i_make_xywh(
-        vx_int32_sat_add(rect.left,  dx),
-        vx_int32_sat_add(rect.top,    dy),
-        vx_int32_sat_add(rect.right, dx),
-        vx_int32_sat_add(rect.bottom, dy)
-    );
-}
+VX_PUBLIC vx_rect_i_t vx_rect_i_offset(vx_rect_i_t rect,
+                                       int32_t dx,
+                                       int32_t dy);
 
 /** Returns SkIRect offset by (offset.x(), offset.y()).
 
@@ -400,15 +364,7 @@ static inline vx_rect_i_t vx_rect_i_offset_from_vector(vx_rect_i_t rect,
     @param dy  offset added to fTop and subtracted from fBottom
     @return    SkIRect inset symmetrically left and right, top and bottom
 */
-static vx_rect_i_t vx_rect_i_inset(vx_rect_i_t r, int32_t dx, int32_t dy)
-{
-    return vx_rect_i_make_ltrb(
-        vx_int32_sat_add(r.left,  dx),
-        vx_int32_sat_add(r.top,    dy),
-        vx_int32_sat_sub(r.right, dx),
-        vx_int32_sat_sub(r.bottom, dy)
-    );
-}
+VX_PUBLIC vx_rect_i_t vx_rect_i_inset(vx_rect_i_t r, int32_t dx, int32_t dy);
 
 /** Returns SkIRect, outset by (dx, dy).
 
@@ -421,15 +377,7 @@ static vx_rect_i_t vx_rect_i_inset(vx_rect_i_t r, int32_t dx, int32_t dy)
     @param dy  offset subtracted to fTop and added from fBottom
     @return    SkIRect outset symmetrically left and right, top and bottom
 */
-static vx_rect_i_t vx_rect_i_outset(vx_rect_i_t r, int32_t dx, int32_t dy)
-{
-    return vx_rect_i_make_ltrb(
-        vx_int32_sat_sub(r.left,  dx),
-        vx_int32_sat_sub(r.top,    dy),
-        vx_int32_sat_add(r.right, dx),
-        vx_int32_sat_add(r.bottom, dy)
-    );
-}
+VX_PUBLIC vx_rect_i_t vx_rect_i_outset(vx_rect_i_t r, int32_t dx, int32_t dy);
 
 /** Offsets SkIRect so that fLeft equals newX, and fTop equals newY. width and height
     are unchanged.
@@ -437,17 +385,9 @@ static vx_rect_i_t vx_rect_i_outset(vx_rect_i_t r, int32_t dx, int32_t dy)
     @param newX  stored in fLeft, preserving width()
     @param newY  stored in fTop, preserving height()
 */
-static vx_rect_i_t vx_rect_i_offset_to(vx_rect_i_t r,
-                                       int32_t newX,
-                                       int32_t newY)
-{
-    r.right  = vx_int64_pin_to_int32((int64_t)r.right + newX - r.left);
-    r.bottom = vx_int64_pin_to_int32((int64_t)r.bottom + newY - r.top);
-    r.left   = newX;
-    r.top    = newY;
-
-    return r;
-}
+VX_PUBLIC vx_rect_i_t vx_rect_i_offset_to(vx_rect_i_t r,
+                                          int32_t newX,
+                                          int32_t newY);
 
 /** Adjusts SkIRect by adding dL to fLeft, dT to fTop, dR to fRight, and dB to fBottom.
 
@@ -465,20 +405,11 @@ static vx_rect_i_t vx_rect_i_offset_to(vx_rect_i_t r,
     @param dR  offset added to fRight
     @param dB  offset added to fBottom
 */
-static vx_rect_i_t vx_rect_i_adjusted(vx_rect_i_t r,
-                                      int32_t dl,
-                                      int32_t dt,
-                                      int32_t dr,
-                                      int32_t db)
-{
-    vx_rect_i_t adjusted;
-    adjusted.left   = vx_int32_sat_add(r.left,   dl);
-    adjusted.top    = vx_int32_sat_add(r.top,    dt);
-    adjusted.right  = vx_int32_sat_add(r.right,  dr);
-    adjusted.bottom = vx_int32_sat_add(r.bottom, db);
-
-    return adjusted;
-}
+VX_PUBLIC vx_rect_i_t vx_rect_i_adjusted(vx_rect_i_t r,
+                                         int32_t dl,
+                                         int32_t dt,
+                                         int32_t dr,
+                                         int32_t db);
 
 /** Returns true if: fLeft <= x < fRight && fTop <= y < fBottom.
     Returns false if SkIRect is empty.
@@ -571,6 +502,7 @@ vx_rect_i_t vx_rect_i_joined(vx_rect_i_t lhs, vx_rect_i_t rhs);
 */
 VX_PUBLIC
 vx_rect_i_t vx_rect_i_sorted(vx_rect_i_t rect);
+
 
 
 //!<==================
@@ -1162,10 +1094,7 @@ vx_rect_t vx_rect_joined(vx_rect_t r);
     @param y  test SkPoint y-coordinate
     @return   true if (x, y) is inside SkRect
 */
-static bool vx_rect_contains_xy(vx_rect_t r, float x, float y)
-{
-    return x >= r.left && x < r.right && y >= r.top && y < r.bottom;
-}
+VX_PUBLIC bool vx_rect_contains_xy(vx_rect_t r, float x, float y);
 
 /** Returns true if SkRect contains r.
     Returns false if SkRect is empty or r is empty.
@@ -1175,13 +1104,7 @@ static bool vx_rect_contains_xy(vx_rect_t r, float x, float y)
     @param r  SkRect contained
     @return   true if all sides of SkRect are outside r
 */
-static bool vx_rect_contains(vx_rect_t lhs, vx_rect_t rhs)
-{
-    // TODO: can we eliminate the this->isEmpty check?
-    return !vx_rect_is_empty(rhs) && !vx_rect_is_empty(lhs) &&
-            lhs.left <= rhs.left && lhs.top <= rhs.top &&
-            lhs.right >= rhs.right && lhs.bottom >= rhs.bottom;
-}
+VX_PUBLIC bool vx_rect_contains(vx_rect_t lhs, vx_rect_t rhs);
 
 #if 0
     /** Sets SkIRect by adding 0.5 and discarding the fractional portion of SkRect
@@ -1278,8 +1201,7 @@ static bool vx_rect_contains(vx_rect_t lhs, vx_rect_t rhs)
 
     @return  sorted SkRect
 */
-VX_PUBLIC
-vx_rect_t vx_rect_sorted(vx_rect_t r);
+VX_PUBLIC vx_rect_t vx_rect_sorted(vx_rect_t r);
 
 #if 0
     /** Returns pointer to first float in SkRect, to treat it as an array with four

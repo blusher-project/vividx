@@ -65,6 +65,29 @@ vx_rect_t vx_rect_sorted(vx_rect_t r)
 //!< Integer Rect
 //!<==================
 
+vx_rect_i_t vx_rect_i_make_wh(int32_t w, int32_t h)
+{
+    return vx_rect_i_make_xywh(0, 0, w, h);
+}
+
+vx_rect_i_t vx_rect_i_make_from_size(vx_size_i_t size)
+{
+    return vx_rect_i_make_xywh(0, 0, size.width, size.height);
+}
+
+vx_rect_i_t vx_rect_i_make_ltrb(int32_t l,
+                                int32_t t,
+                                int32_t r,
+                                int32_t b)
+{
+    vx_rect_i_t rect;
+    rect.left = l;
+    rect.top = t;
+    rect.right = r;
+    rect.bottom = b;
+    return rect;
+}
+
 bool vx_rect_i_is_empty(vx_rect_i_t rect)
 {
     int64_t w = vx_rect_i_width64(rect);
@@ -129,6 +152,78 @@ vx_rect_i_t vx_rect_i_sorted(vx_rect_i_t rect)
 bool vx_rect_i_contains_rect(vx_rect_i_t lhs, vx_rect_t rhs)
 {
     return !vx_rect_is_empty(rhs) && !vx_rect_i_is_empty(lhs) &&     // check for empties
+            lhs.left <= rhs.left && lhs.top <= rhs.top &&
+            lhs.right >= rhs.right && lhs.bottom >= rhs.bottom;
+}
+
+vx_rect_i_t vx_rect_i_offset(vx_rect_i_t rect,
+                             int32_t dx,
+                             int32_t dy)
+{
+    return vx_rect_i_make_xywh(
+        vx_int32_sat_add(rect.left,  dx),
+        vx_int32_sat_add(rect.top,    dy),
+        vx_int32_sat_add(rect.right, dx),
+        vx_int32_sat_add(rect.bottom, dy)
+    );
+}
+
+vx_rect_i_t vx_rect_i_inset(vx_rect_i_t r, int32_t dx, int32_t dy)
+{
+    return vx_rect_i_make_ltrb(
+        vx_int32_sat_add(r.left,  dx),
+        vx_int32_sat_add(r.top,    dy),
+        vx_int32_sat_sub(r.right, dx),
+        vx_int32_sat_sub(r.bottom, dy)
+    );
+}
+
+vx_rect_i_t vx_rect_i_outset(vx_rect_i_t r, int32_t dx, int32_t dy)
+{
+    return vx_rect_i_make_ltrb(
+        vx_int32_sat_sub(r.left,  dx),
+        vx_int32_sat_sub(r.top,    dy),
+        vx_int32_sat_add(r.right, dx),
+        vx_int32_sat_add(r.bottom, dy)
+    );
+}
+
+vx_rect_i_t vx_rect_i_offset_to(vx_rect_i_t r,
+                                int32_t newX,
+                                int32_t newY)
+{
+    r.right  = vx_int64_pin_to_int32((int64_t)r.right + newX - r.left);
+    r.bottom = vx_int64_pin_to_int32((int64_t)r.bottom + newY - r.top);
+    r.left   = newX;
+    r.top    = newY;
+
+    return r;
+}
+
+vx_rect_i_t vx_rect_i_adjusted(vx_rect_i_t r,
+                               int32_t dl,
+                               int32_t dt,
+                               int32_t dr,
+                               int32_t db)
+{
+    vx_rect_i_t adjusted;
+    adjusted.left   = vx_int32_sat_add(r.left,   dl);
+    adjusted.top    = vx_int32_sat_add(r.top,    dt);
+    adjusted.right  = vx_int32_sat_add(r.right,  dr);
+    adjusted.bottom = vx_int32_sat_add(r.bottom, db);
+
+    return adjusted;
+}
+
+bool vx_rect_contains_xy(vx_rect_t r, float x, float y)
+{
+    return x >= r.left && x < r.right && y >= r.top && y < r.bottom;
+}
+
+bool vx_rect_contains(vx_rect_t lhs, vx_rect_t rhs)
+{
+    // TODO: can we eliminate the this->isEmpty check?
+    return !vx_rect_is_empty(rhs) && !vx_rect_is_empty(lhs) &&
             lhs.left <= rhs.left && lhs.top <= rhs.top &&
             lhs.right >= rhs.right && lhs.bottom >= rhs.bottom;
 }
