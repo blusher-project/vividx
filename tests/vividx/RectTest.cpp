@@ -27,6 +27,7 @@
  * SkPath, SkSurfaces, etc.) — only the *test-harness* plumbing is stubbed
  * out, not the graphics engine itself.
  * ---------------------------------------------------------------------
+ * THIS CODE IS CONVERTED BY AI. Used 'Claude Sonnet 5' MODEL.
  */
 
 #include "include/core/SkBitmap.h"
