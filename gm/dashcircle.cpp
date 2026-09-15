@@ -147,10 +147,10 @@ protected:
         static constexpr SkScalar kRadius = 20.f;
         static constexpr SkScalar kStrokeWidth = 15.f;
         static constexpr SkScalar kPad = 5.f;
-        static constexpr SkRect kCircle = {-kRadius, -kRadius, kRadius, kRadius};
+        static SkRect kCircle = {-kRadius, -kRadius, kRadius, kRadius};
 
         static constexpr SkScalar kThinRadius = kRadius * 1.5;
-        static constexpr SkRect kThinCircle = {-kThinRadius, -kThinRadius,
+        static SkRect kThinCircle = {-kThinRadius, -kThinRadius,
                                                 kThinRadius,  kThinRadius};
         static constexpr SkScalar kThinStrokeWidth = 0.4f;
 

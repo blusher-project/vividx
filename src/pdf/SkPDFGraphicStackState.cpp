@@ -71,7 +71,7 @@ static bool is_complex_clip(const SkClipStack& stack) {
 template <typename F>
 static void apply_clip(const SkClipStack& stack, const SkRect& outerBounds, F fn) {
     // assumes clipstack is not complex.
-    constexpr SkRect kHuge{-30000, -30000, 30000, 30000};
+    SkRect kHuge{-30000, -30000, 30000, 30000};
     SkClipStack::Iter iter(stack, SkClipStack::Iter::kBottom_IterStart);
     SkRect bounds = outerBounds;
     while (const SkClipStack::Element* element = iter.next()) {

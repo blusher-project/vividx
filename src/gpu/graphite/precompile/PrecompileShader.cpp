@@ -270,7 +270,7 @@ private:
     void addToKey(const KeyContext& keyContext, int desiredCombination) const override {
         SkASSERT(desiredCombination < fNumShaderCombos);
 
-        constexpr SkRect kIgnored { 0, 0, 256, 256 }; // ignored bc we're precompiling
+        SkRect kIgnored { 0, 0, 256, 256 }; // ignored bc we're precompiling
 
         // TODO: update CoordClampShaderBlock so this is optional
         CoordClampShaderBlock::CoordClampData data(kIgnored);
@@ -347,7 +347,7 @@ void PrecompileImageShader::addToKey(const KeyContext& keyContext, int desiredCo
     // ImageShaderBlock will use hardware tiling when the subset covers the entire image, so we
     // create subset + image size combinations where subset == imgSize (for a shader that uses
     // hardware tiling) and subset < imgSize (for a shader that does shader-based tiling).
-    static constexpr SkRect kSubset = SkRect::MakeWH(1.0f, 1.0f);
+    static SkRect kSubset = SkRect::MakeWH(1.0f, 1.0f);
     static constexpr SkISize kHWTileableSize = SkISize::Make(1, 1);
     static constexpr SkISize kShaderTileableSize = SkISize::Make(2, 2);
 

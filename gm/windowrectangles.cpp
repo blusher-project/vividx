@@ -27,8 +27,8 @@
 
 #include <utility>
 
-constexpr static SkIRect kDeviceRect = {0, 0, 600, 600};
-constexpr static SkIRect kCoverRect = {50, 50, 550, 550};
+static SkIRect kDeviceRect = {0, 0, 600, 600};
+static SkIRect kCoverRect = {50, 50, 550, 550};
 
 namespace skiagm {
 

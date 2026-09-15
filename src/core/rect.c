@@ -74,7 +74,7 @@ bool vx_rect_i_is_empty(vx_rect_i_t rect)
     }
     // Return true if either exceeds int32_t
     // return !SkTFitsIn<int32_t>(w | h);
-    return vx_int64_fits_in_int32(w | h);
+    return !vx_int64_fits_in_int32(w | h);
 }
 
 vx_rect_i_t vx_rect_i_intersected(vx_rect_i_t a, vx_rect_i_t b)

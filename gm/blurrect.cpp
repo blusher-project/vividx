@@ -522,7 +522,7 @@ DEF_GM(return new skiagm::BlurRectCompareGM();)
 //////////////////////////////////////////////////////////////////////////////
 
 DEF_SIMPLE_GM(blur_matrix_rect, canvas, 650, 685) {
-    static constexpr auto kRect = SkRect::MakeWH(14, 60);
+    static auto kRect = SkRect::MakeWH(14, 60);
     static constexpr float kSigmas[] = {0.5f, 1.2f, 2.3f, 3.9f, 7.4f};
     static constexpr size_t kNumSigmas = std::size(kSigmas);
 

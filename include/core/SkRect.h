@@ -38,12 +38,12 @@ struct SK_API SkIRect {
 
     SkIRect();
 
-    constexpr SkIRect(int32_t first)
+    SkIRect(int32_t first)
         : fLeft(first), fTop(0), fRight(0), fBottom(0)
     {
     }
 
-    constexpr SkIRect(int32_t l, int32_t t, int32_t r, int32_t b)
+    SkIRect(int32_t l, int32_t t, int32_t r, int32_t b)
         : fLeft(l), fTop(t), fRight(r), fBottom(b)
     {
     }
@@ -457,12 +457,12 @@ struct SK_API SkRect {
 
     SkRect();
 
-    constexpr SkRect(float first)
+    SkRect(float first)
         : fLeft(first), fTop(0), fRight(0), fBottom(0)
     {
     }
 
-    constexpr SkRect(float l, float t, float r, float b)
+    SkRect(float l, float t, float r, float b)
         : fLeft(l), fTop(t), fRight(r), fBottom(b)
     {
     }

@@ -600,7 +600,7 @@ private:
                      b1 = p1->computeTightBounds();
 
         // Transform all paths to a normalized size, such that they occupy roughly the same space.
-        static constexpr SkRect kNormRect = {0, 0, 512, 512};
+        static SkRect kNormRect = {0, 0, 512, 512};
 
         fPaths = {
             p0->makeTransform(SkMatrix::RectToRectOrIdentity(b0, kNormRect,

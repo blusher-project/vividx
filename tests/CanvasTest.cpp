@@ -261,7 +261,7 @@ static SkBitmap make_n32_bitmap(int w, int h, SkColor c = SK_ColorWHITE) {
 }
 
 // Constants used by test steps
-static constexpr SkRect kRect = {0, 0, 2, 1};
+static SkRect kRect = {0, 0, 2, 1};
 static constexpr SkColor kColor = 0x01020304;
 static constexpr int kWidth = 2;
 static constexpr int kHeight = 2;

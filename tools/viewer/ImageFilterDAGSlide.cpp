@@ -344,8 +344,8 @@ public:
     SkISize getDimensions() const override { return kFilterSurfaceSize; }
 
 private:
-    static constexpr SkRect kFilterRect = SkRect::MakeXYWH(20.f, 20.f, 60.f, 60.f);
-    static constexpr SkISize kFilterSurfaceSize = SkISize::Make(
+    inline static SkRect kFilterRect = SkRect::MakeXYWH(20.f, 20.f, 60.f, 60.f);
+    inline static SkISize kFilterSurfaceSize = SkISize::Make(
             2 * (kFilterRect.fRight + kFilterRect.fLeft),
             2 * (kFilterRect.fBottom + kFilterRect.fTop));
 

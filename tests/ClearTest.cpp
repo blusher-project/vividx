@@ -280,7 +280,7 @@ static void clear_op_test(skiatest::Reporter* reporter, GrDirectContext* dContex
     if (!dContext->priv().caps()->performColorClearsAsDraws() &&
         !dContext->priv().caps()->performStencilClearsAsDraws() &&
         !dContext->priv().caps()->performPartialClearsAsDraws()) {
-        static constexpr SkIRect kScissorRect = SkIRect::MakeXYWH(1, 1, kW-1, kH-1);
+        static SkIRect kScissorRect = SkIRect::MakeXYWH(1, 1, kW-1, kH-1);
 
         // Try combining a pure-color clear w/ a combined stencil & color clear
         // (re skbug.com/40042342)

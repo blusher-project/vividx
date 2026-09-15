@@ -29,7 +29,7 @@ static constexpr SkColor kOutputBoundsColor  = SK_ColorRED;
 static constexpr SkColor kCropRectColor      = SK_ColorGREEN;
 static constexpr SkColor kContentBoundsColor = SK_ColorBLUE;
 
-static constexpr SkRect kExampleBounds = {0.f, 0.f, 100.f, 100.f};
+static SkRect kExampleBounds = {0.f, 0.f, 100.f, 100.f};
 
 // "Crop" refers to the rect passed to the crop image filter, "Rect" refers to some other rect
 // from context, likely the output bounds or the content bounds.
@@ -294,8 +294,8 @@ void draw_example_column(
 // Draw 5x4 grid of examples covering supported input tile modes and crop rect relations
 static constexpr int kNumRows = 5;
 static constexpr int kNumCols = 4;
-static constexpr float kGridWidth = kNumCols * (kExampleBounds.fRight+1.f) - 1.f;
-static constexpr float kGridHeight = kNumRows * (kExampleBounds.fBottom+1.f) - 1.f;
+static float kGridWidth = kNumCols * (kExampleBounds.fRight+1.f) - 1.f;
+static float kGridHeight = kNumRows * (kExampleBounds.fBottom+1.f) - 1.f;
 
 void draw_example_grid(
         SkCanvas* canvas,

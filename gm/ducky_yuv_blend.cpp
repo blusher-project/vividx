@@ -49,7 +49,7 @@ DEF_SIMPLE_GM_CAN_FAIL(ducky_yuv_blend, canvas, errorMsg, 560, 1130) {
 
     static constexpr int kNumPerRow = 4;
     static constexpr int kPad = 10;
-    static constexpr auto kDstRect = SkRect::MakeWH(130, 130);
+    static auto kDstRect = SkRect::MakeWH(130, 130);
     int rowCnt = 0;
     canvas->translate(kPad, kPad);
     canvas->save();

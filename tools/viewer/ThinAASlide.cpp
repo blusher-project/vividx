@@ -466,9 +466,9 @@ private:
     void drawShape(SkCanvas* canvas, const char* name, int gridX,
                    OffscreenShapeRenderer* shape, bool drawNameLabels) {
         static constexpr SkScalar kZoomGridWidth = 8 * ShapeRenderer::kTileWidth + 8.f;
-        static constexpr SkRect kTile = SkRect::MakeWH(ShapeRenderer::kTileWidth,
+        static SkRect kTile = SkRect::MakeWH(ShapeRenderer::kTileWidth,
                                                        ShapeRenderer::kTileHeight);
-        static constexpr SkRect kZoomTile = SkRect::MakeWH(8 * ShapeRenderer::kTileWidth,
+        static SkRect kZoomTile = SkRect::MakeWH(8 * ShapeRenderer::kTileWidth,
                                                            8 * ShapeRenderer::kTileHeight);
 
         // Labeling per shape and detailed labeling that isn't per-stroke

@@ -703,7 +703,7 @@ static void draw_skp_and_flush_with_sync(GrDirectContext* context, SkSurface* su
 }
 
 static sk_sp<SkPicture> create_warmup_skp() {
-    static constexpr SkRect bounds{0, 0, 500, 500};
+    static SkRect bounds{0, 0, 500, 500};
     SkPictureRecorder recorder;
     SkCanvas* recording = recorder.beginRecording(bounds);
 
@@ -735,7 +735,7 @@ static sk_sp<SkPicture> create_skp_from_svg(SkStream* stream, const char* filena
         exitf(ExitErr::kData, "failed to build svg dom from file %s", filename);
     }
 
-    static constexpr SkRect bounds{0, 0, 1200, 1200};
+    static SkRect bounds{0, 0, 1200, 1200};
     SkPictureRecorder recorder;
     SkCanvas* recording = recorder.beginRecording(bounds);
 

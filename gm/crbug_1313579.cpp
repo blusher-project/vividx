@@ -18,7 +18,7 @@
 // is significantly different in color than the intended blur content and the radius is large then
 // clamp mode blur creates a very noticeable color bleed artifact.
 DEF_SIMPLE_GM(crbug_1313579, canvas, 110, 110) {
-    static constexpr auto kBGRect = SkIRect{0, 0, 100, 100};
+    static auto kBGRect = SkIRect{0, 0, 100, 100};
 
    sk_sp<SkImageFilter> backdrop_filter =
             SkImageFilters::Blur(50.f, 50.f, SkTileMode::kClamp, nullptr, kBGRect);

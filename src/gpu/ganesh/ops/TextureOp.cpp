@@ -133,7 +133,7 @@ NormalizationParams proxy_normalization_params(const GrSurfaceProxy* proxy,
 SkRect normalize_and_inset_subset(GrSamplerState::Filter filter,
                                   const NormalizationParams& params,
                                   const SkRect* subsetRect) {
-    static constexpr SkRect kLargeRect = {-100000, -100000, 1000000, 1000000};
+    static SkRect kLargeRect = {-100000, -100000, 1000000, 1000000};
     if (!subsetRect) {
         // Either the quad has no subset constraint and is batched with a subset constrained op
         // (in which case we want a subset that doesn't restrict normalized tex coords), or the

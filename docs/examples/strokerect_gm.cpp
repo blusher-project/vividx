@@ -10,7 +10,7 @@ void draw(SkCanvas* canvas) {
                                         SkPaint::kBevel_Join};
     constexpr SkScalar W = 80;
     constexpr SkScalar H = 80;
-    constexpr SkRect gRects[] = {
+    SkRect gRects[] = {
             {0, 0, W, H},
             {W, 0, 0, H},
             {0, H, W, 0},

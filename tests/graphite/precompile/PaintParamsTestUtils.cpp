@@ -399,7 +399,7 @@ static sk_sp<SkImage> make_yuv_image(SkRandom* rand, Recorder* recorder) {
 }
 
 static sk_sp<SkPicture> make_picture(SkRandom* rand) {
-    constexpr SkRect kRect = SkRect::MakeWH(128, 128);
+    SkRect kRect = SkRect::MakeWH(128, 128);
     SkPictureRecorder recorder;
     SkCanvas* canvas = recorder.beginRecording(kRect);
     SkPaint paint;
@@ -419,7 +419,7 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_coord_clamp_shader(Sk
     if (!s) {
         return {nullptr, nullptr};
     }
-    constexpr SkRect kSubset{0, 0, 256, 256};
+    SkRect kSubset{0, 0, 256, 256};
     sk_sp<SkShader> ccs = SkShaders::CoordClamp(std::move(s), kSubset);
     sk_sp<PrecompileShader> cco = PrecompileShaders::CoordClamp({std::move(o)});
     return {ccs, cco};

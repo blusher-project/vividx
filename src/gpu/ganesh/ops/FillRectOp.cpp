@@ -274,7 +274,7 @@ private:
     }
 
     void tessellate(const VertexSpec& vertexSpec, char* dst) const {
-        static constexpr SkRect kEmptyDomain = SkRect::MakeEmpty();
+        static SkRect kEmptyDomain = SkRect::MakeEmpty();
 
         skgpu::ganesh::QuadPerEdgeAA::Tessellator tessellator(vertexSpec, dst);
         auto iter = fQuads.iterator();

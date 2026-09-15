@@ -71,7 +71,7 @@ protected:
 
 private:
     void drawVertRects(SkCanvas* canvas, const SkPaint& p) {
-        constexpr SkRect vertRects[] = {
+        SkRect vertRects[] = {
             { 1,  1,    5.0f, 21 }, // 4 pix wide
             { 8,  1,   10.0f, 21 }, // 2 pix wide
             { 13, 1,   14.0f, 21 }, // 1 pix wide
@@ -95,7 +95,7 @@ private:
     }
 
     void drawHorizRects(SkCanvas* canvas, const SkPaint& p) {
-        constexpr SkRect horizRects[] = {
+        SkRect horizRects[] = {
             { 1, 1,  21,    5.0f }, // 4 pix high
             { 1, 8,  21,   10.0f }, // 2 pix high
             { 1, 13, 21,   14.0f }, // 1 pix high
@@ -117,7 +117,7 @@ private:
     }
 
     void drawSquares(SkCanvas* canvas, const SkPaint& p) {
-        constexpr SkRect squares[] = {
+        SkRect squares[] = {
             { 1,  1,     5.0f,    5.0f }, // 4 pix
             { 8,  8,    10.0f,   10.0f }, // 2 pix
             { 13, 13,   14.0f,   14.0f }, // 1 pix

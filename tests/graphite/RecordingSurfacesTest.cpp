@@ -22,7 +22,7 @@
 namespace skgpu::graphite {
 
 constexpr SkIVector kNoOffset = SkIVector::Make(0, 0);
-constexpr SkIRect kEmptyClip = SkIRect::MakeEmpty();
+SkIRect kEmptyClip = SkIRect::MakeEmpty();
 
 using DrawCallback = std::function<void(SkCanvas*)>;
 

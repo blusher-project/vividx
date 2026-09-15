@@ -20,7 +20,7 @@ using namespace skia_private;
 
 namespace {
 
-constexpr SkRect scale_rect(SkRect r, SkScalar s) {
+SkRect scale_rect(SkRect r, SkScalar s) {
     return {r.fLeft * s, r.fTop * s, r.fRight * s, r.fBottom * s};
 }
 

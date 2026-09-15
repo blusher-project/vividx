@@ -509,8 +509,8 @@ DEF_TEST(pathdata_transform_convexity, reporter) {
 DEF_TEST(pathdata_inverted_bounds, reporter) {
     using makerT = std::function<sk_sp<SkPathData>(const SkRect&)>;
     const auto check = [&reporter](const makerT& maker) {
-        constexpr SkRect bounds = {-10, -10, 10, 10};
-        constexpr SkRect inverted_bounds = {10, 10, -10, -10};
+        SkRect bounds = {-10, -10, 10, 10};
+        SkRect inverted_bounds = {10, 10, -10, -10};
         REPORTER_ASSERT(reporter, maker(bounds)->bounds() == bounds);
         REPORTER_ASSERT(reporter, maker(inverted_bounds)->bounds() == bounds);
     };

@@ -484,8 +484,8 @@ DEF_TEST(PathOpsAsWinding, reporter) {
     REPORTER_ASSERT(reporter, test == *result);
 
     // test a in b, b in a, cw/ccw
-    constexpr SkRect rectA = {0, 0, 3, 3};
-    constexpr SkRect rectB = {1, 1, 2, 2};
+    SkRect rectA = {0, 0, 3, 3};
+    SkRect rectB = {1, 1, 2, 2};
     const std::initializer_list<SkPoint> revBccw = {{1, 2}, {2, 2}, {2, 1}, {1, 1}};
     const std::initializer_list<SkPoint> revBcw  = {{2, 1}, {2, 2}, {1, 2}, {1, 1}};
     for (bool aFirst : {false, true}) {

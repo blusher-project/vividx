@@ -150,7 +150,7 @@ private:
         constexpr float kZoomAmount = 2.5f;
 
         // The available content for backdrops, which clips the widgetBounds as it animates.
-        constexpr SkRect kOutBounds = {0.f, 0.f, 256.f, 256.f};
+        SkRect kOutBounds = {0.f, 0.f, 256.f, 256.f};
 
         // The filter responds to any crop (explicit or from missing backdrop content). Compute
         // the corresponding clipped bounds and source bounds for visualization purposes.

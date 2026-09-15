@@ -507,7 +507,7 @@ static SkPath make_octagon(const SkRect& r) {
     return make_octagon(r, lr, tb);
 }
 
-static constexpr SkIRect kDeviceBounds = {0, 0, 100, 100};
+static SkIRect kDeviceBounds = {0, 0, 100, 100};
 
 class NoOp : public GrDrawOp {
 public:
@@ -764,7 +764,12 @@ DEF_TEST(ClipStack_RectDeviceClip, r) {
 
     SkRect crossesDeviceEdge = {20.f, kDeviceBounds.fTop - 13.2f,
                                 kDeviceBounds.fRight + 15.5f, 30.f};
-    SkRect insideDevice = {20.f, kDeviceBounds.fTop, kDeviceBounds.fRight, 30.f};
+    SkRect insideDevice = {
+        20.f,
+        static_cast<float>(kDeviceBounds.fTop),
+        static_cast<float>(kDeviceBounds.fRight),
+        30.f
+    };
 
     run_test_case(r, TestCase::Build("device-aa-rect", kDeviceBounds)
                               .actual().intersect().aa().rect(crossesDeviceEdge).finishElements()
@@ -1991,7 +1996,9 @@ DEF_TEST(ClipStack_SimpleApply, r) {
 
     // Draw bounds are cropped to device space before checking contains
     {
-        SkRect clipRect = {kDeviceBounds.fRight - 20.f, 10.f, kDeviceBounds.fRight, 20.f};
+        SkRect clipRect = {
+            kDeviceBounds.fRight - 20.f, 10.f, static_cast<float>(kDeviceBounds.fRight), 20.f
+        };
         SkRect drawRect = clipRect.makeOffset(10.f, 0.f);
 
         cs.save();

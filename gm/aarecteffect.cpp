@@ -57,7 +57,7 @@ protected:
         static constexpr SkScalar kDX = 12.f;
         static constexpr SkScalar kOutset = 5.f;
 
-        static constexpr SkRect kRects[] = {
+        static SkRect kRects[] = {
                 // integer edges
                 SkRect::MakeLTRB(5.f, 1.f, 30.f, 25.f),
                 // half-integer edges

@@ -336,7 +336,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferTransferTest,
 
                     static constexpr SkColor4f kRed{1, 0, 0, 1};
 
-                    static constexpr SkRect kBounds{0, 0, 1, 1};
+                    static SkRect kBounds{0, 0, 1, 1};
 
                     sdc->clear(kRed);
 
@@ -460,7 +460,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest,
 
                 static constexpr SkColor4f kRed{1, 0, 0, 1};
 
-                static constexpr SkRect kBounds{0, 0, 1, 1};
+                static SkRect kBounds{0, 0, 1, 1};
 
                 sdc->clear(kRed);
 

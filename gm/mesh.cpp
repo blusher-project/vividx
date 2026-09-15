@@ -277,17 +277,17 @@ private:
         float xuyv[4];
     };
 
-    static constexpr auto kRect = SkRect::MakeLTRB(20, 20, 120, 120);
-    static constexpr auto kUV   = SkRect::MakeLTRB( 0,  0,  20,  20);
+    inline static auto kRect = SkRect::MakeLTRB(20, 20, 120, 120);
+    inline static auto kUV   = SkRect::MakeLTRB( 0,  0,  20,  20);
 
-    static constexpr ColorVertex kColorQuad[] {
+    inline static ColorVertex kColorQuad[] {
             {0, 0x00FFFF00, {kRect.left(),  kUV.left(),  kRect.top(),    kUV.top()   }},
             {0, 0x00FFFFFF, {kRect.right(), kUV.right(), kRect.top(),    kUV.top()   }},
             {0, 0xFFFF00FF, {kRect.left(),  kUV.left(),  kRect.bottom(), kUV.bottom()}},
             {0, 0xFFFFFF00, {kRect.right(), kUV.right(), kRect.bottom(), kUV.bottom()}},
     };
 
-    static constexpr NoColorVertex kNoColorQuad[]{
+    inline static NoColorVertex kNoColorQuad[]{
             {{kRect.left(),  kUV.left(),  kRect.top(),    kUV.top()   }},
             {{kRect.right(), kUV.right(), kRect.top(),    kUV.top()   }},
             {{kRect.left(),  kUV.left(),  kRect.bottom(), kUV.bottom()}},
@@ -296,7 +296,7 @@ private:
 
     // The indexed quads draw the same as the non-indexed. They just have unused vertices that the
     // index buffer skips over draw with triangles instead of a triangle strip.
-    static constexpr ColorVertex kColorIndexedQuad[] {
+    inline static ColorVertex kColorIndexedQuad[] {
             {0, 0x00FFFF00, {kRect.left(),  kUV.left(),  kRect.top(),    kUV.top()   }},
             {0, 0x00000000, {        100.f,        0.f,        100.f,    5.f         }}, // unused
             {0, 0x00FFFFFF, {kRect.right(), kUV.right(), kRect.top(),    kUV.top()   }},
@@ -305,7 +305,7 @@ private:
             {0, 0xFFFFFF00, {kRect.right(), kUV.right(), kRect.bottom(), kUV.bottom()}},
     };
 
-    static constexpr NoColorVertex kNoColorIndexedQuad[]{
+    inline static NoColorVertex kNoColorIndexedQuad[]{
             {{kRect.left(),  kUV.left(),  kRect.top(),    kUV.top()   }},
             {{        100.f,        0.f,        100.f,    5.f         }}, // unused
             {{kRect.right(), kUV.right(), kRect.top(),    kUV.top()   }},
@@ -468,9 +468,9 @@ private:
         return static_cast<int>(spin) + 2*static_cast<int>(unpremul);
     }
 
-    static constexpr auto kRect = SkRect::MakeLTRB(20, 20, 120, 120);
+    inline static auto kRect = SkRect::MakeLTRB(20, 20, 120, 120);
 
-    static constexpr Vertex kQuad[] {
+    inline static Vertex kQuad[] {
             {{kRect.left() , kRect.top()   }, {1, 0, 0, 1}},
             {{kRect.right(), kRect.top()   }, {0, 1, 0, 0}},
             {{kRect.left() , kRect.bottom()}, {1, 1, 0, 0}},
@@ -637,16 +637,16 @@ private:
         SkPoint tex;
     };
 
-    static constexpr auto kRect = SkRect::MakeLTRB(20, 20, 120, 120);
+    inline static auto kRect = SkRect::MakeLTRB(20, 20, 120, 120);
 
     // Our logical tex coords are [0..1] but we insert an arbitrary translation that gets undone
     // with a uniform.
     static constexpr SkPoint kCoordTrans = {75, -37};
-    static constexpr auto    kCoordRect  = SkRect::MakeXYWH(kCoordTrans.x(), kCoordTrans.y(), 1, 1);
+    inline static auto    kCoordRect  = SkRect::MakeXYWH(kCoordTrans.x(), kCoordTrans.y(), 1, 1);
 
     static constexpr SkPoint kGradCenter = {0.3f, 0.2f};
 
-    static constexpr Vertex kQuad[] {
+    inline static Vertex kQuad[] {
             {{kRect.left() , kRect.top()   }, {kCoordRect.left() , kCoordRect.top()}   },
             {{kRect.right(), kRect.top()   }, {kCoordRect.right(), kCoordRect.top()}   },
             {{kRect.left() , kRect.bottom()}, {kCoordRect.left() , kCoordRect.bottom()}},
@@ -1190,9 +1190,9 @@ private:
         SkPoint pos;
     };
 
-    static constexpr auto kRect = SkRect::MakeWH(40, 40);
+    inline static auto kRect = SkRect::MakeWH(40, 40);
 
-    static constexpr Vertex kQuad[] {
+    inline static Vertex kQuad[] {
             {1000, 1000},  // skip
             {{kRect.left() , kRect.top()   }},
             {{kRect.right(), kRect.top()   }},
@@ -1463,8 +1463,8 @@ private:
         float uv[2];
     };
 
-    static constexpr auto kRect = SkRect::MakeLTRB(20, 20, 300, 300);
-    static constexpr auto kUV   = SkRect::MakeLTRB( 0,  0, 128, 128);
+    inline static auto kRect = SkRect::MakeLTRB(20, 20, 300, 300);
+    inline static auto kUV   = SkRect::MakeLTRB( 0,  0, 128, 128);
     static constexpr int kMeshSize = 16;
     static constexpr float kRippleSize = 6.0f;
 
@@ -1495,8 +1495,8 @@ DEF_SIMPLE_GM_CAN_FAIL(custommesh_cs_uniforms, canvas, errorMsg, 200, 900) {
     }
 
     // Shared data
-    static constexpr SkRect kRect = SkRect::MakeLTRB(20, 20, 80, 80);
-    static constexpr SkPoint kQuad[]{
+    static SkRect kRect = SkRect::MakeLTRB(20, 20, 80, 80);
+    static SkPoint kQuad[]{
             {kRect.left(), kRect.top()},
             {kRect.right(), kRect.top()},
             {kRect.left(), kRect.bottom()},

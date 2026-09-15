@@ -86,7 +86,7 @@ public:
     std::vector<myers::Segment> segments() const;
 
 private:
-    static constexpr SkIRect kEmptyRect = SkIRect::MakeLTRB(INT_MAX, INT_MAX, INT_MIN, INT_MIN);
+    inline static SkIRect kEmptyRect = SkIRect::MakeLTRB(INT_MAX, INT_MAX, INT_MIN, INT_MIN);
     struct CompactContour {
         SkIRect bounds;
         int32_t end;

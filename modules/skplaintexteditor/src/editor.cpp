@@ -19,7 +19,7 @@ static inline SkRect offset(SkRect r, SkIPoint p) {
     return r.makeOffset((float)p.x(), (float)p.y());
 }
 
-static constexpr SkRect kUnsetRect{-FLT_MAX, -FLT_MAX, -FLT_MAX, -FLT_MAX};
+static SkRect kUnsetRect{-FLT_MAX, -FLT_MAX, -FLT_MAX, -FLT_MAX};
 
 static bool valid_utf8(const char* ptr, size_t size) { return SkUTF::CountUTF8(ptr, size) >= 0; }
 

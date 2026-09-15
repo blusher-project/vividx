@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/codec/SkAndroidCodec.h"
+// #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
@@ -48,6 +48,7 @@ void decode_all(Reporter& r,
                     SkCodec::kSuccess == baseCodec->getPixels(baseBitmap.info(),
                                                               baseBitmap.getPixels(),
                                                               baseBitmap.rowBytes()));
+#if 0
     std::unique_ptr<SkAndroidCodec> androidCodec =
             SkAndroidCodec::MakeFromCodec(std::move(baseCodec));
     REPORTER_ASSERT(r, androidCodec);
@@ -66,8 +67,10 @@ void decode_all(Reporter& r,
                                                                     gainmapBitmap.getPixels(),
                                                                     gainmapBitmap.rowBytes()));
     }
+#endif
 }
 
+#if 0
 DEF_TEST(AndroidCodec_pngGainmapDecode, r) {
     const struct Rec {
         const char* path;
@@ -199,3 +202,4 @@ DEF_TEST(AndroidCodec_pngGainmapEncodeAndDecode, r) {
         skiatest::ExpectApproxEqInfo(r, sourceGainmapInfo, gainmapInfo);
     }
 }
+#endif

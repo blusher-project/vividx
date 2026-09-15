@@ -791,7 +791,7 @@ static void test_invfill_diff_bug(skiatest::Reporter* reporter) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void test_is_rrect_deep_rect_stack(skiatest::Reporter* reporter) {
-    static constexpr SkRect kTargetBounds = SkRect::MakeWH(1000, 500);
+    static SkRect kTargetBounds = SkRect::MakeWH(1000, 500);
     // All antialiased or all not antialiased.
     for (bool aa : {false, true}) {
         SkClipStack stack;

@@ -26,8 +26,8 @@ namespace skiagm {
 //    bevel, miter, miter-limited-to-bevel, round
 // and as a hairline.
 DEF_SIMPLE_GM(stroke_rect_shader, canvas, 690, 300) {
-    constexpr SkRect kRect {0, 0, 100, 100};
-    constexpr SkPoint kPts[] {{kRect.fLeft, kRect.fTop}, {kRect.fRight, kRect.fBottom}};
+    SkRect kRect {0, 0, 100, 100};
+    SkPoint kPts[] {{kRect.fLeft, kRect.fTop}, {kRect.fRight, kRect.fBottom}};
     constexpr SkColor4f kColors[] {SkColors::kRed, SkColors::kBlue};
     sk_sp<SkShader> shader = SkShaders::LinearGradient(kPts,
                                                        {{kColors, {}, SkTileMode::kClamp}, {}});

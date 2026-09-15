@@ -5462,7 +5462,7 @@ DEF_TEST(path_computeTightBounds, reporter) {
 }
 
 DEF_TEST(path_trivial_isrect, reporter) {
-    static constexpr struct {
+    static struct {
         std::array<SkPoint, 4> pts;
         bool                   isrect;
 
@@ -5552,8 +5552,8 @@ DEF_TEST(path_infinite_transform, reporter) {
 }
 
 DEF_TEST(path_factory_inverted_bounds, reporter) {
-    constexpr SkRect bounds = {-10, -10, 10, 10};
-    constexpr SkRect inverted_bounds = {10, 10, -10, -10};
+    SkRect bounds = {-10, -10, 10, 10};
+    SkRect inverted_bounds = {10, 10, -10, -10};
 
     REPORTER_ASSERT(reporter, SkPath::Oval(inverted_bounds).getBounds() == bounds);
     REPORTER_ASSERT(reporter, SkPath::Rect(inverted_bounds).getBounds() == bounds);

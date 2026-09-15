@@ -37,10 +37,10 @@ set(VIVIDX_CORE_SOURCES
 )
 
 set(VIVIDX_CORE_PARTIAL_SOURCES
-    src/core/SkMD5.cpp
-    src/core/SkBase64.cpp
-    src/core/SkCPURecorder.cpp
-    src/core/SkStream.cpp
+    # src/core/SkMD5.cpp
+    # src/core/SkBase64.cpp
+    # src/core/SkCPURecorder.cpp
+    # src/core/SkStream.cpp
 )
 
 set(VIVIDX_GPU_PARTIAL_SOURCES

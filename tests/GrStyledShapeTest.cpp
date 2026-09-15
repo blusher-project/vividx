@@ -2263,8 +2263,8 @@ DEF_TEST(GrStyledShape_arcs, reporter) {
         TestCase emptyPath(reporter, SkPath(), style);
         emptyArc.compare(reporter, emptyPath, TestCase::kAllSame_ComparisonExpecation);
 
-        static constexpr SkRect kOval1{0, 0, 50, 50};
-        static constexpr SkRect kOval2{50, 0, 100, 50};
+        static SkRect kOval1{0, 0, 50, 50};
+        static SkRect kOval2{50, 0, 100, 50};
         // Test that swapping starting and ending angle doesn't change the shape unless the arc
         // has a path effect. Also test that different ovals produce different shapes.
         TestCase arc1CW(

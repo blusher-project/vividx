@@ -3,6 +3,30 @@
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
+ *
+ * ---------------------------------------------------------------------
+ * NOTE: This is a standalone-executable adaptation of Skia's tests/RectTest.cpp.
+ *
+ * The original file relies on Skia's test framework (DEF_TEST macro,
+ * skiatest::Reporter, the `dm` test runner) which auto-registers each
+ * DEF_TEST block and drives it from an external harness. That harness is
+ * not present when compiling a single .cpp file on its own.
+ *
+ * To make this file buildable and runnable by itself:
+ *   1. Each `DEF_TEST(Name, reporter) { ... }` block has been turned into a
+ *      plain function `static void Test_Name(skiatest::Reporter* reporter)`.
+ *   2. A minimal concrete Reporter (`SimpleReporter`) is implemented here,
+ *      overriding the real skiatest::Reporter interface
+ *      (reportFailed(const skiatest::Failure&)) so REPORTER_ASSERT and
+ *      skiatest::ReporterContext keep working unmodified.
+ *   3. `main()` constructs one SimpleReporter, calls every extracted test
+ *      function directly (no registry/reflection needed), prints a summary,
+ *      and returns a non-zero exit code if any assertion failed.
+ *
+ * This still links against the real Skia core library (SkCanvas, SkBitmap,
+ * SkPath, SkSurfaces, etc.) — only the *test-harness* plumbing is stubbed
+ * out, not the graphics engine itself.
+ * ---------------------------------------------------------------------
  */
 
 #include "include/core/SkBitmap.h"
@@ -20,12 +44,49 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkRectPriv.h"
-#include "tests/Test.h"
+#include "tests/Test.h"   // real skiatest::Reporter / Failure / REPORTER_ASSERT
 
 #include <climits>
+#include <cstdio>
 #include <initializer_list>
 #include <string>
+#include <vector>
 
+// =====================================================================
+// 1. Minimal concrete Reporter implementation
+// =====================================================================
+//
+// tests/Test.h declares:
+//   class Reporter : SkNoncopyable {
+//    public:
+//     virtual ~Reporter() {}
+//     virtual void bumpTestCount();
+//     virtual void reportFailed(const skiatest::Failure&) = 0;   // pure virtual
+//     virtual bool allowExtendedTest() const;
+//     virtual bool verbose() const;
+//   };
+//
+// We only need to supply reportFailed(); the rest have usable defaults.
+class SimpleReporter : public skiatest::Reporter {
+public:
+    void reportFailed(const skiatest::Failure& failure) override {
+        fFailureCount++;
+        std::fprintf(stderr, "FAILED: %s (%s:%d) %s\n",
+                     failure.condition,
+                     failure.fileName,
+                     failure.lineNo,
+                     failure.message.c_str());
+    }
+
+    int failureCount() const { return fFailureCount; }
+
+private:
+    int fFailureCount = 0;
+};
+
+// =====================================================================
+// 2. Helpers (unchanged from the original file)
+// =====================================================================
 static bool has_green_pixels(const SkBitmap& bm) {
     for (int j = 0; j < bm.height(); ++j) {
         for (int i = 0; i < bm.width(); ++i) {
@@ -34,7 +95,6 @@ static bool has_green_pixels(const SkBitmap& bm) {
             }
         }
     }
-
     return false;
 }
 
@@ -100,23 +160,28 @@ static void test_skbug4406(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, has_green_pixels(bm));
 }
 
-DEF_TEST(Rect, reporter) {
+// =====================================================================
+// 3. DEF_TEST blocks converted to plain functions
+//    (naming convention: Test_<original DEF_TEST name>)
+// =====================================================================
+
+static void Test_Rect(skiatest::Reporter* reporter) {
     test_stroke_width_clipping(reporter);
     test_skbug4406(reporter);
 }
 
-DEF_TEST(Rect_grow, reporter) {
+static void Test_Rect_grow(skiatest::Reporter* reporter) {
     test_stroke_width_clipping(reporter);
     test_skbug4406(reporter);
 }
 
-DEF_TEST(Rect_path_nan, reporter) {
+static void Test_Rect_path_nan(skiatest::Reporter* reporter) {
     SkRect r = { 0, 0, SK_ScalarNaN, 100 };
     // path normally just jams its bounds to be r, but it must notice that r is non-finite
     REPORTER_ASSERT(reporter, !SkPath::Rect(r).isFinite());
 }
 
-DEF_TEST(Rect_largest, reporter) {
+static void Test_Rect_largest(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, !SkRectPriv::MakeILarge().isEmpty());
     REPORTER_ASSERT(reporter,  SkRectPriv::MakeILargestInverted().isEmpty());
 
@@ -125,12 +190,7 @@ DEF_TEST(Rect_largest, reporter) {
     REPORTER_ASSERT(reporter,  SkRectPriv::MakeLargestInverted().isEmpty());
 }
 
-/*
- *  Test the setBounds always handles non-finite values correctly:
- *  - setBoundsCheck should return false, and set the rect to all zeros
- *  - setBoundsNoCheck should ensure that rect.isFinite() is false (definitely NOT all zeros)
- */
-DEF_TEST(Rect_setbounds, reporter) {
+static void Test_Rect_setbounds(skiatest::Reporter* reporter) {
     const SkPoint p0[] = { { SK_ScalarInfinity, 0 }, { 1, 1 }, { 2, 2 }, { 3, 3 } };
     const SkPoint p1[] = { { 0, SK_ScalarInfinity }, { 1, 1 }, { 2, 2 }, { 3, 3 } };
     const SkPoint p2[] = { { SK_ScalarNaN, 0 }, { 1, 1 }, { 2, 2 }, { 3, 3 } };
@@ -160,7 +220,7 @@ static float make_big_value(skiatest::Reporter* reporter) {
     return reporter ? SK_ScalarMax * 0.75f : 0;
 }
 
-DEF_TEST(Rect_whOverflow, reporter) {
+static void Test_Rect_whOverflow(skiatest::Reporter* reporter) {
     const SkScalar big = make_big_value(reporter);
     const SkRect r = { -big, -big, big, big };
 
@@ -172,14 +232,13 @@ DEF_TEST(Rect_whOverflow, reporter) {
     REPORTER_ASSERT(reporter, SkIsFinite(r.centerX()));
     REPORTER_ASSERT(reporter, SkIsFinite(r.centerY()));
 
-
     // ensure we can compute halfWidth and halfHeight even when width/height might overflow,
     // i.e. for use computing the radii filling a rectangle.
     REPORTER_ASSERT(reporter, SkIsFinite(SkRectPriv::HalfWidth(r)));
     REPORTER_ASSERT(reporter, SkIsFinite(SkRectPriv::HalfHeight(r)));
 }
 
-DEF_TEST(Rect_subtract, reporter) {
+static void Test_Rect_subtract(skiatest::Reporter* reporter) {
     struct Expectation {
         SkIRect fA;
         SkIRect fB;
@@ -252,7 +311,7 @@ DEF_TEST(Rect_subtract, reporter) {
     }
 }
 
-DEF_TEST(Rect_subtract_overflow, reporter) {
+static void Test_Rect_subtract_overflow(skiatest::Reporter* reporter) {
     // This rectangle is sorted but whose int32 width overflows and appears negative (so
     // isEmpty() returns true).
     SkIRect reallyBig = SkIRect::MakeLTRB(-INT_MAX + 1000, 0, INT_MAX - 1000, 100);
@@ -278,7 +337,7 @@ DEF_TEST(Rect_subtract_overflow, reporter) {
     REPORTER_ASSERT(reporter, difference == reasonable);
 }
 
-DEF_TEST(Rect_QuadContainsRect, reporter) {
+static void Test_Rect_QuadContainsRect(skiatest::Reporter* reporter) {
     struct TestCase {
         std::string label;
         bool expect;
@@ -336,7 +395,7 @@ DEF_TEST(Rect_QuadContainsRect, reporter) {
     };
 
     for (const TestCase& t : tests) {
-        skiatest::ReporterContext c{reporter, t.label};
+        skiatest::ReporterContext c{reporter, SkString(t.label)};
         REPORTER_ASSERT(reporter, SkRectPriv::QuadContainsRect(t.m, t.a, t.b, t.tol) == t.expect);
 
         // Generate equivalent tests for SkRect and SkM44 by translating a by 1/2px and 'b' by
@@ -365,7 +424,7 @@ DEF_TEST(Rect_QuadContainsRect, reporter) {
 
     // Perspective matrix where the mapped A has all corners' W > 0
     {
-        skiatest::ReporterContext c{reporter, "Perspective, W > 0"};
+        skiatest::ReporterContext c{reporter, SkString("Perspective, W > 0")};
         SkM44 p = SkM44::Perspective(0.01f, 10.f, SK_ScalarPI / 3.f);
         p.preTranslate(0.f, 5.f, -0.1f);
         p.preConcat(SkM44::Rotate({0.f, 1.f, 0.f}, 0.008f /* radians */));
@@ -374,7 +433,7 @@ DEF_TEST(Rect_QuadContainsRect, reporter) {
     }
     // Perspective matrix where the mapped A has some corners' W < 0
     {
-        skiatest::ReporterContext c{reporter, "Perspective, some W > 0"};
+        skiatest::ReporterContext c{reporter, SkString("Perspective, some W > 0")};
         SkM44 p;
         p.setRow(3, {-.2f, -.6f, 0.f, 8.f});
         REPORTER_ASSERT(reporter, SkRectPriv::QuadContainsRect(p, a, {10.f,50.f,20.f,60.f}));
@@ -385,7 +444,7 @@ DEF_TEST(Rect_QuadContainsRect, reporter) {
     // convex hull of the mapped corners of A, projecting each corner with its negative W; and a
     // rectangle that contains said convex hull.
     {
-        skiatest::ReporterContext c{reporter, "Perspective, no W > 0"};
+        skiatest::ReporterContext c{reporter, SkString("Perspective, no W > 0")};
         SkM44 p;
         p.setRow(3, {-.2f, -.6f, 0.f, 8.f});
         const SkRect na = a.makeOffset(16.f, 31.f);
@@ -395,7 +454,7 @@ DEF_TEST(Rect_QuadContainsRect, reporter) {
     }
 }
 
-DEF_TEST(Rect_ClosestDisjointEdge, r) {
+static void Test_Rect_ClosestDisjointEdge(skiatest::Reporter* r) {
     struct TestCase {
         std::string label;
         SkIRect dst;
@@ -424,7 +483,7 @@ DEF_TEST(Rect_ClosestDisjointEdge, r) {
     };
 
     for (const TestCase& t : tests) {
-        skiatest::ReporterContext c{r, t.label};
+        skiatest::ReporterContext c{r, SkString(t.label)};
         SkIRect actual = SkRectPriv::ClosestDisjointEdge(kSrc, t.dst);
         REPORTER_ASSERT(r, actual == t.expect);
     }
@@ -437,7 +496,7 @@ DEF_TEST(Rect_ClosestDisjointEdge, r) {
 
 // Before the fix, this sequence would trigger a release_assert in the Tiler
 // in SkBitmapDevice.cpp
-DEF_TEST(big_tiled_rect_crbug_927075, reporter) {
+static void Test_big_tiled_rect_crbug_927075(skiatest::Reporter* /*reporter*/) {
     // since part of the regression test allocates a huge buffer, don't bother trying on
     // 32-bit devices (e.g. chromecast) so we avoid them failing to allocated.
 
@@ -456,4 +515,47 @@ DEF_TEST(big_tiled_rect_crbug_927075, reporter) {
         canvas->translate(-r.fLeft, -r.fTop);
         canvas->drawRect(r, paint);
     }
+}
+
+// =====================================================================
+// 4. Test table + main()
+// =====================================================================
+namespace {
+struct NamedTest {
+    const char* name;
+    void (*fn)(skiatest::Reporter*);
+};
+}  // namespace
+
+static const NamedTest kTests[] = {
+    {"Rect",                          Test_Rect},
+    {"Rect_grow",                     Test_Rect_grow},
+    {"Rect_path_nan",                 Test_Rect_path_nan},
+    {"Rect_largest",                  Test_Rect_largest},
+    {"Rect_setbounds",                Test_Rect_setbounds},
+    {"Rect_whOverflow",               Test_Rect_whOverflow},
+    {"Rect_subtract",                 Test_Rect_subtract},
+    {"Rect_subtract_overflow",        Test_Rect_subtract_overflow},
+    {"Rect_QuadContainsRect",         Test_Rect_QuadContainsRect},
+    {"Rect_ClosestDisjointEdge",      Test_Rect_ClosestDisjointEdge},
+    {"big_tiled_rect_crbug_927075",   Test_big_tiled_rect_crbug_927075},
+};
+
+int main(int argc, char* argv[]) {
+    SimpleReporter reporter;
+
+    int ran = 0;
+    for (const auto& t : kTests) {
+        std::printf("[ RUN      ] %s\n", t.name);
+        int before = reporter.failureCount();
+        t.fn(&reporter);
+        int after = reporter.failureCount();
+        std::printf("[ %s ] %s\n", (after == before) ? "     OK" : " FAILED", t.name);
+        ++ran;
+    }
+
+    std::printf("\n%d test case(s) ran, %d assertion failure(s).\n",
+                ran, reporter.failureCount());
+
+    return reporter.failureCount() == 0 ? 0 : 1;
 }

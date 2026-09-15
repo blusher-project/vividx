@@ -23,7 +23,7 @@
 
 namespace skiagm {
 
-constexpr SkRect kSrcImageClip{75, 75, 275, 275};
+SkRect kSrcImageClip{75, 75, 275, 275};
 
 static sk_sp<SkImage> create_image(SkCanvas* destCanvas) {
     sk_sp<SkSurface> srcSurface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(500, 500));

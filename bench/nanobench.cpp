@@ -111,6 +111,7 @@ extern bool gForceHighPrecisionRasterPipeline;
 #include <unistd.h>
 #endif
 
+#include "include/core/SkBitmap.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "src/gpu/ganesh/GrCaps.h"

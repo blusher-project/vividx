@@ -455,7 +455,7 @@ private:
 };
 
 static void draw_stats_box(SkCanvas* canvas, const skottie::Animation::Builder::Stats& stats) {
-    static constexpr SkRect kR = { 10, 10, 280, 120 };
+    static SkRect kR = { 10, 10, 280, 120 };
     static constexpr SkScalar kTextSize = 20;
 
     SkPaint paint;

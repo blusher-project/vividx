@@ -67,7 +67,7 @@ static SkColor4f draw_1x1_gainmap(sk_sp<SkImage> baseImage,
                                   const SkGainmapInfo& gainmapInfo,
                                   float dstRatio,
                                   sk_sp<SkColorSpace> dstColorSpace = SkColorSpace::MakeSRGB()) {
-    constexpr auto kRect = SkRect::MakeWH(1.f, 1.f);
+    auto kRect = SkRect::MakeWH(1.f, 1.f);
     SkImageInfo canvasInfo =
             SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, kPremul_SkAlphaType, dstColorSpace);
     SkBitmap canvasBitmap;

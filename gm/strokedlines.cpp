@@ -261,8 +261,8 @@ static constexpr float kStrokeWidth = 20.f;
 
 static void draw_path(SkCanvas* canvas, const SkPoint& p0, const SkPoint& p1, SkPaint::Cap cap) {
     // Add a gradient *not* aligned with the line's points to show local coords are tracked properly
-    constexpr SkRect kRect {-kStrokeWidth, -kStrokeWidth, 2*kStrokeWidth, 4*kStrokeWidth};
-    constexpr SkPoint kPts[] {{kRect.fLeft, kRect.fTop}, {kRect.fRight, kRect.fBottom}};
+    SkRect kRect {-kStrokeWidth, -kStrokeWidth, 2*kStrokeWidth, 4*kStrokeWidth};
+    SkPoint kPts[] {{kRect.fLeft, kRect.fTop}, {kRect.fRight, kRect.fBottom}};
     constexpr SkColor4f kColors[] {SkColors::kRed, SkColors::kGreen, SkColors::kBlue};
     constexpr SkScalar kStops[] {0.f, 0.75f, 1.f};
     sk_sp<SkShader> shader = SkShaders::LinearGradient(kPts,

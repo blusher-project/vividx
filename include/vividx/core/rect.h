@@ -981,7 +981,7 @@ static bool vx_rect_ne(vx_rect_t a, vx_rect_t b) {
         @param dy  added to fTop and fBottom
         @return    SkRect offset on axes, with original width and height
     */
-    constexpr SkRect makeOffset(float dx, float dy) const {
+    SkRect makeOffset(float dx, float dy) const {
         return MakeLTRB(fLeft + dx, fTop + dy, fRight + dx, fBottom + dy);
     }
 
@@ -990,7 +990,7 @@ static bool vx_rect_ne(vx_rect_t a, vx_rect_t b) {
         @param v  added to rect
         @return    SkRect offset on axes, with original width and height
     */
-    constexpr SkRect makeOffset(SkVector v) const { return this->makeOffset(v.x(), v.y()); }
+    SkRect makeOffset(SkVector v) const { return this->makeOffset(v.x(), v.y()); }
 
     /** Returns SkRect, inset by (dx, dy).
 

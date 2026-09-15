@@ -2720,18 +2720,18 @@ DEF_TEST_SUITE(MakeFromImage,
                CtsEnforcement::kApiLevel_202404,
                CtsEnforcement::kApiLevel_202604) {
     static constexpr SkISize kSrcSize = {128,128};
-    static constexpr SkIRect kIdentitySrc = {0,0,128,128};
-    static constexpr SkIRect kSubsetSrc = {16,16,112,112};
-    static constexpr SkIRect kOverlappingSrc = {-64, 16, 192, 112};
-    static constexpr SkIRect kContainingSrc = {-64,-64,192,192};
-    static constexpr SkIRect kDisjointSrc = {0,-200,128,-1};
+    static SkIRect kIdentitySrc = {0,0,128,128};
+    static SkIRect kSubsetSrc = {16,16,112,112};
+    static SkIRect kOverlappingSrc = {-64, 16, 192, 112};
+    static SkIRect kContainingSrc = {-64,-64,192,192};
+    static SkIRect kDisjointSrc = {0,-200,128,-1};
 
     // For convenience, most tests will use kIdentitySrc as the dstRect so that the result's
     // layer bounds can be used to validate the src->dst transform is preserved.
-    static constexpr SkIRect kDstRect = kIdentitySrc;
+    static SkIRect kDstRect = kIdentitySrc;
 
     // Sufficiently large to not affect the layer bounds of a FilterResult.
-    static constexpr SkIRect kDesiredOutput = {-400, -400, 400, 400};
+    static SkIRect kDesiredOutput = {-400, -400, 400, 400};
 
     sk_sp<SkColorSpace> colorSpace = SkColorSpace::MakeSRGB();
     Context ctx{r.refBackend(),

@@ -35,6 +35,7 @@
 #include "src/text/GlyphRun.h"
 #include "src/utils/SkPatchUtils.h"
 
+#include <assert.h>
 #include <cstdint>
 #include <cstring>
 #include <memory>
@@ -80,8 +81,8 @@ static SkIRect safe_picture_bounds(const SkRect& bounds) {
     // roundOut() saturates the float edges to +/-SK_MaxS32FitsInFloat (~2billion), but this is
     // large enough that width/height calculations will overflow, leading to negative dimensions.
     static constexpr int32_t kSafeEdge = SK_MaxS32FitsInFloat / 2 - 1;
-    static constexpr SkIRect kSafeBounds = {-kSafeEdge, -kSafeEdge, kSafeEdge, kSafeEdge};
-    static_assert((kSafeBounds.fRight - kSafeBounds.fLeft) >= 0 &&
+    static SkIRect kSafeBounds = {-kSafeEdge, -kSafeEdge, kSafeEdge, kSafeEdge};
+    assert((kSafeBounds.fRight - kSafeBounds.fLeft) >= 0 &&
                   (kSafeBounds.fBottom - kSafeBounds.fTop) >= 0);
     if (!picBounds.intersect(kSafeBounds)) {
         picBounds.setEmpty();
