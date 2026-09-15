@@ -131,6 +131,12 @@ SkColor SkHSVToColor(U8CPU a, const SkScalar hsv[3]) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+template<>
+SkColor4f::SkRGBA4f(vx_color_t color)
+    : fR(color.r), fG(color.g), fB(color.b), fA(color.a)
+{
+}
+
 template <>
 SkColor4f SkColor4f::FromColor(SkColor bgra) {
     SkColor4f rgba;
@@ -179,4 +185,10 @@ SkColorConverter::SkColorConverter(SkSpan<const SkColor> src) {
     std::transform(src.begin(), src.end(), fColors4f.data(), [](SkColor c) {
         return SkColor4f::FromColor(c);
     });
+}
+
+template <>
+SkColor4f::operator vx_color_t() const
+{
+    return vx_color_make(fR, fG, fB, fA);
 }

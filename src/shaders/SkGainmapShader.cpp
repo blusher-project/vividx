@@ -154,14 +154,14 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
     sk_sp<SkShader> gainmapMathShader;
     {
         SkRuntimeShaderBuilder builder(gainmap_apply_effect());
-        const SkColor4f logRatioMin({std::log(gainmapInfo.fGainmapRatioMin.fR),
+        const SkColor4f logRatioMin(std::log(gainmapInfo.fGainmapRatioMin.fR),
                                      std::log(gainmapInfo.fGainmapRatioMin.fG),
                                      std::log(gainmapInfo.fGainmapRatioMin.fB),
-                                     1.f});
-        const SkColor4f logRatioMax({std::log(gainmapInfo.fGainmapRatioMax.fR),
+                                     1.f);
+        const SkColor4f logRatioMax(std::log(gainmapInfo.fGainmapRatioMax.fR),
                                      std::log(gainmapInfo.fGainmapRatioMax.fG),
                                      std::log(gainmapInfo.fGainmapRatioMax.fB),
-                                     1.f});
+                                     1.f);
         const int noGamma =
             gainmapInfo.fGainmapGamma.fR == 1.f &&
             gainmapInfo.fGainmapGamma.fG == 1.f &&

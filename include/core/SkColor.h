@@ -17,6 +17,8 @@
 #include <array>
 #include <cstdint>
 
+#include <vividx/core/color.h>
+
 /** \file SkColor.h
 
     Types, consts, functions, and macros for colors.
@@ -266,6 +268,21 @@ struct SkRGBA4f {
     float fB;  //!< blue component
     float fA;  //!< alpha component
 
+    constexpr SkRGBA4f()
+    {
+        fR = 0.0f;
+        fG = 0.0f;
+        fB = 0.0f;
+        fA = 0.0f;
+    }
+
+    constexpr SkRGBA4f(float r, float g, float b, float a)
+        : fR(r), fG(g), fB(b), fA(a)
+    {
+    }
+
+    SkRGBA4f(vx_color_t color);
+
     /** Compares SkRGBA4f with other, and returns true if all components are equal.
 
         @param other  SkRGBA4f to compare
@@ -437,6 +454,8 @@ struct SkRGBA4f {
     SkRGBA4f withAlphaByte(uint8_t a) const {
         return { fR, fG, fB, a/255.f };
     }
+
+    operator vx_color_t() const;
 };
 
 /** \struct SkColor4f

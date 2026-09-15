@@ -549,20 +549,20 @@ sk_sp<SkColorFilter> MakeColorFilter(
             weighting.fAlternateImageIndex[a]].fColorGainFunction;
 
         const char* mix_rgbx_str[2] = {"mix_rgbx_i", "mix_rgbx_j"};
-        builder.uniform(mix_rgbx_str[a]) = SkColor4f({
+        builder.uniform(mix_rgbx_str[a]) = SkColor4f(
             gain.fComponentMixing.fRed,
             gain.fComponentMixing.fGreen,
             gain.fComponentMixing.fBlue,
-            0.f,
-        });
+            0.f
+        );
 
         const char* mix_Mmcx_str[2] = {"mix_Mmcx_i", "mix_Mmcx_j"};
-        builder.uniform(mix_Mmcx_str[a]) = SkColor4f({
+        builder.uniform(mix_Mmcx_str[a]) = SkColor4f(
             gain.fComponentMixing.fMax,
             gain.fComponentMixing.fMin,
             gain.fComponentMixing.fComponent,
-            0.f,
-        });
+            0.f
+        );
 
         const char* curve_texcoord_y_str[2] = {"curve_texcoord_y_i", "curve_texcoord_y_j"};
         builder.uniform(curve_texcoord_y_str[a]) = (weighting.fAlternateImageIndex[a] + 0.5f);

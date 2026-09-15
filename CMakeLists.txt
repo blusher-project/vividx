@@ -8,6 +8,7 @@ set(VIVIDX_PUBLIC_HEADERS
     include/vividx/common.h
     include/vividx/core/canvas.h
     include/vividx/core/color-type.h
+    include/vividx/core/color.h
     include/vividx/core/point.h
     include/vividx/core/rect.h
     include/vividx/core/size.h

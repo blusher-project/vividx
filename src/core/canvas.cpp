@@ -20,9 +20,9 @@ vx_canvas_t* vx_canvas_new_from_SkCanvas(void *p_SkCanvas)
     return canvas;
 }
 
-void vx_canvas_clear(vx_canvas_t *canvas)
+void vx_canvas_clear(vx_canvas_t *canvas, vx_color_t color)
 {
-    canvas->p->clear(SK_ColorCYAN);
+    canvas->p->clear(color);
 }
 
 void vx_canvas_free(vx_canvas_t *canvas)
