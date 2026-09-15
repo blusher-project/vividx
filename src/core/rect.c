@@ -160,7 +160,7 @@ vx_rect_i_t vx_rect_i_offset(vx_rect_i_t rect,
                              int32_t dx,
                              int32_t dy)
 {
-    return vx_rect_i_make_xywh(
+    return vx_rect_i_make_ltrb(
         vx_int32_sat_add(rect.left,  dx),
         vx_int32_sat_add(rect.top,    dy),
         vx_int32_sat_add(rect.right, dx),
