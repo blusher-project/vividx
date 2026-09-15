@@ -1,0 +1,47 @@
+{
+  "enum_types": {
+    "CommonColor": "mylib_common_color",
+    "SkYUVColorSpace": "vx_yuv_color_space"
+  },
+  "enum_constants": {
+    "kColorRed_CommonColor": "COMMON_COLOR_COLOR_RED",
+    "kColorBlue_CommonColor": "COMMON_COLOR_COLOR_BLUE",
+    "kStatusRunning": "SERVER_STATUS_RUNNING",
+    "kStatusStopped": "SERVER_STATUS_STOPPED",
+
+    "kJPEG_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_JPEG_FULL",
+    "kRec601_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_REC601_LIMITED",
+    "kRec709_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_REC709_FULL",
+    "kRec709_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_REC709_LIMITED",
+    "kBT2020_8bit_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020_8BIT_FULL",
+    "kBT2020_8bit_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020_8BIT_LIMITED",
+    "kBT2020_10bit_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020_10BIT_FULL",
+    "kBT2020_10bit_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020_10BIT_LIMITED",
+    "kBT2020_12bit_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020_12BIT_FULL",
+    "kBT2020_12bit_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020_12BIT_LIMITED",
+    "kBT2020_16bit_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020_16BIT_FULL",
+    "kBT2020_16bit_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020_16BIT_LIMITED",
+    "kFCC_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_FCC_FULL",
+    "kFCC_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_FCC_LIMITED",
+    "kSMPTE240_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_SMPTE240_FULL",
+    "kSMPTE240_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_SMPTE240_LIMITED",
+    "kYDZDX_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YDZDX_FULL",
+    "kYDZDX_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YDZDX_LIMITED",
+    "kGBR_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_GBR_FULL",
+    "kGBR_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_GBR_LIMITED",
+    "kYCgCo_8bit_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YCGCO_8BIT_FULL",
+    "kYCgCo_8bit_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YCGCO_8BIT_LIMITED",
+    "kYCgCo_10bit_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YCGCO_10BIT_FULL",
+    "kYCgCo_10bit_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YCGCO_10BIT_LIMITED",
+    "kYCgCo_12bit_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YCGCO_12BIT_FULL",
+    "kYCgCo_12bit_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YCGCO_12BIT_LIMITED",
+    "kYCgCo_16bit_Full_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YCGCO_16BIT_FULL",
+    "kYCgCo_16bit_Limited_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_YCGCO_16BIT_LIMITED",
+    "kIdentity_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_IDENTITY",
+    "kLastEnum_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_LASTENUM",
+    "kJPEG_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_JPEG",
+    "kRec601_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_REC601",
+    "kRec709_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_REC709",
+    "kBT2020_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020"
+  }
+}
