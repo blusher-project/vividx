@@ -570,7 +570,7 @@ public:
         @param callback       function to call with the planar read result
         @param context        passed to callback
      */
-    void asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+    void asyncRescaleAndReadPixelsYUV420(vx_yuv_color_space yuvColorSpace,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,
                                          const SkISize& dstSize,
@@ -584,7 +584,7 @@ public:
      * AsyncReadResult passed to 'callback'. The fourth plane contains the alpha chanel at the
      * same full resolution as the Y plane.
      */
-    void asyncRescaleAndReadPixelsYUVA420(SkYUVColorSpace yuvColorSpace,
+    void asyncRescaleAndReadPixelsYUVA420(vx_yuv_color_space yuvColorSpace,
                                           sk_sp<SkColorSpace> dstColorSpace,
                                           const SkIRect& srcRect,
                                           const SkISize& dstSize,

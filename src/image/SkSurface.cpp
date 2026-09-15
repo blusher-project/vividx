@@ -155,7 +155,7 @@ void SkSurface::asyncRescaleAndReadPixels(const SkImageInfo& info,
             info, srcRect, rescaleGamma, rescaleMode, callback, context);
 }
 
-void SkSurface::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+void SkSurface::asyncRescaleAndReadPixelsYUV420(vx_yuv_color_space yuvColorSpace,
                                                 sk_sp<SkColorSpace> dstColorSpace,
                                                 const SkIRect& srcRect,
                                                 const SkISize& dstSize,
@@ -179,7 +179,7 @@ void SkSurface::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
                                                   context);
 }
 
-void SkSurface::asyncRescaleAndReadPixelsYUVA420(SkYUVColorSpace yuvColorSpace,
+void SkSurface::asyncRescaleAndReadPixelsYUVA420(vx_yuv_color_space yuvColorSpace,
                                                  sk_sp<SkColorSpace> dstColorSpace,
                                                  const SkIRect& srcRect,
                                                  const SkISize& dstSize,

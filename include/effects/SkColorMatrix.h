@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <array>
 
-enum SkYUVColorSpace : int;
+#include <vividx/core/image-info.h>
 
 class SK_API SkColorMatrix {
 public:
@@ -31,8 +31,8 @@ public:
                  m20, m21, m22, m23, m24,
                  m30, m31, m32, m33, m34 } {}
 
-    static SkColorMatrix RGBtoYUV(SkYUVColorSpace);
-    static SkColorMatrix YUVtoRGB(SkYUVColorSpace);
+    static SkColorMatrix RGBtoYUV(vx_yuv_color_space);
+    static SkColorMatrix YUVtoRGB(vx_yuv_color_space);
 
     void setIdentity();
     void setScale(float rScale, float gScale, float bScale, float aScale = 1.0f);

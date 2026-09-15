@@ -22,6 +22,8 @@
 #include <cstdint>
 #include <utility>
 
+#include <vividx/core/image-info.h>
+
 class SkColorSpace;
 
 /** Returns the number of bytes required to store a pixel, including unused padding.
@@ -65,45 +67,8 @@ SK_API bool SkColorTypeValidateAlphaType(SkColorType colorType, SkAlphaType alph
     The identity colorspace exists to provide a utility mapping from Y to R, U to G and V to B.
     It can be used to visualize the YUV planes or to explicitly post process the YUV channels.
 */
-enum SkYUVColorSpace : int {
-    kJPEG_Full_SkYUVColorSpace,                 //!< describes full range
-    kRec601_Limited_SkYUVColorSpace,            //!< describes SDTV range
-    kRec709_Full_SkYUVColorSpace,               //!< describes HDTV range
-    kRec709_Limited_SkYUVColorSpace,
-    kBT2020_8bit_Full_SkYUVColorSpace,          //!< describes UHDTV range, non-constant-luminance
-    kBT2020_8bit_Limited_SkYUVColorSpace,
-    kBT2020_10bit_Full_SkYUVColorSpace,
-    kBT2020_10bit_Limited_SkYUVColorSpace,
-    kBT2020_12bit_Full_SkYUVColorSpace,
-    kBT2020_12bit_Limited_SkYUVColorSpace,
-    kBT2020_16bit_Full_SkYUVColorSpace,
-    kBT2020_16bit_Limited_SkYUVColorSpace,
-    kFCC_Full_SkYUVColorSpace,                  //!< describes FCC range
-    kFCC_Limited_SkYUVColorSpace,
-    kSMPTE240_Full_SkYUVColorSpace,             //!< describes SMPTE240M range
-    kSMPTE240_Limited_SkYUVColorSpace,
-    kYDZDX_Full_SkYUVColorSpace,                //!< describes YDZDX range
-    kYDZDX_Limited_SkYUVColorSpace,
-    kGBR_Full_SkYUVColorSpace,                  //!< describes GBR range
-    kGBR_Limited_SkYUVColorSpace,
-    kYCgCo_8bit_Full_SkYUVColorSpace,           //!< describes YCgCo matrix
-    kYCgCo_8bit_Limited_SkYUVColorSpace,
-    kYCgCo_10bit_Full_SkYUVColorSpace,
-    kYCgCo_10bit_Limited_SkYUVColorSpace,
-    kYCgCo_12bit_Full_SkYUVColorSpace,
-    kYCgCo_12bit_Limited_SkYUVColorSpace,
-    kYCgCo_16bit_Full_SkYUVColorSpace,
-    kYCgCo_16bit_Limited_SkYUVColorSpace,
-    kIdentity_SkYUVColorSpace,                  //!< maps Y->R, U->G, V->B
+typedef enum vx_yuv_color_space SkYUVColorSpace;
 
-    kLastEnum_SkYUVColorSpace = kIdentity_SkYUVColorSpace, //!< last valid value
-
-    // Legacy (deprecated) names:
-    kJPEG_SkYUVColorSpace = kJPEG_Full_SkYUVColorSpace,
-    kRec601_SkYUVColorSpace = kRec601_Limited_SkYUVColorSpace,
-    kRec709_SkYUVColorSpace = kRec709_Limited_SkYUVColorSpace,
-    kBT2020_SkYUVColorSpace = kBT2020_8bit_Limited_SkYUVColorSpace,
-};
 
 SK_API bool SkYUVColorSpaceIsLimitedRange(SkYUVColorSpace cs);
 

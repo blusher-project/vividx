@@ -196,7 +196,7 @@ void SkSurface_Ganesh::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
     fDevice->asyncRescaleAndReadPixels(info, srcRect, rescaleGamma, rescaleMode, callback, context);
 }
 
-void SkSurface_Ganesh::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+void SkSurface_Ganesh::onAsyncRescaleAndReadPixelsYUV420(vx_yuv_color_space yuvColorSpace,
                                                          bool readAlpha,
                                                          sk_sp<SkColorSpace> dstColorSpace,
                                                          SkIRect srcRect,

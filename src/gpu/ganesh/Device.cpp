@@ -1285,7 +1285,7 @@ void Device::asyncRescaleAndReadPixels(const SkImageInfo& info,
                                    context);
 }
 
-void Device::asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+void Device::asyncRescaleAndReadPixelsYUV420(vx_yuv_color_space yuvColorSpace,
                                              bool readAlpha,
                                              sk_sp<SkColorSpace> dstColorSpace,
                                              const SkIRect& srcRect,

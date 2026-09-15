@@ -17,7 +17,7 @@
 #include <array>
 #include <cstddef>
 
-enum SkYUVColorSpace : int;
+#include <vividx/core/image-info.h>
 
 /**
  * A description of a set GrBackendTextures that hold the planar data described by a SkYUVAInfo.
@@ -51,7 +51,7 @@ public:
 
     const SkYUVAInfo& yuvaInfo() const { return fYUVAInfo; }
 
-    SkYUVColorSpace yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
+    vx_yuv_color_space yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
 
     skgpu::Mipmapped mipmapped() const { return fMipmapped; }
 

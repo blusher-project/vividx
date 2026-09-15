@@ -117,7 +117,7 @@ public:
 
     const SkYUVAInfo& yuvaInfo() const { return fYUVAInfo; }
 
-    SkYUVColorSpace yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
+    vx_yuv_color_space yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
 
     /** The number of SkPixmap planes, 0 if this SkYUVAPixmapInfo is invalid. */
     int numPlanes() const { return fYUVAInfo.numPlanes(); }

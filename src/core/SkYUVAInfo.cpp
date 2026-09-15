@@ -302,7 +302,7 @@ bool SkYUVAInfo::HasAlpha(PlaneConfig planeConfig) {
 SkYUVAInfo::SkYUVAInfo(SkISize dimensions,
                        PlaneConfig planeConfig,
                        Subsampling subsampling,
-                       SkYUVColorSpace yuvColorSpace,
+                       vx_yuv_color_space yuvColorSpace,
                        SkEncodedOrigin origin,
                        Siting sitingX,
                        Siting sitingY)

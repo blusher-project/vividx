@@ -854,7 +854,7 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
         SkYUVAInfo yuvaInfo(codec.dimensions(),
                             SkYUVAInfo::PlaneConfig::kY_U_V,
                             tempSubsampling,
-                            kJPEG_Full_SkYUVColorSpace,
+                            VX_YUV_COLOR_SPACE_JPEG_FULL,
                             codec.getOrigin(),
                             SkYUVAInfo::Siting::kCentered,
                             SkYUVAInfo::Siting::kCentered);

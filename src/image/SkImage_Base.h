@@ -22,6 +22,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <vividx/core/image-info.h>
+
 class GrDirectContext;
 class GrImageContext;
 class SkBitmap;
@@ -29,7 +31,6 @@ class SkColorSpace;
 class SkPixmap;
 class SkRecorder;
 class SkSurface;
-enum SkYUVColorSpace : int;
 struct SkIRect;
 struct SkISize;
 struct SkImageInfo;
@@ -88,7 +89,7 @@ public:
     /**
      * Default implementation does a rescale/read/yuv conversion and then calls the callback.
      */
-    virtual void onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
+    virtual void onAsyncRescaleAndReadPixelsYUV420(vx_yuv_color_space,
                                                    bool readAlpha,
                                                    sk_sp<SkColorSpace> dstColorSpace,
                                                    SkIRect srcRect,

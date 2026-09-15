@@ -745,34 +745,34 @@ constexpr float YCgCo_16bit_limited_yuv_to_rgb[] = {
 #endif
 };
 
-static_assert(kJPEG_Full_SkYUVColorSpace            == 0, "");
-static_assert(kRec601_Limited_SkYUVColorSpace       == 1, "");
-static_assert(kRec709_Full_SkYUVColorSpace          == 2, "");
-static_assert(kRec709_Limited_SkYUVColorSpace       == 3, "");
-static_assert(kBT2020_8bit_Full_SkYUVColorSpace     == 4, "");
-static_assert(kBT2020_8bit_Limited_SkYUVColorSpace  == 5, "");
-static_assert(kBT2020_10bit_Full_SkYUVColorSpace    == 6, "");
-static_assert(kBT2020_10bit_Limited_SkYUVColorSpace == 7, "");
-static_assert(kBT2020_12bit_Full_SkYUVColorSpace    == 8, "");
-static_assert(kBT2020_12bit_Limited_SkYUVColorSpace == 9, "");
-static_assert(kBT2020_16bit_Full_SkYUVColorSpace    == 10, "");
-static_assert(kBT2020_16bit_Limited_SkYUVColorSpace == 11, "");
-static_assert(kFCC_Full_SkYUVColorSpace             == 12, "");
-static_assert(kFCC_Limited_SkYUVColorSpace          == 13, "");
-static_assert(kSMPTE240_Full_SkYUVColorSpace        == 14, "");
-static_assert(kSMPTE240_Limited_SkYUVColorSpace     == 15, "");
-static_assert(kYDZDX_Full_SkYUVColorSpace           == 16, "");
-static_assert(kYDZDX_Limited_SkYUVColorSpace        == 17, "");
-static_assert(kGBR_Full_SkYUVColorSpace             == 18, "");
-static_assert(kGBR_Limited_SkYUVColorSpace          == 19, "");
-static_assert(kYCgCo_8bit_Full_SkYUVColorSpace      == 20, "");
-static_assert(kYCgCo_8bit_Limited_SkYUVColorSpace   == 21, "");
-static_assert(kYCgCo_10bit_Full_SkYUVColorSpace     == 22, "");
-static_assert(kYCgCo_10bit_Limited_SkYUVColorSpace  == 23, "");
-static_assert(kYCgCo_12bit_Full_SkYUVColorSpace     == 24, "");
-static_assert(kYCgCo_12bit_Limited_SkYUVColorSpace  == 25, "");
-static_assert(kYCgCo_16bit_Full_SkYUVColorSpace     == 26, "");
-static_assert(kYCgCo_16bit_Limited_SkYUVColorSpace  == 27, "");
+static_assert(VX_YUV_COLOR_SPACE_JPEG_FULL            == 0, "");
+static_assert(VX_YUV_COLOR_SPACE_REC601_LIMITED       == 1, "");
+static_assert(VX_YUV_COLOR_SPACE_REC709_FULL          == 2, "");
+static_assert(VX_YUV_COLOR_SPACE_REC709_LIMITED       == 3, "");
+static_assert(VX_YUV_COLOR_SPACE_BT2020_8BIT_FULL     == 4, "");
+static_assert(VX_YUV_COLOR_SPACE_BT2020_8BIT_LIMITED  == 5, "");
+static_assert(VX_YUV_COLOR_SPACE_BT2020_10BIT_FULL    == 6, "");
+static_assert(VX_YUV_COLOR_SPACE_BT2020_10BIT_LIMITED == 7, "");
+static_assert(VX_YUV_COLOR_SPACE_BT2020_12BIT_FULL    == 8, "");
+static_assert(VX_YUV_COLOR_SPACE_BT2020_12BIT_LIMITED == 9, "");
+static_assert(VX_YUV_COLOR_SPACE_BT2020_16BIT_FULL    == 10, "");
+static_assert(VX_YUV_COLOR_SPACE_BT2020_16BIT_LIMITED == 11, "");
+static_assert(VX_YUV_COLOR_SPACE_FCC_FULL             == 12, "");
+static_assert(VX_YUV_COLOR_SPACE_FCC_LIMITED          == 13, "");
+static_assert(VX_YUV_COLOR_SPACE_SMPTE240_FULL        == 14, "");
+static_assert(VX_YUV_COLOR_SPACE_SMPTE240_LIMITED     == 15, "");
+static_assert(VX_YUV_COLOR_SPACE_YDZDX_FULL           == 16, "");
+static_assert(VX_YUV_COLOR_SPACE_YDZDX_LIMITED        == 17, "");
+static_assert(VX_YUV_COLOR_SPACE_GBR_FULL             == 18, "");
+static_assert(VX_YUV_COLOR_SPACE_GBR_LIMITED          == 19, "");
+static_assert(VX_YUV_COLOR_SPACE_YCGCO_8BIT_FULL      == 20, "");
+static_assert(VX_YUV_COLOR_SPACE_YCGCO_8BIT_LIMITED   == 21, "");
+static_assert(VX_YUV_COLOR_SPACE_YCGCO_10BIT_FULL     == 22, "");
+static_assert(VX_YUV_COLOR_SPACE_YCGCO_10BIT_LIMITED  == 23, "");
+static_assert(VX_YUV_COLOR_SPACE_YCGCO_12BIT_FULL     == 24, "");
+static_assert(VX_YUV_COLOR_SPACE_YCGCO_12BIT_LIMITED  == 25, "");
+static_assert(VX_YUV_COLOR_SPACE_YCGCO_16BIT_FULL     == 26, "");
+static_assert(VX_YUV_COLOR_SPACE_YCGCO_16BIT_LIMITED  == 27, "");
 
 const float* yuv_to_rgb_array[] = {
     JPEG_full_yuv_to_rgb,
@@ -838,8 +838,8 @@ const float* rgb_to_yuv_array[] = {
 
 constexpr size_t kSizeOfColorMatrix = 20 * sizeof(float);
 
-void SkColorMatrix_RGB2YUV(SkYUVColorSpace cs, float m[20]) {
-    if ((unsigned)cs < (unsigned)kIdentity_SkYUVColorSpace) {
+void SkColorMatrix_RGB2YUV(vx_yuv_color_space cs, float m[20]) {
+    if ((unsigned)cs < (unsigned)VX_YUV_COLOR_SPACE_IDENTITY) {
         memcpy(m, rgb_to_yuv_array[(unsigned)cs], kSizeOfColorMatrix);
     } else {
         memset(m, 0, kSizeOfColorMatrix);
@@ -847,8 +847,8 @@ void SkColorMatrix_RGB2YUV(SkYUVColorSpace cs, float m[20]) {
     }
 }
 
-void SkColorMatrix_YUV2RGB(SkYUVColorSpace cs, float m[20]) {
-    if ((unsigned)cs < (unsigned)kIdentity_SkYUVColorSpace) {
+void SkColorMatrix_YUV2RGB(vx_yuv_color_space cs, float m[20]) {
+    if ((unsigned)cs < (unsigned)VX_YUV_COLOR_SPACE_IDENTITY) {
         memcpy(m, yuv_to_rgb_array[(unsigned)cs], kSizeOfColorMatrix);
     } else {
         memset(m, 0, kSizeOfColorMatrix);
@@ -1039,54 +1039,54 @@ static void make_rgb_to_yuv_matrix_ycgco(float mx[20], int bits, Range range) {
     scale3(mx + 10, scaleY);
 }
 
-static void make_rgb_to_yuv_matrix(float mx[20], SkYUVColorSpace cs) {
+static void make_rgb_to_yuv_matrix(float mx[20], vx_yuv_color_space cs) {
     switch (cs) {
-        case kJPEG_Full_SkYUVColorSpace:
-        case kRec601_Limited_SkYUVColorSpace:
-        case kRec709_Full_SkYUVColorSpace:
-        case kRec709_Limited_SkYUVColorSpace:
-        case kBT2020_8bit_Full_SkYUVColorSpace:
-        case kBT2020_8bit_Limited_SkYUVColorSpace:
-        case kBT2020_10bit_Full_SkYUVColorSpace:
-        case kBT2020_10bit_Limited_SkYUVColorSpace:
-        case kBT2020_12bit_Full_SkYUVColorSpace:
-        case kBT2020_12bit_Limited_SkYUVColorSpace:
-        case kBT2020_16bit_Full_SkYUVColorSpace:
-        case kBT2020_16bit_Limited_SkYUVColorSpace:
-        case kFCC_Full_SkYUVColorSpace:
-        case kFCC_Limited_SkYUVColorSpace:
-        case kSMPTE240_Full_SkYUVColorSpace:
-        case kSMPTE240_Limited_SkYUVColorSpace:
-        case kIdentity_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_JPEG_FULL:
+        case VX_YUV_COLOR_SPACE_REC601_LIMITED:
+        case VX_YUV_COLOR_SPACE_REC709_FULL:
+        case VX_YUV_COLOR_SPACE_REC709_LIMITED:
+        case VX_YUV_COLOR_SPACE_BT2020_8BIT_FULL:
+        case VX_YUV_COLOR_SPACE_BT2020_8BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_BT2020_10BIT_FULL:
+        case VX_YUV_COLOR_SPACE_BT2020_10BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_BT2020_12BIT_FULL:
+        case VX_YUV_COLOR_SPACE_BT2020_12BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_BT2020_16BIT_FULL:
+        case VX_YUV_COLOR_SPACE_BT2020_16BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_FCC_FULL:
+        case VX_YUV_COLOR_SPACE_FCC_LIMITED:
+        case VX_YUV_COLOR_SPACE_SMPTE240_FULL:
+        case VX_YUV_COLOR_SPACE_SMPTE240_LIMITED:
+        case VX_YUV_COLOR_SPACE_IDENTITY:
             return make_rgb_to_yuv_matrix_ycbcr(mx, gCoeff[(unsigned)cs]);
-        case kYDZDX_Full_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YDZDX_FULL:
             return make_rgb_to_yuv_matrix_ydzdx(mx, Range::kFull);
-        case kYDZDX_Limited_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YDZDX_LIMITED:
             return make_rgb_to_yuv_matrix_ydzdx(mx, Range::kLimited);
-        case kGBR_Full_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_GBR_FULL:
             return make_rgb_to_yuv_matrix_gbr(mx, Range::kFull);
-        case kGBR_Limited_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_GBR_LIMITED:
             return make_rgb_to_yuv_matrix_gbr(mx, Range::kLimited);
-        case kYCgCo_8bit_Full_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YCGCO_8BIT_FULL:
             return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/8, Range::kFull);
-        case kYCgCo_8bit_Limited_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YCGCO_8BIT_LIMITED:
             return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/8, Range::kLimited);
-        case kYCgCo_10bit_Full_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YCGCO_10BIT_FULL:
             return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/10, Range::kFull);
-        case kYCgCo_10bit_Limited_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YCGCO_10BIT_LIMITED:
             return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/10, Range::kLimited);
-        case kYCgCo_12bit_Full_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YCGCO_12BIT_FULL:
             return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/12, Range::kFull);
-        case kYCgCo_12bit_Limited_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YCGCO_12BIT_LIMITED:
             return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/12, Range::kLimited);
-        case kYCgCo_16bit_Full_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YCGCO_16BIT_FULL:
             return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/16, Range::kFull);
-        case kYCgCo_16bit_Limited_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_YCGCO_16BIT_LIMITED:
             return make_rgb_to_yuv_matrix_ycgco(mx, /*bits=*/16, Range::kLimited);
     }
 }
 
-static void dump(const float m[20], SkYUVColorSpace cs, bool rgb2yuv) {
+static void dump(const float m[20], vx_yuv_color_space cs, bool rgb2yuv) {
     const char* names[] = {
         "JPEG_full",
         "Rec601_limited",
@@ -1145,8 +1145,8 @@ static void dump(const float m[20], SkYUVColorSpace cs, bool rgb2yuv) {
 // Used to create the prebuilt tables for each colorspace.
 // Don't remove this function, in case we want to recompute those tables in the future.
 void SkColorMatrix_DumpYUVMatrixTables() {
-    for (int i = 0; i < kLastEnum_SkYUVColorSpace; ++i) {
-        SkYUVColorSpace cs = static_cast<SkYUVColorSpace>(i);
+    for (int i = 0; i < VX_YUV_COLOR_SPACE_LASTENUM; ++i) {
+        vx_yuv_color_space cs = static_cast<vx_yuv_color_space>(i);
         float m[20];
         make_rgb_to_yuv_matrix(m, cs);
         dump(m, cs, true);

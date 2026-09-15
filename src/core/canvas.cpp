@@ -30,6 +30,15 @@ void vx_canvas_free(vx_canvas_t *canvas)
     delete canvas;
 }
 
+//!<==================
+//!< Temporary APIs
+//!<==================
+
+void* vx_canvas_cxx_ptr(vx_canvas_t *canvas)
+{
+    return canvas->p;
+}
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -150,7 +150,7 @@ public:
     SkYUVAInfo(SkISize dimensions,
                PlaneConfig,
                Subsampling,
-               SkYUVColorSpace,
+               vx_yuv_color_space,
                SkEncodedOrigin origin = kTopLeft_SkEncodedOrigin,
                Siting sitingX = Siting::kCentered,
                Siting sitingY = Siting::kCentered);
@@ -172,7 +172,7 @@ public:
     int width() const { return fDimensions.width(); }
     int height() const { return fDimensions.height(); }
 
-    SkYUVColorSpace yuvColorSpace() const { return fYUVColorSpace; }
+    vx_yuv_color_space yuvColorSpace() const { return fYUVColorSpace; }
     Siting sitingX() const { return fSitingX; }
     Siting sitingY() const { return fSitingY; }
 
@@ -241,7 +241,7 @@ private:
     PlaneConfig fPlaneConfig = PlaneConfig::kUnknown;
     Subsampling fSubsampling = Subsampling::kUnknown;
 
-    SkYUVColorSpace fYUVColorSpace = SkYUVColorSpace::kIdentity_SkYUVColorSpace;
+    vx_yuv_color_space fYUVColorSpace = vx_yuv_color_space::VX_YUV_COLOR_SPACE_IDENTITY;
 
     /**
      * YUVA data often comes from formats like JPEG that support EXIF orientation.

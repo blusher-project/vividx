@@ -444,7 +444,7 @@ void Context::asyncReadTexture(std::unique_ptr<Recorder> recorder,
 }
 
 void Context::asyncRescaleAndReadPixelsYUV420(const SkImage* src,
-                                              SkYUVColorSpace yuvColorSpace,
+                                              vx_yuv_color_space yuvColorSpace,
                                               sk_sp<SkColorSpace> dstColorSpace,
                                               const SkIRect& srcRect,
                                               const SkISize& dstSize,
@@ -464,7 +464,7 @@ void Context::asyncRescaleAndReadPixelsYUV420(const SkImage* src,
 }
 
 void Context::asyncRescaleAndReadPixelsYUV420(const SkSurface* src,
-                                              SkYUVColorSpace yuvColorSpace,
+                                              vx_yuv_color_space yuvColorSpace,
                                               sk_sp<SkColorSpace> dstColorSpace,
                                               const SkIRect& srcRect,
                                               const SkISize& dstSize,
@@ -489,7 +489,7 @@ void Context::asyncRescaleAndReadPixelsYUV420(const SkSurface* src,
 }
 
 void Context::asyncRescaleAndReadPixelsYUVA420(const SkImage* src,
-                                               SkYUVColorSpace yuvColorSpace,
+                                               vx_yuv_color_space yuvColorSpace,
                                                sk_sp<SkColorSpace> dstColorSpace,
                                                const SkIRect& srcRect,
                                                const SkISize& dstSize,
@@ -508,7 +508,7 @@ void Context::asyncRescaleAndReadPixelsYUVA420(const SkImage* src,
 }
 
 void Context::asyncRescaleAndReadPixelsYUVA420(const SkSurface* src,
-                                               SkYUVColorSpace yuvColorSpace,
+                                               vx_yuv_color_space yuvColorSpace,
                                                sk_sp<SkColorSpace> dstColorSpace,
                                                const SkIRect& srcRect,
                                                const SkISize& dstSize,
@@ -530,7 +530,7 @@ void Context::asyncRescaleAndReadPixelsYUVA420(const SkSurface* src,
 
 void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
                                     const AsyncParams<SkImage>& params,
-                                    SkYUVColorSpace yuvColorSpace) {
+                                    vx_yuv_color_space yuvColorSpace) {
     TRACE_EVENT2("skia.gpu", TRACE_FUNC,
                  "width", params.fSrcRect.width(),
                  "height", params.fSrcRect.height());

@@ -245,7 +245,7 @@ bool SkJpegEncoderMgr::initializeYUV(const SkYUVAPixmapInfo& srcInfo,
     jpeg_set_defaults(&fCInfo);
 
     // Support no color space conversion.
-    if (srcInfo.yuvColorSpace() != kJPEG_Full_SkYUVColorSpace) {
+    if (srcInfo.yuvColorSpace() != VX_YUV_COLOR_SPACE_JPEG_FULL) {
         return false;
     }
 

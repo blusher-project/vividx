@@ -29,10 +29,11 @@
 #include <memory>
 #include <vector>
 
+#include <vividx/core/image-info.h>
+
 class SkColorInfo;
 class SkSurface;
 class SkCapture;
-enum SkYUVColorSpace : int;
 class SkColorSpace;
 class SkTraceMemoryDump;
 struct SkIRect;
@@ -161,7 +162,7 @@ public:
         @param context        passed to callback
      */
     void asyncRescaleAndReadPixelsYUV420(const SkImage* src,
-                                         SkYUVColorSpace yuvColorSpace,
+                                         vx_yuv_color_space yuvColorSpace,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,
                                          const SkISize& dstSize,
@@ -170,7 +171,7 @@ public:
                                          SkImage::ReadPixelsCallback callback,
                                          SkImage::ReadPixelsContext context);
     void asyncRescaleAndReadPixelsYUV420(const SkSurface* src,
-                                         SkYUVColorSpace yuvColorSpace,
+                                         vx_yuv_color_space yuvColorSpace,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,
                                          const SkISize& dstSize,
@@ -185,7 +186,7 @@ public:
      * same full resolution as the Y plane.
      */
     void asyncRescaleAndReadPixelsYUVA420(const SkImage* src,
-                                          SkYUVColorSpace yuvColorSpace,
+                                          vx_yuv_color_space yuvColorSpace,
                                           sk_sp<SkColorSpace> dstColorSpace,
                                           const SkIRect& srcRect,
                                           const SkISize& dstSize,
@@ -194,7 +195,7 @@ public:
                                           SkImage::ReadPixelsCallback callback,
                                           SkImage::ReadPixelsContext context);
     void asyncRescaleAndReadPixelsYUVA420(const SkSurface* src,
-                                          SkYUVColorSpace yuvColorSpace,
+                                          vx_yuv_color_space yuvColorSpace,
                                           sk_sp<SkColorSpace> dstColorSpace,
                                           const SkIRect& srcRect,
                                           const SkISize& dstSize,
@@ -384,7 +385,7 @@ private:
     void asyncReadPixels(std::unique_ptr<Recorder>, const AsyncParams<SkImage>&);
     void asyncReadPixelsYUV420(std::unique_ptr<Recorder>,
                                const AsyncParams<SkImage>&,
-                               SkYUVColorSpace);
+                               vx_yuv_color_space);
 
     // Like asyncReadPixels() except it performs no fallbacks, and requires that the texture be
     // readable. However, the texture does not need to be sampleable.

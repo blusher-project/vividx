@@ -8,15 +8,15 @@
 #include "include/effects/SkColorMatrix.h"
 #include "src/core/SkYUVMath.h"
 
-enum SkYUVColorSpace : int;
+#include <vividx/core/image-info.h>
 
-SkColorMatrix SkColorMatrix::RGBtoYUV(SkYUVColorSpace cs) {
+SkColorMatrix SkColorMatrix::RGBtoYUV(vx_yuv_color_space cs) {
     SkColorMatrix m;
     SkColorMatrix_RGB2YUV(cs, m.fMat.data());
     return m;
 }
 
-SkColorMatrix SkColorMatrix::YUVtoRGB(SkYUVColorSpace cs) {
+SkColorMatrix SkColorMatrix::YUVtoRGB(vx_yuv_color_space cs) {
     SkColorMatrix m;
     SkColorMatrix_YUV2RGB(cs, m.fMat.data());
     return m;

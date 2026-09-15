@@ -212,7 +212,7 @@ void Image_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
     callback(context, nullptr);
 }
 
-void Image_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+void Image_Base::onAsyncRescaleAndReadPixelsYUV420(vx_yuv_color_space yuvColorSpace,
                                                    bool readAlpha,
                                                    sk_sp<SkColorSpace> dstColorSpace,
                                                    const SkIRect srcRect,

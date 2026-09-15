@@ -58,7 +58,7 @@ public:
 
     const SkYUVAInfo& yuvaInfo() const { return fYUVAInfo; }
 
-    SkYUVColorSpace yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
+    vx_yuv_color_space yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
 
     Mipmapped mipmapped() const { return fMipmapped; }
 
@@ -120,7 +120,7 @@ public:
 
     const SkYUVAInfo& yuvaInfo() const { return fYUVAInfo; }
 
-    SkYUVColorSpace yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
+    vx_yuv_color_space yuvColorSpace() const { return fYUVAInfo.yuvColorSpace(); }
 
     /** The number of planes, 0 if this YUVABackendTextureInfo is invalid. */
     int numPlanes() const { return fYUVAInfo.numPlanes(); }

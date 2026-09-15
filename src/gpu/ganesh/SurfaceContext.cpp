@@ -876,7 +876,7 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
 }
 
 void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
-                                                     SkYUVColorSpace yuvColorSpace,
+                                                     vx_yuv_color_space yuvColorSpace,
                                                      bool readAlpha,
                                                      sk_sp<SkColorSpace> dstColorSpace,
                                                      const SkIRect& srcRect,

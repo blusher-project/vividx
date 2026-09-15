@@ -97,7 +97,7 @@ sk_sp<SkImage> SkImage_Base::makeSubset(SkRecorder* recorder,
     return this->onMakeSubset(recorder, subset, requiredProps);
 }
 
-void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
+void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(vx_yuv_color_space,
                                                      bool readAlpha,
                                                      sk_sp<SkColorSpace> dstColorSpace,
                                                      SkIRect srcRect,

@@ -132,7 +132,7 @@ public:
                                    ReadPixelsCallback callback,
                                    ReadPixelsContext context);
 
-    void asyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+    void asyncRescaleAndReadPixelsYUV420(vx_yuv_color_space yuvColorSpace,
                                          bool readAlpha,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,

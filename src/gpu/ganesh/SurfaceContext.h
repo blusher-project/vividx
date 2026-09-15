@@ -30,6 +30,8 @@
 #include <memory>
 #include <utility>
 
+#include <vividx/core/image-info.h>
+
 class GrCaps;
 class GrDirectContext;
 class GrDrawingManager;
@@ -39,7 +41,6 @@ class GrTransferFromRenderTask;
 class SkColorSpace;
 enum GrSurfaceOrigin : int;
 enum SkColorType : int;
-enum SkYUVColorSpace : int;
 enum class GrColorType;
 struct SkIPoint;
 struct SkImageInfo;
@@ -105,7 +106,7 @@ public:
 
     // GPU implementation for SkImage:: and SkSurface::asyncRescaleAndReadPixelsYUV420.
     void asyncRescaleAndReadPixelsYUV420(GrDirectContext*,
-                                         SkYUVColorSpace yuvColorSpace,
+                                         vx_yuv_color_space yuvColorSpace,
                                          bool readAlpha,
                                          sk_sp<SkColorSpace> dstColorSpace,
                                          const SkIRect& srcRect,

@@ -54,39 +54,39 @@ bool SkColorTypeIsAlwaysOpaque(SkColorType ct) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SkYUVColorSpaceIsLimitedRange(SkYUVColorSpace cs) {
+bool SkYUVColorSpaceIsLimitedRange(vx_yuv_color_space cs) {
     switch (cs) {
-        case kRec601_Limited_SkYUVColorSpace:
-        case kRec709_Limited_SkYUVColorSpace:
-        case kBT2020_8bit_Limited_SkYUVColorSpace:
-        case kBT2020_10bit_Limited_SkYUVColorSpace:
-        case kBT2020_12bit_Limited_SkYUVColorSpace:
-        case kBT2020_16bit_Limited_SkYUVColorSpace:
-        case kFCC_Limited_SkYUVColorSpace:
-        case kSMPTE240_Limited_SkYUVColorSpace:
-        case kYDZDX_Limited_SkYUVColorSpace:
-        case kGBR_Limited_SkYUVColorSpace:
-        case kYCgCo_8bit_Limited_SkYUVColorSpace:
-        case kYCgCo_10bit_Limited_SkYUVColorSpace:
-        case kYCgCo_12bit_Limited_SkYUVColorSpace:
-        case kYCgCo_16bit_Limited_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_REC601_LIMITED:
+        case VX_YUV_COLOR_SPACE_REC709_LIMITED:
+        case VX_YUV_COLOR_SPACE_BT2020_8BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_BT2020_10BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_BT2020_12BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_BT2020_16BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_FCC_LIMITED:
+        case VX_YUV_COLOR_SPACE_SMPTE240_LIMITED:
+        case VX_YUV_COLOR_SPACE_YDZDX_LIMITED:
+        case VX_YUV_COLOR_SPACE_GBR_LIMITED:
+        case VX_YUV_COLOR_SPACE_YCGCO_8BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_YCGCO_10BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_YCGCO_12BIT_LIMITED:
+        case VX_YUV_COLOR_SPACE_YCGCO_16BIT_LIMITED:
             return true;
 
-        case kJPEG_Full_SkYUVColorSpace:
-        case kRec709_Full_SkYUVColorSpace:
-        case kBT2020_8bit_Full_SkYUVColorSpace:
-        case kBT2020_10bit_Full_SkYUVColorSpace:
-        case kBT2020_12bit_Full_SkYUVColorSpace:
-        case kBT2020_16bit_Full_SkYUVColorSpace:
-        case kFCC_Full_SkYUVColorSpace:
-        case kSMPTE240_Full_SkYUVColorSpace:
-        case kYDZDX_Full_SkYUVColorSpace:
-        case kGBR_Full_SkYUVColorSpace:
-        case kYCgCo_8bit_Full_SkYUVColorSpace:
-        case kYCgCo_10bit_Full_SkYUVColorSpace:
-        case kYCgCo_12bit_Full_SkYUVColorSpace:
-        case kYCgCo_16bit_Full_SkYUVColorSpace:
-        case kIdentity_SkYUVColorSpace:
+        case VX_YUV_COLOR_SPACE_JPEG_FULL:
+        case VX_YUV_COLOR_SPACE_REC709_FULL:
+        case VX_YUV_COLOR_SPACE_BT2020_8BIT_FULL:
+        case VX_YUV_COLOR_SPACE_BT2020_10BIT_FULL:
+        case VX_YUV_COLOR_SPACE_BT2020_12BIT_FULL:
+        case VX_YUV_COLOR_SPACE_BT2020_16BIT_FULL:
+        case VX_YUV_COLOR_SPACE_FCC_FULL:
+        case VX_YUV_COLOR_SPACE_SMPTE240_FULL:
+        case VX_YUV_COLOR_SPACE_YDZDX_FULL:
+        case VX_YUV_COLOR_SPACE_GBR_FULL:
+        case VX_YUV_COLOR_SPACE_YCGCO_8BIT_FULL:
+        case VX_YUV_COLOR_SPACE_YCGCO_10BIT_FULL:
+        case VX_YUV_COLOR_SPACE_YCGCO_12BIT_FULL:
+        case VX_YUV_COLOR_SPACE_YCGCO_16BIT_FULL:
+        case VX_YUV_COLOR_SPACE_IDENTITY:
             return false;
 
         default:

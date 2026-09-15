@@ -225,7 +225,7 @@ GrYUVtoRGBEffect::GrYUVtoRGBEffect(std::unique_ptr<GrFragmentProcessor> planeFPs
                                    int numPlanes,
                                    const SkYUVAInfo::YUVALocations& locations,
                                    const bool snap[2],
-                                   SkYUVColorSpace yuvColorSpace)
+                                   vx_yuv_color_space yuvColorSpace)
         : GrFragmentProcessor(kGrYUVtoRGBEffect_ClassID,
                               ModulateForClampedSamplerOptFlags(alpha_type(locations)))
         , fLocations(locations)
@@ -307,7 +307,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
                 fragBuilder->codeAppendf("color.a = 1;");
             }
 
-            if (kIdentity_SkYUVColorSpace != yuvEffect.fYUVColorSpace) {
+            if (VX_YUV_COLOR_SPACE_IDENTITY != yuvEffect.fYUVColorSpace) {
                 fColorSpaceMatrixVar = args.fUniformHandler->addUniform(&yuvEffect,
                         kFragment_GrShaderFlag, SkSLType::kHalf3x3, "colorSpaceMatrix");
                 fColorSpaceTranslateVar = args.fUniformHandler->addUniform(&yuvEffect,
@@ -329,7 +329,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrYUVtoRGBEffect::onMakeProgra
                        const GrFragmentProcessor& proc) override {
             const GrYUVtoRGBEffect& yuvEffect = proc.cast<GrYUVtoRGBEffect>();
 
-            if (yuvEffect.fYUVColorSpace != kIdentity_SkYUVColorSpace) {
+            if (yuvEffect.fYUVColorSpace != VX_YUV_COLOR_SPACE_IDENTITY) {
                 SkASSERT(fColorSpaceMatrixVar.isValid());
                 float yuvM[20];
                 SkColorMatrix_YUV2RGB(yuvEffect.fYUVColorSpace, yuvM);
@@ -371,7 +371,7 @@ void GrYUVtoRGBEffect::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b
 
         packed |= (plane | (chann << 2)) << (i++ * 4);
     }
-    if (fYUVColorSpace == kIdentity_SkYUVColorSpace) {
+    if (fYUVColorSpace == VX_YUV_COLOR_SPACE_IDENTITY) {
         packed |= 1 << 16;
     }
     if (fSnap[0]) {

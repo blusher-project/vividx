@@ -74,7 +74,7 @@ public:
                                      RescaleMode rescaleMode,
                                      ReadPixelsCallback callback,
                                      ReadPixelsContext context) override;
-    void onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace yuvColorSpace,
+    void onAsyncRescaleAndReadPixelsYUV420(vx_yuv_color_space yuvColorSpace,
                                            bool readAlpha,
                                            sk_sp<SkColorSpace> dstColorSpace,
                                            SkIRect srcRect,

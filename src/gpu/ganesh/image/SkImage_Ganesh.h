@@ -23,6 +23,8 @@
 #include <memory>
 #include <tuple>
 
+#include <vividx/core/image-info.h>
+
 class GrBackendFormat;
 class GrBackendTexture;
 class GrDirectContext;
@@ -42,7 +44,6 @@ enum class GrSemaphoresSubmitted : bool;
 enum class SkTileMode;
 enum GrSurfaceOrigin : int;
 enum SkColorType : int;
-enum SkYUVColorSpace : int;
 struct GrFlushInfo;
 struct SkIRect;
 struct SkISize;
@@ -90,7 +91,7 @@ public:
                                      ReadPixelsCallback,
                                      ReadPixelsContext) const override;
 
-    void onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
+    void onAsyncRescaleAndReadPixelsYUV420(vx_yuv_color_space,
                                            bool readAlpha,
                                            sk_sp<SkColorSpace>,
                                            SkIRect srcRect,

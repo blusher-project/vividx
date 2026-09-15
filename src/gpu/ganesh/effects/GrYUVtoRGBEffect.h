@@ -19,8 +19,9 @@
 
 #include <memory>
 
+#include <vividx/core/image-info.h>
+
 class GrYUVATextureProxies;
-enum SkYUVColorSpace : int;
 namespace skgpu { class KeyBuilder; }
 struct GrShaderCaps;
 struct SkRect;
@@ -42,7 +43,7 @@ private:
                      int numPlanes,
                      const SkYUVAInfo::YUVALocations&,
                      const bool snap[2],
-                     SkYUVColorSpace yuvColorSpace);
+                     vx_yuv_color_space yuvColorSpace);
 
     GrYUVtoRGBEffect(const GrYUVtoRGBEffect& src);
 
@@ -59,7 +60,7 @@ private:
     GR_DECLARE_FRAGMENT_PROCESSOR_TEST
 
     SkYUVAInfo::YUVALocations   fLocations;
-    SkYUVColorSpace             fYUVColorSpace;
+    vx_yuv_color_space             fYUVColorSpace;
     bool                        fSnap[2];
 };
 #endif

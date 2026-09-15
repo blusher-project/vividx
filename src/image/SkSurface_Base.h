@@ -23,6 +23,8 @@
 #include <cstdint>
 #include <memory>
 
+#include <vividx/core/image-info.h>
+
 class GrBackendSemaphore;
 class GrBackendTexture;
 class GrRecordingContext;
@@ -33,7 +35,6 @@ class SkPixmap;
 class GrSurfaceCharacterization;
 class SkSurfaceProps;
 enum GrSurfaceOrigin : int;
-enum SkYUVColorSpace : int;
 namespace skgpu { namespace graphite { class Recorder; } }
 struct SkIRect;
 struct SkISize;
@@ -111,7 +112,7 @@ public:
     /**
      * Default implementation does a rescale/read/yuv conversion and then calls the callback.
      */
-    virtual void onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
+    virtual void onAsyncRescaleAndReadPixelsYUV420(vx_yuv_color_space,
                                                    bool readAlpha,
                                                    sk_sp<SkColorSpace> dstColorSpace,
                                                    SkIRect srcRect,
