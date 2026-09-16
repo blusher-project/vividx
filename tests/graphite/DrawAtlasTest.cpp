@@ -6,7 +6,7 @@
  */
 
 #include "include/core/SkBitmap.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"

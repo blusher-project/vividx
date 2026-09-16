@@ -8,7 +8,7 @@
 #include "src/codec/SkSampler.h"
 
 #include "include/codec/SkCodec.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/private/SkTemplates.h"
 #include "src/codec/SkCodecPriv.h"

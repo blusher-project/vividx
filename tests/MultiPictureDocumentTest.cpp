@@ -193,7 +193,7 @@ DEF_TEST(SkMultiPictureDocument_Serialize_and_deserialize, reporter) {
 #include "include/android/GrAHardwareBufferUtils.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkImageGanesh.h"
 #include "src/gpu/ganesh/GrCaps.h"

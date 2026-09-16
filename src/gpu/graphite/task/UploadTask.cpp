@@ -7,7 +7,7 @@
 
 #include "src/gpu/graphite/task/UploadTask.h"
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"

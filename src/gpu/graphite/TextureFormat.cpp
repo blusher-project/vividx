@@ -8,7 +8,7 @@
 #include "src/gpu/graphite/TextureFormat.h"
 
 #include "include/core/SkColor.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "src/core/SkImageInfoPriv.h"
 
 namespace skgpu::graphite {

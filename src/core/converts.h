@@ -3,7 +3,7 @@
 
 #include <vividx/core/color-type.h>
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 
 vx_color_type vx_color_type_to_sk(enum vx_color_type type)
 {

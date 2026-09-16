@@ -1902,17 +1902,10 @@ skia_source_set("core") {
   configs = skia_library_configs
   public = skia_core_public
   sources = skia_core_sources
-  # Build from CMake.
+  # Removed.
   public -= [
     "//include/core/SkAlphaType.h",
-  ]
-  sources -= [
-    # "//src/core/SkBase64.cpp",
-    # "//src/core/SkMD5.cpp",
-    # "//src/core/SkCPURecorder.cpp",
-    # "//src/core/SkStream.cpp",
-
-    # "//src/image/SkSurface_Base.cpp",
+    "//include/core/SkColorType.h",
   ]
 
   # These deps don't belong to :core, but they are currently needed to support (de)serialization.

@@ -4,7 +4,7 @@
 #include "tools/HashAndEncode.h"
 
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkString.h"
 #include "include/encode/SkICC.h"
 #include "modules/skcms/skcms.h"

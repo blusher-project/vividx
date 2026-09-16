@@ -9,7 +9,7 @@
 
 #include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkUnPreMultiply.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"

@@ -21,7 +21,7 @@
 // TODO(kjlubick, bungeman) Replace these includes with forward declares
 #include "include/codec/SkEncodedImageFormat.h" // IWYU pragma: keep
 #include <vividx/core/alpha-type.h> // IWYU pragma: keep
-#include "include/core/SkColorType.h" // IWYU pragma: keep
+#include <vividx/core/color-type.h> // IWYU pragma: keep
 
 #include <cstddef>
 #include <memory>

@@ -10,7 +10,7 @@
 #include <vividx/core/alpha-type.h>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImage.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkSamplingOptions.h"

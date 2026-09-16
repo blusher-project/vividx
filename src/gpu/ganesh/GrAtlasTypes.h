@@ -9,7 +9,7 @@
 #define GrAtlasTypes_DEFINED
 
 #include "include/core/SkColor.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"

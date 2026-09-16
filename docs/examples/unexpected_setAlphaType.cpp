@@ -1,6 +1,6 @@
 // Copyright 2020 Google LLC
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(unexpected_setAlphaType, 256, 256, true, 0) {
 static const char* alphatype_name(SkAlphaType at) {

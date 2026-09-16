@@ -9,7 +9,7 @@
 #define skgpu_graphite_precompile_Precompile_DEFINED
 
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkSpan.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 

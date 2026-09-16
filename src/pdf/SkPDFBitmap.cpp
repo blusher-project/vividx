@@ -13,7 +13,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkData.h"
 #include "include/core/SkExecutor.h"
 #include "include/core/SkImage.h"

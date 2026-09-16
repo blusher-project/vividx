@@ -9,7 +9,7 @@
 
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColorFilter.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkDrawable.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"

@@ -13,7 +13,7 @@
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColorFilter.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkFont.h"

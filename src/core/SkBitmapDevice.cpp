@@ -11,7 +11,7 @@
 #include "include/core/SkBlender.h"
 #include "include/core/SkCPURecorder.h"
 #include "include/core/SkClipOp.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"

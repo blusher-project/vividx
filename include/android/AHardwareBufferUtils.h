@@ -7,7 +7,7 @@
 #ifndef AHardwareBufferUtils_DEFINED
 #define AHardwareBufferUtils_DEFINED
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkTypes.h"
 
 #if __ANDROID_API__ >= 26

@@ -8,7 +8,7 @@
 #ifndef skgpu_graphite_compute_VelloComputeSteps_DEFINED
 #define skgpu_graphite_compute_VelloComputeSteps_DEFINED
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkTArray.h"

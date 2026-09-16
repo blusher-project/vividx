@@ -9,7 +9,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkData.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"

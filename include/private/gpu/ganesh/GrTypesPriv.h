@@ -9,7 +9,7 @@
 #define GrTypesPriv_DEFINED
 
 #include "include/core/SkColor.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkData.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"

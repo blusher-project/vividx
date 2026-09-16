@@ -9,7 +9,7 @@
 #define SkImage_GaneshYUVA_DEFINED
 
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"

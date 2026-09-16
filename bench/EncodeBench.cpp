@@ -7,7 +7,7 @@
 
 #include "bench/Benchmark.h"
 #include "include/core/SkBitmap.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkStream.h"
 #include "include/encode/SkJpegEncoder.h"
 #include "include/encode/SkPngEncoder.h"

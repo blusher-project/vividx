@@ -7,7 +7,7 @@
 
 #include "src/gpu/graphite/compute/ComputeStep.h"
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/SkAssert.h"

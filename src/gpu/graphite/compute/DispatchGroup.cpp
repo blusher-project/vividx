@@ -7,7 +7,7 @@
 
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"

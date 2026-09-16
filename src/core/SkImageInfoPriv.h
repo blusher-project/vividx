@@ -9,7 +9,7 @@
 #define SkImageInfoPriv_DEFINED
 
 #include "include/core/SkColor.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 
 static inline uint32_t SkColorTypeChannelFlags(vx_color_type ct) {

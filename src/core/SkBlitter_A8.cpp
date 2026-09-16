@@ -8,7 +8,7 @@
 #include "src/core/SkBlitter_A8.h"
 
 #include "include/core/SkBlendMode.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkPaint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkShader.h" // IWYU pragma: keep

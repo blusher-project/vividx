@@ -8,7 +8,7 @@
 #include "include/core/SkBitmap.h"
 
 #include "include/core/SkColorSpace.h"  // IWYU pragma: keep
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImage.h"
 #include "include/core/SkMallocPixelRef.h"
 #include "include/core/SkMatrix.h"

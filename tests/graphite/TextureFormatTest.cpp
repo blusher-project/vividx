@@ -7,7 +7,7 @@
 
 #include "tests/Test.h"
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkTArray.h"

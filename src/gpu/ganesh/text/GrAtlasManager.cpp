@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/private/SkMalloc.h"

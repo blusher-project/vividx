@@ -10,7 +10,7 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
 #include <vividx/core/alpha-type.h>
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkData.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkStream.h"

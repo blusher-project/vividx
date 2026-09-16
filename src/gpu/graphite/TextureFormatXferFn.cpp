@@ -7,7 +7,7 @@
 
 #include "src/gpu/graphite/TextureFormatXferFn.h"
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/private/SkLog.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkColorSpaceXformSteps.h"

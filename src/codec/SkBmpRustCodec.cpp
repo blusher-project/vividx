@@ -8,7 +8,7 @@
 #include "src/codec/SkBmpRustCodec.h"
 
 #include "include/codec/SkCodecAnimation.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"

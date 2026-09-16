@@ -7,7 +7,7 @@
 
 #include "src/gpu/graphite/text/TextAtlasManager.h"
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"

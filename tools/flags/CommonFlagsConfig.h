@@ -10,7 +10,7 @@
 
 #include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "tools/flags/CommandLineFlags.h"
 
 #if defined(SK_GANESH)

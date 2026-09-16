@@ -8,7 +8,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h" // IWYU pragma: keep
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/core/SkSurfaceProps.h"
 #include "include/private/SkAssert.h"
 #include "src/core/SkArenaAlloc.h"

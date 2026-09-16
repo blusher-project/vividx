@@ -7,7 +7,7 @@
 
 #include "include/core/SkImageGenerator.h"
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 #include "include/private/SkAssert.h"
 #include "src/core/SkNextID.h"
 
