@@ -43,7 +43,7 @@ enum class GrImageTexGenPolicy : int;
 enum class GrSemaphoresSubmitted : bool;
 enum class SkTileMode;
 enum GrSurfaceOrigin : int;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 struct GrFlushInfo;
 struct SkIRect;
 struct SkISize;
@@ -79,7 +79,7 @@ public:
     bool onIsProtected() const override;
 
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(GrDirectContext*,
-                                                SkColorType,
+                                                vx_color_type,
                                                 sk_sp<SkColorSpace>) const final;
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;

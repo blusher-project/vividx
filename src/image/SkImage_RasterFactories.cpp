@@ -44,14 +44,14 @@ static bool valid_args(const SkImageInfo& info, size_t rowBytes, size_t* minSize
     if (info.width() > maxDimension || info.height() > maxDimension) {
         return false;
     }
-    if ((unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType) {
+    if ((unsigned)info.colorType() > (unsigned)VX_COLOR_TYPE_LASTENUM) {
         return false;
     }
     if ((unsigned)info.alphaType() > (unsigned)VX_ALPHA_TYPE_LASTENUM) {
         return false;
     }
 
-    if (kUnknown_SkColorType == info.colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == info.colorType()) {
         return false;
     }
     if (!info.validRowBytes(rowBytes)) {

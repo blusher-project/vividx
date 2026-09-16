@@ -37,7 +37,7 @@ class SkRecorder;
 class SkSurface;
 enum GrSurfaceOrigin : int;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class GrColorType;
 enum class GrImageTexGenPolicy : int;
 enum class GrSemaphoresSubmitted : bool;
@@ -79,7 +79,7 @@ public:
     static bool ValidateBackendTexture(const GrCaps*,
                                        const GrBackendTexture& tex,
                                        GrColorType grCT,
-                                       SkColorType ct,
+                                       vx_color_type ct,
                                        vx_alpha_type at,
                                        sk_sp<SkColorSpace> cs);
     static bool ValidateCompressedBackendTexture(const GrCaps*,
@@ -115,11 +115,11 @@ protected:
     SkImage_GaneshBase(sk_sp<GrImageContext>, SkImageInfo, uint32_t uniqueID);
     sk_sp<SkImage> onMakeSubset(SkRecorder*, const SkIRect& subset, RequiredProperties) const final;
     sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
-                                              SkColorType,
+                                              vx_color_type,
                                               sk_sp<SkColorSpace>,
                                               RequiredProperties) const final;
     virtual sk_sp<SkImage> onMakeColorTypeAndColorSpace(GrDirectContext*,
-                                                        SkColorType,
+                                                        vx_color_type,
                                                         sk_sp<SkColorSpace>) const = 0;
 
     sk_sp<GrImageContext> fContext;

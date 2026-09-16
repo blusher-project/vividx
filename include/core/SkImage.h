@@ -36,7 +36,7 @@ class SkPixmap;
 class SkRecorder;
 class SkShader;
 class SkSurfaceProps;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTextureCompressionType;
 enum class SkTileMode;
 
@@ -326,7 +326,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Image_colorType
     */
-    SkColorType colorType() const;
+    vx_color_type colorType() const;
 
     /** Returns SkColorSpace, the range of colors, associated with SkImage.  The
         reference count of SkColorSpace is unchanged. The returned SkColorSpace is
@@ -890,7 +890,7 @@ public:
         @return                    created SkImage in target SkColorType and SkColorSpace
     */
     virtual sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
-                                                      SkColorType targetColorType,
+                                                      vx_color_type targetColorType,
                                                       sk_sp<SkColorSpace> targetColorSpace,
                                                       RequiredProperties) const = 0;
 

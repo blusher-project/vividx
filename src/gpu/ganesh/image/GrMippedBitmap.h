@@ -33,7 +33,7 @@ public:
 
     vx_alpha_type alphaType() const { return fBitmap.alphaType(); }
     SkBitmap bitmap() const { return fBitmap; }
-    SkColorType colorType() const { return fBitmap.colorType(); }
+    vx_color_type colorType() const { return fBitmap.colorType(); }
     sk_sp<const SkMipmap> mips() const { return fMips; }
 
     using ReleaseProc = void(void* pixels, void* context);

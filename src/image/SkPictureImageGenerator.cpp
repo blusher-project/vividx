@@ -46,9 +46,9 @@ std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize& size,
         return nullptr;
     }
 
-    SkColorType colorType = kN32_SkColorType;
+    vx_color_type colorType = VX_COLOR_TYPE_N32;
     if (SkImages::BitDepth::kF16 == bitDepth) {
-        colorType = kRGBA_F16_SkColorType;
+        colorType = VX_COLOR_TYPE_RGBA_F16;
     }
 
     SkImageInfo info =

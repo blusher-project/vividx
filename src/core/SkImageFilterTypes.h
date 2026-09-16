@@ -43,7 +43,7 @@ class SkImageFilter;
 class SkImageFilterCache;
 class SkPicture;
 class SkShader;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 // The skif (SKI[mage]F[ilter]) namespace contains types that are used for filter implementations.
 // The defined types come in two groups: users of internal Skia types, and templates to help with
@@ -1119,22 +1119,22 @@ public:
 
     // Properties controlling the pixel data for offscreen surfaces rendered to during filtering.
     const SkSurfaceProps& surfaceProps() const { return fSurfaceProps; }
-    SkColorType colorType() const { return fColorType; }
+    vx_color_type colorType() const { return fColorType; }
 
     SkImageFilterCache* cache() const { return fCache.get(); }
 
 protected:
     Backend(sk_sp<SkImageFilterCache> cache,
             const SkSurfaceProps& surfaceProps,
-            const SkColorType colorType);
+            const vx_color_type colorType);
 
 private:
     sk_sp<SkImageFilterCache> fCache;
     SkSurfaceProps fSurfaceProps;
-    SkColorType fColorType;
+    vx_color_type fColorType;
 };
 
-sk_sp<Backend> MakeRasterBackend(const SkSurfaceProps& surfaceProps, SkColorType colorType);
+sk_sp<Backend> MakeRasterBackend(const SkSurfaceProps& surfaceProps, vx_color_type colorType);
 
 // Stats for a single image filter evaluation
 struct Stats {

@@ -210,25 +210,25 @@ XferRowFn get_xfer_row_fn(TextureFormat format, uint8_t ops) {
     }
 }
 
-void optimize_colortypes_and_swizzle(SkColorType* texBaseCT, Swizzle* readSwizzle) {
+void optimize_colortypes_and_swizzle(vx_color_type* texBaseCT, Swizzle* readSwizzle) {
     // Some combinations of swizzle and load/store ops in raster pipeline are redundant so try to
     // make adjustments to reduce or eliminate the use of raster pipeline entirely.
 
     // The most trivial cases are swizzling between alpha-only and red-only color types which should
     // be a no-op in either direction as long as the underlying data type is the same.
-    SkColorType adjustedBase = *texBaseCT;
+    vx_color_type adjustedBase = *texBaseCT;
     if (*readSwizzle == Swizzle("000r")) {
         // Red -> Alpha so shift the texture's "base" colortype to be the corresponding alpha type
         switch(adjustedBase) {
-            case kR8_unorm_SkColorType:  adjustedBase = kAlpha_8_SkColorType; break;
-            case kR16_unorm_SkColorType: adjustedBase = kA16_unorm_SkColorType; break;
-            case kR16_float_SkColorType: adjustedBase = kA16_float_SkColorType; break;
+            case VX_COLOR_TYPE_R8_UNORM:  adjustedBase = VX_COLOR_TYPE_ALPHA_8; break;
+            case VX_COLOR_TYPE_R16_UNORM: adjustedBase = VX_COLOR_TYPE_A16_UNORM; break;
+            case VX_COLOR_TYPE_R16_FLOAT: adjustedBase = VX_COLOR_TYPE_A16_FLOAT; break;
             default: break; // Go through regular RP + swizzle flow
         }
-    } else if (*readSwizzle == Swizzle("rrra") && adjustedBase == kR8_unorm_SkColorType) {
+    } else if (*readSwizzle == Swizzle("rrra") && adjustedBase == VX_COLOR_TYPE_R8_UNORM) {
         // Red -> Gray so shift to kGray, which either ensures RP will generate the gray values from
         // a non-gray input, or will be detected as a no-op when transferring to/from existing gray.
-        adjustedBase = kGray_8_SkColorType;
+        adjustedBase = VX_COLOR_TYPE_GRAY_8;
     }
 
     // TODO(michaelludwig): Include adjustments to account for redundant RB swaps between colortype
@@ -244,7 +244,7 @@ void optimize_colortypes_and_swizzle(SkColorType* texBaseCT, Swizzle* readSwizzl
 } // anonymous namespace
 
 std::optional<TextureFormatXferFn> TextureFormatXferFn::MakeCpuToGpu(
-        SkColorType srcCT,
+        vx_color_type srcCT,
         const SkColorSpaceXformSteps& csSteps,
         TextureFormat dstFormat,
         Swizzle dstReadSwizzle) {
@@ -273,7 +273,7 @@ std::optional<TextureFormatXferFn> TextureFormatXferFn::MakeGpuToCpu(
         TextureFormat srcFormat,
         Swizzle srcReadSwizzle,
         const SkColorSpaceXformSteps& csSteps,
-        SkColorType dstCT) {
+        vx_color_type dstCT) {
     auto [baseCT, xferOps] = TextureFormatColorTypeInfo(srcFormat);
     if (xferOps & FormatXferOp::kDisabled) {
         return std::nullopt;
@@ -307,8 +307,8 @@ std::optional<TextureFormatXferFn> TextureFormatXferFn::MakeIdentity(TextureForm
 
 template <typename... RPModifiers>
 sk_sp<TextureFormatXferFn::RPOps> TextureFormatXferFn::RPOps::Make(
-        SkColorType srcColorType,
-        SkColorType dstColorType,
+        vx_color_type srcColorType,
+        vx_color_type dstColorType,
         RPModifiers... rpModifiers) {
     if (srcColorType == dstColorType &&
         (!SkToBool(rpModifiers) && ...)) {

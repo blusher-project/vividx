@@ -32,7 +32,7 @@
 #include <memory>
 #include <tuple>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 using namespace skia_private;
 
@@ -43,7 +43,7 @@ namespace {
 void copy_pixels(std::byte* dst, size_t dstRowBytes, const std::byte* src, size_t srcRowBytes,
                  SkISize size, size_t bytesPerPixel) {
     SkASSERT(src);
-    constexpr bool kBGRAIsNative = kN32_SkColorType == kBGRA_8888_SkColorType;
+    constexpr bool kBGRAIsNative = VX_COLOR_TYPE_N32 == VX_COLOR_TYPE_BGRA_8888;
     // Fast path for BGRA -> RGBA
     if (bytesPerPixel == 4 && kBGRAIsNative) {
         for (int i = 0; i < size.height(); ++i) {
@@ -191,7 +191,7 @@ bool DrawAtlas::addRectToPage(unsigned int pageIdx, int width, int height,
 
 bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
-    const SkColorType maskCT = MaskFormatToColorType(fMaskFormat);
+    const vx_color_type maskCT = MaskFormatToColorType(fMaskFormat);
     // Src and dst colorInfo are the same
     const SkColorInfo colorInfo(maskCT, VX_ALPHA_TYPE_UNKNOWN, nullptr);
     for (uint32_t pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {

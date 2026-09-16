@@ -174,7 +174,7 @@ int GrRecordingContext::maxTextureSize() const { return this->caps()->maxTexture
 
 int GrRecordingContext::maxRenderTargetSize() const { return this->caps()->maxRenderTargetSize(); }
 
-bool GrRecordingContext::colorTypeSupportedAsImage(SkColorType colorType) const {
+bool GrRecordingContext::colorTypeSupportedAsImage(vx_color_type colorType) const {
     GrBackendFormat format =
             this->caps()->getDefaultBackendFormat(SkColorTypeToGrColorType(colorType),
                                                   GrRenderable::kNo);

@@ -128,7 +128,7 @@ static void get_packed_glyph_image(
         };
         constexpr int a565Bpp = MaskFormatBytesPerPixel(MaskFormat::kA565);
         constexpr int argbBpp = MaskFormatBytesPerPixel(MaskFormat::kARGB);
-        constexpr bool kBGRAIsNative = kN32_SkColorType == kBGRA_8888_SkColorType;
+        constexpr bool kBGRAIsNative = VX_COLOR_TYPE_N32 == VX_COLOR_TYPE_BGRA_8888;
         char* dstRow = (char*)dst;
         for (int y = 0; y < height; y++) {
             dst = dstRow;
@@ -271,7 +271,7 @@ void GrAtlasManager::addGlyphToBulkAndSetUseToken(GrBulkUsePlotUpdater* updater,
 bool GrAtlasManager::initAtlas(MaskFormat format) {
     int index = MaskFormatToAtlasIndex(format);
     if (fAtlases[index] == nullptr) {
-        SkColorType colorType = MaskFormatToColorType(format);
+        vx_color_type colorType = MaskFormatToColorType(format);
         GrColorType grColorType = SkColorTypeToGrColorType(colorType);
         SkISize atlasDimensions = fAtlasConfig.atlasDimensions(format);
         SkISize plotDimensions = fAtlasConfig.plotDimensions(format);

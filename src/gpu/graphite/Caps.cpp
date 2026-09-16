@@ -266,7 +266,7 @@ TextureInfo Caps::getDefaultAttachmentTextureInfo(AttachmentDesc desc,
 static constexpr SkEnumBitMask<TextureUsage> kDefaultSampledUsage =
         TextureUsage::kSample | TextureUsage::kCopySrc | TextureUsage::kCopyDst;
 
-TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
+TextureInfo Caps::getDefaultSampledTextureInfo(vx_color_type colorType,
                                                Mipmapped mipmapped,
                                                Protected isProtected,
                                                Renderable renderable) const {
@@ -316,7 +316,7 @@ TextureInfo Caps::getDefaultCompressedTextureInfo(SkTextureCompressionType compr
                                        Discardable::kNo);
 }
 
-TextureInfo Caps::getDefaultStorageTextureInfo(SkColorType colorType) const {
+TextureInfo Caps::getDefaultStorageTextureInfo(vx_color_type colorType) const {
     // Storage textures are currently always assumed to be sampleable from a shader and can be
     // copied out of (for unit tests).
     return this->getDefaultTextureInfo(TextureUsage::kStorage |

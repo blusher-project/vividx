@@ -109,7 +109,7 @@ public:
         return codec->getEncodedInfo();
     }
 
-    static bool SelectXformFormat(SkColorType colorType,
+    static bool SelectXformFormat(vx_color_type colorType,
                                   bool forColorTable,
                                   skcms_PixelFormat* outFormat);
 
@@ -312,18 +312,18 @@ public:
         return SkPackARGB_as_BGRA(a, r, g, b);
     }
 
-    static bool IsRGBA(SkColorType colorType) {
+    static bool IsRGBA(vx_color_type colorType) {
 #ifdef SK_PMCOLOR_IS_RGBA
-        return (kBGRA_8888_SkColorType != colorType);
+        return (VX_COLOR_TYPE_BGRA_8888 != colorType);
 #else
-        return (kRGBA_8888_SkColorType == colorType);
+        return (VX_COLOR_TYPE_RGBA_8888 == colorType);
 #endif
     }
 
     // Method for coverting to a 32 bit pixel.
     using PackColorProc = uint32_t (*)(U8CPU a, U8CPU r, U8CPU g, U8CPU b);
 
-    static PackColorProc ChoosePackColorProc(bool isPremul, SkColorType colorType) {
+    static PackColorProc ChoosePackColorProc(bool isPremul, vx_color_type colorType) {
         bool isRGBA = IsRGBA(colorType);
         if (isPremul) {
             if (isRGBA) {

@@ -75,7 +75,7 @@ size_t ComputeStep::calculateBufferSize(int, const ResourceDesc&) const {
     SK_ABORT("ComputeSteps that initialize a storage buffer must override calculateBufferSize()");
 }
 
-std::tuple<SkISize, SkColorType> ComputeStep::calculateTextureParameters(
+std::tuple<SkISize, vx_color_type> ComputeStep::calculateTextureParameters(
         int, const ResourceDesc&) const {
     SK_ABORT("ComputeSteps that initialize a texture must override calculateTextureParameters()");
 }

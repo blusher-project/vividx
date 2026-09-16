@@ -72,7 +72,7 @@ SkImage_GaneshBase::SkImage_GaneshBase(sk_sp<GrImageContext> context,
 bool SkImage_GaneshBase::ValidateBackendTexture(const GrCaps* caps,
                                                 const GrBackendTexture& tex,
                                                 GrColorType grCT,
-                                                SkColorType ct,
+                                                vx_color_type ct,
                                                 vx_alpha_type at,
                                                 sk_sp<SkColorSpace> cs) {
     if (!tex.isValid()) {
@@ -212,7 +212,7 @@ sk_sp<SkImage> SkImage_GaneshBase::onMakeSubset(SkRecorder* recorder,
 }
 
 sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(SkRecorder* recorder,
-                                                              SkColorType targetColorType,
+                                                              vx_color_type targetColorType,
                                                               sk_sp<SkColorSpace> targetCS,
                                                               RequiredProperties) const {
     auto gRecorder = AsGaneshRecorder(recorder);
@@ -224,7 +224,7 @@ sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(SkRecorder* record
         return nullptr;
     }
 
-    if (kUnknown_SkColorType == targetColorType || !targetCS) {
+    if (VX_COLOR_TYPE_UNKNOWN == targetColorType || !targetCS) {
         return nullptr;
     }
 
@@ -234,7 +234,7 @@ sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(SkRecorder* record
         return nullptr;
     }
 
-    SkColorType colorType = this->colorType();
+    vx_color_type colorType = this->colorType();
     SkColorSpace* colorSpace = this->colorSpace();
     if (!colorSpace) {
         colorSpace = sk_srgb_singleton();

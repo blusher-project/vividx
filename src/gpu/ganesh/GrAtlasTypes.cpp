@@ -18,7 +18,7 @@ GrPlot::GrPlot(int pageIndex,
                GrAtlasGenerationCounter* generationCounter,
                int offX, int offY,
                int width, int height,
-               SkColorType colorType,
+               vx_color_type colorType,
                size_t bpp)
         : fLastUpload(skgpu::Token::InvalidToken())
         , fLastUse(skgpu::Token::InvalidToken())
@@ -95,7 +95,7 @@ bool GrPlot::addSubImage(int width, int height, const void* image, GrAtlasLocato
     size_t plotRB = this->rowBytes();
 
     // copy into the data buffer, swizzling as we go if this is ARGB data
-    constexpr bool kBGRAIsNative = kN32_SkColorType == kBGRA_8888_SkColorType;
+    constexpr bool kBGRAIsNative = VX_COLOR_TYPE_N32 == VX_COLOR_TYPE_BGRA_8888;
     if (4 == fBytesPerPixel && kBGRAIsNative) {
         for (int i = 0; i < height; ++i) {
             SkOpts::RGBA_to_BGRA((uint32_t*)dataPtr, (const uint32_t*)imagePtr, width);

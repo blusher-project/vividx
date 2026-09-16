@@ -78,7 +78,7 @@ public:
             fPermutationsBitmap.installPixels(info, fLatticeSelector, info.minRowBytes());
             fPermutationsBitmap.setImmutable();
 
-            info = SkImageInfo::Make(kBlockSize, 4, kRGBA_8888_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED);
+            info = SkImageInfo::Make(kBlockSize, 4, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
             fNoiseBitmap.installPixels(info, fNoise[0][0], info.minRowBytes());
             fNoiseBitmap.setImmutable();
         }

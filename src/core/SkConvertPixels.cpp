@@ -32,7 +32,7 @@ static bool rect_memcpy(const SkImageInfo& dstInfo,       void* dstPixels, size_
     if (dstInfo.colorType() != srcInfo.colorType()) {
         return false;
     }
-    if (dstInfo.colorType() != kAlpha_8_SkColorType
+    if (dstInfo.colorType() != VX_COLOR_TYPE_ALPHA_8
             && steps.fFlags.mask() != 0b00000) {
         return false;
     }
@@ -45,8 +45,8 @@ static bool rect_memcpy(const SkImageInfo& dstInfo,       void* dstPixels, size_
 static bool swizzle_or_premul(const SkImageInfo& dstInfo,       void* dstPixels, size_t dstRB,
                               const SkImageInfo& srcInfo, const void* srcPixels, size_t srcRB,
                               const SkColorSpaceXformSteps& steps) {
-    auto is_8888 = [](SkColorType ct) {
-        return ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType;
+    auto is_8888 = [](vx_color_type ct) {
+        return ct == VX_COLOR_TYPE_RGBA_8888 || ct == VX_COLOR_TYPE_BGRA_8888;
     };
     if (!is_8888(dstInfo.colorType()) ||
         !is_8888(srcInfo.colorType()) ||
@@ -86,21 +86,21 @@ static bool swizzle_or_premul(const SkImageInfo& dstInfo,       void* dstPixels,
 static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size_t dstRB,
                               const SkImageInfo& srcInfo, const void*  src, size_t srcRB,
                               const SkColorSpaceXformSteps&) {
-    if (dstInfo.colorType() != kAlpha_8_SkColorType) {
+    if (dstInfo.colorType() != VX_COLOR_TYPE_ALPHA_8) {
         return false;
     }
     auto dst = (uint8_t*)vdst;
 
     switch (srcInfo.colorType()) {
-        case kUnknown_SkColorType:
-        case kAlpha_8_SkColorType: {
+        case VX_COLOR_TYPE_UNKNOWN:
+        case VX_COLOR_TYPE_ALPHA_8: {
             // Unknown should never happen.
             // Alpha8 should have been handled by rect_memcpy().
             SkASSERT(false);
             return false;
         }
 
-        case kA16_unorm_SkColorType: {
+        case VX_COLOR_TYPE_A16_UNORM: {
             auto src16 = (const uint16_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
@@ -112,19 +112,19 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
-        case kGray_8_SkColorType:
-        case kRGB_565_SkColorType:
-        case kR8G8_unorm_SkColorType:
-        case kR16_unorm_SkColorType:
-        case kR16_float_SkColorType:
-        case kR16G16_unorm_SkColorType:
-        case kR16G16_float_SkColorType:
-        case kRGB_888x_SkColorType:
-        case kRGB_101010x_SkColorType:
-        case kBGR_101010x_SkColorType:
-        case kBGR_101010x_XR_SkColorType:
-        case kRGB_F16F16F16x_SkColorType:
-        case kR8_unorm_SkColorType: {
+        case VX_COLOR_TYPE_GRAY_8:
+        case VX_COLOR_TYPE_RGB_565:
+        case VX_COLOR_TYPE_R8G8_UNORM:
+        case VX_COLOR_TYPE_R16_UNORM:
+        case VX_COLOR_TYPE_R16_FLOAT:
+        case VX_COLOR_TYPE_R16G16_UNORM:
+        case VX_COLOR_TYPE_R16G16_FLOAT:
+        case VX_COLOR_TYPE_RGB_888X:
+        case VX_COLOR_TYPE_RGB_101010X:
+        case VX_COLOR_TYPE_BGR_101010X:
+        case VX_COLOR_TYPE_BGR_101010X_XR:
+        case VX_COLOR_TYPE_RGB_F16F16F16X:
+        case VX_COLOR_TYPE_R8_UNORM: {
             for (int y = 0; y < srcInfo.height(); ++y) {
                memset(dst, 0xFF, srcInfo.width());
                dst = SkTAddOffset<uint8_t>(dst, dstRB);
@@ -132,7 +132,7 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
-        case kARGB_4444_SkColorType: {
+        case VX_COLOR_TYPE_ARGB_4444: {
             auto src16 = (const uint16_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
@@ -144,9 +144,9 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
-        case kBGRA_8888_SkColorType:
-        case kRGBA_8888_SkColorType:
-        case kSRGBA_8888_SkColorType: {
+        case VX_COLOR_TYPE_BGRA_8888:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_SRGBA_8888: {
             auto src32 = (const uint32_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
@@ -158,8 +158,8 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
-        case kRGBA_1010102_SkColorType:
-        case kBGRA_1010102_SkColorType: {
+        case VX_COLOR_TYPE_RGBA_1010102:
+        case VX_COLOR_TYPE_BGRA_1010102: {
             auto src32 = (const uint32_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
@@ -171,8 +171,8 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
-        case kRGBA_F16Norm_SkColorType:
-        case kRGBA_F16_SkColorType: {
+        case VX_COLOR_TYPE_RGBA_F16NORM:
+        case VX_COLOR_TYPE_RGBA_F16: {
             auto src64 = (const uint64_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
@@ -184,7 +184,7 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
-        case kRGBA_F32_SkColorType: {
+        case VX_COLOR_TYPE_RGBA_F32: {
             auto rgba = (const float*)src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
@@ -196,7 +196,7 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
-        case kA16_float_SkColorType: {
+        case VX_COLOR_TYPE_A16_FLOAT: {
             auto srcF16 = (const uint16_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
@@ -208,7 +208,7 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             return true;
         }
 
-        case kBGRA_10101010_XR_SkColorType: {
+        case VX_COLOR_TYPE_BGRA_10101010_XR: {
             auto src64 = (const uint64_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
@@ -229,8 +229,8 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             }
             return true;
         }
-        case kRGBA_10x6_SkColorType:
-        case kR16G16B16A16_unorm_SkColorType: {
+        case VX_COLOR_TYPE_RGBA_10X6:
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: {
             auto src64 = (const uint64_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {

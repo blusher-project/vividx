@@ -176,7 +176,7 @@ static bool create_pipeline_for_blitter(const SkPixmap& dst,
     }
 
     SkColorSpace* dstCS = dst.colorSpace();
-    SkColorType dstCT = dst.colorType();
+    vx_color_type dstCT = dst.colorType();
     *isOpaqueOut = shader->isOpaque() && dstPaintColor->fA == 1.0f;
     *isConstantOut = shader->isConstant();
     if (shader->appendRootStages(
@@ -321,7 +321,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
 
     if (clipShader) {
         auto clipP = colorPipeline;
-        SkColorType clipCT = kRGBA_8888_SkColorType;
+        vx_color_type clipCT = VX_COLOR_TYPE_RGBA_8888;
         SkColorSpace* clipCS = nullptr;
         SkSurfaceProps props{}; // default OK; clipShader doesn't render text
         SkStageRec rec = {
@@ -363,44 +363,44 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
     // to zero.  We only dither non-constant shaders, so is_constant won't change here.
     if (paint.isDither() && !is_constant) {
         switch (dst.info().colorType()) {
-            case kARGB_4444_SkColorType:
+            case VX_COLOR_TYPE_ARGB_4444:
                 blitter->fDitherRate = 1 / 15.0f;
                 break;
-            case kRGB_565_SkColorType:
+            case VX_COLOR_TYPE_RGB_565:
                 blitter->fDitherRate = 1 / 63.0f;
                 break;
-            case kGray_8_SkColorType:
-            case kRGB_888x_SkColorType:
-            case kRGBA_8888_SkColorType:
-            case kBGRA_8888_SkColorType:
-            case kSRGBA_8888_SkColorType:
-            case kR8_unorm_SkColorType:
+            case VX_COLOR_TYPE_GRAY_8:
+            case VX_COLOR_TYPE_RGB_888X:
+            case VX_COLOR_TYPE_RGBA_8888:
+            case VX_COLOR_TYPE_BGRA_8888:
+            case VX_COLOR_TYPE_SRGBA_8888:
+            case VX_COLOR_TYPE_R8_UNORM:
                 blitter->fDitherRate = 1 / 255.0f;
                 break;
-            case kRGB_101010x_SkColorType:
-            case kRGBA_1010102_SkColorType:
-            case kBGR_101010x_SkColorType:
-            case kBGRA_1010102_SkColorType:
-            case kBGRA_10101010_XR_SkColorType:
-            case kRGBA_10x6_SkColorType:
+            case VX_COLOR_TYPE_RGB_101010X:
+            case VX_COLOR_TYPE_RGBA_1010102:
+            case VX_COLOR_TYPE_BGR_101010X:
+            case VX_COLOR_TYPE_BGRA_1010102:
+            case VX_COLOR_TYPE_BGRA_10101010_XR:
+            case VX_COLOR_TYPE_RGBA_10X6:
                 blitter->fDitherRate = 1 / 1023.0f;
                 break;
 
-            case kUnknown_SkColorType:
-            case kAlpha_8_SkColorType:
-            case kBGR_101010x_XR_SkColorType:
-            case kRGBA_F16_SkColorType:
-            case kRGB_F16F16F16x_SkColorType:
-            case kRGBA_F16Norm_SkColorType:
-            case kRGBA_F32_SkColorType:
-            case kR8G8_unorm_SkColorType:
-            case kA16_float_SkColorType:
-            case kA16_unorm_SkColorType:
-            case kR16G16_float_SkColorType:
-            case kR16_unorm_SkColorType:
-            case kR16_float_SkColorType:
-            case kR16G16_unorm_SkColorType:
-            case kR16G16B16A16_unorm_SkColorType:
+            case VX_COLOR_TYPE_UNKNOWN:
+            case VX_COLOR_TYPE_ALPHA_8:
+            case VX_COLOR_TYPE_BGR_101010X_XR:
+            case VX_COLOR_TYPE_RGBA_F16:
+            case VX_COLOR_TYPE_RGB_F16F16F16X:
+            case VX_COLOR_TYPE_RGBA_F16NORM:
+            case VX_COLOR_TYPE_RGBA_F32:
+            case VX_COLOR_TYPE_R8G8_UNORM:
+            case VX_COLOR_TYPE_A16_FLOAT:
+            case VX_COLOR_TYPE_A16_UNORM:
+            case VX_COLOR_TYPE_R16G16_FLOAT:
+            case VX_COLOR_TYPE_R16_UNORM:
+            case VX_COLOR_TYPE_R16_FLOAT:
+            case VX_COLOR_TYPE_R16G16_UNORM:
+            case VX_COLOR_TYPE_R16G16B16A16_UNORM:
                 blitter->fDitherRate = 0.0f;
                 break;
         }
@@ -539,12 +539,12 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
         p.extend(fColorPipeline);
         p.appendClampIfNormalized(fDst.info());
         if (fBlendMode == SkBlendMode::kSrcOver
-                && (fDst.info().colorType() == kRGBA_8888_SkColorType ||
-                    fDst.info().colorType() == kBGRA_8888_SkColorType)
+                && (fDst.info().colorType() == VX_COLOR_TYPE_RGBA_8888 ||
+                    fDst.info().colorType() == VX_COLOR_TYPE_BGRA_8888)
                 && !fDst.colorSpace()
                 && fDst.info().alphaType() != VX_ALPHA_TYPE_UNPREMULTIPLIED
                 && fDitherRate == 0.0f) {
-            if (fDst.info().colorType() == kBGRA_8888_SkColorType) {
+            if (fDst.info().colorType() == VX_COLOR_TYPE_BGRA_8888) {
                 p.append(SkRasterPipelineOp::swap_rb);
             }
             this->appendClipScale(&p);
@@ -746,7 +746,7 @@ std::optional<SkBlitter::DirectBlit> SkRasterPipelineBlitter::canDirectBlit() {
                  uint8_t u1[8];
             } dstBuffer;
             auto dst = SkImageInfo::Make(1, 1, fDst.info().colorType(), fDst.info().alphaType());
-            auto src = SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
+            auto src = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_UNPREMULTIPLIED);
             if (!SkConvertPixels(dst, &dstBuffer, sizeof(dstBuffer),
                                  src, &fDirectBlitPaintColor, sizeof(fDirectBlitPaintColor))) {
                 goto FAIL;

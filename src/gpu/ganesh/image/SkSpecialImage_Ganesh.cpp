@@ -26,7 +26,7 @@
 #include <cstddef>
 #include <utility>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 class SkSpecialImage_Gpu final : public SkSpecialImage {
 public:
@@ -102,7 +102,7 @@ sk_sp<SkSpecialImage> MakeDeferredFromGpu(GrRecordingContext* context,
 
     SkASSERT(view.proxy()->backingStoreBoundsIRect().contains(subset));
 
-    SkColorType ct = GrColorTypeToSkColorType(colorInfo.colorType());
+    vx_color_type ct = GrColorTypeToSkColorType(colorInfo.colorType());
     return sk_make_sp<SkSpecialImage_Gpu>(
             context,
             subset,

@@ -66,7 +66,7 @@ uint8_t* SkRasterPipeline::tailPointer() {
 
 void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
     bool isLoad = false, isStore = false;
-    SkColorType ct = kUnknown_SkColorType;
+    vx_color_type ct = VX_COLOR_TYPE_UNKNOWN;
 
 #define COLOR_TYPE_CASE(stage_ct, sk_ct) \
     case Op::load_##stage_ct:            \
@@ -80,24 +80,24 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
         break;
 
     switch (op) {
-        COLOR_TYPE_CASE(a8, kAlpha_8_SkColorType)
-        COLOR_TYPE_CASE(565, kRGB_565_SkColorType)
-        COLOR_TYPE_CASE(4444, kARGB_4444_SkColorType)
-        COLOR_TYPE_CASE(8888, kRGBA_8888_SkColorType)
-        COLOR_TYPE_CASE(rg88, kR8G8_unorm_SkColorType)
-        COLOR_TYPE_CASE(16161616, kR16G16B16A16_unorm_SkColorType)
-        COLOR_TYPE_CASE(a16, kA16_unorm_SkColorType)
-        COLOR_TYPE_CASE(r16, kR16_unorm_SkColorType)
-        COLOR_TYPE_CASE(rg1616, kR16G16_unorm_SkColorType)
-        COLOR_TYPE_CASE(f16, kRGBA_F16_SkColorType)
-        COLOR_TYPE_CASE(af16, kA16_float_SkColorType)
-        COLOR_TYPE_CASE(rf16, kR16_float_SkColorType)
-        COLOR_TYPE_CASE(rgf16, kR16G16_float_SkColorType)
-        COLOR_TYPE_CASE(f32, kRGBA_F32_SkColorType)
-        COLOR_TYPE_CASE(1010102, kRGBA_1010102_SkColorType)
-        COLOR_TYPE_CASE(1010102_xr, kBGR_101010x_XR_SkColorType)
-        COLOR_TYPE_CASE(10101010_xr, kBGRA_10101010_XR_SkColorType)
-        COLOR_TYPE_CASE(10x6, kRGBA_10x6_SkColorType)
+        COLOR_TYPE_CASE(a8, VX_COLOR_TYPE_ALPHA_8)
+        COLOR_TYPE_CASE(565, VX_COLOR_TYPE_RGB_565)
+        COLOR_TYPE_CASE(4444, VX_COLOR_TYPE_ARGB_4444)
+        COLOR_TYPE_CASE(8888, VX_COLOR_TYPE_RGBA_8888)
+        COLOR_TYPE_CASE(rg88, VX_COLOR_TYPE_R8G8_UNORM)
+        COLOR_TYPE_CASE(16161616, VX_COLOR_TYPE_R16G16B16A16_UNORM)
+        COLOR_TYPE_CASE(a16, VX_COLOR_TYPE_A16_UNORM)
+        COLOR_TYPE_CASE(r16, VX_COLOR_TYPE_R16_UNORM)
+        COLOR_TYPE_CASE(rg1616, VX_COLOR_TYPE_R16G16_UNORM)
+        COLOR_TYPE_CASE(f16, VX_COLOR_TYPE_RGBA_F16)
+        COLOR_TYPE_CASE(af16, VX_COLOR_TYPE_A16_FLOAT)
+        COLOR_TYPE_CASE(rf16, VX_COLOR_TYPE_R16_FLOAT)
+        COLOR_TYPE_CASE(rgf16, VX_COLOR_TYPE_R16G16_FLOAT)
+        COLOR_TYPE_CASE(f32, VX_COLOR_TYPE_RGBA_F32)
+        COLOR_TYPE_CASE(1010102, VX_COLOR_TYPE_RGBA_1010102)
+        COLOR_TYPE_CASE(1010102_xr, VX_COLOR_TYPE_BGR_101010X_XR)
+        COLOR_TYPE_CASE(10101010_xr, VX_COLOR_TYPE_BGRA_10101010_XR)
+        COLOR_TYPE_CASE(10x6, VX_COLOR_TYPE_RGBA_10X6)
 
 #undef COLOR_TYPE_CASE
 
@@ -111,31 +111,31 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
         case Op::debug_a_255:
         case Op::debug_x:
         case Op::debug_y: {
-            ct = kRGBA_8888_SkColorType;
+            ct = VX_COLOR_TYPE_RGBA_8888;
             isStore = true;
             break;
         }
         // Odd stage that doesn't have a load variant (appendLoad uses load_a8 + alpha_to_red)
         case Op::store_r8: {
-            ct = kR8_unorm_SkColorType;
+            ct = VX_COLOR_TYPE_R8_UNORM;
             isStore = true;
             break;
         }
         case Op::srcover_rgba_8888: {
-            ct = kRGBA_8888_SkColorType;
+            ct = VX_COLOR_TYPE_RGBA_8888;
             isLoad = true;
             isStore = true;
             break;
         }
         case Op::scale_u8:
         case Op::lerp_u8: {
-            ct = kAlpha_8_SkColorType;
+            ct = VX_COLOR_TYPE_ALPHA_8;
             isLoad = true;
             break;
         }
         case Op::scale_565:
         case Op::lerp_565: {
-            ct = kRGB_565_SkColorType;
+            ct = VX_COLOR_TYPE_RGB_565;
             isLoad = true;
             break;
         }
@@ -144,10 +144,10 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
             SkRasterPipelineContexts::EmbossCtx* embossCtx =
                     (SkRasterPipelineContexts::EmbossCtx*)ctx;
             this->addMemoryContext(&embossCtx->add,
-                                   SkColorTypeBytesPerPixel(kAlpha_8_SkColorType),
+                                   SkColorTypeBytesPerPixel(VX_COLOR_TYPE_ALPHA_8),
                                    /*load=*/true, /*store=*/false);
             this->addMemoryContext(&embossCtx->mul,
-                                   SkColorTypeBytesPerPixel(kAlpha_8_SkColorType),
+                                   SkColorTypeBytesPerPixel(VX_COLOR_TYPE_ALPHA_8),
                                    /*load=*/true, /*store=*/false);
             break;
         }
@@ -169,7 +169,7 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
     fNumStages += 1;
 
     if (isLoad || isStore) {
-        SkASSERT(ct != kUnknown_SkColorType);
+        SkASSERT(ct != VX_COLOR_TYPE_UNKNOWN);
         this->addMemoryContext((SkRasterPipelineContexts::MemoryCtx*)ctx,
                                SkColorTypeBytesPerPixel(ct),
                                isLoad,
@@ -335,141 +335,141 @@ void SkRasterPipeline::appendMatrix(SkArenaAlloc* alloc, const SkMatrix& matrix)
     }
 }
 
-void SkRasterPipeline::appendLoad(SkColorType ct, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+void SkRasterPipeline::appendLoad(vx_color_type ct, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     switch (ct) {
-        case kUnknown_SkColorType: SkASSERT(false); break;
+        case VX_COLOR_TYPE_UNKNOWN: SkASSERT(false); break;
 
-        case kAlpha_8_SkColorType:           this->append(Op::load_a8,      ctx); break;
-        case kA16_unorm_SkColorType:         this->append(Op::load_a16,     ctx); break;
-        case kA16_float_SkColorType:         this->append(Op::load_af16,    ctx); break;
-        case kRGB_565_SkColorType:           this->append(Op::load_565,     ctx); break;
-        case kARGB_4444_SkColorType:         this->append(Op::load_4444,    ctx); break;
-        case kR8G8_unorm_SkColorType:        this->append(Op::load_rg88,    ctx); break;
-        case kR16_unorm_SkColorType:         this->append(Op::load_r16,     ctx); break;
-        case kR16_float_SkColorType:         this->append(Op::load_rf16,    ctx); break;
-        case kR16G16_unorm_SkColorType:      this->append(Op::load_rg1616,  ctx); break;
-        case kR16G16_float_SkColorType:      this->append(Op::load_rgf16,   ctx); break;
-        case kRGBA_8888_SkColorType:         this->append(Op::load_8888,    ctx); break;
-        case kRGBA_1010102_SkColorType:      this->append(Op::load_1010102, ctx); break;
-        case kR16G16B16A16_unorm_SkColorType:this->append(Op::load_16161616,ctx); break;
-        case kRGBA_F16Norm_SkColorType:
-        case kRGBA_F16_SkColorType:          this->append(Op::load_f16,     ctx); break;
-        case kRGBA_F32_SkColorType:          this->append(Op::load_f32,     ctx); break;
-        case kRGBA_10x6_SkColorType:         this->append(Op::load_10x6,    ctx); break;
+        case VX_COLOR_TYPE_ALPHA_8:           this->append(Op::load_a8,      ctx); break;
+        case VX_COLOR_TYPE_A16_UNORM:         this->append(Op::load_a16,     ctx); break;
+        case VX_COLOR_TYPE_A16_FLOAT:         this->append(Op::load_af16,    ctx); break;
+        case VX_COLOR_TYPE_RGB_565:           this->append(Op::load_565,     ctx); break;
+        case VX_COLOR_TYPE_ARGB_4444:         this->append(Op::load_4444,    ctx); break;
+        case VX_COLOR_TYPE_R8G8_UNORM:        this->append(Op::load_rg88,    ctx); break;
+        case VX_COLOR_TYPE_R16_UNORM:         this->append(Op::load_r16,     ctx); break;
+        case VX_COLOR_TYPE_R16_FLOAT:         this->append(Op::load_rf16,    ctx); break;
+        case VX_COLOR_TYPE_R16G16_UNORM:      this->append(Op::load_rg1616,  ctx); break;
+        case VX_COLOR_TYPE_R16G16_FLOAT:      this->append(Op::load_rgf16,   ctx); break;
+        case VX_COLOR_TYPE_RGBA_8888:         this->append(Op::load_8888,    ctx); break;
+        case VX_COLOR_TYPE_RGBA_1010102:      this->append(Op::load_1010102, ctx); break;
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM:this->append(Op::load_16161616,ctx); break;
+        case VX_COLOR_TYPE_RGBA_F16NORM:
+        case VX_COLOR_TYPE_RGBA_F16:          this->append(Op::load_f16,     ctx); break;
+        case VX_COLOR_TYPE_RGBA_F32:          this->append(Op::load_f32,     ctx); break;
+        case VX_COLOR_TYPE_RGBA_10X6:         this->append(Op::load_10x6,    ctx); break;
 
-        case kGray_8_SkColorType:            this->append(Op::load_a8, ctx);
+        case VX_COLOR_TYPE_GRAY_8:            this->append(Op::load_a8, ctx);
                                              this->append(Op::alpha_to_gray);
                                              break;
 
-        case kR8_unorm_SkColorType:          this->append(Op::load_a8, ctx);
+        case VX_COLOR_TYPE_R8_UNORM:          this->append(Op::load_a8, ctx);
                                              this->append(Op::alpha_to_red);
                                              break;
 
-        case kRGB_888x_SkColorType:          this->append(Op::load_8888, ctx);
+        case VX_COLOR_TYPE_RGB_888X:          this->append(Op::load_8888, ctx);
                                              this->append(Op::force_opaque);
                                              break;
 
-        case kBGRA_1010102_SkColorType:      this->append(Op::load_1010102, ctx);
+        case VX_COLOR_TYPE_BGRA_1010102:      this->append(Op::load_1010102, ctx);
                                              this->append(Op::swap_rb);
                                              break;
 
-        case kRGB_101010x_SkColorType:       this->append(Op::load_1010102, ctx);
+        case VX_COLOR_TYPE_RGB_101010X:       this->append(Op::load_1010102, ctx);
                                              this->append(Op::force_opaque);
                                              break;
 
-        case kBGR_101010x_SkColorType:       this->append(Op::load_1010102, ctx);
+        case VX_COLOR_TYPE_BGR_101010X:       this->append(Op::load_1010102, ctx);
                                              this->append(Op::force_opaque);
                                              this->append(Op::swap_rb);
                                              break;
 
-        case kBGRA_10101010_XR_SkColorType:  this->append(Op::load_10101010_xr, ctx);
+        case VX_COLOR_TYPE_BGRA_10101010_XR:  this->append(Op::load_10101010_xr, ctx);
                                              this->append(Op::swap_rb);
                                              break;
 
-        case kBGR_101010x_XR_SkColorType:    this->append(Op::load_1010102_xr, ctx);
+        case VX_COLOR_TYPE_BGR_101010X_XR:    this->append(Op::load_1010102_xr, ctx);
                                              this->append(Op::force_opaque);
                                              this->append(Op::swap_rb);
                                              break;
-        case kRGB_F16F16F16x_SkColorType:    this->append(Op::load_f16, ctx);
+        case VX_COLOR_TYPE_RGB_F16F16F16X:    this->append(Op::load_f16, ctx);
                                              this->append(Op::force_opaque);
                                              break;
 
-        case kBGRA_8888_SkColorType:         this->append(Op::load_8888, ctx);
+        case VX_COLOR_TYPE_BGRA_8888:         this->append(Op::load_8888, ctx);
                                              this->append(Op::swap_rb);
                                              break;
 
-        case kSRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_SRGBA_8888:
             this->append(Op::load_8888, ctx);
             this->appendTransferFunction(*skcms_sRGB_TransferFunction());
             break;
     }
 }
 
-void SkRasterPipeline::appendLoadDst(SkColorType ct,
+void SkRasterPipeline::appendLoadDst(vx_color_type ct,
                                      const SkRasterPipelineContexts::MemoryCtx* ctx) {
     switch (ct) {
-        case kUnknown_SkColorType: SkASSERT(false); break;
+        case VX_COLOR_TYPE_UNKNOWN: SkASSERT(false); break;
 
-        case kAlpha_8_SkColorType:            this->append(Op::load_a8_dst,      ctx); break;
-        case kA16_unorm_SkColorType:          this->append(Op::load_a16_dst,     ctx); break;
-        case kA16_float_SkColorType:          this->append(Op::load_af16_dst,    ctx); break;
-        case kRGB_565_SkColorType:            this->append(Op::load_565_dst,     ctx); break;
-        case kARGB_4444_SkColorType:          this->append(Op::load_4444_dst,    ctx); break;
-        case kR8G8_unorm_SkColorType:         this->append(Op::load_rg88_dst,    ctx); break;
-        case kR16_unorm_SkColorType:          this->append(Op::load_r16_dst,     ctx); break;
-        case kR16_float_SkColorType:          this->append(Op::load_rf16_dst,    ctx); break;
-        case kR16G16_unorm_SkColorType:       this->append(Op::load_rg1616_dst,  ctx); break;
-        case kR16G16_float_SkColorType:       this->append(Op::load_rgf16_dst,   ctx); break;
-        case kRGBA_8888_SkColorType:          this->append(Op::load_8888_dst,    ctx); break;
-        case kRGBA_1010102_SkColorType:       this->append(Op::load_1010102_dst, ctx); break;
-        case kR16G16B16A16_unorm_SkColorType: this->append(Op::load_16161616_dst,ctx); break;
-        case kRGBA_F16Norm_SkColorType:
-        case kRGBA_F16_SkColorType:           this->append(Op::load_f16_dst,     ctx); break;
-        case kRGBA_F32_SkColorType:           this->append(Op::load_f32_dst,     ctx); break;
-        case kRGBA_10x6_SkColorType:          this->append(Op::load_10x6_dst,    ctx); break;
+        case VX_COLOR_TYPE_ALPHA_8:            this->append(Op::load_a8_dst,      ctx); break;
+        case VX_COLOR_TYPE_A16_UNORM:          this->append(Op::load_a16_dst,     ctx); break;
+        case VX_COLOR_TYPE_A16_FLOAT:          this->append(Op::load_af16_dst,    ctx); break;
+        case VX_COLOR_TYPE_RGB_565:            this->append(Op::load_565_dst,     ctx); break;
+        case VX_COLOR_TYPE_ARGB_4444:          this->append(Op::load_4444_dst,    ctx); break;
+        case VX_COLOR_TYPE_R8G8_UNORM:         this->append(Op::load_rg88_dst,    ctx); break;
+        case VX_COLOR_TYPE_R16_UNORM:          this->append(Op::load_r16_dst,     ctx); break;
+        case VX_COLOR_TYPE_R16_FLOAT:          this->append(Op::load_rf16_dst,    ctx); break;
+        case VX_COLOR_TYPE_R16G16_UNORM:       this->append(Op::load_rg1616_dst,  ctx); break;
+        case VX_COLOR_TYPE_R16G16_FLOAT:       this->append(Op::load_rgf16_dst,   ctx); break;
+        case VX_COLOR_TYPE_RGBA_8888:          this->append(Op::load_8888_dst,    ctx); break;
+        case VX_COLOR_TYPE_RGBA_1010102:       this->append(Op::load_1010102_dst, ctx); break;
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: this->append(Op::load_16161616_dst,ctx); break;
+        case VX_COLOR_TYPE_RGBA_F16NORM:
+        case VX_COLOR_TYPE_RGBA_F16:           this->append(Op::load_f16_dst,     ctx); break;
+        case VX_COLOR_TYPE_RGBA_F32:           this->append(Op::load_f32_dst,     ctx); break;
+        case VX_COLOR_TYPE_RGBA_10X6:          this->append(Op::load_10x6_dst,    ctx); break;
 
-        case kGray_8_SkColorType:             this->append(Op::load_a8_dst, ctx);
+        case VX_COLOR_TYPE_GRAY_8:             this->append(Op::load_a8_dst, ctx);
                                               this->append(Op::alpha_to_gray_dst);
                                               break;
 
-        case kR8_unorm_SkColorType:           this->append(Op::load_a8_dst, ctx);
+        case VX_COLOR_TYPE_R8_UNORM:           this->append(Op::load_a8_dst, ctx);
                                               this->append(Op::alpha_to_red_dst);
                                               break;
 
-        case kRGB_888x_SkColorType:           this->append(Op::load_8888_dst, ctx);
+        case VX_COLOR_TYPE_RGB_888X:           this->append(Op::load_8888_dst, ctx);
                                               this->append(Op::force_opaque_dst);
                                               break;
 
-        case kBGRA_1010102_SkColorType:       this->append(Op::load_1010102_dst, ctx);
+        case VX_COLOR_TYPE_BGRA_1010102:       this->append(Op::load_1010102_dst, ctx);
                                               this->append(Op::swap_rb_dst);
                                               break;
 
-        case kRGB_101010x_SkColorType:        this->append(Op::load_1010102_dst, ctx);
+        case VX_COLOR_TYPE_RGB_101010X:        this->append(Op::load_1010102_dst, ctx);
                                               this->append(Op::force_opaque_dst);
                                               break;
 
-        case kBGR_101010x_SkColorType:        this->append(Op::load_1010102_dst, ctx);
-                                              this->append(Op::force_opaque_dst);
-                                              this->append(Op::swap_rb_dst);
-                                              break;
-
-        case kBGR_101010x_XR_SkColorType:     this->append(Op::load_1010102_xr_dst, ctx);
+        case VX_COLOR_TYPE_BGR_101010X:        this->append(Op::load_1010102_dst, ctx);
                                               this->append(Op::force_opaque_dst);
                                               this->append(Op::swap_rb_dst);
                                               break;
 
-        case kBGRA_10101010_XR_SkColorType:   this->append(Op::load_10101010_xr_dst, ctx);
+        case VX_COLOR_TYPE_BGR_101010X_XR:     this->append(Op::load_1010102_xr_dst, ctx);
+                                              this->append(Op::force_opaque_dst);
                                               this->append(Op::swap_rb_dst);
                                               break;
-        case kRGB_F16F16F16x_SkColorType:     this->append(Op::load_f16_dst, ctx);
+
+        case VX_COLOR_TYPE_BGRA_10101010_XR:   this->append(Op::load_10101010_xr_dst, ctx);
+                                              this->append(Op::swap_rb_dst);
+                                              break;
+        case VX_COLOR_TYPE_RGB_F16F16F16X:     this->append(Op::load_f16_dst, ctx);
                                               this->append(Op::force_opaque_dst);
                                               break;
 
-        case kBGRA_8888_SkColorType:          this->append(Op::load_8888_dst, ctx);
+        case VX_COLOR_TYPE_BGRA_8888:          this->append(Op::load_8888_dst, ctx);
                                               this->append(Op::swap_rb_dst);
                                               break;
 
-        case kSRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_SRGBA_8888:
             // TODO: We could remove the double-swap if we had _dst versions of all the TF stages
             this->append(Op::load_8888_dst, ctx);
             this->append(Op::swap_src_dst);
@@ -479,67 +479,67 @@ void SkRasterPipeline::appendLoadDst(SkColorType ct,
     }
 }
 
-void SkRasterPipeline::appendStore(SkColorType ct, const SkRasterPipelineContexts::MemoryCtx* ctx) {
+void SkRasterPipeline::appendStore(vx_color_type ct, const SkRasterPipelineContexts::MemoryCtx* ctx) {
     switch (ct) {
-        case kUnknown_SkColorType: SkASSERT(false); break;
+        case VX_COLOR_TYPE_UNKNOWN: SkASSERT(false); break;
 
-        case kAlpha_8_SkColorType:            this->append(Op::store_a8,      ctx); break;
-        case kR8_unorm_SkColorType:           this->append(Op::store_r8,      ctx); break;
-        case kA16_unorm_SkColorType:          this->append(Op::store_a16,     ctx); break;
-        case kA16_float_SkColorType:          this->append(Op::store_af16,    ctx); break;
-        case kRGB_565_SkColorType:            this->append(Op::store_565,     ctx); break;
-        case kARGB_4444_SkColorType:          this->append(Op::store_4444,    ctx); break;
-        case kR8G8_unorm_SkColorType:         this->append(Op::store_rg88,    ctx); break;
-        case kR16_unorm_SkColorType:          this->append(Op::store_r16,     ctx); break;
-        case kR16_float_SkColorType:          this->append(Op::store_rf16,    ctx); break;
-        case kR16G16_unorm_SkColorType:       this->append(Op::store_rg1616,  ctx); break;
-        case kR16G16_float_SkColorType:       this->append(Op::store_rgf16,   ctx); break;
-        case kRGBA_8888_SkColorType:          this->append(Op::store_8888,    ctx); break;
-        case kRGBA_1010102_SkColorType:       this->append(Op::store_1010102, ctx); break;
-        case kR16G16B16A16_unorm_SkColorType: this->append(Op::store_16161616,ctx); break;
-        case kRGBA_F16Norm_SkColorType:
-        case kRGBA_F16_SkColorType:           this->append(Op::store_f16,     ctx); break;
-        case kRGBA_F32_SkColorType:           this->append(Op::store_f32,     ctx); break;
-        case kRGBA_10x6_SkColorType:          this->append(Op::store_10x6,    ctx); break;
+        case VX_COLOR_TYPE_ALPHA_8:            this->append(Op::store_a8,      ctx); break;
+        case VX_COLOR_TYPE_R8_UNORM:           this->append(Op::store_r8,      ctx); break;
+        case VX_COLOR_TYPE_A16_UNORM:          this->append(Op::store_a16,     ctx); break;
+        case VX_COLOR_TYPE_A16_FLOAT:          this->append(Op::store_af16,    ctx); break;
+        case VX_COLOR_TYPE_RGB_565:            this->append(Op::store_565,     ctx); break;
+        case VX_COLOR_TYPE_ARGB_4444:          this->append(Op::store_4444,    ctx); break;
+        case VX_COLOR_TYPE_R8G8_UNORM:         this->append(Op::store_rg88,    ctx); break;
+        case VX_COLOR_TYPE_R16_UNORM:          this->append(Op::store_r16,     ctx); break;
+        case VX_COLOR_TYPE_R16_FLOAT:          this->append(Op::store_rf16,    ctx); break;
+        case VX_COLOR_TYPE_R16G16_UNORM:       this->append(Op::store_rg1616,  ctx); break;
+        case VX_COLOR_TYPE_R16G16_FLOAT:       this->append(Op::store_rgf16,   ctx); break;
+        case VX_COLOR_TYPE_RGBA_8888:          this->append(Op::store_8888,    ctx); break;
+        case VX_COLOR_TYPE_RGBA_1010102:       this->append(Op::store_1010102, ctx); break;
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: this->append(Op::store_16161616,ctx); break;
+        case VX_COLOR_TYPE_RGBA_F16NORM:
+        case VX_COLOR_TYPE_RGBA_F16:           this->append(Op::store_f16,     ctx); break;
+        case VX_COLOR_TYPE_RGBA_F32:           this->append(Op::store_f32,     ctx); break;
+        case VX_COLOR_TYPE_RGBA_10X6:          this->append(Op::store_10x6,    ctx); break;
 
-        case kRGB_888x_SkColorType:           this->append(Op::force_opaque);
+        case VX_COLOR_TYPE_RGB_888X:           this->append(Op::force_opaque);
                                               this->append(Op::store_8888, ctx);
                                               break;
 
-        case kBGRA_1010102_SkColorType:       this->append(Op::swap_rb);
+        case VX_COLOR_TYPE_BGRA_1010102:       this->append(Op::swap_rb);
                                               this->append(Op::store_1010102, ctx);
                                               break;
 
-        case kRGB_101010x_SkColorType:        this->append(Op::force_opaque);
+        case VX_COLOR_TYPE_RGB_101010X:        this->append(Op::force_opaque);
                                               this->append(Op::store_1010102, ctx);
                                               break;
 
-        case kBGR_101010x_SkColorType:        this->append(Op::force_opaque);
+        case VX_COLOR_TYPE_BGR_101010X:        this->append(Op::force_opaque);
                                               this->append(Op::swap_rb);
                                               this->append(Op::store_1010102, ctx);
                                               break;
 
-        case kBGR_101010x_XR_SkColorType:     this->append(Op::force_opaque);
+        case VX_COLOR_TYPE_BGR_101010X_XR:     this->append(Op::force_opaque);
                                               this->append(Op::swap_rb);
                                               this->append(Op::store_1010102_xr, ctx);
                                               break;
-        case kRGB_F16F16F16x_SkColorType:     this->append(Op::force_opaque);
+        case VX_COLOR_TYPE_RGB_F16F16F16X:     this->append(Op::force_opaque);
                                               this->append(Op::store_f16, ctx);
                                               break;
 
-        case kBGRA_10101010_XR_SkColorType:   this->append(Op::swap_rb);
+        case VX_COLOR_TYPE_BGRA_10101010_XR:   this->append(Op::swap_rb);
                                               this->append(Op::store_10101010_xr, ctx);
                                               break;
 
-        case kGray_8_SkColorType:             this->append(Op::bt709_luminance_or_luma_to_alpha);
+        case VX_COLOR_TYPE_GRAY_8:             this->append(Op::bt709_luminance_or_luma_to_alpha);
                                               this->append(Op::store_a8, ctx);
                                               break;
 
-        case kBGRA_8888_SkColorType:          this->append(Op::swap_rb);
+        case VX_COLOR_TYPE_BGRA_8888:          this->append(Op::swap_rb);
                                               this->append(Op::store_8888, ctx);
                                               break;
 
-        case kSRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_SRGBA_8888:
             this->appendTransferFunction(*skcms_sRGB_Inverse_TransferFunction());
             this->append(Op::store_8888, ctx);
             break;

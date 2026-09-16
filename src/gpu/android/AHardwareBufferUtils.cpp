@@ -13,27 +13,27 @@
 
 namespace AHardwareBufferUtils {
 
-SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat) {
+vx_color_type GetSkColorTypeFromBufferFormat(uint32_t bufferFormat) {
     switch (bufferFormat) {
         case AHARDWAREBUFFER_FORMAT_R8G8B8A8_UNORM:
-            return kRGBA_8888_SkColorType;
+            return VX_COLOR_TYPE_RGBA_8888;
         case AHARDWAREBUFFER_FORMAT_R8G8B8X8_UNORM:
-            return kRGB_888x_SkColorType;
+            return VX_COLOR_TYPE_RGB_888X;
 #if __ANDROID_API__ >= 34
         case AHARDWAREBUFFER_FORMAT_R10G10B10A10_UNORM:
-            return kRGBA_10x6_SkColorType;
+            return VX_COLOR_TYPE_RGBA_10X6;
 #endif
         case AHARDWAREBUFFER_FORMAT_R16G16B16A16_FLOAT:
-            return kRGBA_F16_SkColorType;
+            return VX_COLOR_TYPE_RGBA_F16;
         case AHARDWAREBUFFER_FORMAT_R5G6B5_UNORM:
-            return kRGB_565_SkColorType;
+            return VX_COLOR_TYPE_RGB_565;
         case AHARDWAREBUFFER_FORMAT_R8G8B8_UNORM:
-            return kRGB_888x_SkColorType;
+            return VX_COLOR_TYPE_RGB_888X;
         case AHARDWAREBUFFER_FORMAT_R10G10B10A2_UNORM:
-            return kRGBA_1010102_SkColorType;
+            return VX_COLOR_TYPE_RGBA_1010102;
 #if __ANDROID_API__ >= 33
         case AHARDWAREBUFFER_FORMAT_R8_UNORM:
-            return kAlpha_8_SkColorType;
+            return VX_COLOR_TYPE_ALPHA_8;
 #endif
         default:
             // Given that we only use this texture as a source, colorType will not impact how Skia

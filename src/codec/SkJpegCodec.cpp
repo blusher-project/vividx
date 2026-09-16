@@ -307,10 +307,10 @@ bool SkJpegCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOpaq
 
     // Check for valid color types and set the output color space
     switch (dstInfo.colorType()) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             fDecoderMgr->dinfo()->out_color_space = JCS_EXT_RGBA;
             break;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             if (needsColorXform) {
                 // Always using RGBA as the input format for color xforms makes the
                 // implementation a little simpler.
@@ -319,7 +319,7 @@ bool SkJpegCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOpaq
                 fDecoderMgr->dinfo()->out_color_space = JCS_EXT_BGRA;
             }
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             if (needsColorXform) {
                 fDecoderMgr->dinfo()->out_color_space = JCS_EXT_RGBA;
             } else {
@@ -327,7 +327,7 @@ bool SkJpegCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOpaq
                 fDecoderMgr->dinfo()->out_color_space = JCS_RGB565;
             }
             break;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             if (JCS_GRAYSCALE != encodedColorType) {
                 return false;
             }
@@ -338,9 +338,9 @@ bool SkJpegCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOpaq
                 fDecoderMgr->dinfo()->out_color_space = JCS_GRAYSCALE;
             }
             break;
-        case kBGRA_10101010_XR_SkColorType:
-        case kBGR_101010x_XR_SkColorType:
-        case kRGBA_F16_SkColorType:
+        case VX_COLOR_TYPE_BGRA_10101010_XR:
+        case VX_COLOR_TYPE_BGR_101010X_XR:
+        case VX_COLOR_TYPE_RGBA_F16:
             SkASSERT(needsColorXform);
             fDecoderMgr->dinfo()->out_color_space = JCS_EXT_RGBA;
             break;
@@ -635,7 +635,7 @@ void SkJpegCodec::initializeSwizzler(const SkImageInfo& dstInfo, const Options& 
     SkImageInfo swizzlerDstInfo = dstInfo;
     if (this->colorXform()) {
         // The color xform will be expecting RGBA 8888 input.
-        swizzlerDstInfo = swizzlerDstInfo.makeColorType(kRGBA_8888_SkColorType);
+        swizzlerDstInfo = swizzlerDstInfo.makeColorType(VX_COLOR_TYPE_RGBA_8888);
     }
 
     if (needsCMYKToRGB) {
@@ -845,10 +845,10 @@ static bool is_yuv_supported(const jpeg_decompress_struct* dinfo,
         return false;
     }
     if (yuvaPixmapInfo) {
-        SkColorType colorTypes[SkYUVAPixmapInfo::kMaxPlanes];
+        vx_color_type colorTypes[SkYUVAPixmapInfo::kMaxPlanes];
         size_t rowBytes[SkYUVAPixmapInfo::kMaxPlanes];
         for (int i = 0; i < 3; ++i) {
-            colorTypes[i] = kAlpha_8_SkColorType;
+            colorTypes[i] = VX_COLOR_TYPE_ALPHA_8;
             rowBytes[i] = dinfo->comp_info[i].width_in_blocks * DCTSIZE;
         }
         SkYUVAInfo yuvaInfo(codec.dimensions(),
@@ -898,7 +898,7 @@ SkCodec::Result SkJpegCodec::onGetYUVAPlanes(const SkYUVAPixmaps& yuvaPixmaps) {
         SkASSERT(is_yuv_supported(dinfo, *this, nullptr, &info));
         SkASSERT(info.yuvaInfo() == yuvaPixmaps.yuvaInfo());
         for (int i = 0; i < info.numPlanes(); ++i) {
-            SkASSERT(planes[i].colorType() == kAlpha_8_SkColorType);
+            SkASSERT(planes[i].colorType() == VX_COLOR_TYPE_ALPHA_8);
             SkASSERT(info.planeInfo(i) == planes[i].info());
         }
     }

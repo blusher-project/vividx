@@ -295,17 +295,17 @@ bool SkCodec::conversionSupported(const SkImageInfo& dst, bool srcIsOpaque, bool
     }
 
     switch (dst.colorType()) {
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
-        case kRGBA_F16_SkColorType:
-        case kBGRA_10101010_XR_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
+        case VX_COLOR_TYPE_RGBA_F16:
+        case VX_COLOR_TYPE_BGRA_10101010_XR:
             return true;
-        case kBGR_101010x_XR_SkColorType:
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_BGR_101010X_XR:
+        case VX_COLOR_TYPE_RGB_565:
             return srcIsOpaque;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             return SkEncodedInfo::kGray_Color == fEncodedInfo.color() && srcIsOpaque;
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             // conceptually we can convert anything into alpha_8, but we haven't actually coded
             // all of those other conversions yet.
             return SkEncodedInfo::kXAlpha_Color == fEncodedInfo.color();
@@ -499,7 +499,7 @@ SkCodec::Result SkCodec::getPixelsBudgeted(const SkImageInfo& info,
                                            void* pixels,
                                            size_t rowBytes,
                                            const Options* options) {
-    if (kUnknown_SkColorType == info.colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == info.colorType()) {
         return kInvalidConversion;
     }
     if (nullptr == pixels) {
@@ -618,7 +618,7 @@ SkCodec::Result SkCodec::startIncrementalDecode(const SkImageInfo& info, void* p
     if (!this->onSupportsIncrementalDecode(info)) {
         return kUnimplemented;
     }
-    if (kUnknown_SkColorType == info.colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == info.colorType()) {
         return kInvalidConversion;
     }
     if (nullptr == pixels) {
@@ -792,19 +792,19 @@ void SkCodec::fillIncompleteImage(const SkImageInfo& info, void* dst, size_t row
     SkSampler::Fill(fillInfo, fillDst, rowBytes, kNo_ZeroInitialized);
 }
 
-bool SkCodecPriv::SelectXformFormat(SkColorType colorType,
+bool SkCodecPriv::SelectXformFormat(vx_color_type colorType,
                                     bool forColorTable,
                                     skcms_PixelFormat* outFormat) {
     SkASSERT(outFormat);
 
     switch (colorType) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             *outFormat = skcms_PixelFormat_RGBA_8888;
             break;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             *outFormat = skcms_PixelFormat_BGRA_8888;
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             if (forColorTable) {
 #if defined(SK_PMCOLOR_IS_RGBA)
                 *outFormat = skcms_PixelFormat_RGBA_8888;
@@ -815,16 +815,16 @@ bool SkCodecPriv::SelectXformFormat(SkColorType colorType,
             }
             *outFormat = skcms_PixelFormat_BGR_565;
             break;
-        case kRGBA_F16_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16:
             *outFormat = skcms_PixelFormat_RGBA_hhhh;
             break;
-        case kRGBA_1010102_SkColorType:
+        case VX_COLOR_TYPE_RGBA_1010102:
             *outFormat = skcms_PixelFormat_RGBA_1010102;
             break;
-        case kBGR_101010x_XR_SkColorType:
+        case VX_COLOR_TYPE_BGR_101010X_XR:
             *outFormat = skcms_PixelFormat_BGR_101010x_XR;
             break;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             *outFormat = skcms_PixelFormat_G_8;
             break;
         default:
@@ -838,9 +838,9 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
     fXformTime = kNo_XformTime;
     bool needsColorXform = false;
     if (this->usesColorXform()) {
-        if (kRGBA_F16_SkColorType == dstInfo.colorType() ||
-                kRGBA_1010102_SkColorType == dstInfo.colorType() ||
-                kBGR_101010x_XR_SkColorType == dstInfo.colorType()) {
+        if (VX_COLOR_TYPE_RGBA_F16 == dstInfo.colorType() ||
+                VX_COLOR_TYPE_RGBA_1010102 == dstInfo.colorType() ||
+                VX_COLOR_TYPE_BGR_101010X_XR == dstInfo.colorType()) {
             needsColorXform = true;
             if (dstInfo.colorSpace()) {
                 dstInfo.colorSpace()->toProfile(&fDstProfileStorage);
@@ -869,7 +869,7 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
 
     if (needsColorXform) {
         fXformTime = SkEncodedInfo::kPalette_Color != fEncodedInfo.color()
-                          || kRGBA_F16_SkColorType == dstInfo.colorType()
+                          || VX_COLOR_TYPE_RGBA_F16 == dstInfo.colorType()
                 ? kDecodeRow_XformTime : kPalette_XformTime;
         if (!SkCodecPriv::SelectXformFormat(
                     dstInfo.colorType(), fXformTime == kPalette_XformTime, &fDstXformFormat)) {

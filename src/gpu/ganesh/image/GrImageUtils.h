@@ -30,7 +30,7 @@ class SkMatrix;
 class SkSurfaceProps;
 enum GrSurfaceOrigin : int;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class GrColorType;
 enum class SkTileMode;
 namespace skgpu { enum class Mipmapped : bool; }
@@ -86,7 +86,7 @@ GrSurfaceProxyView LockTextureProxyView(GrRecordingContext*,
 // may be different from the color type on the image in the case where we need up upload CPU
 // data to a texture but the GPU doesn't support the format of CPU data. In this case we convert
 // the data to RGBA_8888 unorm on the CPU then upload that.
-GrColorType ColorTypeOfLockTextureProxy(const GrCaps*, SkColorType);
+GrColorType ColorTypeOfLockTextureProxy(const GrCaps*, vx_color_type);
 
 /**
  * Returns a GrFragmentProcessor that can be used with the passed GrRecordingContext to
@@ -146,7 +146,7 @@ class Backend;
 sk_sp<Backend> MakeGaneshBackend(sk_sp<GrRecordingContext> context,
                                  GrSurfaceOrigin origin,
                                  const SkSurfaceProps& surfaceProps,
-                                 SkColorType colorType);
+                                 vx_color_type colorType);
 
 }  // namespace skif
 

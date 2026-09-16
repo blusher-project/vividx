@@ -31,13 +31,13 @@ class SkData;
 class SkPixmap;
 class SkRecorder;
 class SkSurface;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 struct SkIRect;
 
 class SkImage_Lazy : public SkImage_Base {
 public:
     struct Validator {
-        Validator(sk_sp<SharedGenerator>, const SkColorType*, sk_sp<SkColorSpace>);
+        Validator(sk_sp<SharedGenerator>, const vx_color_type*, sk_sp<SkColorSpace>);
 
         explicit operator bool() const { return fSharedGenerator.get(); }
 
@@ -52,7 +52,7 @@ public:
     // From SkImage.h
     bool isValid(SkRecorder*) const override;
     sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
-                                              SkColorType targetColorType,
+                                              vx_color_type targetColorType,
                                               sk_sp<SkColorSpace> targetColorSpace,
                                               RequiredProperties) const override;
 

@@ -89,26 +89,26 @@ static bool preprocess_webp_picture(WebPPicture* pic,
     }
 
     {
-        const SkColorType ct = pixmap.colorType();
+        const vx_color_type ct = pixmap.colorType();
         const bool premul = pixmap.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED;
 
         SkBitmap tmpBm;
         WebPPictureImportProc importProc = nullptr;
         const SkPixmap* src = &pixmap;
-        if (ct == kRGB_888x_SkColorType) {
+        if (ct == VX_COLOR_TYPE_RGB_888X) {
             importProc = WebPPictureImportRGBX;
-        } else if (!premul && ct == kRGBA_8888_SkColorType) {
+        } else if (!premul && ct == VX_COLOR_TYPE_RGBA_8888) {
             importProc = WebPPictureImportRGBA;
         }
 #ifdef WebPPictureImportBGRA
-        else if (!premul && ct == kBGRA_8888_SkColorType) {
+        else if (!premul && ct == VX_COLOR_TYPE_BGRA_8888) {
             importProc = WebPPictureImportBGRA;
         }
 #endif
         else {
             importProc = WebPPictureImportRGBA;
             auto info = pixmap.info()
-                                .makeColorType(kRGBA_8888_SkColorType)
+                                .makeColorType(VX_COLOR_TYPE_RGBA_8888)
                                 .makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
             if (!tmpBm.tryAllocPixels(info) ||
                 !pixmap.readPixels(tmpBm.info(), tmpBm.getPixels(), tmpBm.rowBytes())) {

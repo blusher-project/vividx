@@ -20,7 +20,7 @@ class GrContextThreadSafeProxy;
 class GrDirectContext;
 class GrImageContext;
 class GrRecordingContext;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTextureCompressionType;
 struct GrContextOptions;
 class GrBackendFormat;
@@ -46,7 +46,7 @@ public:
      *
      * The caller should check that the returned format is valid.
      */
-    SK_API GrBackendFormat defaultBackendFormat(SkColorType, GrRenderable) const;
+    SK_API GrBackendFormat defaultBackendFormat(vx_color_type, GrRenderable) const;
 
     SK_API GrBackendFormat compressedBackendFormat(SkTextureCompressionType) const;
 
@@ -55,7 +55,7 @@ public:
      * rendering is supported for the color type. 0 is returned if rendering to this color type
      * is not supported at all.
      */
-    SK_API int maxSurfaceSampleCountForColorType(SkColorType colorType) const;
+    SK_API int maxSurfaceSampleCountForColorType(vx_color_type colorType) const;
 
     // TODO: When the public version is gone, rename to refThreadSafeProxy and add raw ptr ver.
     sk_sp<GrContextThreadSafeProxy> threadSafeProxy();

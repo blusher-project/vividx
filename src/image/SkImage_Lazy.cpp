@@ -27,7 +27,7 @@
 
 class SkSurfaceProps;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 sk_sp<SharedGenerator> SharedGenerator::Make(std::unique_ptr<SkImageGenerator> gen) {
     return gen ? sk_sp<SharedGenerator>(new SharedGenerator(std::move(gen))) : nullptr;
@@ -44,7 +44,7 @@ bool SharedGenerator::isTextureGenerator() { return fGenerator->isTextureGenerat
 
 ///////////////////////////////////////////////////////////////////////////////
 
-SkImage_Lazy::Validator::Validator(sk_sp<SharedGenerator> gen, const SkColorType* colorType,
+SkImage_Lazy::Validator::Validator(sk_sp<SharedGenerator> gen, const vx_color_type* colorType,
                                    sk_sp<SkColorSpace> colorSpace)
         : fSharedGenerator(std::move(gen)) {
     if (!fSharedGenerator) {
@@ -215,7 +215,7 @@ sk_sp<SkSurface> SkImage_Lazy::onMakeSurface(SkRecorder* recorder, const SkImage
 }
 
 sk_sp<SkImage> SkImage_Lazy::makeColorTypeAndColorSpace(SkRecorder*,
-                                                        SkColorType targetColorType,
+                                                        vx_color_type targetColorType,
                                                         sk_sp<SkColorSpace> targetColorSpace,
                                                         RequiredProperties) const {
     SkAutoMutexExclusive autoAquire(fOnMakeColorTypeAndSpaceMutex);

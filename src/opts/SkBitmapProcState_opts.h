@@ -48,7 +48,7 @@ static void decode_packed_coordinates_and_weight(U32 packed, Out* v0, Out* v1, O
                                  const uint32_t* xy, int count, uint32_t* colors) {
         SkASSERT(count > 0 && colors != nullptr);
         SkASSERT(s.fBilerp);
-        SkASSERT(kN32_SkColorType == s.fPixmap.colorType());
+        SkASSERT(VX_COLOR_TYPE_N32 == s.fPixmap.colorType());
         SkASSERT(s.fAlphaScale <= 256);
 
         // interpolate_in_x() is the crux of the SSSE3 implementation,
@@ -187,7 +187,7 @@ static void decode_packed_coordinates_and_weight(U32 packed, Out* v0, Out* v1, O
                                  const uint32_t* xy, int count, uint32_t* colors) {
         SkASSERT(count > 0 && colors != nullptr);
         SkASSERT(s.fBilerp);
-        SkASSERT(kN32_SkColorType == s.fPixmap.colorType());
+        SkASSERT(VX_COLOR_TYPE_N32 == s.fPixmap.colorType());
         SkASSERT(s.fAlphaScale <= 256);
 
         int y0, y1, wy;
@@ -266,7 +266,7 @@ static void decode_packed_coordinates_and_weight(U32 packed, Out* v0, Out* v1, O
                                  const uint32_t* xy, int count, uint32_t* colors) {
         SkASSERT(count > 0 && colors != nullptr);
         SkASSERT(s.fBilerp);
-        SkASSERT(kN32_SkColorType == s.fPixmap.colorType());
+        SkASSERT(VX_COLOR_TYPE_N32 == s.fPixmap.colorType());
         SkASSERT(s.fAlphaScale <= 256);
 
         int y0, y1, wy;
@@ -351,7 +351,7 @@ static void decode_packed_coordinates_and_weight(U32 packed, Out* v0, Out* v1, O
                                  const uint32_t* xy, int count, uint32_t* colors) {
         SkASSERT(count > 0 && colors != nullptr);
         SkASSERT(s.fBilerp);
-        SkASSERT(kN32_SkColorType == s.fPixmap.colorType());
+        SkASSERT(VX_COLOR_TYPE_N32 == s.fPixmap.colorType());
         SkASSERT(s.fAlphaScale <= 256);
 
         int y0, y1, wy;

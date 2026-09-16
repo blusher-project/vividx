@@ -40,7 +40,7 @@ RasterMaskHelper::RasterMaskHelper(SkPixmap pixmap, SkIVector translation)
         , fRasterClip{SkIRect::MakeSize(pixmap.dimensions())} {
     SkASSERT(fPixels.addr());
     SkASSERT(!fPixels.info().dimensions().isEmpty());
-    SkASSERT(pixmap.colorType() == kAlpha_8_SkColorType);
+    SkASSERT(pixmap.colorType() == VX_COLOR_TYPE_ALPHA_8);
 
     fTranslate.fX = translation.fX;
     fTranslate.fY = translation.fY;

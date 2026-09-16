@@ -179,11 +179,11 @@ static SkCodec::Result reset_and_decode_image_config(wuffs_gif__decoder*       d
     //
     // For Skia, we override that to decode to 4 bytes per pixel, BGRA or RGBA.
     uint32_t pixfmt = WUFFS_BASE__PIXEL_FORMAT__INVALID;
-    switch (kN32_SkColorType) {
-        case kBGRA_8888_SkColorType:
+    switch (VX_COLOR_TYPE_N32) {
+        case VX_COLOR_TYPE_BGRA_8888:
             pixfmt = WUFFS_BASE__PIXEL_FORMAT__BGRA_NONPREMUL;
             break;
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             pixfmt = WUFFS_BASE__PIXEL_FORMAT__RGBA_NONPREMUL;
             break;
         default:
@@ -483,15 +483,15 @@ SkCodec::Result SkWuffsCodec::onStartIncrementalDecode(const SkImageInfo&      d
     size_t   bytesPerPixel = 0;
 
     switch (dstInfo.colorType()) {
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             pixelFormat = WUFFS_BASE__PIXEL_FORMAT__BGR_565;
             bytesPerPixel = 2;
             break;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             pixelFormat = WUFFS_BASE__PIXEL_FORMAT__BGRA_NONPREMUL;
             bytesPerPixel = 4;
             break;
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             pixelFormat = WUFFS_BASE__PIXEL_FORMAT__RGBA_NONPREMUL;
             bytesPerPixel = 4;
             break;

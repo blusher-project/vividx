@@ -433,7 +433,7 @@ void AddToKey(const KeyContext& keyContext, const PaintParams::SimpleImage& imag
 void AddFixedBlendMode(const KeyContext&, SkBlendMode);
 // Add a blend mode node for an SkBlendMode that can vary
 void AddBlendMode(const KeyContext&, SkBlendMode);
-void AddDitherBlock(const KeyContext&, SkColorType);
+void AddDitherBlock(const KeyContext&, vx_color_type);
 
 template <typename AddBlendToKeyT, typename AddSrcToKeyT, typename AddDstToKeyT>
 void Blend(const KeyContext& keyContext,

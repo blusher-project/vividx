@@ -22,7 +22,7 @@
 class SkSampler;
 class SkStream;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 struct SkImageInfo;
 
 /*
@@ -75,7 +75,7 @@ protected:
     }
 
 private:
-    bool createColorTable(SkColorType colorType, vx_alpha_type alphaType);
+    bool createColorTable(vx_color_type colorType, vx_alpha_type alphaType);
     SkEncodedInfo swizzlerInfo() const;
     void initializeSwizzler(const SkImageInfo& dstInfo, const Options& opts);
 

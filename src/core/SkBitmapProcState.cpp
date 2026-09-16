@@ -263,7 +263,7 @@ bool SkBitmapProcState::init(const SkMatrix& inv, SkAlpha paintAlpha,
 bool SkBitmapProcState::chooseProcs() {
     SkASSERT(!fInvMatrix.hasPerspective());
     SkASSERT(SkOpts::S32_alpha_D32_filter_DXDY || fInvMatrix.isScaleTranslate());
-    SkASSERT(fPixmap.colorType() == kN32_SkColorType);
+    SkASSERT(fPixmap.colorType() == VX_COLOR_TYPE_N32);
     SkASSERT(fPixmap.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED ||
              fPixmap.alphaType() == VX_ALPHA_TYPE_OPAQUE);
 
@@ -548,7 +548,7 @@ bool SkBitmapProcState::setupForTranslate() {
 
 SkBitmapProcState::ShaderProc32 SkBitmapProcState::chooseShaderProc32() {
 
-    if (kN32_SkColorType != fPixmap.colorType()) {
+    if (VX_COLOR_TYPE_N32 != fPixmap.colorType()) {
         return nullptr;
     }
 

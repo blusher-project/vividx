@@ -17,7 +17,7 @@
 
 #include <functional>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 namespace skgpu::graphite {
 

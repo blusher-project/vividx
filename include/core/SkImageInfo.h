@@ -31,14 +31,14 @@ class SkColorSpace;
 
     @return    bytes per pixel
 */
-SK_API int SkColorTypeBytesPerPixel(SkColorType ct);
+SK_API int SkColorTypeBytesPerPixel(vx_color_type ct);
 
 /** Returns true if SkColorType always decodes alpha to 1.0, making the pixel
     fully opaque. If true, SkColorType does not reserve bits to encode alpha.
 
     @return    true if alpha is always set to 1.0
 */
-SK_API bool SkColorTypeIsAlwaysOpaque(SkColorType ct);
+SK_API bool SkColorTypeIsAlwaysOpaque(vx_color_type ct);
 
 /** Returns true if canonical can be set to a valid SkAlphaType for colorType. If
     there is more than one valid canonical SkAlphaType, set to alphaType, if valid.
@@ -51,7 +51,7 @@ SK_API bool SkColorTypeIsAlwaysOpaque(SkColorType ct);
     @param canonical  storage for SkAlphaType
     @return           true if valid SkAlphaType can be associated with colorType
 */
-SK_API bool SkColorTypeValidateAlphaType(SkColorType colorType, vx_alpha_type alphaType,
+SK_API bool SkColorTypeValidateAlphaType(vx_color_type colorType, vx_alpha_type alphaType,
                                          vx_alpha_type* canonical = nullptr);
 
 /** \enum SkImageInfo::SkYUVColorSpace
@@ -98,7 +98,7 @@ public:
         combination is supported.
         @return        created SkColorInfo
     */
-    SkColorInfo(SkColorType ct, vx_alpha_type at, sk_sp<SkColorSpace> cs);
+    SkColorInfo(vx_color_type ct, vx_alpha_type at, sk_sp<SkColorSpace> cs);
 
     SkColorInfo(const SkColorInfo&);
     SkColorInfo(SkColorInfo&&);
@@ -108,7 +108,7 @@ public:
 
     SkColorSpace* colorSpace() const;
     sk_sp<SkColorSpace> refColorSpace() const;
-    SkColorType colorType() const { return fColorType; }
+    vx_color_type colorType() const { return fColorType; }
     vx_alpha_type alphaType() const { return fAlphaType; }
 
     bool isOpaque() const {
@@ -135,7 +135,7 @@ public:
     /** Creates new SkColorInfo with same SkAlphaType, SkColorSpace, with SkColorType
         set to newColorType.
     */
-    SkColorInfo makeColorType(SkColorType newColorType) const;
+    SkColorInfo makeColorType(vx_color_type newColorType) const;
 
     /** Creates SkColorInfo with same SkAlphaType, SkColorType, with SkColorSpace
         set to cs. cs may be nullptr.
@@ -162,7 +162,7 @@ public:
 
 private:
     sk_sp<SkColorSpace> fColorSpace;
-    SkColorType fColorType = kUnknown_SkColorType;
+    vx_color_type fColorType = VX_COLOR_TYPE_UNKNOWN;
     vx_alpha_type fAlphaType = VX_ALPHA_TYPE_UNKNOWN;
 };
 
@@ -200,11 +200,11 @@ public:
         @param cs      range of colors; may be nullptr
         @return        created SkImageInfo
     */
-    static SkImageInfo Make(int width, int height, SkColorType ct, vx_alpha_type at);
-    static SkImageInfo Make(int width, int height, SkColorType ct, vx_alpha_type at,
+    static SkImageInfo Make(int width, int height, vx_color_type ct, vx_alpha_type at);
+    static SkImageInfo Make(int width, int height, vx_color_type ct, vx_alpha_type at,
                             sk_sp<SkColorSpace> cs);
-    static SkImageInfo Make(SkISize dimensions, SkColorType ct, vx_alpha_type at);
-    static SkImageInfo Make(SkISize dimensions, SkColorType ct, vx_alpha_type at,
+    static SkImageInfo Make(SkISize dimensions, vx_color_type ct, vx_alpha_type at);
+    static SkImageInfo Make(SkISize dimensions, vx_color_type ct, vx_alpha_type at,
                             sk_sp<SkColorSpace> cs);
 
     /** Creates SkImageInfo from integral dimensions and SkColorInfo colorInfo,
@@ -341,7 +341,7 @@ public:
     */
     int height() const { return fDimensions.height(); }
 
-    SkColorType colorType() const { return fColorInfo.colorType(); }
+    vx_color_type colorType() const { return fColorInfo.colorType(); }
 
     vx_alpha_type alphaType() const { return fColorInfo.alphaType(); }
 
@@ -443,7 +443,7 @@ public:
 
         @return              created SkImageInfo
     */
-    SkImageInfo makeColorType(SkColorType newColorType) const {
+    SkImageInfo makeColorType(vx_color_type newColorType) const {
         return Make(fDimensions, fColorInfo.makeColorType(newColorType));
     }
 

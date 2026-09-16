@@ -846,17 +846,17 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
             switch (encodedInfo.bitsPerComponent()) {
                 case 1:
                     switch (dstInfo.colorType()) {
-                        case kRGBA_8888_SkColorType:
-                        case kBGRA_8888_SkColorType:
+                        case VX_COLOR_TYPE_RGBA_8888:
+                        case VX_COLOR_TYPE_BGRA_8888:
                             proc = &swizzle_bit_to_n32;
                             break;
-                        case kRGB_565_SkColorType:
+                        case VX_COLOR_TYPE_RGB_565:
                             proc = &swizzle_bit_to_565;
                             break;
-                        case kGray_8_SkColorType:
+                        case VX_COLOR_TYPE_GRAY_8:
                             proc = &swizzle_bit_to_grayscale;
                             break;
-                        case kRGBA_F16_SkColorType:
+                        case VX_COLOR_TYPE_RGBA_F16:
                             proc = &swizzle_bit_to_f16;
                             break;
                         default:
@@ -865,16 +865,16 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
                     break;
                 case 8:
                     switch (dstInfo.colorType()) {
-                        case kRGBA_8888_SkColorType:
-                        case kBGRA_8888_SkColorType:
+                        case VX_COLOR_TYPE_RGBA_8888:
+                        case VX_COLOR_TYPE_BGRA_8888:
                             proc = &swizzle_gray_to_n32;
                             fastProc = &fast_swizzle_gray_to_n32;
                             break;
-                        case kGray_8_SkColorType:
+                        case VX_COLOR_TYPE_GRAY_8:
                             proc = &sample1;
                             fastProc = &copy;
                             break;
-                        case kRGB_565_SkColorType:
+                        case VX_COLOR_TYPE_RGB_565:
                             proc = &swizzle_gray_to_565;
                             break;
                         default:
@@ -888,8 +888,8 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
         case SkEncodedInfo::kXAlpha_Color:
         case SkEncodedInfo::kGrayAlpha_Color:
             switch (dstInfo.colorType()) {
-                case kRGBA_8888_SkColorType:
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
+                case VX_COLOR_TYPE_BGRA_8888:
                     if (premultiply) {
                         if (SkCodec::kYes_ZeroInitialized == zeroInit) {
                             proc = &SkipLeadingGrayAlphaZerosThen
@@ -912,7 +912,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
                         }
                     }
                     break;
-                case kAlpha_8_SkColorType:
+                case VX_COLOR_TYPE_ALPHA_8:
                     proc = &swizzle_grayalpha_to_a8;
                     break;
                 default:
@@ -927,11 +927,11 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
                 case 2:
                 case 4:
                     switch (dstInfo.colorType()) {
-                        case kRGBA_8888_SkColorType:
-                        case kBGRA_8888_SkColorType:
+                        case VX_COLOR_TYPE_RGBA_8888:
+                        case VX_COLOR_TYPE_BGRA_8888:
                             proc = &swizzle_small_index_to_n32;
                             break;
-                        case kRGB_565_SkColorType:
+                        case VX_COLOR_TYPE_RGB_565:
                             proc = &swizzle_small_index_to_565;
                             break;
                         default:
@@ -940,16 +940,16 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
                     break;
                 case 8:
                     switch (dstInfo.colorType()) {
-                        case kRGBA_8888_SkColorType:
-                        case kBGRA_8888_SkColorType:
-                        case kBGR_101010x_XR_SkColorType:
+                        case VX_COLOR_TYPE_RGBA_8888:
+                        case VX_COLOR_TYPE_BGRA_8888:
+                        case VX_COLOR_TYPE_BGR_101010X_XR:
                             if (SkCodec::kYes_ZeroInitialized == zeroInit) {
                                 proc = &swizzle_index_to_n32_skipZ;
                             } else {
                                 proc = &swizzle_index_to_n32;
                             }
                             break;
-                        case kRGB_565_SkColorType:
+                        case VX_COLOR_TYPE_RGB_565:
                             proc = &swizzle_index_to_565;
                             break;
                         default:
@@ -966,7 +966,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
             // bits in each channel.
         case SkEncodedInfo::kRGB_Color:
             switch (dstInfo.colorType()) {
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     if (16 == encodedInfo.bitsPerComponent()) {
                         proc = &swizzle_rgb16_to_rgba;
                         break;
@@ -976,7 +976,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
                     proc = &swizzle_rgb_to_rgba;
                     fastProc = &fast_swizzle_rgb_to_rgba;
                     break;
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     if (16 == encodedInfo.bitsPerComponent()) {
                         proc = &swizzle_rgb16_to_bgra;
                         break;
@@ -986,7 +986,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
                     proc = &swizzle_rgb_to_bgra;
                     fastProc = &fast_swizzle_rgb_to_bgra;
                     break;
-                case kRGB_565_SkColorType:
+                case VX_COLOR_TYPE_RGB_565:
                     if (16 == encodedInfo.bitsPerComponent()) {
                         proc = &swizzle_rgb16_to_565;
                         break;
@@ -1000,7 +1000,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
             break;
         case SkEncodedInfo::kRGBA_Color:
             switch (dstInfo.colorType()) {
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     if (16 == encodedInfo.bitsPerComponent()) {
                         proc = premultiply ? &swizzle_rgba16_to_rgba_premul :
                                              &swizzle_rgba16_to_rgba_unpremul;
@@ -1027,7 +1027,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
                         }
                     }
                     break;
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     if (16 == encodedInfo.bitsPerComponent()) {
                         proc = premultiply ? &swizzle_rgba16_to_bgra_premul :
                                              &swizzle_rgba16_to_bgra_unpremul;
@@ -1061,15 +1061,15 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
             break;
         case SkEncodedInfo::kBGR_Color:
             switch (dstInfo.colorType()) {
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     proc = &swizzle_rgb_to_rgba;
                     fastProc = &fast_swizzle_rgb_to_rgba;
                     break;
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     proc = &swizzle_rgb_to_bgra;
                     fastProc = &fast_swizzle_rgb_to_bgra;
                     break;
-                case kRGB_565_SkColorType:
+                case VX_COLOR_TYPE_RGB_565:
                     proc = &swizzle_bgr_to_565;
                     break;
                 default:
@@ -1078,13 +1078,13 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
             break;
         case SkEncodedInfo::kBGRX_Color:
             switch (dstInfo.colorType()) {
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     proc = &swizzle_rgb_to_rgba;
                     break;
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     proc = &swizzle_rgb_to_bgra;
                     break;
-                case kRGB_565_SkColorType:
+                case VX_COLOR_TYPE_RGB_565:
                     proc = &swizzle_bgr_to_565;
                     break;
                 default:
@@ -1093,7 +1093,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
             break;
         case SkEncodedInfo::kBGRA_Color:
             switch (dstInfo.colorType()) {
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     if (premultiply) {
                         if (SkCodec::kYes_ZeroInitialized == zeroInit) {
                             proc = &SkipLeading8888ZerosThen<swizzle_rgba_to_rgba_premul>;
@@ -1113,7 +1113,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
                         }
                     }
                     break;
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     if (premultiply) {
                         if (SkCodec::kYes_ZeroInitialized == zeroInit) {
                             proc = &SkipLeading8888ZerosThen<swizzle_rgba_to_bgra_premul>;
@@ -1140,15 +1140,15 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
             break;
         case SkEncodedInfo::kInvertedCMYK_Color:
             switch (dstInfo.colorType()) {
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     proc = &swizzle_cmyk_to_rgba;
                     fastProc = &fast_swizzle_cmyk_to_rgba;
                     break;
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     proc = &swizzle_cmyk_to_bgra;
                     fastProc = &fast_swizzle_cmyk_to_bgra;
                     break;
-                case kRGB_565_SkColorType:
+                case VX_COLOR_TYPE_RGB_565:
                     proc = &swizzle_cmyk_to_565;
                     break;
                 default:

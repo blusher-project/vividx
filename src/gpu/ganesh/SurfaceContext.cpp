@@ -818,7 +818,7 @@ private:
 
 void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
                                      const SkIRect& rect,
-                                     SkColorType colorType,
+                                     vx_color_type colorType,
                                      ReadPixelsCallback callback,
                                      ReadPixelsContext callbackContext) {
     using AsyncReadResult = skgpu::TAsyncReadResult<GrGpuBuffer, GrDirectContext::DirectContextID,
@@ -917,7 +917,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     GrSurfaceProxyView srcView = this->readSurfaceView();
     if (needsRescale) {
         auto info = SkImageInfo::Make(dstSize,
-                                      kRGBA_8888_SkColorType,
+                                      VX_COLOR_TYPE_RGBA_8888,
                                       this->colorInfo().alphaType(),
                                       dstColorSpace);
         // TODO: Incorporate the YUV conversion into last pass of rescaling.

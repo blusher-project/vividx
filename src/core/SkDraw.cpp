@@ -376,7 +376,7 @@ void Draw::drawBitmap(const SkBitmap& bitmap,
     // nothing to draw
     if (fRC->isEmpty() ||
             bitmap.width() == 0 || bitmap.height() == 0 ||
-            bitmap.colorType() == kUnknown_SkColorType) {
+            bitmap.colorType() == VX_COLOR_TYPE_UNKNOWN) {
         return;
     }
 
@@ -425,7 +425,7 @@ void Draw::drawBitmap(const SkBitmap& bitmap,
     // inconsistent with the GPU backend (skbug.com/40041022). When this was fixed, it altered behavior
     // for some Android apps (b/231400686). Thus: keep the old behavior in the framework.
 #if defined(SK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE)
-    if (bitmap.colorType() == kAlpha_8_SkColorType && !paint->getColorFilter()) {
+    if (bitmap.colorType() == VX_COLOR_TYPE_ALPHA_8 && !paint->getColorFilter()) {
         draw.drawBitmapAsMask(bitmap, sampling, *paint, nullptr);
         return;
     }
@@ -447,7 +447,7 @@ void Draw::drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& origP
     // nothing to draw
     if (fRC->isEmpty() ||
             bitmap.width() == 0 || bitmap.height() == 0 ||
-            bitmap.colorType() == kUnknown_SkColorType) {
+            bitmap.colorType() == VX_COLOR_TYPE_UNKNOWN) {
         return;
     }
 
@@ -527,7 +527,7 @@ void Draw::drawBitmapAsMask(const SkBitmap& bitmap,
                             const SkSamplingOptions& sampling,
                             const SkPaint& paint,
                             const SkMatrix* paintMatrix) const {
-    SkASSERT(bitmap.colorType() == kAlpha_8_SkColorType);
+    SkASSERT(bitmap.colorType() == VX_COLOR_TYPE_ALPHA_8);
 
     // nothing to draw
     if (fRC->isEmpty()) {

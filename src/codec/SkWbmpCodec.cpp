@@ -36,12 +36,12 @@ static inline size_t get_src_row_bytes(int width) {
 
 static inline bool valid_color_type(const SkImageInfo& dstInfo) {
     switch (dstInfo.colorType()) {
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
-        case kGray_8_SkColorType:
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
+        case VX_COLOR_TYPE_GRAY_8:
+        case VX_COLOR_TYPE_RGB_565:
             return true;
-        case kRGBA_F16_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16:
             return dstInfo.colorSpace();
         default:
             return false;

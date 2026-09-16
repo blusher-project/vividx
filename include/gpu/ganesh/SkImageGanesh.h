@@ -28,7 +28,7 @@ struct SkIPoint;
 class SkPixmap;
 class SkYUVAPixmaps;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTextureCompressionType;
 struct SkIRect;
 
@@ -59,16 +59,16 @@ using TextureReleaseProc = void (*)(ReleaseContext);
 SK_API sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                        const GrBackendTexture& backendTexture,
                                        GrSurfaceOrigin textureOrigin,
-                                       SkColorType colorType);
+                                       vx_color_type colorType);
 SK_API sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                        const GrBackendTexture& backendTexture,
                                        GrSurfaceOrigin textureOrigin,
-                                       SkColorType colorType,
+                                       vx_color_type colorType,
                                        vx_alpha_type alphaType);
 SK_API sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                        const GrBackendTexture& backendTexture,
                                        GrSurfaceOrigin textureOrigin,
-                                       SkColorType colorType,
+                                       vx_color_type colorType,
                                        vx_alpha_type alphaType,
                                        sk_sp<SkColorSpace> colorSpace);
 
@@ -96,7 +96,7 @@ SK_API sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
 SK_API sk_sp<SkImage> BorrowTextureFrom(GrRecordingContext* context,
                                         const GrBackendTexture& backendTexture,
                                         GrSurfaceOrigin origin,
-                                        SkColorType colorType,
+                                        vx_color_type colorType,
                                         vx_alpha_type alphaType,
                                         sk_sp<SkColorSpace> colorSpace,
                                         TextureReleaseProc textureReleaseProc = nullptr,

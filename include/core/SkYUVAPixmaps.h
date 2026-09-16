@@ -77,7 +77,7 @@ public:
      * Gets the default SkColorType to use with numChannels channels, each represented as DataType.
      * Returns kUnknown_SkColorType if no such color type.
      */
-    static constexpr SkColorType DefaultColorTypeForDataType(DataType dataType, int numChannels);
+    static constexpr vx_color_type DefaultColorTypeForDataType(DataType dataType, int numChannels);
 
     /**
      * If the SkColorType is supported for YUVA pixmaps this will return the number of YUVA channels
@@ -85,7 +85,7 @@ public:
      * If the SkColorType is not supported as a YUVA plane the number of channels is reported as 0
      * and the DataType returned should be ignored.
      */
-    static std::tuple<int, DataType> NumChannelsAndDataType(SkColorType);
+    static std::tuple<int, DataType> NumChannelsAndDataType(vx_color_type);
 
     /** Default SkYUVAPixmapInfo is invalid. */
     SkYUVAPixmapInfo() = default;
@@ -100,7 +100,7 @@ public:
      * If rowBytes is nullptr then bpp*width is assumed for each plane.
      */
     SkYUVAPixmapInfo(const SkYUVAInfo&,
-                     const SkColorType[kMaxPlanes],
+                     const vx_color_type[kMaxPlanes],
                      const size_t rowBytes[kMaxPlanes]);
     /**
      * Like above but uses DefaultColorTypeForDataType to determine each plane's SkColorType. If
@@ -161,7 +161,7 @@ private:
     std::array<SkImageInfo, kMaxPlanes> fPlaneInfos = {};
     std::array<size_t, kMaxPlanes> fRowBytes = {};
     DataType fDataType = DataType::kUnorm8;
-    static_assert(kUnknown_SkColorType == 0, "default init isn't kUnknown");
+    static_assert(VX_COLOR_TYPE_UNKNOWN == 0, "default init isn't kUnknown");
 };
 
 /**
@@ -173,7 +173,7 @@ public:
     using DataType = SkYUVAPixmapInfo::DataType;
     static constexpr auto kMaxPlanes = SkYUVAPixmapInfo::kMaxPlanes;
 
-    static SkColorType RecommendedRGBAColorType(DataType);
+    static vx_color_type RecommendedRGBAColorType(DataType);
 
     /** Allocate space for pixmaps' pixels in the SkYUVAPixmaps. */
     static SkYUVAPixmaps Allocate(const SkYUVAPixmapInfo& yuvaPixmapInfo);
@@ -264,7 +264,7 @@ constexpr SkYUVAPixmapInfo::SupportedDataTypes SkYUVAPixmapInfo::SupportedDataTy
     for (ULL c = 1; c <= 4; ++c) {
         for (ULL dt = 0; dt <= ULL(kDataTypeCnt); ++dt) {
             if (DefaultColorTypeForDataType(static_cast<DataType>(dt),
-                                            static_cast<int>(c)) != kUnknown_SkColorType) {
+                                            static_cast<int>(c)) != VX_COLOR_TYPE_UNKNOWN) {
                 bits |= ULL(1) << (dt + static_cast<ULL>(kDataTypeCnt)*(c - 1));
             }
         }
@@ -288,23 +288,23 @@ constexpr bool SkYUVAPixmapInfo::SupportedDataTypes::supported(PlaneConfig confi
     return true;
 }
 
-constexpr SkColorType SkYUVAPixmapInfo::DefaultColorTypeForDataType(DataType dataType,
+constexpr vx_color_type SkYUVAPixmapInfo::DefaultColorTypeForDataType(DataType dataType,
                                                                     int numChannels) {
     switch (numChannels) {
         case 1:
             switch (dataType) {
-                case DataType::kUnorm8:         return kGray_8_SkColorType;
-                case DataType::kUnorm16:        return kA16_unorm_SkColorType;
-                case DataType::kFloat16:        return kA16_float_SkColorType;
-                case DataType::kUnorm10_Unorm2: return kUnknown_SkColorType;
+                case DataType::kUnorm8:         return VX_COLOR_TYPE_GRAY_8;
+                case DataType::kUnorm16:        return VX_COLOR_TYPE_A16_UNORM;
+                case DataType::kFloat16:        return VX_COLOR_TYPE_A16_FLOAT;
+                case DataType::kUnorm10_Unorm2: return VX_COLOR_TYPE_UNKNOWN;
             }
             break;
         case 2:
             switch (dataType) {
-                case DataType::kUnorm8:         return kR8G8_unorm_SkColorType;
-                case DataType::kUnorm16:        return kR16G16_unorm_SkColorType;
-                case DataType::kFloat16:        return kR16G16_float_SkColorType;
-                case DataType::kUnorm10_Unorm2: return kUnknown_SkColorType;
+                case DataType::kUnorm8:         return VX_COLOR_TYPE_R8G8_UNORM;
+                case DataType::kUnorm16:        return VX_COLOR_TYPE_R16G16_UNORM;
+                case DataType::kFloat16:        return VX_COLOR_TYPE_R16G16_FLOAT;
+                case DataType::kUnorm10_Unorm2: return VX_COLOR_TYPE_UNKNOWN;
             }
             break;
         case 3:
@@ -314,22 +314,22 @@ constexpr SkColorType SkYUVAPixmapInfo::DefaultColorTypeForDataType(DataType dat
             // choose them because 1) there is no inherent advantage and 2) there is better support
             // in the GPU backend for the "A" versions.
             switch (dataType) {
-                case DataType::kUnorm8:         return kRGBA_8888_SkColorType;
-                case DataType::kUnorm16:        return kR16G16B16A16_unorm_SkColorType;
-                case DataType::kFloat16:        return kRGBA_F16_SkColorType;
-                case DataType::kUnorm10_Unorm2: return kRGBA_1010102_SkColorType;
+                case DataType::kUnorm8:         return VX_COLOR_TYPE_RGBA_8888;
+                case DataType::kUnorm16:        return VX_COLOR_TYPE_R16G16B16A16_UNORM;
+                case DataType::kFloat16:        return VX_COLOR_TYPE_RGBA_F16;
+                case DataType::kUnorm10_Unorm2: return VX_COLOR_TYPE_RGBA_1010102;
             }
             break;
         case 4:
             switch (dataType) {
-                case DataType::kUnorm8:         return kRGBA_8888_SkColorType;
-                case DataType::kUnorm16:        return kR16G16B16A16_unorm_SkColorType;
-                case DataType::kFloat16:        return kRGBA_F16_SkColorType;
-                case DataType::kUnorm10_Unorm2: return kRGBA_1010102_SkColorType;
+                case DataType::kUnorm8:         return VX_COLOR_TYPE_RGBA_8888;
+                case DataType::kUnorm16:        return VX_COLOR_TYPE_R16G16B16A16_UNORM;
+                case DataType::kFloat16:        return VX_COLOR_TYPE_RGBA_F16;
+                case DataType::kUnorm10_Unorm2: return VX_COLOR_TYPE_RGBA_1010102;
             }
             break;
     }
-    return kUnknown_SkColorType;
+    return VX_COLOR_TYPE_UNKNOWN;
 }
 
 #endif

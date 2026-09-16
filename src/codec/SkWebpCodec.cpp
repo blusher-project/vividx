@@ -362,13 +362,13 @@ std::unique_ptr<SkCodec> SkWebpCodec::MakeFromStream(std::unique_ptr<SkStream> s
                                                     onlyHeaderParsed));
 }
 
-static WEBP_CSP_MODE webp_decode_mode(SkColorType dstCT, bool premultiply) {
+static WEBP_CSP_MODE webp_decode_mode(vx_color_type dstCT, bool premultiply) {
     switch (dstCT) {
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             return premultiply ? MODE_bgrA : MODE_BGRA;
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             return premultiply ? MODE_rgbA : MODE_RGBA;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             return MODE_RGB_565;
         default:
             return MODE_LAST;
@@ -504,10 +504,10 @@ bool SkWebpCodec::onGetFrameInfo(int i, FrameInfo* frameInfo) const {
     return true;
 }
 
-static bool is_8888(SkColorType colorType) {
+static bool is_8888(vx_color_type colorType) {
     switch (colorType) {
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
             return true;
         default:
             return false;
@@ -519,7 +519,7 @@ namespace {
 // Requires that the src input be unpremultiplied (or opaque).
 class RPBlender final : SkNoncopyable {
 public:
-    RPBlender(SkColorType dstCT, SkColorType srcCT, vx_alpha_type dstAt, bool srcHasAlpha)
+    RPBlender(vx_color_type dstCT, vx_color_type srcCT, vx_alpha_type dstAt, bool srcHasAlpha)
     {
         fRP.appendLoadDst(dstCT, &fDstCtx);
         if (VX_ALPHA_TYPE_UNPREMULTIPLIED == dstAt) {
@@ -672,7 +672,7 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
         // color transform swizzle if necessary.
         // Lossy webp is encoded as YUV (so RGBA and BGRA are the same cost).  Lossless webp is
         // encoded as BGRA. This means decoding to BGRA is either faster or the same cost as RGBA.
-        webpInfo = webpInfo.makeColorType(kBGRA_8888_SkColorType);
+        webpInfo = webpInfo.makeColorType(VX_COLOR_TYPE_BGRA_8888);
     }
 
     SkBitmap webpDst;

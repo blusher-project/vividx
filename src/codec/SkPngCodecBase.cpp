@@ -32,7 +32,7 @@
 
 namespace {
 
-constexpr SkColorType kXformSrcColorType = kRGBA_8888_SkColorType;
+constexpr vx_color_type kXformSrcColorType = VX_COLOR_TYPE_RGBA_8888;
 
 inline bool needs_premul(vx_alpha_type dstAT, SkEncodedInfo::Alpha encodedAlpha) {
     return VX_ALPHA_TYPE_PREMULTIPLIED == dstAT && SkEncodedInfo::kUnpremul_Alpha == encodedAlpha;
@@ -222,7 +222,7 @@ SkCodec::Result SkPngCodecBase::initializeSwizzler(const SkImageInfo& dstInfo,
     fXformMode = kSwizzleOnly_XformMode;
     if (this->colorXform() && this->xformOnDecode()) {
         if (SkEncodedInfo::kGray_Color == this->getEncodedInfo().color()) {
-            swizzlerInfo = swizzlerInfo.makeColorType(kGray_8_SkColorType);
+            swizzlerInfo = swizzlerInfo.makeColorType(VX_COLOR_TYPE_GRAY_8);
         } else {
             swizzlerInfo = swizzlerInfo.makeColorType(kXformSrcColorType);
         }
@@ -332,7 +332,7 @@ bool SkPngCodecBase::createColorTable(const SkImageInfo& dstInfo) {
     // Contents depend on tableColorType and our choice of if/when to premultiply:
     // { kPremul, kUnpremul, kOpaque } x { RGBA, BGRA }
     SkPMColor colorTable[kMaxCountOfPaletteEntries];
-    SkColorType tableColorType = this->colorXform() ? kXformSrcColorType : dstInfo.colorType();
+    vx_color_type tableColorType = this->colorXform() ? kXformSrcColorType : dstInfo.colorType();
 
     std::optional<SkSpan<const uint8_t>> maybeTrnsChunk = this->onTryGetTrnsChunk();
     const uint8_t* alphas = nullptr;

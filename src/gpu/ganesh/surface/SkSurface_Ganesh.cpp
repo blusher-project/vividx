@@ -255,7 +255,7 @@ bool SkSurface_Ganesh::onCharacterize(GrSurfaceCharacterization* characterizatio
     }
 
     SkImageInfo ii = fDevice->imageInfo();
-    if (ii.colorType() == kUnknown_SkColorType) {
+    if (ii.colorType() == VX_COLOR_TYPE_UNKNOWN) {
         return false;
     }
 
@@ -345,7 +345,7 @@ bool SkSurface_Ganesh::onIsCompatible(const GrSurfaceCharacterization& character
     }
 
     SkImageInfo ii = fDevice->imageInfo();
-    if (ii.colorType() == kUnknown_SkColorType) {
+    if (ii.colorType() == VX_COLOR_TYPE_UNKNOWN) {
         return false;
     }
 
@@ -624,7 +624,7 @@ sk_sp<SkSurface> WrapBackendTexture(GrRecordingContext* rContext,
                                     const GrBackendTexture& tex,
                                     GrSurfaceOrigin origin,
                                     int sampleCnt,
-                                    SkColorType colorType,
+                                    vx_color_type colorType,
                                     sk_sp<SkColorSpace> colorSpace,
                                     const SkSurfaceProps* props,
                                     TextureReleaseProc textureReleaseProc,
@@ -675,7 +675,7 @@ sk_sp<SkSurface> WrapBackendTexture(GrRecordingContext* rContext,
 sk_sp<SkSurface> WrapBackendRenderTarget(GrRecordingContext* rContext,
                                          const GrBackendRenderTarget& rt,
                                          GrSurfaceOrigin origin,
-                                         SkColorType colorType,
+                                         vx_color_type colorType,
                                          sk_sp<SkColorSpace> colorSpace,
                                          const SkSurfaceProps* props,
                                          RenderTargetReleaseProc relProc,

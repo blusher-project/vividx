@@ -218,7 +218,7 @@ public:
 
 static bool valid_for_bitmap_device(const SkImageInfo& info,
                                     vx_alpha_type* newAlphaType) {
-    if (info.width() < 0 || info.height() < 0 || kUnknown_SkColorType == info.colorType()) {
+    if (info.width() < 0 || info.height() < 0 || VX_COLOR_TYPE_UNKNOWN == info.colorType()) {
         return false;
     }
 
@@ -272,7 +272,7 @@ sk_sp<SkBitmapDevice> SkBitmapDevice::Create(const SkImageInfo& origInfo,
     const SkImageInfo info = origInfo.makeAlphaType(newAT);
     SkBitmap bitmap;
 
-    if (kUnknown_SkColorType == info.colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == info.colorType()) {
         if (!bitmap.setInfo(info)) {
             return nullptr;
         }
@@ -314,7 +314,7 @@ sk_sp<SkDevice> SkBitmapDevice::createDevice(const CreateInfo& cinfo, const SkPa
     if (layerPaint && layerPaint->getImageFilter()) {
         // TODO: can we query the imagefilter, to see if it can handle floats (so we don't always
         //       use N32 when the layer itself was float)?
-        info = info.makeColorType(kN32_SkColorType);
+        info = info.makeColorType(VX_COLOR_TYPE_N32);
     }
 
     return SkBitmapDevice::Create(info, surfaceProps, cinfo.fAllocator);
@@ -330,7 +330,7 @@ bool SkBitmapDevice::onAccessPixels(SkPixmap* pmap) {
 
 bool SkBitmapDevice::onPeekPixels(SkPixmap* pmap) {
     const SkImageInfo info = fBitmap.info();
-    if (fBitmap.getPixels() && (kUnknown_SkColorType != info.colorType())) {
+    if (fBitmap.getPixels() && (VX_COLOR_TYPE_UNKNOWN != info.colorType())) {
         pmap->reset(fBitmap.info(), fBitmap.getPixels(), fBitmap.rowBytes());
         return true;
     }

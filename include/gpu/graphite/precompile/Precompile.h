@@ -33,7 +33,7 @@ struct SK_API RenderPassProperties {
     bool operator!= (const RenderPassProperties& other) const { return !(*this == other); }
 
     DepthStencilFlags   fDSFlags      = DepthStencilFlags::kNone;
-    SkColorType         fDstCT        = kRGBA_8888_SkColorType;
+    vx_color_type         fDstCT        = VX_COLOR_TYPE_RGBA_8888;
     sk_sp<SkColorSpace> fDstCS        = nullptr;
     bool                fRequiresMSAA = false;
 };

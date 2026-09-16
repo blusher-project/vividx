@@ -329,7 +329,7 @@ static void pack4xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
                           const bool doBGR, const bool doVert) {
 #define SAMPLES_PER_PIXEL 4
 #define LCD_PER_PIXEL 3
-    SkASSERT(kAlpha_8_SkColorType == src.colorType());
+    SkASSERT(VX_COLOR_TYPE_ALPHA_8 == src.colorType());
 
     const bool toA8 = SkMask::kA8_Format == dst.fFormat;
     SkASSERT(SkMask::kLCD16_Format == dst.fFormat || toA8);

@@ -9,20 +9,20 @@
 
 namespace {
 static const struct {
-    SkColorType         colorType;
+    vx_color_type         colorType;
     AndroidBitmapFormat format;
 } gColorTypeTable[] = {
-    { kRGBA_8888_SkColorType, ANDROID_BITMAP_FORMAT_RGBA_8888 },
-    { kRGBA_F16_SkColorType,  ANDROID_BITMAP_FORMAT_RGBA_F16 },
-    { kRGB_565_SkColorType,   ANDROID_BITMAP_FORMAT_RGB_565 },
+    { VX_COLOR_TYPE_RGBA_8888, ANDROID_BITMAP_FORMAT_RGBA_8888 },
+    { VX_COLOR_TYPE_RGBA_F16,  ANDROID_BITMAP_FORMAT_RGBA_F16 },
+    { VX_COLOR_TYPE_RGB_565,   ANDROID_BITMAP_FORMAT_RGB_565 },
     // Android allows using its alpha 8 format to get 8 bit gray pixels.
-    { kGray_8_SkColorType,    ANDROID_BITMAP_FORMAT_A_8 },
+    { VX_COLOR_TYPE_GRAY_8,    ANDROID_BITMAP_FORMAT_A_8 },
 };
 
 } // anonymous namespace
 
 namespace SkNDKConversions {
-    AndroidBitmapFormat toAndroidBitmapFormat(SkColorType colorType) {
+    AndroidBitmapFormat toAndroidBitmapFormat(vx_color_type colorType) {
         for (const auto& entry : gColorTypeTable) {
             if (entry.colorType == colorType) {
                 return entry.format;
@@ -45,13 +45,13 @@ namespace SkNDKConversions {
         }
     }
 
-    SkColorType toColorType(AndroidBitmapFormat format) {
+    vx_color_type toColorType(AndroidBitmapFormat format) {
         for (const auto& entry : gColorTypeTable) {
             if (entry.format == format) {
                 return entry.colorType;
             }
         }
-        return kUnknown_SkColorType;
+        return VX_COLOR_TYPE_UNKNOWN;
     }
 
 } // SkNDKConversions

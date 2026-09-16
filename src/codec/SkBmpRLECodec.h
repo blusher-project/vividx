@@ -19,7 +19,7 @@
 #include <memory>
 
 class SkStream;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 struct SkEncodedInfo;
 struct SkImageInfo;
 
@@ -68,7 +68,7 @@ private:
      * Creates the color table
      * Sets colorCount to the new color count if it is non-nullptr
      */
-    bool createColorTable(SkColorType dstColorType);
+    bool createColorTable(vx_color_type dstColorType);
 
     bool initializeStreamBuffer();
 

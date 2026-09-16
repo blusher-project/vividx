@@ -16,7 +16,7 @@ class SkCanvas;
 class SkColorSpace;
 class SkMatrix;
 class SkPaint;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkScalerContextFlags : uint32_t;
 namespace sktext {
 class GlyphRunList;
@@ -28,7 +28,7 @@ class BitmapDevicePainter;
 
 class GlyphRunListPainter {
 public:
-    GlyphRunListPainter(const SkSurfaceProps& props, SkColorType colorType, SkColorSpace* cs);
+    GlyphRunListPainter(const SkSurfaceProps& props, vx_color_type colorType, SkColorSpace* cs);
 
     void drawForBitmapDevice(
             SkCanvas* canvas, const BitmapDevicePainter* bitmapDevice,
@@ -40,7 +40,7 @@ private:
 
     // The props for when the bitmap device can't draw LCD text.
     const SkSurfaceProps fBitmapFallbackProps;
-    const SkColorType fColorType;
+    const vx_color_type fColorType;
     const SkScalerContextFlags fScalerContextFlags;
 };
 

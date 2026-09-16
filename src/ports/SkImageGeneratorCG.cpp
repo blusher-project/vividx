@@ -118,7 +118,7 @@ sk_sp<const SkData> ImageGeneratorCG::onRefEncodedData() { return fData; }
 bool ImageGeneratorCG::onGetPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
                                    const Options&)
 {
-    if (kN32_SkColorType != info.colorType()) {
+    if (VX_COLOR_TYPE_N32 != info.colorType()) {
         // FIXME: Support other colorTypes.
         return false;
     }

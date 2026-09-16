@@ -154,7 +154,7 @@ public:
                                                 Protected,
                                                 Discardable) const;
 
-    TextureInfo getDefaultSampledTextureInfo(SkColorType,
+    TextureInfo getDefaultSampledTextureInfo(vx_color_type,
                                              Mipmapped,
                                              Protected,
                                              Renderable) const;
@@ -165,7 +165,7 @@ public:
                                                 Mipmapped,
                                                 Protected) const;
 
-    TextureInfo getDefaultStorageTextureInfo(SkColorType) const;
+    TextureInfo getDefaultStorageTextureInfo(vx_color_type) const;
 
     // Tries to return a sample count > 1 if needing MSAA to render into the target specification.
     // If the target is already multisampled, it will be that count; otherwise it will be the

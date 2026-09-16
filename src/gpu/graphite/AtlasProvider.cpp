@@ -56,7 +56,7 @@ ClipAtlasManager* AtlasProvider::getClipAtlasManager() const {
 sk_sp<TextureProxy> AtlasProvider::getAtlasTexture(Recorder* recorder,
                                                    uint16_t width,
                                                    uint16_t height,
-                                                   SkColorType colorType,
+                                                   vx_color_type colorType,
                                                    uint16_t identifier,
                                                    bool requireStorageUsage) {
     uint64_t key = static_cast<uint64_t>(width)  << 48 |

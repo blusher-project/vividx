@@ -21,7 +21,7 @@ class GrYUVABackendTextureInfo;
 class SkColorSpace;
 class SkImage;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum GrSurfaceOrigin : int;
 namespace skgpu {
 enum class Mipmapped : bool;
@@ -71,7 +71,7 @@ SK_API sk_sp<SkImage> PromiseTextureFrom(sk_sp<GrContextThreadSafeProxy> gpuCont
                                          SkISize dimensions,
                                          skgpu::Mipmapped mipmapped,
                                          GrSurfaceOrigin origin,
-                                         SkColorType colorType,
+                                         vx_color_type colorType,
                                          vx_alpha_type alphaType,
                                          sk_sp<SkColorSpace> colorSpace,
                                          PromiseImageTextureFulfillProc textureFulfillProc,

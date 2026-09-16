@@ -54,7 +54,7 @@ class SkSurfaceProps;
 class SkSurface_Ganesh;
 class SkVertices;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class GrAA : bool;
 enum class GrColorType;
 enum class SkBackingFit;
@@ -336,7 +336,7 @@ private:
     bool onAccessPixels(SkPixmap*) override;
 
     sk_sp<skif::Backend> createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
-                                                     SkColorType colorType) const override;
+                                                     vx_color_type colorType) const override;
 
     void onClipShader(sk_sp<SkShader> shader) override {
         fClip.clipShader(std::move(shader));

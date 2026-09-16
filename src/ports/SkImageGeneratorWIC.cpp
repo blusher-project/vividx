@@ -200,7 +200,7 @@ sk_sp<const SkData> ImageGeneratorWIC::onRefEncodedData() { return fData; }
 
 bool ImageGeneratorWIC::onGetPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
         const Options&) {
-    if (kN32_SkColorType != info.colorType()) {
+    if (VX_COLOR_TYPE_N32 != info.colorType()) {
         return false;
     }
 

@@ -10,10 +10,10 @@
 #include "src/codec/SkCodecPriv.h"
 
 SkImageInfo SkEncodedInfo::makeImageInfo() const {
-    auto ct =  kGray_Color == fColor ? kGray_8_SkColorType   :
-             kXAlpha_Color == fColor ? kAlpha_8_SkColorType  :
-                k565_Color == fColor ? kRGB_565_SkColorType  :
-                                       kN32_SkColorType      ;
+    auto ct =  kGray_Color == fColor ? VX_COLOR_TYPE_GRAY_8   :
+             kXAlpha_Color == fColor ? VX_COLOR_TYPE_ALPHA_8  :
+                k565_Color == fColor ? VX_COLOR_TYPE_RGB_565  :
+                                       VX_COLOR_TYPE_N32      ;
     auto alpha = kOpaque_Alpha == fAlpha ? VX_ALPHA_TYPE_OPAQUE
                                          : VX_ALPHA_TYPE_UNPREMULTIPLIED;
     auto cs = fColorProfile ? fColorProfile->getExactColorSpace() : SkColorSpace::MakeSRGB();

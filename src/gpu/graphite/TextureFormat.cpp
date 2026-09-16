@@ -354,11 +354,11 @@ bool TextureFormatIsMultiplanar(TextureFormat format) {
 // Supporting implementation details for TextureFormat and SkColorType conversions
 // ------------------------------------------------------------------------------------------------
 
-Swizzle ReadSwizzleForColorType(SkColorType ct, TextureFormat format) {
+Swizzle ReadSwizzleForColorType(vx_color_type ct, TextureFormat format) {
     // TODO(b/390473370): When data transfers can apply an RG swizzle outside of the
     // SkColorType representation, we should instead apply the swizzle on upload and
     // preserve the expected order for any GPU use.
-    if (ct == kARGB_4444_SkColorType && format == TextureFormat::kARGB4) {
+    if (ct == VX_COLOR_TYPE_ARGB_4444 && format == TextureFormat::kARGB4) {
         return Swizzle::BGRA();
     }
 
@@ -405,7 +405,7 @@ Swizzle ReadSwizzleForColorType(SkColorType ct, TextureFormat format) {
     }
 }
 
-std::optional<skgpu::Swizzle> WriteSwizzleForColorType(SkColorType ct, TextureFormat format) {
+std::optional<skgpu::Swizzle> WriteSwizzleForColorType(vx_color_type ct, TextureFormat format) {
     // D/S, compressed, external, and multiplanar formats aren't renderable with a color type.
     // Format support would mean we never really try to get here in practice, but keep consistent.
     if (format == TextureFormat::kExternal ||
@@ -418,7 +418,7 @@ std::optional<skgpu::Swizzle> WriteSwizzleForColorType(SkColorType ct, TextureFo
     // TODO(b/390473370): When data transfers can apply an RG swizzle outside of the
     // SkColorType representation, we should instead apply the swizzle on upload and
     // preserve the expected order for any GPU use.
-    if (ct == kARGB_4444_SkColorType && format == TextureFormat::kARGB4) {
+    if (ct == VX_COLOR_TYPE_ARGB_4444 && format == TextureFormat::kARGB4) {
         return Swizzle::BGRA();
     }
 
@@ -457,14 +457,14 @@ std::optional<skgpu::Swizzle> WriteSwizzleForColorType(SkColorType ct, TextureFo
     }
 }
 
-SkSpan<const TextureFormat> PreferredTextureFormats(SkColorType ct) {
+SkSpan<const TextureFormat> PreferredTextureFormats(vx_color_type ct) {
     #define N(...) std::size({__VA_ARGS__})
     #define CASE(C, ...) case C: { \
             static const std::array<TextureFormat, N(__VA_ARGS__)> kFormats{{__VA_ARGS__}}; \
             return SkSpan(kFormats); }
 
     switch (ct) {
-        case kUnknown_SkColorType:  return {};
+        case VX_COLOR_TYPE_UNKNOWN:  return {};
         // NOTE: Not all backends support all TextureFormats. Some of the more advanced formats
         // may not be supported at all and have no viable fallback. For color types that have
         // equivalent texture formats differing only in RGB vs. BGR swizzle, we allow both
@@ -472,37 +472,37 @@ SkSpan<const TextureFormat> PreferredTextureFormats(SkColorType ct) {
         // types, we only match to red-channel formats as they have the broadest support.
 
         //   SkColorType                    | TextureFormat(s)...
-        CASE(kAlpha_8_SkColorType,            TF::kR8)
+        CASE(VX_COLOR_TYPE_ALPHA_8,            TF::kR8)
         // NOTE: kRGB_565_SkColorType is misnamed and natively matches B5_G6_R5
-        CASE(kRGB_565_SkColorType,            TF::kB5_G6_R5,   TF::kR5_G6_B5)
+        CASE(VX_COLOR_TYPE_RGB_565,            TF::kB5_G6_R5,   TF::kR5_G6_B5)
         // NOTE: kARGB_4444_SkColorType is misnamed and natively matches ABGR4
-        CASE(kARGB_4444_SkColorType,          TF::kABGR4,      TF::kARGB4)
-        CASE(kRGBA_8888_SkColorType,          TF::kRGBA8,      TF::kBGRA8)
-        CASE(kRGB_888x_SkColorType,           TF::kRGB8,       TF::kRGBA8,      TF::kBGRA8)
-        CASE(kBGRA_8888_SkColorType,          TF::kBGRA8,      TF::kRGBA8)
-        CASE(kRGBA_1010102_SkColorType,       TF::kRGB10_A2,   TF::kBGR10_A2)
-        CASE(kBGRA_1010102_SkColorType,       TF::kBGR10_A2,   TF::kRGB10_A2)
-        CASE(kRGB_101010x_SkColorType,        TF::kRGB10_A2,   TF::kBGR10_A2)
-        CASE(kBGR_101010x_SkColorType,        TF::kBGR10_A2,   TF::kRGB10_A2)
-        CASE(kBGR_101010x_XR_SkColorType,     TF::kBGR10_XR)
-        CASE(kBGRA_10101010_XR_SkColorType,   TF::kBGRA10x6_XR)
-        CASE(kRGBA_10x6_SkColorType,          TF::kRGBA10x6)
-        CASE(kGray_8_SkColorType,             TF::kR8)
-        CASE(kRGBA_F16Norm_SkColorType,       TF::kRGBA16F)
-        CASE(kRGBA_F16_SkColorType,           TF::kRGBA16F)
-        CASE(kRGB_F16F16F16x_SkColorType,     TF::kRGBA16F)
-        CASE(kRGBA_F32_SkColorType,           TF::kRGBA32F)
-        CASE(kR8G8_unorm_SkColorType,         TF::kRG8)
-        CASE(kA16_float_SkColorType,          TF::kR16F)
-        CASE(kR16_float_SkColorType,          TF::kR16F)
-        CASE(kR16G16_float_SkColorType,       TF::kRG16F)
-        CASE(kA16_unorm_SkColorType,          TF::kR16)
-        CASE(kR16_unorm_SkColorType,          TF::kR16)
-        CASE(kR16G16_unorm_SkColorType,       TF::kRG16)
-        CASE(kR16G16B16A16_unorm_SkColorType, TF::kRGBA16)
-        CASE(kSRGBA_8888_SkColorType,         TF::kRGBA8_sRGB,
+        CASE(VX_COLOR_TYPE_ARGB_4444,          TF::kABGR4,      TF::kARGB4)
+        CASE(VX_COLOR_TYPE_RGBA_8888,          TF::kRGBA8,      TF::kBGRA8)
+        CASE(VX_COLOR_TYPE_RGB_888X,           TF::kRGB8,       TF::kRGBA8,      TF::kBGRA8)
+        CASE(VX_COLOR_TYPE_BGRA_8888,          TF::kBGRA8,      TF::kRGBA8)
+        CASE(VX_COLOR_TYPE_RGBA_1010102,       TF::kRGB10_A2,   TF::kBGR10_A2)
+        CASE(VX_COLOR_TYPE_BGRA_1010102,       TF::kBGR10_A2,   TF::kRGB10_A2)
+        CASE(VX_COLOR_TYPE_RGB_101010X,        TF::kRGB10_A2,   TF::kBGR10_A2)
+        CASE(VX_COLOR_TYPE_BGR_101010X,        TF::kBGR10_A2,   TF::kRGB10_A2)
+        CASE(VX_COLOR_TYPE_BGR_101010X_XR,     TF::kBGR10_XR)
+        CASE(VX_COLOR_TYPE_BGRA_10101010_XR,   TF::kBGRA10x6_XR)
+        CASE(VX_COLOR_TYPE_RGBA_10X6,          TF::kRGBA10x6)
+        CASE(VX_COLOR_TYPE_GRAY_8,             TF::kR8)
+        CASE(VX_COLOR_TYPE_RGBA_F16NORM,       TF::kRGBA16F)
+        CASE(VX_COLOR_TYPE_RGBA_F16,           TF::kRGBA16F)
+        CASE(VX_COLOR_TYPE_RGB_F16F16F16X,     TF::kRGBA16F)
+        CASE(VX_COLOR_TYPE_RGBA_F32,           TF::kRGBA32F)
+        CASE(VX_COLOR_TYPE_R8G8_UNORM,         TF::kRG8)
+        CASE(VX_COLOR_TYPE_A16_FLOAT,          TF::kR16F)
+        CASE(VX_COLOR_TYPE_R16_FLOAT,          TF::kR16F)
+        CASE(VX_COLOR_TYPE_R16G16_FLOAT,       TF::kRG16F)
+        CASE(VX_COLOR_TYPE_A16_UNORM,          TF::kR16)
+        CASE(VX_COLOR_TYPE_R16_UNORM,          TF::kR16)
+        CASE(VX_COLOR_TYPE_R16G16_UNORM,       TF::kRG16)
+        CASE(VX_COLOR_TYPE_R16G16B16A16_UNORM, TF::kRGBA16)
+        CASE(VX_COLOR_TYPE_SRGBA_8888,         TF::kRGBA8_sRGB,
                                               TF::kBGRA8_sRGB)
-        CASE(kR8_unorm_SkColorType,           TF::kR8)
+        CASE(VX_COLOR_TYPE_R8_UNORM,           TF::kR8)
     }
 
     SkUNREACHABLE;
@@ -510,83 +510,83 @@ SkSpan<const TextureFormat> PreferredTextureFormats(SkColorType ct) {
     #undef N
 }
 
-std::pair<SkColorType, SkEnumBitMask<FormatXferOp>>
+std::pair<vx_color_type, SkEnumBitMask<FormatXferOp>>
 TextureFormatColorTypeInfo(TextureFormat format) {
     #define CASE(TF, CT, Ops) case TF: return {CT, Ops};
     using X = FormatXferOp;
 
     switch (format) {
         //   TextureFormat      | SkColorType                    | FormatXferOp(s)
-        CASE(TF::kUnsupported,    kUnknown_SkColorType,            X::kDisabled)
+        CASE(TF::kUnsupported,    VX_COLOR_TYPE_UNKNOWN,            X::kDisabled)
 
-        CASE(TF::kR8,             kR8_unorm_SkColorType,           X::kIdentity)
-        CASE(TF::kR16,            kR16_unorm_SkColorType,          X::kIdentity)
-        CASE(TF::kR16F,           kR16_float_SkColorType,          X::kIdentity)
-        CASE(TF::kR32F,           kR16_float_SkColorType,          X::kDisabled)
-        CASE(TF::kA8,             kAlpha_8_SkColorType,            X::kIdentity)
-        CASE(TF::kRG8,            kR8G8_unorm_SkColorType,         X::kIdentity)
-        CASE(TF::kRG16,           kR16G16_unorm_SkColorType,       X::kIdentity)
-        CASE(TF::kRG16F,          kR16G16_float_SkColorType,       X::kIdentity)
-        CASE(TF::kRG32F,          kR16G16_float_SkColorType,       X::kDisabled)
-        CASE(TF::kRGB8,           kRGB_888x_SkColorType,           X::kDropAlpha)
-        CASE(TF::kBGR8,           kRGB_888x_SkColorType,           X::kSwapRB | X::kDropAlpha)
+        CASE(TF::kR8,             VX_COLOR_TYPE_R8_UNORM,           X::kIdentity)
+        CASE(TF::kR16,            VX_COLOR_TYPE_R16_UNORM,          X::kIdentity)
+        CASE(TF::kR16F,           VX_COLOR_TYPE_R16_FLOAT,          X::kIdentity)
+        CASE(TF::kR32F,           VX_COLOR_TYPE_R16_FLOAT,          X::kDisabled)
+        CASE(TF::kA8,             VX_COLOR_TYPE_ALPHA_8,            X::kIdentity)
+        CASE(TF::kRG8,            VX_COLOR_TYPE_R8G8_UNORM,         X::kIdentity)
+        CASE(TF::kRG16,           VX_COLOR_TYPE_R16G16_UNORM,       X::kIdentity)
+        CASE(TF::kRG16F,          VX_COLOR_TYPE_R16G16_FLOAT,       X::kIdentity)
+        CASE(TF::kRG32F,          VX_COLOR_TYPE_R16G16_FLOAT,       X::kDisabled)
+        CASE(TF::kRGB8,           VX_COLOR_TYPE_RGB_888X,           X::kDropAlpha)
+        CASE(TF::kBGR8,           VX_COLOR_TYPE_RGB_888X,           X::kSwapRB | X::kDropAlpha)
         // NOTE: kRGB_565_SkColorType is misnamed and natively matches TextureFormat::kB5_G6_R5
-        CASE(TF::kB5_G6_R5,       kRGB_565_SkColorType,            X::kIdentity)
-        CASE(TF::kR5_G6_B5,       kRGB_565_SkColorType,            X::kSwapRB)
-        CASE(TF::kRGB16,          kR16G16B16A16_unorm_SkColorType, X::kDropAlpha)
-        CASE(TF::kRGB16F,         kRGB_F16F16F16x_SkColorType,     X::kDropAlpha)
-        CASE(TF::kRGB32F,         kRGBA_F32_SkColorType,           X::kDropAlpha)
-        CASE(TF::kRGB8_sRGB,      kSRGBA_8888_SkColorType,         X::kDropAlpha)
-        CASE(TF::kBGR10_XR,       kBGR_101010x_XR_SkColorType,     X::kIdentity)
-        CASE(TF::kRGBA8,          kRGBA_8888_SkColorType,          X::kIdentity)
-        CASE(TF::kRGBA16,         kR16G16B16A16_unorm_SkColorType, X::kIdentity)
-        CASE(TF::kRGBA16F,        kRGBA_F16_SkColorType,           X::kIdentity)
-        CASE(TF::kRGBA32F,        kRGBA_F32_SkColorType,           X::kIdentity)
-        CASE(TF::kRGB10_A2,       kRGBA_1010102_SkColorType,       X::kIdentity)
-        CASE(TF::kRGBA10x6,       kRGBA_10x6_SkColorType,          X::kIdentity)
-        CASE(TF::kRGBA8_sRGB,     kSRGBA_8888_SkColorType,         X::kIdentity)
-        CASE(TF::kBGRA8,          kBGRA_8888_SkColorType,          X::kIdentity)
-        CASE(TF::kBGR10_A2,       kBGRA_1010102_SkColorType,       X::kIdentity)
-        CASE(TF::kBGRA8_sRGB,     kSRGBA_8888_SkColorType,         X::kSwapRB)
+        CASE(TF::kB5_G6_R5,       VX_COLOR_TYPE_RGB_565,            X::kIdentity)
+        CASE(TF::kR5_G6_B5,       VX_COLOR_TYPE_RGB_565,            X::kSwapRB)
+        CASE(TF::kRGB16,          VX_COLOR_TYPE_R16G16B16A16_UNORM, X::kDropAlpha)
+        CASE(TF::kRGB16F,         VX_COLOR_TYPE_RGB_F16F16F16X,     X::kDropAlpha)
+        CASE(TF::kRGB32F,         VX_COLOR_TYPE_RGBA_F32,           X::kDropAlpha)
+        CASE(TF::kRGB8_sRGB,      VX_COLOR_TYPE_SRGBA_8888,         X::kDropAlpha)
+        CASE(TF::kBGR10_XR,       VX_COLOR_TYPE_BGR_101010X_XR,     X::kIdentity)
+        CASE(TF::kRGBA8,          VX_COLOR_TYPE_RGBA_8888,          X::kIdentity)
+        CASE(TF::kRGBA16,         VX_COLOR_TYPE_R16G16B16A16_UNORM, X::kIdentity)
+        CASE(TF::kRGBA16F,        VX_COLOR_TYPE_RGBA_F16,           X::kIdentity)
+        CASE(TF::kRGBA32F,        VX_COLOR_TYPE_RGBA_F32,           X::kIdentity)
+        CASE(TF::kRGB10_A2,       VX_COLOR_TYPE_RGBA_1010102,       X::kIdentity)
+        CASE(TF::kRGBA10x6,       VX_COLOR_TYPE_RGBA_10X6,          X::kIdentity)
+        CASE(TF::kRGBA8_sRGB,     VX_COLOR_TYPE_SRGBA_8888,         X::kIdentity)
+        CASE(TF::kBGRA8,          VX_COLOR_TYPE_BGRA_8888,          X::kIdentity)
+        CASE(TF::kBGR10_A2,       VX_COLOR_TYPE_BGRA_1010102,       X::kIdentity)
+        CASE(TF::kBGRA8_sRGB,     VX_COLOR_TYPE_SRGBA_8888,         X::kSwapRB)
         // NOTE: kARGB_4444_SkColorType is misnamed and natively matches TextureFormat::kABGR4
-        CASE(TF::kABGR4,          kARGB_4444_SkColorType,          X::kIdentity)
-        CASE(TF::kARGB4,          kARGB_4444_SkColorType,          X::kSwapRB)
-        CASE(TF::kBGRA10x6_XR,    kBGRA_10101010_XR_SkColorType,   X::kIdentity)
+        CASE(TF::kABGR4,          VX_COLOR_TYPE_ARGB_4444,          X::kIdentity)
+        CASE(TF::kARGB4,          VX_COLOR_TYPE_ARGB_4444,          X::kSwapRB)
+        CASE(TF::kBGRA10x6_XR,    VX_COLOR_TYPE_BGRA_10101010_XR,   X::kIdentity)
 
         // Compressed, multi-planar, and external formats can't exactly describe their data as
         // an SkColorType (although transfers with specialized data could be allowed).
-        CASE(TF::kRGB8_ETC2,      kRGB_888x_SkColorType,           X::kDisabled)
-        CASE(TF::kRGB8_ETC2_sRGB, kSRGBA_8888_SkColorType,         X::kDisabled)
-        CASE(TF::kRGB8_BC1,       kRGB_888x_SkColorType,           X::kDisabled)
-        CASE(TF::kRGBA8_BC1,      kRGBA_8888_SkColorType,          X::kDisabled)
-        CASE(TF::kRGBA8_BC1_sRGB, kSRGBA_8888_SkColorType,         X::kDisabled)
-        CASE(TF::kYUV8_P2_420,    kRGB_888x_SkColorType,           X::kDisabled)
-        CASE(TF::kYUV8_P3_420,    kRGB_888x_SkColorType,           X::kDisabled)
-        CASE(TF::kYUV10x6_P2_420, kRGBA_10x6_SkColorType,          X::kDisabled)
-        CASE(TF::kYUV8_P2_422,    kRGB_888x_SkColorType,           X::kDisabled)
-        CASE(TF::kYUV8_P3_422,    kRGB_888x_SkColorType,           X::kDisabled)
-        CASE(TF::kYUV10x6_P2_422, kRGBA_10x6_SkColorType,          X::kDisabled)
-        CASE(TF::kYUV8_P2_444,    kRGB_888x_SkColorType,           X::kDisabled)
-        CASE(TF::kYUV8_P3_444,    kRGB_888x_SkColorType,           X::kDisabled)
-        CASE(TF::kYUV10x6_P2_444, kRGBA_10x6_SkColorType,          X::kDisabled)
-        CASE(TF::kExternal,       kRGBA_8888_SkColorType,          X::kDisabled)
+        CASE(TF::kRGB8_ETC2,      VX_COLOR_TYPE_RGB_888X,           X::kDisabled)
+        CASE(TF::kRGB8_ETC2_sRGB, VX_COLOR_TYPE_SRGBA_8888,         X::kDisabled)
+        CASE(TF::kRGB8_BC1,       VX_COLOR_TYPE_RGB_888X,           X::kDisabled)
+        CASE(TF::kRGBA8_BC1,      VX_COLOR_TYPE_RGBA_8888,          X::kDisabled)
+        CASE(TF::kRGBA8_BC1_sRGB, VX_COLOR_TYPE_SRGBA_8888,         X::kDisabled)
+        CASE(TF::kYUV8_P2_420,    VX_COLOR_TYPE_RGB_888X,           X::kDisabled)
+        CASE(TF::kYUV8_P3_420,    VX_COLOR_TYPE_RGB_888X,           X::kDisabled)
+        CASE(TF::kYUV10x6_P2_420, VX_COLOR_TYPE_RGBA_10X6,          X::kDisabled)
+        CASE(TF::kYUV8_P2_422,    VX_COLOR_TYPE_RGB_888X,           X::kDisabled)
+        CASE(TF::kYUV8_P3_422,    VX_COLOR_TYPE_RGB_888X,           X::kDisabled)
+        CASE(TF::kYUV10x6_P2_422, VX_COLOR_TYPE_RGBA_10X6,          X::kDisabled)
+        CASE(TF::kYUV8_P2_444,    VX_COLOR_TYPE_RGB_888X,           X::kDisabled)
+        CASE(TF::kYUV8_P3_444,    VX_COLOR_TYPE_RGB_888X,           X::kDisabled)
+        CASE(TF::kYUV10x6_P2_444, VX_COLOR_TYPE_RGBA_10X6,          X::kDisabled)
+        CASE(TF::kExternal,       VX_COLOR_TYPE_RGBA_8888,          X::kDisabled)
 
         // Non color texture formats can't be used with SkColorType
-        CASE(TF::kS8,             kUnknown_SkColorType,            X::kDisabled)
-        CASE(TF::kD16,            kUnknown_SkColorType,            X::kDisabled)
-        CASE(TF::kD32F,           kUnknown_SkColorType,            X::kDisabled)
-        CASE(TF::kD24_S8,         kUnknown_SkColorType,            X::kDisabled)
-        CASE(TF::kD32F_S8,        kUnknown_SkColorType,            X::kDisabled)
+        CASE(TF::kS8,             VX_COLOR_TYPE_UNKNOWN,            X::kDisabled)
+        CASE(TF::kD16,            VX_COLOR_TYPE_UNKNOWN,            X::kDisabled)
+        CASE(TF::kD32F,           VX_COLOR_TYPE_UNKNOWN,            X::kDisabled)
+        CASE(TF::kD24_S8,         VX_COLOR_TYPE_UNKNOWN,            X::kDisabled)
+        CASE(TF::kD32F_S8,        VX_COLOR_TYPE_UNKNOWN,            X::kDisabled)
     }
 
     SkUNREACHABLE;
     #undef CASE
 }
 
-bool AreColorTypeAndFormatCompatible(SkColorType targetColorType, TextureFormat format) {
+bool AreColorTypeAndFormatCompatible(vx_color_type targetColorType, TextureFormat format) {
     // If the format maps to the color type, they are compatible
     auto [baseColorType, _] = TextureFormatColorTypeInfo(format);
-    if (baseColorType != kUnknown_SkColorType && baseColorType == targetColorType) {
+    if (baseColorType != VX_COLOR_TYPE_UNKNOWN && baseColorType == targetColorType) {
         return true; // shortcut
     }
 
@@ -600,8 +600,8 @@ bool AreColorTypeAndFormatCompatible(SkColorType targetColorType, TextureFormat 
     // Also allow kRGB_888x if kRGBA_8888 is compatible since RGBx is just a swizzle. This is almost
     // always handled by the combination of base color type and preferred formats, but for external
     // and compressed formats those two functions aren't quite descriptive enough.
-    if (targetColorType == kRGB_888x_SkColorType &&
-        AreColorTypeAndFormatCompatible(kRGBA_8888_SkColorType, format)) {
+    if (targetColorType == VX_COLOR_TYPE_RGB_888X &&
+        AreColorTypeAndFormatCompatible(VX_COLOR_TYPE_RGBA_8888, format)) {
         return true;
     }
 

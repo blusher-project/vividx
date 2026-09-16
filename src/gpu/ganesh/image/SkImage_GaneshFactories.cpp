@@ -66,7 +66,7 @@
 #include <tuple>
 #include <utility>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTextureCompressionType;
 
 namespace SkImages {
@@ -163,7 +163,7 @@ sk_sp<SkImage> TextureFromCompressedTexture(GrRecordingContext* context,
 
     SkTextureCompressionType type =
             GrBackendFormatToCompressionType(backendTexture.getBackendFormat());
-    SkColorType ct = skgpu::CompressionTypeToSkColorType(type);
+    vx_color_type ct = skgpu::CompressionTypeToSkColorType(type);
 
     GrSurfaceProxyView view(std::move(proxy), origin, skgpu::Swizzle::RGBA());
     return sk_make_sp<SkImage_Ganesh>(sk_ref_sp(context),
@@ -202,7 +202,7 @@ static sk_sp<SkImage> new_wrapped_texture_common(GrRecordingContext* rContext,
 sk_sp<SkImage> BorrowTextureFrom(GrRecordingContext* context,
                                  const GrBackendTexture& backendTexture,
                                  GrSurfaceOrigin origin,
-                                 SkColorType colorType,
+                                 vx_color_type colorType,
                                  vx_alpha_type alphaType,
                                  sk_sp<SkColorSpace> colorSpace,
                                  TextureReleaseProc textureReleaseProc,
@@ -238,7 +238,7 @@ sk_sp<SkImage> BorrowTextureFrom(GrRecordingContext* context,
 sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                 const GrBackendTexture& backendTexture,
                                 GrSurfaceOrigin textureOrigin,
-                                SkColorType colorType) {
+                                vx_color_type colorType) {
     return AdoptTextureFrom(
             context, backendTexture, textureOrigin, colorType, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
 }
@@ -246,7 +246,7 @@ sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
 sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                 const GrBackendTexture& backendTexture,
                                 GrSurfaceOrigin textureOrigin,
-                                SkColorType colorType,
+                                vx_color_type colorType,
                                 vx_alpha_type alphaType) {
     return AdoptTextureFrom(context, backendTexture, textureOrigin, colorType, alphaType, nullptr);
 }
@@ -254,7 +254,7 @@ sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
 sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                 const GrBackendTexture& backendTexture,
                                 GrSurfaceOrigin origin,
-                                SkColorType colorType,
+                                vx_color_type colorType,
                                 vx_alpha_type alphaType,
                                 sk_sp<SkColorSpace> colorSpace) {
     auto dContext = GrAsDirectContext(context);
@@ -313,7 +313,7 @@ sk_sp<SkImage> TextureFromCompressedTextureData(GrDirectContext* direct,
     }
     GrSurfaceProxyView view(std::move(proxy));
 
-    SkColorType colorType = skgpu::CompressionTypeToSkColorType(type);
+    vx_color_type colorType = skgpu::CompressionTypeToSkColorType(type);
 
     return sk_make_sp<SkImage_Ganesh>(sk_ref_sp(direct),
                                       kNeedNewImageUniqueID,
@@ -326,7 +326,7 @@ sk_sp<SkImage> PromiseTextureFrom(sk_sp<GrContextThreadSafeProxy> threadSafeProx
                                   SkISize dimensions,
                                   skgpu::Mipmapped mipmapped,
                                   GrSurfaceOrigin origin,
-                                  SkColorType colorType,
+                                  vx_color_type colorType,
                                   vx_alpha_type alphaType,
                                   sk_sp<SkColorSpace> colorSpace,
                                   PromiseImageTextureFulfillProc textureFulfillProc,
@@ -427,7 +427,7 @@ sk_sp<SkImage> CrossContextTextureFromPixmap(GrDirectContext* dContext,
 
     std::unique_ptr<GrSemaphore> sema = gpu->prepareTextureForCrossContextUsage(texture.get());
 
-    SkColorType skCT = GrColorTypeToSkColorType(ct);
+    vx_color_type skCT = GrColorTypeToSkColorType(ct);
     auto gen = GrBackendTextureImageGenerator::Make(std::move(texture),
                                                     view.origin(),
                                                     std::move(sema),

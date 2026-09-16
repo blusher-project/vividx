@@ -17,6 +17,8 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 
+#include <vividx/core/color-type.h>
+
 const SkBlender* GetBlendModeSingleton(SkBlendMode mode) {
 #define RETURN_SINGLETON_BLENDER(m)                            \
     case m: {                                                  \

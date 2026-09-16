@@ -71,7 +71,7 @@ sk_sp<Image> Surface::asImage() const {
     return fImageView;
 }
 
-sk_sp<Image> Surface::asImage(SkColorType otherCT, vx_alpha_type otherAT) const {
+sk_sp<Image> Surface::asImage(vx_color_type otherCT, vx_alpha_type otherAT) const {
     // No conversion, save a malloc.
     if (otherCT == fImageView->colorType() && otherAT == fImageView->alphaType()) {
         return fImageView;
@@ -271,8 +271,8 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
     // WrapBackendTexture assumes kPremul_SkAlphaType.
     // TODO(michaelludwig): Add alpha type to select between opaque (red) vs premul (alpha-only).
     switch(colorType) {
-        case kR8_unorm_SkColorType:  colorType = kAlpha_8_SkColorType;   break;
-        case kR16_unorm_SkColorType: colorType = kA16_unorm_SkColorType; break;
+        case VX_COLOR_TYPE_R8_UNORM:  colorType = VX_COLOR_TYPE_ALPHA_8;   break;
+        case VX_COLOR_TYPE_R16_UNORM: colorType = VX_COLOR_TYPE_A16_UNORM; break;
         default: break;
     }
     return WrapBackendTexture(recorder, backendTex, colorType, std::move(cs), props,
@@ -281,7 +281,7 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
 
 sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
                                     const BackendTexture& backendTex,
-                                    SkColorType ct,
+                                    vx_color_type ct,
                                     sk_sp<SkColorSpace> cs,
                                     const SkSurfaceProps* props,
                                     TextureReleaseProc releaseP,

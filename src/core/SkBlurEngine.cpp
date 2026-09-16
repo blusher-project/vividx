@@ -1178,7 +1178,7 @@ public:
             return nullptr; // Should only have been called by CPU-backed images
         }
         // The blur engine should not have picked this algorithm for a non-8-bit color type.
-        SkASSERT(src.colorType() == kAlpha_8_SkColorType);
+        SkASSERT(src.colorType() == VX_COLOR_TYPE_ALPHA_8);
 
         // 1024 is a place holder guess until more analysis can be done.
         SkSTArenaAlloc<1024> alloc;
@@ -1241,8 +1241,8 @@ public:
             return nullptr; // Should only have been called by CPU-backed images
         }
         // The blur engine should not have picked this algorithm for a non-32-bit color type
-        SkASSERT(src.colorType() == kRGBA_8888_SkColorType ||
-                 src.colorType() == kBGRA_8888_SkColorType);
+        SkASSERT(src.colorType() == VX_COLOR_TYPE_RGBA_8888 ||
+                 src.colorType() == VX_COLOR_TYPE_BGRA_8888);
 
         SkSTArenaAlloc<1024> alloc;
         auto makeMaker = [&](float sigma) -> PassMaker* {
@@ -1282,11 +1282,11 @@ public:
 
 class RasterBlurEngine : public SkBlurEngine {
 public:
-    const Algorithm* findAlgorithm(SkSize sigma,  SkColorType colorType) const override {
+    const Algorithm* findAlgorithm(SkSize sigma,  vx_color_type colorType) const override {
         // The box blur doesn't actually care about channel order as long as it's 4 8-bit channels.
-        const bool rgba8Blur = colorType == kRGBA_8888_SkColorType ||
-                               colorType == kBGRA_8888_SkColorType;
-        const bool a8Blur = colorType == kAlpha_8_SkColorType;
+        const bool rgba8Blur = colorType == VX_COLOR_TYPE_RGBA_8888 ||
+                               colorType == VX_COLOR_TYPE_BGRA_8888;
+        const bool a8Blur = colorType == VX_COLOR_TYPE_ALPHA_8;
 
         // For small sigmas, a8 and rgba blurs will use a gaussian blur, otherwise using
         // box blur approximation.

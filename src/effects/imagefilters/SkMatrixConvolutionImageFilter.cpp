@@ -206,7 +206,7 @@ SkBitmap create_kernel_bitmap(const SkISize& kernelSize, const float* kernel,
 
     SkBitmap kernelBM;
     if (!kernelBM.tryAllocPixels(SkImageInfo::Make({ quantizedKernelSize, 1 },
-                                                   kAlpha_8_SkColorType,
+                                                   VX_COLOR_TYPE_ALPHA_8,
                                                    VX_ALPHA_TYPE_PREMULTIPLIED))) {
         // OOM so return an empty bitmap, which will be detected later on in onFilterImage().
         return {};

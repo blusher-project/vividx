@@ -400,7 +400,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
     switch (bitsPerPixel) {
         case 16:
             switch (dstInfo.colorType()) {
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     if (srcIsOpaque) {
                         proc = &swizzle_mask16_to_rgba_opaque;
                     } else {
@@ -416,7 +416,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         }
                     }
                     break;
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     if (srcIsOpaque) {
                         proc = &swizzle_mask16_to_bgra_opaque;
                     } else {
@@ -432,7 +432,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         }
                     }
                     break;
-                case kRGB_565_SkColorType:
+                case VX_COLOR_TYPE_RGB_565:
                     proc = &swizzle_mask16_to_565;
                     break;
                 default:
@@ -441,7 +441,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
             break;
         case 24:
             switch (dstInfo.colorType()) {
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     if (srcIsOpaque) {
                         proc = &swizzle_mask24_to_rgba_opaque;
                     } else {
@@ -457,7 +457,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         }
                     }
                     break;
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     if (srcIsOpaque) {
                         proc = &swizzle_mask24_to_bgra_opaque;
                     } else {
@@ -473,7 +473,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         }
                     }
                     break;
-                case kRGB_565_SkColorType:
+                case VX_COLOR_TYPE_RGB_565:
                     proc = &swizzle_mask24_to_565;
                     break;
                 default:
@@ -482,7 +482,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
             break;
         case 32:
             switch (dstInfo.colorType()) {
-                case kRGBA_8888_SkColorType:
+                case VX_COLOR_TYPE_RGBA_8888:
                     if (srcIsOpaque) {
                         proc = &swizzle_mask32_to_rgba_opaque;
                     } else {
@@ -498,7 +498,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         }
                     }
                     break;
-                case kBGRA_8888_SkColorType:
+                case VX_COLOR_TYPE_BGRA_8888:
                     if (srcIsOpaque) {
                         proc = &swizzle_mask32_to_bgra_opaque;
                     } else {
@@ -514,7 +514,7 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         }
                     }
                     break;
-                case kRGB_565_SkColorType:
+                case VX_COLOR_TYPE_RGB_565:
                     proc = &swizzle_mask32_to_565;
                     break;
                 default:

@@ -650,7 +650,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
 
 GrBackendTexture GrDirectContext::createBackendTexture(int width,
                                                        int height,
-                                                       SkColorType skColorType,
+                                                       vx_color_type skColorType,
                                                        skgpu::Mipmapped mipmapped,
                                                        GrRenderable renderable,
                                                        GrProtected isProtected,
@@ -762,7 +762,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(int width,
 
 GrBackendTexture GrDirectContext::createBackendTexture(int width,
                                                        int height,
-                                                       SkColorType skColorType,
+                                                       vx_color_type skColorType,
                                                        const SkColor4f& color,
                                                        skgpu::Mipmapped mipmapped,
                                                        GrRenderable renderable,
@@ -815,7 +815,7 @@ GrBackendTexture GrDirectContext::createBackendTexture(const SkPixmap srcData[],
         return {};
     }
 
-    SkColorType colorType = srcData[0].colorType();
+    vx_color_type colorType = srcData[0].colorType();
 
     skgpu::Mipmapped mipmapped = skgpu::Mipmapped::kNo;
     if (numProvidedLevels > 1) {
@@ -872,7 +872,7 @@ bool GrDirectContext::updateBackendTexture(const GrBackendTexture& backendTextur
 }
 
 bool GrDirectContext::updateBackendTexture(const GrBackendTexture& backendTexture,
-                                           SkColorType skColorType,
+                                           vx_color_type skColorType,
                                            const SkColor4f& color,
                                            GrGpuFinishedProc finishedProc,
                                            GrGpuFinishedContext finishedContext) {

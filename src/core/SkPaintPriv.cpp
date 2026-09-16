@@ -110,18 +110,18 @@ bool SkPaintPriv::Overwrites(const SkPaint* paint, ShaderOverrideOpacity overrid
     return blend_mode_is_opaque(bm.value(), opacityType);
 }
 
-bool SkPaintPriv::ShouldDither(const SkPaint& p, SkColorType dstCT) {
+bool SkPaintPriv::ShouldDither(const SkPaint& p, vx_color_type dstCT) {
     // The paint dither flag can veto.
     if (!p.isDither()) {
         return false;
     }
 
-    if (dstCT == kUnknown_SkColorType) {
+    if (dstCT == VX_COLOR_TYPE_UNKNOWN) {
         return false;
     }
 
     // We always dither 565 or 4444 when requested.
-    if (dstCT == kRGB_565_SkColorType || dstCT == kARGB_4444_SkColorType) {
+    if (dstCT == VX_COLOR_TYPE_RGB_565 || dstCT == VX_COLOR_TYPE_ARGB_4444) {
         return true;
     }
 

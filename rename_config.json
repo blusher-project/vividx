@@ -2,7 +2,8 @@
   "enum_types": {
     "CommonColor": "mylib_common_color",
     "SkYUVColorSpace": "vx_yuv_color_space",
-    "SkAlphaType": "vx_alpha_type"
+    "SkAlphaType": "vx_alpha_type",
+    "SkColorType": "vx_color_type"
   },
   "enum_constants": {
     "kColorRed_CommonColor": "COMMON_COLOR_COLOR_RED",
@@ -50,6 +51,38 @@
     "kPremul_SkAlphaType": "VX_ALPHA_TYPE_PREMULTIPLIED",
     "kUnpremul_SkAlphaType": "VX_ALPHA_TYPE_UNPREMULTIPLIED",
     "kLastEnum_SkAlphaType": "VX_ALPHA_TYPE_LASTENUM",
+
+    "kUnknown_SkColorType": "VX_COLOR_TYPE_UNKNOWN",
+    "kAlpha_8_SkColorType": "VX_COLOR_TYPE_ALPHA_8",
+    "kRGB_565_SkColorType": "VX_COLOR_TYPE_RGB_565",
+    "kARGB_4444_SkColorType": "VX_COLOR_TYPE_ARGB_4444",
+    "kRGBA_8888_SkColorType": "VX_COLOR_TYPE_RGBA_8888",
+    "kRGB_888x_SkColorType": "VX_COLOR_TYPE_RGB_888X",
+    "kBGRA_8888_SkColorType": "VX_COLOR_TYPE_BGRA_8888",
+    "kRGBA_1010102_SkColorType": "VX_COLOR_TYPE_RGBA_1010102",
+    "kBGRA_1010102_SkColorType": "VX_COLOR_TYPE_BGRA_1010102",
+    "kRGB_101010x_SkColorType": "VX_COLOR_TYPE_RGB_101010X",
+    "kBGR_101010x_SkColorType": "VX_COLOR_TYPE_BGR_101010X",
+    "kBGR_101010x_XR_SkColorType": "VX_COLOR_TYPE_BGR_101010X_XR",
+    "kBGRA_10101010_XR_SkColorType": "VX_COLOR_TYPE_BGRA_10101010_XR",
+    "kRGBA_10x6_SkColorType": "VX_COLOR_TYPE_RGBA_10X6",
+    "kGray_8_SkColorType": "VX_COLOR_TYPE_GRAY_8",
+    "kRGBA_F16Norm_SkColorType": "VX_COLOR_TYPE_RGBA_F16NORM",
+    "kRGBA_F16_SkColorType": "VX_COLOR_TYPE_RGBA_F16",
+    "kRGB_F16F16F16x_SkColorType": "VX_COLOR_TYPE_RGB_F16F16F16X",
+    "kRGBA_F32_SkColorType": "VX_COLOR_TYPE_RGBA_F32",
+    "kR8G8_unorm_SkColorType": "VX_COLOR_TYPE_R8G8_UNORM",
+    "kA16_float_SkColorType": "VX_COLOR_TYPE_A16_FLOAT",
+    "kR16_float_SkColorType": "VX_COLOR_TYPE_R16_FLOAT",
+    "kR16G16_float_SkColorType": "VX_COLOR_TYPE_R16G16_FLOAT",
+    "kA16_unorm_SkColorType": "VX_COLOR_TYPE_A16_UNORM",
+    "kR16_unorm_SkColorType": "VX_COLOR_TYPE_R16_UNORM",
+    "kR16G16_unorm_SkColorType": "VX_COLOR_TYPE_R16G16_UNORM",
+    "kR16G16B16A16_unorm_SkColorType": "VX_COLOR_TYPE_R16G16B16A16_UNORM",
+    "kSRGBA_8888_SkColorType": "VX_COLOR_TYPE_SRGBA_8888",
+    "kR8_unorm_SkColorType": "VX_COLOR_TYPE_R8_UNORM",
+    "kLastEnum_SkColorType": "VX_COLOR_TYPE_LASTENUM",
+    "kN32_SkColorType": "VX_COLOR_TYPE_N32",
 
     "_LAST": "_LAST"
   }

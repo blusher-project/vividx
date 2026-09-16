@@ -62,15 +62,15 @@ public:
      * Can a SkSurface be created with the given color type. To check whether MSAA is supported
      * use maxSurfaceSampleCountForColorType().
      */
-    SK_API bool colorTypeSupportedAsSurface(SkColorType colorType) const {
-        if (colorType == kR16G16_unorm_SkColorType       ||
-            colorType == kA16_unorm_SkColorType          ||
-            colorType == kA16_float_SkColorType          ||
-            colorType == kR16_unorm_SkColorType          ||
-            colorType == kR16_float_SkColorType          ||
-            colorType == kR16G16_float_SkColorType       ||
-            colorType == kR16G16B16A16_unorm_SkColorType ||
-            colorType == kGray_8_SkColorType) {
+    SK_API bool colorTypeSupportedAsSurface(vx_color_type colorType) const {
+        if (colorType == VX_COLOR_TYPE_R16G16_UNORM       ||
+            colorType == VX_COLOR_TYPE_A16_UNORM          ||
+            colorType == VX_COLOR_TYPE_A16_FLOAT          ||
+            colorType == VX_COLOR_TYPE_R16_UNORM          ||
+            colorType == VX_COLOR_TYPE_R16_FLOAT          ||
+            colorType == VX_COLOR_TYPE_R16G16_FLOAT       ||
+            colorType == VX_COLOR_TYPE_R16G16B16A16_UNORM ||
+            colorType == VX_COLOR_TYPE_GRAY_8) {
             return false;
         }
 
@@ -90,7 +90,7 @@ public:
     /**
      * Can a SkImage be created with the given color type.
      */
-    SK_API bool colorTypeSupportedAsImage(SkColorType) const;
+    SK_API bool colorTypeSupportedAsImage(vx_color_type) const;
 
     /**
      * Does this context support protected content?
@@ -102,7 +102,7 @@ public:
      * rendering is supported for the color type. 0 is returned if rendering to this color type
      * is not supported at all.
      */
-    SK_API int maxSurfaceSampleCountForColorType(SkColorType colorType) const {
+    SK_API int maxSurfaceSampleCountForColorType(vx_color_type colorType) const {
         return GrImageContext::maxSurfaceSampleCountForColorType(colorType);
     }
 

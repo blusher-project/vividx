@@ -16,3 +16,4 @@ skia_use_metal=false
 skia_enable_skparagraph=false
 skia_use_perfetto=false
 cxx="clang++"
+extra_cflags=["-ftime-trace"]

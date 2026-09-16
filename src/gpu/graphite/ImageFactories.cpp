@@ -71,7 +71,7 @@ bool validate_backend_texture(const Caps* caps,
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
-                           SkColorType ct,
+                           vx_color_type ct,
                            vx_alpha_type at,
                            sk_sp<SkColorSpace> cs,
                            skgpu::Origin origin,
@@ -152,9 +152,9 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     // be interpreted as an alpha texture; if it's opaque then it'll be red.
     if (at == VX_ALPHA_TYPE_PREMULTIPLIED || at == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         switch (ct) {
-            case kR8_unorm_SkColorType: ct = kAlpha_8_SkColorType; break;
-            case kR16_unorm_SkColorType: ct = kA16_unorm_SkColorType; break;
-            case kR16_float_SkColorType: ct = kA16_float_SkColorType; break;
+            case VX_COLOR_TYPE_R8_UNORM: ct = VX_COLOR_TYPE_ALPHA_8; break;
+            case VX_COLOR_TYPE_R16_UNORM: ct = VX_COLOR_TYPE_A16_UNORM; break;
+            case VX_COLOR_TYPE_R16_FLOAT: ct = VX_COLOR_TYPE_A16_FLOAT; break;
             default: break; // no adjustment
         }
     }
@@ -170,10 +170,10 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
             swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle::RGB1());
             // Patch `ct` if possible:
             switch (ct) {
-                case kRGBA_8888_SkColorType:    ct = kRGB_888x_SkColorType; break;
-                case kRGBA_1010102_SkColorType: ct = kRGB_101010x_SkColorType; break;
-                case kBGRA_1010102_SkColorType: ct = kBGR_101010x_SkColorType; break;
-                case kRGBA_F16_SkColorType:     ct = kRGB_F16F16F16x_SkColorType; break;
+                case VX_COLOR_TYPE_RGBA_8888:    ct = VX_COLOR_TYPE_RGB_888X; break;
+                case VX_COLOR_TYPE_RGBA_1010102: ct = VX_COLOR_TYPE_RGB_101010X; break;
+                case VX_COLOR_TYPE_BGRA_1010102: ct = VX_COLOR_TYPE_BGR_101010X; break;
+                case VX_COLOR_TYPE_RGBA_F16:     ct = VX_COLOR_TYPE_RGB_F16F16F16X; break;
                 default: break; // no further adjustment
             }
         }
@@ -214,7 +214,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
-                           SkColorType ct,
+                           vx_color_type ct,
                            vx_alpha_type at,
                            sk_sp<SkColorSpace> cs,
                            skgpu::Origin origin,
@@ -235,7 +235,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
-                           SkColorType ct,
+                           vx_color_type ct,
                            vx_alpha_type at,
                            sk_sp<SkColorSpace> cs,
                            TextureReleaseProc releaseP,

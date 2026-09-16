@@ -25,7 +25,7 @@ class SkColorSpace;
 class SkRecorder;
 enum GrSurfaceOrigin : int;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class GrImageTexGenPolicy : int;
 struct SkImageInfo;
 
@@ -49,7 +49,7 @@ enum class Mipmapped : bool;
 class GrBackendTextureImageGenerator final : public GrTextureGenerator {
 public:
     static std::unique_ptr<GrTextureGenerator> Make(const sk_sp<GrTexture>&, GrSurfaceOrigin,
-                                                    std::unique_ptr<GrSemaphore>, SkColorType,
+                                                    std::unique_ptr<GrSemaphore>, vx_color_type,
                                                     vx_alpha_type, sk_sp<SkColorSpace>);
 
     ~GrBackendTextureImageGenerator() override;

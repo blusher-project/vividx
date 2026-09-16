@@ -22,7 +22,7 @@
 class Sprite_D32_S32 : public SkSpriteBlitter {
 public:
     Sprite_D32_S32(const SkPixmap& src, U8CPU alpha)  : INHERITED(src) {
-        SkASSERT(src.colorType() == kN32_SkColorType);
+        SkASSERT(src.colorType() == VX_COLOR_TYPE_N32);
 
         unsigned flags32 = 0;
         if (255 != alpha) {
@@ -71,7 +71,7 @@ SkSpriteBlitter* SkSpriteBlitter::ChooseL32(const SkPixmap& source, const SkPain
     if (paint.getMaskFilter() != nullptr) {
         return nullptr;
     }
-    if (source.colorType() == kN32_SkColorType && paint.isSrcOver()) {
+    if (source.colorType() == VX_COLOR_TYPE_N32 && paint.isSrcOver()) {
         // this can handle alpha, but not xfermode
         return allocator->make<Sprite_D32_S32>(source, paint.getAlpha());
     }

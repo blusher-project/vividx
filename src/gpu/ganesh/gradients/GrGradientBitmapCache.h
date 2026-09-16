@@ -19,7 +19,7 @@
 class SkBitmap;
 class SkColorSpace;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 class GrGradientBitmapCache : SkNoncopyable {
 public:
@@ -35,7 +35,7 @@ public:
                      const SkGradient::Interpolation& interpolation,
                      const SkColorSpace* intermediateColorSpace,
                      const SkColorSpace* dstColorSpace,
-                     SkColorType colorType,
+                     vx_color_type colorType,
                      vx_alpha_type alphaType,
                      SkBitmap* bitmap);
 

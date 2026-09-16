@@ -49,7 +49,7 @@ static unsigned gImageFromPictureKeyNamespaceLabel;
 
 struct ImageFromPictureKey : public SkResourceCache::Key {
 public:
-    ImageFromPictureKey(SkColorSpace* colorSpace, SkColorType colorType,
+    ImageFromPictureKey(SkColorSpace* colorSpace, vx_color_type colorType,
                         uint32_t pictureID, const SkRect& subset,
                         SkSize scale, const SkSurfaceProps& surfaceProps)
         : fColorSpaceXYZHash(colorSpace->toXYZD50Hash())
@@ -180,7 +180,7 @@ static sk_sp<SkColorSpace> ref_or_srgb(SkColorSpace* cs) {
 SkPictureShader::CachedImageInfo SkPictureShader::CachedImageInfo::Make(
         const SkRect& bounds,
         const SkMatrix& totalM,
-        SkColorType dstColorType,
+        vx_color_type dstColorType,
         SkColorSpace* dstColorSpace,
         const int maxTextureSize,
         const SkSurfaceProps& propsIn) {
@@ -229,9 +229,9 @@ SkPictureShader::CachedImageInfo SkPictureShader::CachedImageInfo::Make(
     const SkSize tileScale = {tileSize.width() / bounds.width(),
                               tileSize.height() / bounds.height()};
     auto imgCS = ref_or_srgb(dstColorSpace);
-    const SkColorType imgCT = SkColorTypeMaxBitsPerChannel(dstColorType) <= 8
-                                      ? kRGBA_8888_SkColorType
-                                      : kRGBA_F16Norm_SkColorType;
+    const vx_color_type imgCT = SkColorTypeMaxBitsPerChannel(dstColorType) <= 8
+                                      ? VX_COLOR_TYPE_RGBA_8888
+                                      : VX_COLOR_TYPE_RGBA_F16NORM;
 
     return {true,
             tileScale,
@@ -257,7 +257,7 @@ sk_sp<SkImage> SkPictureShader::CachedImageInfo::makeImage(sk_sp<SkSurface> surf
 // Returns a cached image shader, which wraps a single picture tile at the given CTM/local matrix.
 // Also adjusts the local matrix for tile scaling.
 sk_sp<SkShader> SkPictureShader::rasterShader(const SkMatrix& totalM,
-                                              SkColorType dstColorType,
+                                              vx_color_type dstColorType,
                                               SkColorSpace* dstColorSpace,
                                               const SkSurfaceProps& propsIn) const {
     const int maxTextureSize_NotUsedForCPU = 0;

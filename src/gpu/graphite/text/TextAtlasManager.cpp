@@ -202,7 +202,7 @@ static void get_packed_glyph_image(
         };
         constexpr int a565Bpp = MaskFormatBytesPerPixel(MaskFormat::kA565);
         constexpr int argbBpp = MaskFormatBytesPerPixel(MaskFormat::kARGB);
-        constexpr bool kBGRAIsNative = kN32_SkColorType == kBGRA_8888_SkColorType;
+        constexpr bool kBGRAIsNative = VX_COLOR_TYPE_N32 == VX_COLOR_TYPE_BGRA_8888;
         char* dstRow = (char*)dst;
         for (int y = 0; y < height; y++) {
             dst = dstRow;
@@ -236,7 +236,7 @@ static void get_packed_glyph_image(
 
 MaskFormat TextAtlasManager::resolveMaskFormat(MaskFormat format) const {
     if (MaskFormat::kA565 == format &&
-        !fRecorder->priv().caps()->getDefaultSampledTextureInfo(kRGB_565_SkColorType,
+        !fRecorder->priv().caps()->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGB_565,
                                                                 /*mipmapped=*/Mipmapped::kNo,
                                                                 Protected::kNo,
                                                                 Renderable::kNo).isValid()) {

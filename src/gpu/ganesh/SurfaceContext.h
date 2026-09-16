@@ -40,7 +40,7 @@ class GrRecordingContextPriv;
 class GrTransferFromRenderTask;
 class SkColorSpace;
 enum GrSurfaceOrigin : int;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class GrColorType;
 struct SkIPoint;
 struct SkImageInfo;
@@ -224,7 +224,7 @@ protected:
     // The async read step of asyncRescaleAndReadPixels()
     void asyncReadPixels(GrDirectContext*,
                          const SkIRect& srcRect,
-                         SkColorType,
+                         vx_color_type,
                          ReadPixelsCallback,
                          ReadPixelsContext);
 

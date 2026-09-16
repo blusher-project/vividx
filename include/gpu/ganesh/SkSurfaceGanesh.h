@@ -20,7 +20,7 @@ class GrRecordingContext;
 class SkColorSpace;
 class GrSurfaceCharacterization;
 class SkSurfaceProps;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 namespace skgpu {
 enum class Budgeted : bool;
 }
@@ -126,7 +126,7 @@ SK_API sk_sp<SkSurface> WrapBackendTexture(GrRecordingContext* context,
                                            const GrBackendTexture& backendTexture,
                                            GrSurfaceOrigin origin,
                                            int sampleCnt,
-                                           SkColorType colorType,
+                                           vx_color_type colorType,
                                            sk_sp<SkColorSpace> colorSpace,
                                            const SkSurfaceProps* surfaceProps,
                                            TextureReleaseProc textureReleaseProc = nullptr,
@@ -158,7 +158,7 @@ SK_API sk_sp<SkSurface> WrapBackendTexture(GrRecordingContext* context,
 SK_API sk_sp<SkSurface> WrapBackendRenderTarget(GrRecordingContext* context,
                                                 const GrBackendRenderTarget& backendRenderTarget,
                                                 GrSurfaceOrigin origin,
-                                                SkColorType colorType,
+                                                vx_color_type colorType,
                                                 sk_sp<SkColorSpace> colorSpace,
                                                 const SkSurfaceProps* surfaceProps,
                                                 RenderTargetReleaseProc releaseProc = nullptr,

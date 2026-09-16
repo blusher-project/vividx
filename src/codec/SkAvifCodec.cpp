@@ -209,16 +209,16 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
         return kUnimplemented;
     }
 
-    const SkColorType dstColorType = dstInfo.colorType();
-    if (dstColorType == kGray_8_SkColorType &&
+    const vx_color_type dstColorType = dstInfo.colorType();
+    if (dstColorType == VX_COLOR_TYPE_GRAY_8 &&
         this->getEncodedInfo().color() != SkEncodedInfo::kGray_Color) {
         return kInvalidConversion;
     }
 
-    if (dstColorType != kRGBA_8888_SkColorType
-        && dstColorType != kBGRA_8888_SkColorType
-        && dstColorType != kRGBA_F16_SkColorType
-        && dstColorType != kGray_8_SkColorType) {
+    if (dstColorType != VX_COLOR_TYPE_RGBA_8888
+        && dstColorType != VX_COLOR_TYPE_BGRA_8888
+        && dstColorType != VX_COLOR_TYPE_RGBA_F16
+        && dstColorType != VX_COLOR_TYPE_GRAY_8) {
         // TODO(vigneshv): Check if more color types need to be supported.
         // Currently android supports at least RGB565 which is not
         // supported here.
@@ -238,7 +238,7 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
         }
     }
 
-    if (dstColorType == kGray_8_SkColorType) {
+    if (dstColorType == VX_COLOR_TYPE_GRAY_8) {
         if (fAvifDecoder->image->depth != 8) {
             return kInvalidConversion;
         }
@@ -255,12 +255,12 @@ SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
     avifRGBImage rgbImage;
     avifRGBImageSetDefaults(&rgbImage, fAvifDecoder->image);
 
-    if (dstColorType == kRGBA_8888_SkColorType) {
+    if (dstColorType == VX_COLOR_TYPE_RGBA_8888) {
         rgbImage.depth = 8;
-    } else if (dstColorType == kBGRA_8888_SkColorType){
+    } else if (dstColorType == VX_COLOR_TYPE_BGRA_8888){
         rgbImage.depth = 8;
         rgbImage.format = AVIF_RGB_FORMAT_BGRA;
-    } else if (dstColorType == kRGBA_F16_SkColorType) {
+    } else if (dstColorType == VX_COLOR_TYPE_RGBA_F16) {
         rgbImage.depth = 16;
         rgbImage.isFloat = AVIF_TRUE;
     }

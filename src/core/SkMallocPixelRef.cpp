@@ -18,7 +18,7 @@
 
 static bool is_valid(const SkImageInfo& info) {
     if (info.width() < 0 || info.height() < 0 ||
-        (unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType ||
+        (unsigned)info.colorType() > (unsigned)VX_COLOR_TYPE_LASTENUM ||
         (unsigned)info.alphaType() > (unsigned)VX_ALPHA_TYPE_LASTENUM)
     {
         return false;

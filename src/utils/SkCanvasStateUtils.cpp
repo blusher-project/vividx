@@ -218,10 +218,10 @@ SkCanvasState* SkCanvasStateUtils::CaptureCanvasState(SkCanvas* canvas) {
     layerState->height = pmap.height();
 
     switch (pmap.colorType()) {
-        case kN32_SkColorType:
+        case VX_COLOR_TYPE_N32:
             layerState->raster.config = kARGB_8888_RasterConfig;
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             layerState->raster.config = kRGB_565_RasterConfig;
             break;
         default:
@@ -275,12 +275,12 @@ make_canvas_from_canvas_layer(const SkCanvasLayerState& layerState) {
     SkASSERT(kRaster_CanvasBackend == layerState.type);
 
     SkBitmap bitmap;
-    SkColorType colorType =
-        layerState.raster.config == kARGB_8888_RasterConfig ? kN32_SkColorType :
-        layerState.raster.config == kRGB_565_RasterConfig ? kRGB_565_SkColorType :
-        kUnknown_SkColorType;
+    vx_color_type colorType =
+        layerState.raster.config == kARGB_8888_RasterConfig ? VX_COLOR_TYPE_N32 :
+        layerState.raster.config == kRGB_565_RasterConfig ? VX_COLOR_TYPE_RGB_565 :
+        VX_COLOR_TYPE_UNKNOWN;
 
-    if (colorType == kUnknown_SkColorType) {
+    if (colorType == VX_COLOR_TYPE_UNKNOWN) {
         return nullptr;
     }
 

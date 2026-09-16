@@ -19,7 +19,7 @@
 #include <optional>
 
 struct SkColorSpaceXformSteps;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 namespace skgpu::graphite {
 
@@ -29,7 +29,7 @@ public:
     // bit layout required for `dstFormat`, such that converted data can be copied into a texture of
     // the same format. Colorspace and alpha type conversions are applied between loading src data
     // and writing out the dst format data.
-    static std::optional<TextureFormatXferFn> MakeCpuToGpu(SkColorType srcCT,
+    static std::optional<TextureFormatXferFn> MakeCpuToGpu(vx_color_type srcCT,
                                                            const SkColorSpaceXformSteps& csSteps,
                                                            TextureFormat dstFormat,
                                                            Swizzle dstReadSwizzle);
@@ -41,7 +41,7 @@ public:
     static std::optional<TextureFormatXferFn> MakeGpuToCpu(TextureFormat srcFormat,
                                                            Swizzle srcReadSwizzle,
                                                            const SkColorSpaceXformSteps& csSteps,
-                                                           SkColorType dstCT);
+                                                           vx_color_type dstCT);
 
     // Builds a transfer function that moves data, assuming it is already exactly in the provided
     // TextureFormat. Unlike the above two color-type/space converting functions, this also
@@ -82,7 +82,7 @@ private:
         const int fDstBpp;
 
         template<typename... RPModifiers>
-        static sk_sp<RPOps> Make(SkColorType srcCT, SkColorType dstCT, RPModifiers...);
+        static sk_sp<RPOps> Make(vx_color_type srcCT, vx_color_type dstCT, RPModifiers...);
 
         // Returns true if RasterPipeline can process the whole 2D block via its strides
         bool setStrides(size_t srcRowBytes, size_t dstRowBytes, uint8_t otherOps);

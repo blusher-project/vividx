@@ -57,7 +57,7 @@
 
 class SkBlender;
 class SkColorSpace;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 void GrMakeKeyFromImageID(skgpu::UniqueKey* key, uint32_t imageID, const SkIRect& imageBounds) {
     SkASSERT(key);
@@ -172,7 +172,7 @@ static sk_sp<GrTextureProxy> make_bmp_proxy(GrProxyProvider* proxyProvider,
                                             skgpu::Budgeted budgeted) {
     std::optional<GrMippedBitmap> bmpToUpload;
     if (ct != SkColorTypeToGrColorType(orig.colorType())) {
-        SkColorType skCT = GrColorTypeToSkColorType(ct);
+        vx_color_type skCT = GrColorTypeToSkColorType(ct);
         SkBitmap bitmap = orig.bitmap();
         SkBitmap tmp;
         if (!tmp.tryAllocPixels(bitmap.info().makeColorType(skCT)) ||
@@ -506,7 +506,7 @@ static inline bool skpaint_to_grpaint_impl(
     }
 
 #ifndef SK_IGNORE_GPU_DITHER
-    SkColorType ct = GrColorTypeToSkColorType(dstColorInfo.colorType());
+    vx_color_type ct = GrColorTypeToSkColorType(dstColorInfo.colorType());
     if (paintFP != nullptr && (
             surfaceProps.isAlwaysDither() || SkPaintPriv::ShouldDither(skPaint, ct))) {
         float ditherRange = skgpu::DitherRangeForConfig(ct);

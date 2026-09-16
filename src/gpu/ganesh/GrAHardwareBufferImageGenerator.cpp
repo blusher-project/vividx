@@ -39,7 +39,7 @@ std::unique_ptr<GrAHardwareBufferImageGenerator> GrAHardwareBufferImageGenerator
     AHardwareBuffer_Desc bufferDesc;
     AHardwareBuffer_describe(graphicBuffer, &bufferDesc);
 
-    SkColorType colorType =
+    vx_color_type colorType =
             AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
     SkImageInfo info = SkImageInfo::Make(bufferDesc.width, bufferDesc.height, colorType,
                                          alphaType, std::move(colorSpace));

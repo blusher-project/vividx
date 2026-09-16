@@ -78,7 +78,7 @@ public:
      * Return a new surface characterization with the backend format replaced. A colorType
      * must also be supplied to indicate the interpretation of the new format.
      */
-    GrSurfaceCharacterization createBackendFormat(SkColorType colorType,
+    GrSurfaceCharacterization createBackendFormat(vx_color_type colorType,
                                                   const GrBackendFormat& backendFormat) const;
 
     /*
@@ -90,7 +90,7 @@ public:
     sk_sp<GrContextThreadSafeProxy> refContextInfo() const { return fContextInfo; }
     size_t cacheMaxResourceBytes() const { return fCacheMaxResourceBytes; }
 
-    bool isValid() const { return kUnknown_SkColorType != fImageInfo.colorType(); }
+    bool isValid() const { return VX_COLOR_TYPE_UNKNOWN != fImageInfo.colorType(); }
 
     const SkImageInfo& imageInfo() const { return fImageInfo; }
     const GrBackendFormat& backendFormat() const { return fBackendFormat; }
@@ -98,7 +98,7 @@ public:
     SkISize dimensions() const { return fImageInfo.dimensions(); }
     int width() const { return fImageInfo.width(); }
     int height() const { return fImageInfo.height(); }
-    SkColorType colorType() const { return fImageInfo.colorType(); }
+    vx_color_type colorType() const { return fImageInfo.colorType(); }
     int sampleCount() const { return fSampleCnt; }
     bool isTextureable() const { return Textureable::kYes == fIsTextureable; }
     bool isMipMapped() const { return skgpu::Mipmapped::kYes == fIsMipmapped; }

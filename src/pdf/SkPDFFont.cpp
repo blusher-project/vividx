@@ -601,7 +601,7 @@ static ImageAndOffset to_image(SkGlyphID gid, SkBulkGlyphMetricsAndImages* small
             // Make a gray image, used to smask a rectangle.
             // TODO: emit as MaskImage?
             const SkISize size = bounds.size();
-            bm.allocPixels(SkImageInfo::Make(size, kGray_8_SkColorType, VX_ALPHA_TYPE_UNKNOWN));
+            bm.allocPixels(SkImageInfo::Make(size, VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_UNKNOWN));
             for (int y = 0; y < bm.height(); ++y) {
                 for (int x8 = 0; x8 < bm.width(); x8 += 8) {
                     uint8_t v = *mask.getAddr1(x8 + bounds.x(), y + bounds.y());
@@ -618,7 +618,7 @@ static ImageAndOffset to_image(SkGlyphID gid, SkBulkGlyphMetricsAndImages* small
         case SkMask::k3D_Format:  // just do the A8 part
             // Make a gray image, used to smask a rectangle.
             return {SkImages::RasterFromData(
-                        SkImageInfo::Make(bounds.size(), kGray_8_SkColorType, VX_ALPHA_TYPE_UNKNOWN),
+                        SkImageInfo::Make(bounds.size(), VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_UNKNOWN),
                         SkData::MakeWithCopy(mask.fImage, mask.computeImageSize()),
                         mask.fRowBytes),
                     {bounds.x(), bounds.y()}};
@@ -794,7 +794,7 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
             }
         } else if (auto pimg = to_image(gID, &smallGlyphs); pimg.fImage) {
             using SkPDFUtils::AppendScalar;
-            if (pimg.fImage->colorType() != kGray_8_SkColorType) {
+            if (pimg.fImage->colorType() != VX_COLOR_TYPE_GRAY_8) {
                 AppendScalar(pathGlyph->advanceX(), &content);
                 content.writeText(" 0 d0\n");
                 AppendScalar(pimg.fImage->width() * bitmapScale, &content);

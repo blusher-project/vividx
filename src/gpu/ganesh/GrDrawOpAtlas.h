@@ -28,7 +28,7 @@ class GrOnFlushResourceProvider;
 class GrProxyProvider;
 class GrResourceProvider;
 class GrTextureProxy;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 namespace skgpu {
 enum class MaskFormat : int;
@@ -87,7 +87,7 @@ public:
      */
     static std::unique_ptr<GrDrawOpAtlas> Make(GrProxyProvider* proxyProvider,
                                                const GrBackendFormat& format,
-                                               SkColorType ct,
+                                               vx_color_type ct,
                                                size_t bpp,
                                                int width, int height,
                                                int plotWidth, int plotHeight,
@@ -181,7 +181,7 @@ private:
 
     GrDrawOpAtlas(GrProxyProvider*,
                   const GrBackendFormat& format,
-                  SkColorType,
+                  vx_color_type,
                   size_t bpp,
                   int width, int height,
                   int plotWidth, int plotHeight,
@@ -224,7 +224,7 @@ private:
     }
 
     GrBackendFormat       fFormat;
-    SkColorType           fColorType;
+    vx_color_type           fColorType;
     size_t                fBytesPerPixel;
     int                   fTextureWidth;
     int                   fTextureHeight;

@@ -39,7 +39,7 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
     SkSurfaceProps props{}; // default OK; colorFilters don't render text
     SkStageRec rec = {&pipeline,
                       &alloc,
-                      kRGBA_F32_SkColorType,
+                      VX_COLOR_TYPE_RGBA_F32,
                       dstCS,
                       color.unpremul(),
                       props,

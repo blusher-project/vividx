@@ -24,7 +24,7 @@
 // Color type to use when creating the swizzler for xform
 //
 // Note that `bitsPerComponent` is always 8 for all supported BMP images.
-static constexpr SkColorType kXformSrcColorType = kRGBA_8888_SkColorType;
+static constexpr vx_color_type kXformSrcColorType = VX_COLOR_TYPE_RGBA_8888;
 
 // Static assertions to validate that Rust BmpColor/BmpAlpha enum values
 // match the corresponding SkEncodedInfo enum values. These assertions

@@ -2709,7 +2709,7 @@ void AddBlendMode(const KeyContext& keyContext, SkBlendMode bm) {
     }
 }
 
-void AddDitherBlock(const KeyContext& keyContext, SkColorType ct) {
+void AddDitherBlock(const KeyContext& keyContext, vx_color_type ct) {
     static const SkBitmap gLUT = skgpu::MakeDitherLUT();
 
     sk_sp<TextureProxy> proxy = RecorderPriv::CreateCachedProxy(keyContext.recorder(), gLUT,

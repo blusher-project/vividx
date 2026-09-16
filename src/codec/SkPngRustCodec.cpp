@@ -306,7 +306,7 @@ SkCodec::Result ToSkCodecResult(rust_png::DecodingResult rustResult) {
 
 void blendRow(SkSpan<uint8_t> dstRow,
               SkSpan<const uint8_t> srcRow,
-              SkColorType color,
+              vx_color_type color,
               vx_alpha_type alpha) {
     SkASSERT_RELEASE(dstRow.size() >= srcRow.size());
     SkRasterPipeline_<256> p;
@@ -345,7 +345,7 @@ void blendAllRows(SkSpan<uint8_t> dstFrame,
                   SkSpan<const uint8_t> srcFrame,
                   size_t rowSize,
                   size_t rowStride,
-                  SkColorType color,
+                  vx_color_type color,
                   vx_alpha_type alpha) {
     while (srcFrame.size() >= rowSize) {
         blendRow(dstFrame, srcFrame.first(rowSize), color, alpha);
@@ -800,13 +800,13 @@ bool SkPngRustCodec::canReadRow() {
     rust_png::ColorType color_type = fReader->output_color_type();
     uint8_t bits_per_component =  fReader->output_bits_per_component();
     switch (this->dstInfo().colorType()) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             if (color_type != rust_png::ColorType::Rgba
                 || bits_per_component != 8) {
                 return false;
             }
             break;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             if (color_type != rust_png::ColorType::Grayscale
                 || bits_per_component != 8) {
                 return false;

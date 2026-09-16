@@ -71,7 +71,7 @@
 #include "src/gpu/graphite/RecorderOptionsPriv.h"
 #endif
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 namespace skgpu::graphite {
 

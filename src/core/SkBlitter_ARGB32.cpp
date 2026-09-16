@@ -1388,14 +1388,14 @@ static bool blit_color(const SkPixmap& device,
     int x = clip.fLeft,
         y = clip.fTop;
 
-    if (device.colorType() == kN32_SkColorType && mask.fFormat == SkMask::kA8_Format) {
+    if (device.colorType() == VX_COLOR_TYPE_N32 && mask.fFormat == SkMask::kA8_Format) {
         SkOpts::blit_mask_d32_a8(device.writable_addr32(x,y), device.rowBytes(),
                                  (const SkAlpha*)mask.getAddr(x,y), mask.fRowBytes,
                                  color, clip.width(), clip.height());
         return true;
     }
 
-    if (device.colorType() == kN32_SkColorType && mask.fFormat == SkMask::kLCD16_Format) {
+    if (device.colorType() == VX_COLOR_TYPE_N32 && mask.fFormat == SkMask::kLCD16_Format) {
         auto dstRow  = device.writable_addr32(x,y);
         auto maskRow = (const uint16_t*)mask.getAddr(x,y);
 

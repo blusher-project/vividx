@@ -169,7 +169,7 @@ void SkDevice::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& l
     SkRect srcR, dstR;
     SkColor c;
     bool isFixedColor = false;
-    const SkImageInfo info = SkImageInfo::Make(1, 1, kBGRA_8888_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
+    const SkImageInfo info = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     while (iter.next(&srcR, &dstR, &isFixedColor, &c)) {
         // TODO: support this fast-path for GPU images
@@ -320,7 +320,7 @@ sk_sp<SkSpecialImage> SkDevice::snapSpecial() {
 }
 
 sk_sp<skif::Backend> SkDevice::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
-                                                           SkColorType colorType) const {
+                                                           vx_color_type colorType) const {
     return skif::MakeRasterBackend(surfaceProps, colorType);
 }
 
@@ -344,7 +344,7 @@ void SkDevice::drawDevice(SkDevice* device,
 
 void SkDevice::drawFilteredImage(const skif::Mapping& mapping,
                                  SkSpecialImage* src,
-                                 SkColorType colorType,
+                                 vx_color_type colorType,
                                  const SkImageFilter* filter,
                                  const SkSamplingOptions& sampling,
                                  const SkPaint& paint) {
@@ -353,8 +353,8 @@ void SkDevice::drawFilteredImage(const skif::Mapping& mapping,
     skif::LayerSpace<SkIRect> targetOutput = mapping.deviceToLayer(
             skif::DeviceSpace<SkIRect>(this->devClipBounds()));
 
-    if (colorType == kUnknown_SkColorType) {
-        colorType = kRGBA_8888_SkColorType;
+    if (colorType == VX_COLOR_TYPE_UNKNOWN) {
+        colorType = VX_COLOR_TYPE_RGBA_8888;
     }
 
     skif::Stats stats;
@@ -512,7 +512,7 @@ SkNoPixelsDevice::SkNoPixelsDevice(const SkIRect& bounds, const SkSurfaceProps& 
 
 SkNoPixelsDevice::SkNoPixelsDevice(const SkIRect& bounds, const SkSurfaceProps& props,
                                    sk_sp<SkColorSpace> colorSpace)
-    : SkDevice(SkImageInfo::Make(bounds.size(), kUnknown_SkColorType, VX_ALPHA_TYPE_UNKNOWN,
+    : SkDevice(SkImageInfo::Make(bounds.size(), VX_COLOR_TYPE_UNKNOWN, VX_ALPHA_TYPE_UNKNOWN,
                                  std::move(colorSpace)), props) {
     // this fails if we enable this assert: DiscardableImageMapTest.GetDiscardableImagesInRectMaxImage
     //SkASSERT(bounds.width() >= 0 && bounds.height() >= 0);

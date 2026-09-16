@@ -26,7 +26,7 @@ class SkReadBuffer;
 class SkShader;
 class SkSurface;
 class SkWriteBuffer;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkFilterMode;
 enum class SkTileMode;
 struct SkStageRec;
@@ -64,7 +64,7 @@ public:
 
         static CachedImageInfo Make(const SkRect& bounds,
                                     const SkMatrix& totalM,
-                                    SkColorType dstColorType,
+                                    vx_color_type dstColorType,
                                     SkColorSpace* dstColorSpace,
                                     const int maxTextureSize,
                                     const SkSurfaceProps& propsIn);
@@ -85,7 +85,7 @@ private:
     SK_FLATTENABLE_HOOKS(SkPictureShader)
 
     sk_sp<SkShader> rasterShader(const SkMatrix&,
-                                 SkColorType dstColorType,
+                                 vx_color_type dstColorType,
                                  SkColorSpace* dstColorSpace,
                                  const SkSurfaceProps& props) const;
 

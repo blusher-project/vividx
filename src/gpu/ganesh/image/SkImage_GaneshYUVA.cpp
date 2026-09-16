@@ -161,7 +161,7 @@ size_t SkImage_GaneshYUVA::textureSize() const {
 }
 
 sk_sp<SkImage> SkImage_GaneshYUVA::onMakeColorTypeAndColorSpace(
-        GrDirectContext* direct, SkColorType, sk_sp<SkColorSpace> targetCS) const {
+        GrDirectContext* direct, vx_color_type, sk_sp<SkColorSpace> targetCS) const {
     // We explicitly ignore color type changes, for now.
 
     // we may need a mutex here but for now we expect usage to be in a single thread

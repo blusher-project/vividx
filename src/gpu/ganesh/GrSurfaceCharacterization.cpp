@@ -106,7 +106,7 @@ GrSurfaceCharacterization GrSurfaceCharacterization::createColorSpace(
 }
 
 GrSurfaceCharacterization GrSurfaceCharacterization::createBackendFormat(
-                                                    SkColorType colorType,
+                                                    vx_color_type colorType,
                                                     const GrBackendFormat& backendFormat) const {
     if (!this->isValid()) {
         return GrSurfaceCharacterization();

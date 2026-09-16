@@ -17,7 +17,7 @@
 #include <cstdint>
 #include <optional>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 namespace skgpu::graphite {
 
@@ -185,15 +185,15 @@ bool TextureFormatIsFloatingPoint(TextureFormat);
 
 // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the passed in
 // SkColorType and TextureInfo.
-Swizzle ReadSwizzleForColorType(SkColorType, TextureFormat);
+Swizzle ReadSwizzleForColorType(vx_color_type, TextureFormat);
 
 // Returns the skgpu::Swizzle to use when writing colors to a surface with the passed in SkColorType
 // and TextureInfo. If the returned optional is empty, it means the color type cannot be rendered to
-std::optional<Swizzle> WriteSwizzleForColorType(SkColorType, TextureFormat);
+std::optional<Swizzle> WriteSwizzleForColorType(vx_color_type, TextureFormat);
 
 // Formats are ordered from most preferred to least based on the policies described above. These
 // must still be filtered by support for a given Caps.
-SkSpan<const TextureFormat> PreferredTextureFormats(SkColorType);
+SkSpan<const TextureFormat> PreferredTextureFormats(vx_color_type);
 
 // Extra operations that must be applied to CPU data to make it exactly match the SkColorType
 enum class FormatXferOp : uint8_t {
@@ -216,12 +216,12 @@ SK_MAKE_BITMASK_OPS(FormatXferOp)
 // case represents a best-fit for any SkImageInfo, but is otherwise a GPU-only image.
 //
 // Lastly, when performing a readback operation on a texture, its read swizzle must also be applied.
-std::pair<SkColorType, SkEnumBitMask<FormatXferOp>> TextureFormatColorTypeInfo(TextureFormat);
+std::pair<vx_color_type, SkEnumBitMask<FormatXferOp>> TextureFormatColorTypeInfo(TextureFormat);
 
 // Returns whether or not the color type is compatible with the TextureFormat, which returns true
 // if the color type has the same data type as that returned from TextureFormatColorTypeInfo()
 // and any other differences in channel definition are handled by HW or by ReadSwizzleForColorType()
-bool AreColorTypeAndFormatCompatible(SkColorType, TextureFormat);
+bool AreColorTypeAndFormatCompatible(vx_color_type, TextureFormat);
 
 } // namespace skgpu::graphite
 

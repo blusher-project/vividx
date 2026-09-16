@@ -180,7 +180,7 @@ void SkPDFDevice::MarkedContentManager::accumulate(const SkPoint& p) {
 sk_sp<SkImage> mask_to_greyscale_image(SkMaskBuilder* mask, SkPDFDocument* doc) {
     sk_sp<SkImage> img;
     SkPixmap pm(SkImageInfo::Make(mask->fBounds.width(), mask->fBounds.height(),
-                                  kGray_8_SkColorType, VX_ALPHA_TYPE_OPAQUE),
+                                  VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_OPAQUE),
                 mask->fImage, mask->fRowBytes);
     constexpr int imgQuality = SK_PDF_MASK_QUALITY;
     if constexpr (imgQuality <= 100 && imgQuality >= 0) {
@@ -211,7 +211,7 @@ sk_sp<SkImage> mask_to_greyscale_image(SkMaskBuilder* mask, SkPDFDocument* doc) 
 sk_sp<SkImage> alpha_image_to_greyscale_image(const SkImage* mask) {
     int w = mask->width(), h = mask->height();
     SkBitmap greyBitmap;
-    greyBitmap.allocPixels(SkImageInfo::Make(w, h, kGray_8_SkColorType, VX_ALPHA_TYPE_OPAQUE));
+    greyBitmap.allocPixels(SkImageInfo::Make(w, h, VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_OPAQUE));
     // TODO: support gpu images in pdf
     if (!mask->readPixels(nullptr, SkImageInfo::MakeA8(w, h),
                           greyBitmap.getPixels(), greyBitmap.rowBytes(), 0, 0)) {

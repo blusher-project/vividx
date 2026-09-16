@@ -45,15 +45,15 @@ static bool ok(int result) {
     return result == ANDROID_IMAGE_DECODER_SUCCESS;
 }
 
-static bool set_android_bitmap_format(AImageDecoder* decoder, SkColorType colorType) {
+static bool set_android_bitmap_format(AImageDecoder* decoder, vx_color_type colorType) {
     auto format = SkNDKConversions::toAndroidBitmapFormat(colorType);
     return ok(AImageDecoder_setAndroidBitmapFormat(decoder, format));
 }
 
-static SkColorType colorType(AImageDecoder* decoder, const AImageDecoderHeaderInfo* headerInfo) {
+static vx_color_type colorType(AImageDecoder* decoder, const AImageDecoderHeaderInfo* headerInfo) {
     // AImageDecoder never defaults to gray, but allows setting it if the image is 8 bit gray.
-    if (set_android_bitmap_format(decoder, kGray_8_SkColorType)) {
-        return kGray_8_SkColorType;
+    if (set_android_bitmap_format(decoder, VX_COLOR_TYPE_GRAY_8)) {
+        return VX_COLOR_TYPE_GRAY_8;
     }
 
     auto format = static_cast<AndroidBitmapFormat>(
@@ -84,7 +84,7 @@ std::unique_ptr<SkImageGenerator> SkImageGeneratorNDK::MakeFromEncodedNDK(
     const AImageDecoderHeaderInfo* headerInfo = AImageDecoder_getHeaderInfo(rawDecoder);
     int32_t width  = AImageDecoderHeaderInfo_getWidth(headerInfo);
     int32_t height = AImageDecoderHeaderInfo_getHeight(headerInfo);
-    SkColorType ct = colorType(rawDecoder, headerInfo);
+    vx_color_type ct = colorType(rawDecoder, headerInfo);
 
     // Although the encoded data stores unpremultiplied pixels, AImageDecoder defaults to premul
     // (if the image may have alpha).

@@ -58,7 +58,7 @@ public:
     // From SkImage_Base.h
     sk_sp<SkImage> onMakeSubset(SkRecorder*, const SkIRect&, RequiredProperties) const final;
     sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
-                                              SkColorType targetCT,
+                                              vx_color_type targetCT,
                                               sk_sp<SkColorSpace> targetCS,
                                               RequiredProperties) const final;
 

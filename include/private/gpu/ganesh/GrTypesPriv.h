@@ -24,6 +24,8 @@
 #include <functional>
 #include <type_traits>
 
+#include <vividx/core/color-type.h>
+
 class GrSurfaceProxy;
 
 namespace skgpu {
@@ -587,79 +589,79 @@ enum class GrColorType {
 
 static const int kGrColorTypeCnt = static_cast<int>(GrColorType::kLast) + 1;
 
-static constexpr SkColorType GrColorTypeToSkColorType(GrColorType ct) {
+static constexpr vx_color_type GrColorTypeToSkColorType(GrColorType ct) {
     switch (ct) {
-        case GrColorType::kUnknown:          return kUnknown_SkColorType;
-        case GrColorType::kAlpha_8:          return kAlpha_8_SkColorType;
-        case GrColorType::kBGR_565:          return kRGB_565_SkColorType;
-        case GrColorType::kRGB_565:          return kUnknown_SkColorType;
-        case GrColorType::kABGR_4444:        return kARGB_4444_SkColorType;
-        case GrColorType::kRGBA_8888:        return kRGBA_8888_SkColorType;
-        case GrColorType::kRGBA_8888_SRGB:   return kSRGBA_8888_SkColorType;
-        case GrColorType::kRGB_888x:         return kRGB_888x_SkColorType;
-        case GrColorType::kRG_88:            return kR8G8_unorm_SkColorType;
-        case GrColorType::kBGRA_8888:        return kBGRA_8888_SkColorType;
-        case GrColorType::kRGBA_1010102:     return kRGBA_1010102_SkColorType;
-        case GrColorType::kBGRA_1010102:     return kBGRA_1010102_SkColorType;
-        case GrColorType::kRGB_101010x:      return kRGB_101010x_SkColorType;
-        case GrColorType::kRGBA_10x6:        return kRGBA_10x6_SkColorType;
-        case GrColorType::kGray_8:           return kGray_8_SkColorType;
-        case GrColorType::kGrayAlpha_88:     return kUnknown_SkColorType;
-        case GrColorType::kAlpha_F16:        return kA16_float_SkColorType;
-        case GrColorType::kRGBA_F16:         return kRGBA_F16_SkColorType;
-        case GrColorType::kRGBA_F16_Clamped: return kRGBA_F16Norm_SkColorType;
-        case GrColorType::kRGB_F16F16F16x:   return kRGB_F16F16F16x_SkColorType;
-        case GrColorType::kRGBA_F32:         return kRGBA_F32_SkColorType;
-        case GrColorType::kAlpha_8xxx:       return kUnknown_SkColorType;
-        case GrColorType::kAlpha_F32xxx:     return kUnknown_SkColorType;
-        case GrColorType::kGray_8xxx:        return kUnknown_SkColorType;
-        case GrColorType::kR_8xxx:           return kUnknown_SkColorType;
-        case GrColorType::kAlpha_16:         return kA16_unorm_SkColorType;
-        case GrColorType::kRG_1616:          return kR16G16_unorm_SkColorType;
-        case GrColorType::kRGBA_16161616:    return kR16G16B16A16_unorm_SkColorType;
-        case GrColorType::kRG_F16:           return kR16G16_float_SkColorType;
-        case GrColorType::kRGB_888:          return kUnknown_SkColorType;
-        case GrColorType::kR_8:              return kR8_unorm_SkColorType;
-        case GrColorType::kR_16:             return kR16_unorm_SkColorType;
-        case GrColorType::kR_F16:            return kR16_float_SkColorType;
-        case GrColorType::kGray_F16:         return kUnknown_SkColorType;
-        case GrColorType::kARGB_4444:        return kUnknown_SkColorType;
-        case GrColorType::kBGRA_4444:        return kUnknown_SkColorType;
+        case GrColorType::kUnknown:          return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kAlpha_8:          return VX_COLOR_TYPE_ALPHA_8;
+        case GrColorType::kBGR_565:          return VX_COLOR_TYPE_RGB_565;
+        case GrColorType::kRGB_565:          return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kABGR_4444:        return VX_COLOR_TYPE_ARGB_4444;
+        case GrColorType::kRGBA_8888:        return VX_COLOR_TYPE_RGBA_8888;
+        case GrColorType::kRGBA_8888_SRGB:   return VX_COLOR_TYPE_SRGBA_8888;
+        case GrColorType::kRGB_888x:         return VX_COLOR_TYPE_RGB_888X;
+        case GrColorType::kRG_88:            return VX_COLOR_TYPE_R8G8_UNORM;
+        case GrColorType::kBGRA_8888:        return VX_COLOR_TYPE_BGRA_8888;
+        case GrColorType::kRGBA_1010102:     return VX_COLOR_TYPE_RGBA_1010102;
+        case GrColorType::kBGRA_1010102:     return VX_COLOR_TYPE_BGRA_1010102;
+        case GrColorType::kRGB_101010x:      return VX_COLOR_TYPE_RGB_101010X;
+        case GrColorType::kRGBA_10x6:        return VX_COLOR_TYPE_RGBA_10X6;
+        case GrColorType::kGray_8:           return VX_COLOR_TYPE_GRAY_8;
+        case GrColorType::kGrayAlpha_88:     return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kAlpha_F16:        return VX_COLOR_TYPE_A16_FLOAT;
+        case GrColorType::kRGBA_F16:         return VX_COLOR_TYPE_RGBA_F16;
+        case GrColorType::kRGBA_F16_Clamped: return VX_COLOR_TYPE_RGBA_F16NORM;
+        case GrColorType::kRGB_F16F16F16x:   return VX_COLOR_TYPE_RGB_F16F16F16X;
+        case GrColorType::kRGBA_F32:         return VX_COLOR_TYPE_RGBA_F32;
+        case GrColorType::kAlpha_8xxx:       return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kAlpha_F32xxx:     return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kGray_8xxx:        return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kR_8xxx:           return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kAlpha_16:         return VX_COLOR_TYPE_A16_UNORM;
+        case GrColorType::kRG_1616:          return VX_COLOR_TYPE_R16G16_UNORM;
+        case GrColorType::kRGBA_16161616:    return VX_COLOR_TYPE_R16G16B16A16_UNORM;
+        case GrColorType::kRG_F16:           return VX_COLOR_TYPE_R16G16_FLOAT;
+        case GrColorType::kRGB_888:          return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kR_8:              return VX_COLOR_TYPE_R8_UNORM;
+        case GrColorType::kR_16:             return VX_COLOR_TYPE_R16_UNORM;
+        case GrColorType::kR_F16:            return VX_COLOR_TYPE_R16_FLOAT;
+        case GrColorType::kGray_F16:         return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kARGB_4444:        return VX_COLOR_TYPE_UNKNOWN;
+        case GrColorType::kBGRA_4444:        return VX_COLOR_TYPE_UNKNOWN;
     }
     SkUNREACHABLE;
 }
 
-static constexpr GrColorType SkColorTypeToGrColorType(SkColorType ct) {
+static constexpr GrColorType SkColorTypeToGrColorType(vx_color_type ct) {
     switch (ct) {
-        case kUnknown_SkColorType:            return GrColorType::kUnknown;
-        case kAlpha_8_SkColorType:            return GrColorType::kAlpha_8;
-        case kRGB_565_SkColorType:            return GrColorType::kBGR_565;
-        case kARGB_4444_SkColorType:          return GrColorType::kABGR_4444;
-        case kRGBA_8888_SkColorType:          return GrColorType::kRGBA_8888;
-        case kSRGBA_8888_SkColorType:         return GrColorType::kRGBA_8888_SRGB;
-        case kRGB_888x_SkColorType:           return GrColorType::kRGB_888x;
-        case kBGRA_8888_SkColorType:          return GrColorType::kBGRA_8888;
-        case kGray_8_SkColorType:             return GrColorType::kGray_8;
-        case kRGBA_F16Norm_SkColorType:       return GrColorType::kRGBA_F16_Clamped;
-        case kRGBA_F16_SkColorType:           return GrColorType::kRGBA_F16;
-        case kRGB_F16F16F16x_SkColorType:     return GrColorType::kRGB_F16F16F16x;
-        case kRGBA_1010102_SkColorType:       return GrColorType::kRGBA_1010102;
-        case kRGB_101010x_SkColorType:        return GrColorType::kRGB_101010x;
-        case kBGRA_1010102_SkColorType:       return GrColorType::kBGRA_1010102;
-        case kBGR_101010x_SkColorType:        return GrColorType::kUnknown;
-        case kBGR_101010x_XR_SkColorType:     return GrColorType::kUnknown;
-        case kBGRA_10101010_XR_SkColorType:   return GrColorType::kUnknown;
-        case kRGBA_10x6_SkColorType:          return GrColorType::kRGBA_10x6;
-        case kRGBA_F32_SkColorType:           return GrColorType::kRGBA_F32;
-        case kR8G8_unorm_SkColorType:         return GrColorType::kRG_88;
-        case kA16_unorm_SkColorType:          return GrColorType::kAlpha_16;
-        case kR16_unorm_SkColorType:          return GrColorType::kR_16;
-        case kR16G16_unorm_SkColorType:       return GrColorType::kRG_1616;
-        case kA16_float_SkColorType:          return GrColorType::kAlpha_F16;
-        case kR16_float_SkColorType:          return GrColorType::kR_F16;
-        case kR16G16_float_SkColorType:       return GrColorType::kRG_F16;
-        case kR16G16B16A16_unorm_SkColorType: return GrColorType::kRGBA_16161616;
-        case kR8_unorm_SkColorType:           return GrColorType::kR_8;
+        case VX_COLOR_TYPE_UNKNOWN:            return GrColorType::kUnknown;
+        case VX_COLOR_TYPE_ALPHA_8:            return GrColorType::kAlpha_8;
+        case VX_COLOR_TYPE_RGB_565:            return GrColorType::kBGR_565;
+        case VX_COLOR_TYPE_ARGB_4444:          return GrColorType::kABGR_4444;
+        case VX_COLOR_TYPE_RGBA_8888:          return GrColorType::kRGBA_8888;
+        case VX_COLOR_TYPE_SRGBA_8888:         return GrColorType::kRGBA_8888_SRGB;
+        case VX_COLOR_TYPE_RGB_888X:           return GrColorType::kRGB_888x;
+        case VX_COLOR_TYPE_BGRA_8888:          return GrColorType::kBGRA_8888;
+        case VX_COLOR_TYPE_GRAY_8:             return GrColorType::kGray_8;
+        case VX_COLOR_TYPE_RGBA_F16NORM:       return GrColorType::kRGBA_F16_Clamped;
+        case VX_COLOR_TYPE_RGBA_F16:           return GrColorType::kRGBA_F16;
+        case VX_COLOR_TYPE_RGB_F16F16F16X:     return GrColorType::kRGB_F16F16F16x;
+        case VX_COLOR_TYPE_RGBA_1010102:       return GrColorType::kRGBA_1010102;
+        case VX_COLOR_TYPE_RGB_101010X:        return GrColorType::kRGB_101010x;
+        case VX_COLOR_TYPE_BGRA_1010102:       return GrColorType::kBGRA_1010102;
+        case VX_COLOR_TYPE_BGR_101010X:        return GrColorType::kUnknown;
+        case VX_COLOR_TYPE_BGR_101010X_XR:     return GrColorType::kUnknown;
+        case VX_COLOR_TYPE_BGRA_10101010_XR:   return GrColorType::kUnknown;
+        case VX_COLOR_TYPE_RGBA_10X6:          return GrColorType::kRGBA_10x6;
+        case VX_COLOR_TYPE_RGBA_F32:           return GrColorType::kRGBA_F32;
+        case VX_COLOR_TYPE_R8G8_UNORM:         return GrColorType::kRG_88;
+        case VX_COLOR_TYPE_A16_UNORM:          return GrColorType::kAlpha_16;
+        case VX_COLOR_TYPE_R16_UNORM:          return GrColorType::kR_16;
+        case VX_COLOR_TYPE_R16G16_UNORM:       return GrColorType::kRG_1616;
+        case VX_COLOR_TYPE_A16_FLOAT:          return GrColorType::kAlpha_F16;
+        case VX_COLOR_TYPE_R16_FLOAT:          return GrColorType::kR_F16;
+        case VX_COLOR_TYPE_R16G16_FLOAT:       return GrColorType::kRG_F16;
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: return GrColorType::kRGBA_16161616;
+        case VX_COLOR_TYPE_R8_UNORM:           return GrColorType::kR_8;
     }
     SkUNREACHABLE;
 }

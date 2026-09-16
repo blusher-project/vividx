@@ -87,8 +87,8 @@ SkPMColor4f SkWorkingFormatColorFilter::onFilterColor4f(const SkPMColor4f& origC
     vx_alpha_type workingAT;
     sk_sp<SkColorSpace> workingCS = this->workingFormat(dstCS, &workingAT);
 
-    SkColorInfo dst = {kUnknown_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED, dstCS},
-                working = {kUnknown_SkColorType, workingAT, workingCS};
+    SkColorInfo dst = {VX_COLOR_TYPE_UNKNOWN, VX_ALPHA_TYPE_PREMULTIPLIED, dstCS},
+                working = {VX_COLOR_TYPE_UNKNOWN, workingAT, workingCS};
 
     SkPMColor4f color = origColor;
     SkColorSpaceXformSteps{dst, working}.apply(color.vec());

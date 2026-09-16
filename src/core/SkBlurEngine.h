@@ -27,7 +27,7 @@ struct SkIRect;
 
 enum class SkFilterMode;
 enum class SkTileMode;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 /**
  * SkBlurEngine is a backend-agnostic provider of blur algorithms. Each Skia backend defines a blur
@@ -55,7 +55,7 @@ public:
     // null. The engine maintains the lifetime of its algorithms, so the returned non-null
     // Algorithms live as long as the engine does.
     virtual const Algorithm* findAlgorithm(SkSize sigma,
-                                           SkColorType colorType) const = 0;
+                                           vx_color_type colorType) const = 0;
 
     // TODO: Consolidate common utility functions from SkBlurMask.h into this header.
 

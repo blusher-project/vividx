@@ -129,7 +129,7 @@ sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
 
     auto releaseHelper = skgpu::RefCntedCallback::Make(deleteImageProc, deleteImageCtx);
 
-    SkColorType colorType =
+    vx_color_type colorType =
             AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
 
     GrColorType grColorType = SkColorTypeToGrColorType(colorType);

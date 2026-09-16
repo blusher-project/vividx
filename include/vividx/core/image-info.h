@@ -9,9 +9,36 @@
 #ifndef VIVIDX_CORE_IMAGE_INFO_H
 #define VIVIDX_CORE_IMAGE_INFO_H
 
+#include <stddef.h>
+
+#include <vividx/common.h>
+#include <vividx/core/alpha-type.h>
+#include <vividx/core/color-type.h>
+#include <vividx/core/size.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+typedef struct vx_color_space_t vx_color_space_t;
+
+/// \struct vx_color_info_t
+///
+/// Describes pixel and encoding. SkImageInfo can be created from SkColorInfo by
+/// providing dimensions.
+///
+/// It encodes how pixel bits describe alpha, transparency; color components red, blue,
+/// and green; and SkColorSpace, the range and linearity of colors.
+typedef struct vx_color_info_t vx_color_info_t;
+
+/// \struct vx_image_info_t
+///
+/// Describes pixel and encoding. `vx_image_info_t` can be created from
+/// `vx_color_info_t` by providing dimensions.
+///
+/// It encodes how pixel bits describe alpha, transparency; color components
+/// red, blue, and green; and SkColorSpace, the range and linearity of colors.
+typedef struct vx_image_info_t vx_image_info_t;
 
 /** \enum vx_yuv_color_space
     Describes color range of YUV pixels. The color mapping from YUV to RGB varies
@@ -65,6 +92,43 @@ enum vx_yuv_color_space {
     VX_YUV_COLOR_SPACE_REC709 = VX_YUV_COLOR_SPACE_REC709_LIMITED,
     VX_YUV_COLOR_SPACE_BT2020 = VX_YUV_COLOR_SPACE_BT2020_8BIT_LIMITED,
 };
+
+
+//!<==================
+//!< Color Info
+//!<==================
+
+VX_PUBLIC vx_color_info_t* vx_color_info_new(enum vx_color_type ct,
+                                             enum vx_alpha_type at,
+                                             vx_color_space_t *cs);
+
+VX_PUBLIC vx_color_space_t* vx_color_info_color_space(
+    const vx_color_info_t *color_info);
+
+VX_PUBLIC enum vx_color_type vx_color_info_color_type(
+    const vx_color_info_t *color_info);
+
+VX_PUBLIC enum vx_alpha_type vx_color_info_alpha_type(
+    const vx_color_info_t *color_info);
+
+VX_PUBLIC void vx_color_info_free(vx_color_info_t *color_info);
+
+//!<==================
+//!< Image Info
+//!<==================
+
+struct vx_image_info_t {
+    vx_color_info_t *color_info;
+    vx_size_i_t dimensions;
+};
+
+// static vx_image_info_t vx_image_info_make()
+// {
+//     vx_image_info_t info;
+//     info.color_info = vx_color_info_make();
+//     info.dimensions = vx_size_i_make(0, 0);
+//     return info;
+// }
 
 #ifdef __cplusplus
 }

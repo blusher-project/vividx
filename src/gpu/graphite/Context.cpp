@@ -454,7 +454,7 @@ void Context::asyncRescaleAndReadPixelsYUV420(const SkImage* src,
                                               SkImage::ReadPixelsContext callbackContext) {
     // Use kOpaque alpha type to signal that we don't read back the alpha channel
     SkImageInfo dstImageInfo = SkImageInfo::Make(dstSize,
-                                                 kRGBA_8888_SkColorType,
+                                                 VX_COLOR_TYPE_RGBA_8888,
                                                  VX_ALPHA_TYPE_OPAQUE,
                                                  std::move(dstColorSpace));
     this->asyncRescaleAndReadImpl(&Context::asyncReadPixelsYUV420,
@@ -498,7 +498,7 @@ void Context::asyncRescaleAndReadPixelsYUVA420(const SkImage* src,
                                                SkImage::ReadPixelsCallback callback,
                                                SkImage::ReadPixelsContext callbackContext) {
     SkImageInfo dstImageInfo = SkImageInfo::Make(dstSize,
-                                                 kRGBA_8888_SkColorType,
+                                                 VX_COLOR_TYPE_RGBA_8888,
                                                  VX_ALPHA_TYPE_PREMULTIPLIED,
                                                  std::move(dstColorSpace));
     this->asyncRescaleAndReadImpl(&Context::asyncReadPixelsYUV420,
@@ -593,7 +593,7 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
     // transfer buffer, which will allow the scratch A8 surface to be reused for each plane.
     // TODO: Use one transfer buffer for all three planes to reduce map/unmap cost?
     const bool readAlpha = params.fDstImageInfo.colorInfo().alphaType() != VX_ALPHA_TYPE_OPAQUE;
-    SkImageInfo yaInfo = params.fDstImageInfo.makeColorType(kAlpha_8_SkColorType)
+    SkImageInfo yaInfo = params.fDstImageInfo.makeColorType(VX_COLOR_TYPE_ALPHA_8)
                                              .makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     SkImageInfo uvInfo = yaInfo.makeWH(yaInfo.width()/2, yaInfo.height()/2);
     PixelTransferResult transfers[4];

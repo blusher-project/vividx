@@ -387,11 +387,11 @@ void packA8ToA1(SkMaskBuilder* dstMask, const uint8_t* src, size_t srcRB) {
     }
 }
 
-inline SkMask::Format SkMaskFormat_for_SkColorType(SkColorType colorType) {
+inline SkMask::Format SkMaskFormat_for_SkColorType(vx_color_type colorType) {
     switch (colorType) {
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             return SkMask::kA8_Format;
-        case kN32_SkColorType:
+        case VX_COLOR_TYPE_N32:
             return SkMask::kARGB32_Format;
         default:
             SkDEBUGFAIL("unsupported SkBitmap::Config");
@@ -399,30 +399,30 @@ inline SkMask::Format SkMaskFormat_for_SkColorType(SkColorType colorType) {
     }
 }
 
-inline SkColorType SkColorType_for_FTPixelMode(FT_Pixel_Mode pixel_mode) {
+inline vx_color_type SkColorType_for_FTPixelMode(FT_Pixel_Mode pixel_mode) {
     switch (pixel_mode) {
         case FT_PIXEL_MODE_MONO:
         case FT_PIXEL_MODE_GRAY:
-            return kAlpha_8_SkColorType;
+            return VX_COLOR_TYPE_ALPHA_8;
         case FT_PIXEL_MODE_BGRA:
-            return kN32_SkColorType;
+            return VX_COLOR_TYPE_N32;
         default:
             SkDEBUGFAIL("unsupported FT_PIXEL_MODE");
-            return kAlpha_8_SkColorType;
+            return VX_COLOR_TYPE_ALPHA_8;
     }
 }
 
-inline SkColorType SkColorType_for_SkMaskFormat(SkMask::Format format) {
+inline vx_color_type SkColorType_for_SkMaskFormat(SkMask::Format format) {
     switch (format) {
         case SkMask::kBW_Format:
         case SkMask::kA8_Format:
         case SkMask::kLCD16_Format:
-            return kAlpha_8_SkColorType;
+            return VX_COLOR_TYPE_ALPHA_8;
         case SkMask::kARGB32_Format:
-            return kN32_SkColorType;
+            return VX_COLOR_TYPE_N32;
         default:
             SkDEBUGFAIL("unsupported destination SkBitmap::Config");
-            return kAlpha_8_SkColorType;
+            return VX_COLOR_TYPE_ALPHA_8;
     }
 }
 

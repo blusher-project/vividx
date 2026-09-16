@@ -376,15 +376,15 @@ SkCodec::IsAnimated SkCrabbyAvifCodec::onIsAnimated() {
 bool SkCrabbyAvifCodec::conversionSupported(const SkImageInfo& dstInfo,
                                             bool srcIsOpaque,
                                             bool needsColorXform) {
-    if (dstInfo.colorType() == kGray_8_SkColorType) {
+    if (dstInfo.colorType() == VX_COLOR_TYPE_GRAY_8) {
         return this->getEncodedInfo().color() == SkEncodedInfo::kGray_Color;
     }
 
-    return dstInfo.colorType() == kRGBA_8888_SkColorType ||
-           dstInfo.colorType() == kBGRA_8888_SkColorType ||
-           dstInfo.colorType() == kRGBA_1010102_SkColorType ||
-           dstInfo.colorType() == kRGBA_F16_SkColorType ||
-           dstInfo.colorType() == kRGB_565_SkColorType;
+    return dstInfo.colorType() == VX_COLOR_TYPE_RGBA_8888 ||
+           dstInfo.colorType() == VX_COLOR_TYPE_BGRA_8888 ||
+           dstInfo.colorType() == VX_COLOR_TYPE_RGBA_1010102 ||
+           dstInfo.colorType() == VX_COLOR_TYPE_RGBA_F16 ||
+           dstInfo.colorType() == VX_COLOR_TYPE_RGB_565;
 }
 
 SkCodec::Result SkCrabbyAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
@@ -399,15 +399,15 @@ SkCodec::Result SkCrabbyAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
     static SkMutex mutex;
     SkAutoMutexExclusive lock(mutex);
     switch (dstInfo.colorType()) {
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
-        case kRGB_565_SkColorType:
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
+        case VX_COLOR_TYPE_RGB_565:
+        case VX_COLOR_TYPE_GRAY_8:
             fAvifDecoder->androidMediaCodecOutputColorFormat =
                     crabbyavif::ANDROID_MEDIA_CODEC_OUTPUT_COLOR_FORMAT_YUV420_FLEXIBLE;
             break;
-        case kRGBA_F16_SkColorType:
-        case kRGBA_1010102_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16:
+        case VX_COLOR_TYPE_RGBA_1010102:
             fAvifDecoder->androidMediaCodecOutputColorFormat =
                     crabbyavif::ANDROID_MEDIA_CODEC_OUTPUT_COLOR_FORMAT_P010;
             break;
@@ -492,28 +492,28 @@ SkCodec::Result SkCrabbyAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
     crabbyavif::avifRGBImageSetDefaults(&rgbImage, image);
 
     switch (dstInfo.colorType()) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             rgbImage.depth = 8;
             rgbImage.format = crabbyavif::AVIF_RGB_FORMAT_RGBA;
             break;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             rgbImage.depth = 8;
             rgbImage.format = crabbyavif::AVIF_RGB_FORMAT_BGRA;
             break;
-        case kRGBA_F16_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16:
             rgbImage.depth = 16;
             rgbImage.format = crabbyavif::AVIF_RGB_FORMAT_RGBA;
             rgbImage.isFloat = crabbyavif::CRABBY_AVIF_TRUE;
             break;
-        case kRGBA_1010102_SkColorType:
+        case VX_COLOR_TYPE_RGBA_1010102:
             rgbImage.depth = 10;
             rgbImage.format = crabbyavif::AVIF_RGB_FORMAT_RGBA1010102;
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             rgbImage.depth = 8;
             rgbImage.format = crabbyavif::AVIF_RGB_FORMAT_RGB565;
             break;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             rgbImage.depth = 8;
             rgbImage.format = crabbyavif::AVIF_RGB_FORMAT_GRAY;
             break;

@@ -17,7 +17,7 @@
 
 #include <utility>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 GrContext_Base::GrContext_Base(sk_sp<GrContextThreadSafeProxy> proxy)
         : fThreadSafeProxy(std::move(proxy)) {
@@ -41,7 +41,7 @@ const GrContextOptions& GrContext_Base::options() const {
 const GrCaps* GrContext_Base::caps() const { return fThreadSafeProxy->priv().caps(); }
 sk_sp<const GrCaps> GrContext_Base::refCaps() const { return fThreadSafeProxy->priv().refCaps(); }
 
-GrBackendFormat GrContext_Base::defaultBackendFormat(SkColorType skColorType,
+GrBackendFormat GrContext_Base::defaultBackendFormat(vx_color_type skColorType,
                                                      GrRenderable renderable) const {
     return fThreadSafeProxy->defaultBackendFormat(skColorType, renderable);
 }
@@ -50,7 +50,7 @@ GrBackendFormat GrContext_Base::compressedBackendFormat(SkTextureCompressionType
     return fThreadSafeProxy->compressedBackendFormat(c);
 }
 
-int GrContext_Base::maxSurfaceSampleCountForColorType(SkColorType colorType) const {
+int GrContext_Base::maxSurfaceSampleCountForColorType(vx_color_type colorType) const {
     return fThreadSafeProxy->maxSurfaceSampleCountForColorType(colorType);
 }
 

@@ -51,7 +51,7 @@ static CGBitmapInfo compute_cgalpha_info_4444(vx_alpha_type at) {
     return info;
 }
 
-static bool get_bitmap_info(SkColorType skColorType,
+static bool get_bitmap_info(vx_color_type skColorType,
                             vx_alpha_type skAlphaType,
                             size_t* bitsPerComponent,
                             CGBitmapInfo* info,
@@ -60,7 +60,7 @@ static bool get_bitmap_info(SkColorType skColorType,
         *upscaleTo32 = false;
     }
     switch (skColorType) {
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             if (upscaleTo32) {
                 *upscaleTo32 = true;
             }
@@ -68,15 +68,15 @@ static bool get_bitmap_info(SkColorType skColorType,
             *bitsPerComponent = 8;
             *info = compute_cgalpha_info_rgba(VX_ALPHA_TYPE_OPAQUE);
             break;
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             *bitsPerComponent = 8;
             *info = compute_cgalpha_info_rgba(skAlphaType);
             break;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             *bitsPerComponent = 8;
             *info = compute_cgalpha_info_bgra(skAlphaType);
             break;
-        case kARGB_4444_SkColorType:
+        case VX_COLOR_TYPE_ARGB_4444:
             *bitsPerComponent = 4;
             *info = compute_cgalpha_info_4444(skAlphaType);
             break;
@@ -97,7 +97,7 @@ static std::unique_ptr<SkBitmap> prepare_for_image_ref(const SkBitmap& bm,
         std::unique_ptr<SkBitmap> copy(new SkBitmap);
         // here we make a deep copy of the pixels, since CG won't take our
         // 565 directly, so we always go to RGBA
-        copy->allocPixels(bm.info().makeColorType(kRGBA_8888_SkColorType));
+        copy->allocPixels(bm.info().makeColorType(VX_COLOR_TYPE_RGBA_8888));
         bm.readPixels(copy->info(), copy->getPixels(), copy->rowBytes(), 0, 0);
         return copy;
     }
@@ -166,11 +166,11 @@ CGContextRef SkCreateCGContext(const SkPixmap& pmap) {
     CGBitmapInfo cg_bitmap_info = 0;
     size_t bitsPerComponent = 0;
     switch (pmap.colorType()) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             bitsPerComponent = 8;
             cg_bitmap_info = compute_cgalpha_info_rgba(pmap.alphaType());
             break;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             bitsPerComponent = 8;
             cg_bitmap_info = compute_cgalpha_info_bgra(pmap.alphaType());
             break;
@@ -190,11 +190,11 @@ bool SkCopyPixelsFromCGImage(const SkImageInfo& info, size_t rowBytes, void* pix
     CGBitmapInfo cg_bitmap_info = 0;
     size_t bitsPerComponent = 0;
     switch (info.colorType()) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             bitsPerComponent = 8;
             cg_bitmap_info = compute_cgalpha_info_rgba(info.alphaType());
             break;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             bitsPerComponent = 8;
             cg_bitmap_info = compute_cgalpha_info_bgra(info.alphaType());
             break;

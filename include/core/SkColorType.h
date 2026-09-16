@@ -154,6 +154,7 @@ enum SkColorType : int {
     #error "SK_*32_SHIFT values must correspond to BGRA or RGBA byte order"
 #endif
 };
-static constexpr int kSkColorTypeCnt = static_cast<int>(kLastEnum_SkColorType) + 1;
+// Moved to `include/vividx/core/color-type.h` file.
+// static constexpr int kSkColorTypeCnt = static_cast<int>(kLastEnum_SkColorType) + 1;
 
 #endif

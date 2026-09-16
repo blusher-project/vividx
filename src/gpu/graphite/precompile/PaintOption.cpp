@@ -217,18 +217,18 @@ bool PaintOption::handleColorFilter(const KeyContext& keyContext) const {
 }
 
 // This should be kept in sync w/ SkPaintPriv::ShouldDither and PaintParams::should_dither
-bool PaintOption::shouldDither(SkColorType dstCT) const {
+bool PaintOption::shouldDither(vx_color_type dstCT) const {
     // The paint dither flag can veto.
     if (!fDither) {
         return false;
     }
 
-    if (dstCT == kUnknown_SkColorType) {
+    if (dstCT == VX_COLOR_TYPE_UNKNOWN) {
         return false;
     }
 
     // We always dither 565 or 4444 when requested.
-    if (dstCT == kRGB_565_SkColorType || dstCT == kARGB_4444_SkColorType) {
+    if (dstCT == VX_COLOR_TYPE_RGB_565 || dstCT == VX_COLOR_TYPE_ARGB_4444) {
         return true;
     }
 
@@ -239,7 +239,7 @@ bool PaintOption::shouldDither(SkColorType dstCT) const {
 bool PaintOption::handleDithering(const KeyContext& keyContext) const {
 
 #ifndef SK_IGNORE_GPU_DITHER
-    SkColorType ct = keyContext.dstColorInfo().colorType();
+    vx_color_type ct = keyContext.dstColorInfo().colorType();
     if (this->shouldDither(ct)) {
         bool srcIsOpaque = false;
         Compose(keyContext,

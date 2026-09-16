@@ -31,7 +31,7 @@ class SkMatrix;
 class SkPaint;
 class SkPixelRef;
 class SkShader;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTileMode;
 
 /** \class SkBitmap
@@ -156,7 +156,7 @@ public:
     */
     int height() const { return fPixmap.height(); }
 
-    SkColorType colorType() const { return fPixmap.colorType(); }
+    vx_color_type colorType() const { return fPixmap.colorType(); }
 
     vx_alpha_type alphaType() const { return fPixmap.alphaType(); }
 

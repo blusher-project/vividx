@@ -1412,7 +1412,7 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph, void* imageBu
         // TODO: mark this as sRGB when the blits will be sRGB.
         dstBitmap.installPixels(
                 SkImageInfo::Make(
-                        glyph.width(), glyph.height(), kN32_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED),
+                        glyph.width(), glyph.height(), VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED),
                 imageBuffer,
                 glyph.rowBytes());
 

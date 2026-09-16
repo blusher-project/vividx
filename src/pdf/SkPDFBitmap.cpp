@@ -66,7 +66,7 @@ void fill_stream(SkWStream* out, char value, size_t n) {
    rendered as grey because of the separate soft mask and color
    resizing. e.g.: gm/bitmappremul.cpp */
 SkColor get_neighbor_avg_color(const SkPixmap& bm, int xOrig, int yOrig) {
-    SkASSERT(kBGRA_8888_SkColorType == bm.colorType());
+    SkASSERT(VX_COLOR_TYPE_BGRA_8888 == bm.colorType());
     unsigned r = 0, g = 0, b = 0, n = 0;
     // Clamp the range to the edge of the bitmap.
     int ymin = std::max(0, yOrig - 1);
@@ -136,12 +136,12 @@ size_t do_deflated_alpha(const SkPixmap& pm, SkPDFDocument* doc, SkPDFIndirectRe
         deflateWStream.emplace(&buffer, SkToInt(compressionLevel));
         stream = &*deflateWStream;
     }
-    if (kAlpha_8_SkColorType == pm.colorType()) {
+    if (VX_COLOR_TYPE_ALPHA_8 == pm.colorType()) {
         SkASSERT(pm.rowBytes() == (size_t)pm.width());
         stream->write(pm.addr8(), pm.width() * pm.height());
     } else {
         SkASSERT(pm.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED);
-        SkASSERT(pm.colorType() == kBGRA_8888_SkColorType);
+        SkASSERT(pm.colorType() == VX_COLOR_TYPE_BGRA_8888);
         SkASSERT(pm.rowBytes() == (size_t)pm.width() * 4);
         const uint32_t* ptr = pm.addr32();
         const uint32_t* stop = ptr + pm.height() * pm.width();
@@ -220,11 +220,11 @@ size_t do_deflated_image(const SkPixmap& pm,
     SkPDFUnion colorSpace = SkPDFUnion::Name("DeviceGray");
     int channels;
     switch (pm.colorType()) {
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             channels = 1;
             fill_stream(stream, '\x00', pm.width() * pm.height());
             break;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             channels = 1;
             SkASSERT(isOpaque);
             SkASSERT(pm.rowBytes() == (size_t)pm.width());
@@ -234,7 +234,7 @@ size_t do_deflated_image(const SkPixmap& pm,
             colorSpace = SkPDFUnion::Name("DeviceRGB");
             channels = 3;
             SkASSERT(pm.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED);
-            SkASSERT(pm.colorType() == kBGRA_8888_SkColorType);
+            SkASSERT(pm.colorType() == VX_COLOR_TYPE_BGRA_8888);
             SkASSERT(pm.rowBytes() == (size_t)pm.width() * 4);
             uint8_t byteBuffer[3072];
             static_assert(std::size(byteBuffer) % 3 == 0, "");
@@ -348,17 +348,17 @@ SkBitmap to_pixels(const SkImage* image) {
     int w = image->width(),
         h = image->height();
     switch (image->colorType()) {
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             bm.allocPixels(SkImageInfo::MakeA8(w, h));
             break;
-        case kGray_8_SkColorType:
-            bm.allocPixels(SkImageInfo::Make(w, h, kGray_8_SkColorType, VX_ALPHA_TYPE_OPAQUE));
+        case VX_COLOR_TYPE_GRAY_8:
+            bm.allocPixels(SkImageInfo::Make(w, h, VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_OPAQUE));
             break;
         default: {
             // TODO: makeColorSpace(sRGB) or actually tag the images
             vx_alpha_type at = bm.isOpaque() ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_UNPREMULTIPLIED;
             bm.allocPixels(
-                SkImageInfo::Make(w, h, kBGRA_8888_SkColorType, at, image->refColorSpace()));
+                SkImageInfo::Make(w, h, VX_COLOR_TYPE_BGRA_8888, at, image->refColorSpace()));
         }
     }
     // TODO: support GPU images in PDFs

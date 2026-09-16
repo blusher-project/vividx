@@ -218,7 +218,7 @@ SkShaderBase::Context* SkImageShader::onMakeContext(const ContextRec& rec,
     if (fImage->alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         return nullptr;
     }
-    if (fImage->colorType() != kN32_SkColorType) {
+    if (fImage->colorType() != VX_COLOR_TYPE_N32) {
         return nullptr;
     }
     if (fTileModeX != fTileModeY) {
@@ -580,80 +580,80 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
 
         void* ctx = level->gather;
         switch (level->pm.colorType()) {
-            case kAlpha_8_SkColorType:      p->append(SkRasterPipelineOp::gather_a8,    ctx); break;
-            case kA16_unorm_SkColorType:    p->append(SkRasterPipelineOp::gather_a16,   ctx); break;
-            case kA16_float_SkColorType:    p->append(SkRasterPipelineOp::gather_af16,  ctx); break;
-            case kR16_float_SkColorType:    p->append(SkRasterPipelineOp::gather_rf16,  ctx); break;
-            case kRGB_565_SkColorType:      p->append(SkRasterPipelineOp::gather_565,   ctx); break;
-            case kARGB_4444_SkColorType:    p->append(SkRasterPipelineOp::gather_4444,  ctx); break;
-            case kR8G8_unorm_SkColorType:   p->append(SkRasterPipelineOp::gather_rg88,  ctx); break;
-            case kR16_unorm_SkColorType:    p->append(SkRasterPipelineOp::gather_r16,   ctx); break;
-            case kR16G16_unorm_SkColorType: p->append(SkRasterPipelineOp::gather_rg1616,ctx); break;
-            case kR16G16_float_SkColorType: p->append(SkRasterPipelineOp::gather_rgf16, ctx); break;
-            case kRGBA_8888_SkColorType:    p->append(SkRasterPipelineOp::gather_8888,  ctx); break;
+            case VX_COLOR_TYPE_ALPHA_8:      p->append(SkRasterPipelineOp::gather_a8,    ctx); break;
+            case VX_COLOR_TYPE_A16_UNORM:    p->append(SkRasterPipelineOp::gather_a16,   ctx); break;
+            case VX_COLOR_TYPE_A16_FLOAT:    p->append(SkRasterPipelineOp::gather_af16,  ctx); break;
+            case VX_COLOR_TYPE_R16_FLOAT:    p->append(SkRasterPipelineOp::gather_rf16,  ctx); break;
+            case VX_COLOR_TYPE_RGB_565:      p->append(SkRasterPipelineOp::gather_565,   ctx); break;
+            case VX_COLOR_TYPE_ARGB_4444:    p->append(SkRasterPipelineOp::gather_4444,  ctx); break;
+            case VX_COLOR_TYPE_R8G8_UNORM:   p->append(SkRasterPipelineOp::gather_rg88,  ctx); break;
+            case VX_COLOR_TYPE_R16_UNORM:    p->append(SkRasterPipelineOp::gather_r16,   ctx); break;
+            case VX_COLOR_TYPE_R16G16_UNORM: p->append(SkRasterPipelineOp::gather_rg1616,ctx); break;
+            case VX_COLOR_TYPE_R16G16_FLOAT: p->append(SkRasterPipelineOp::gather_rgf16, ctx); break;
+            case VX_COLOR_TYPE_RGBA_8888:    p->append(SkRasterPipelineOp::gather_8888,  ctx); break;
 
-            case kRGBA_1010102_SkColorType:
+            case VX_COLOR_TYPE_RGBA_1010102:
                 p->append(SkRasterPipelineOp::gather_1010102, ctx);
                 break;
 
-            case kR16G16B16A16_unorm_SkColorType:
+            case VX_COLOR_TYPE_R16G16B16A16_UNORM:
                 p->append(SkRasterPipelineOp::gather_16161616, ctx);
                 break;
 
-            case kRGBA_F16Norm_SkColorType:
-            case kRGBA_F16_SkColorType:     p->append(SkRasterPipelineOp::gather_f16,   ctx); break;
-            case kRGBA_F32_SkColorType:     p->append(SkRasterPipelineOp::gather_f32,   ctx); break;
-            case kBGRA_10101010_XR_SkColorType:
+            case VX_COLOR_TYPE_RGBA_F16NORM:
+            case VX_COLOR_TYPE_RGBA_F16:     p->append(SkRasterPipelineOp::gather_f16,   ctx); break;
+            case VX_COLOR_TYPE_RGBA_F32:     p->append(SkRasterPipelineOp::gather_f32,   ctx); break;
+            case VX_COLOR_TYPE_BGRA_10101010_XR:
                 p->append(SkRasterPipelineOp::gather_10101010_xr,  ctx);
                 p->append(SkRasterPipelineOp::swap_rb);
                 break;
-            case kRGBA_10x6_SkColorType:    p->append(SkRasterPipelineOp::gather_10x6,  ctx); break;
+            case VX_COLOR_TYPE_RGBA_10X6:    p->append(SkRasterPipelineOp::gather_10x6,  ctx); break;
 
-            case kGray_8_SkColorType:       p->append(SkRasterPipelineOp::gather_a8,    ctx);
+            case VX_COLOR_TYPE_GRAY_8:       p->append(SkRasterPipelineOp::gather_a8,    ctx);
                                             p->append(SkRasterPipelineOp::alpha_to_gray    ); break;
 
-            case kR8_unorm_SkColorType:     p->append(SkRasterPipelineOp::gather_a8,    ctx);
+            case VX_COLOR_TYPE_R8_UNORM:     p->append(SkRasterPipelineOp::gather_a8,    ctx);
                                             p->append(SkRasterPipelineOp::alpha_to_red     ); break;
 
-            case kRGB_888x_SkColorType:     p->append(SkRasterPipelineOp::gather_8888,  ctx);
+            case VX_COLOR_TYPE_RGB_888X:     p->append(SkRasterPipelineOp::gather_8888,  ctx);
                                             p->append(SkRasterPipelineOp::force_opaque     ); break;
-            case kRGB_F16F16F16x_SkColorType:
+            case VX_COLOR_TYPE_RGB_F16F16F16X:
                 p->append(SkRasterPipelineOp::gather_f16,  ctx);
                 p->append(SkRasterPipelineOp::force_opaque);
                 break;
-            case kBGRA_1010102_SkColorType:
+            case VX_COLOR_TYPE_BGRA_1010102:
                 p->append(SkRasterPipelineOp::gather_1010102, ctx);
                 p->append(SkRasterPipelineOp::swap_rb);
                 break;
 
-            case kRGB_101010x_SkColorType:
+            case VX_COLOR_TYPE_RGB_101010X:
                 p->append(SkRasterPipelineOp::gather_1010102, ctx);
                 p->append(SkRasterPipelineOp::force_opaque);
                 break;
 
-            case kBGR_101010x_XR_SkColorType:
+            case VX_COLOR_TYPE_BGR_101010X_XR:
                 p->append(SkRasterPipelineOp::gather_1010102_xr, ctx);
                 p->append(SkRasterPipelineOp::force_opaque);
                 p->append(SkRasterPipelineOp::swap_rb);
                 break;
 
-            case kBGR_101010x_SkColorType:
+            case VX_COLOR_TYPE_BGR_101010X:
                 p->append(SkRasterPipelineOp::gather_1010102, ctx);
                 p->append(SkRasterPipelineOp::force_opaque);
                 p->append(SkRasterPipelineOp::swap_rb);
                 break;
 
-            case kBGRA_8888_SkColorType:
+            case VX_COLOR_TYPE_BGRA_8888:
                 p->append(SkRasterPipelineOp::gather_8888, ctx);
                 p->append(SkRasterPipelineOp::swap_rb);
                 break;
 
-            case kSRGBA_8888_SkColorType:
+            case VX_COLOR_TYPE_SRGBA_8888:
                 p->append(SkRasterPipelineOp::gather_8888, ctx);
                 p->appendTransferFunction(*skcms_sRGB_TransferFunction());
                 break;
 
-            case kUnknown_SkColorType: SkASSERT(false);
+            case VX_COLOR_TYPE_UNKNOWN: SkASSERT(false);
         }
         if (level->decalCtx) {
             p->append(SkRasterPipelineOp::check_decal_mask, level->decalCtx);
@@ -691,8 +691,8 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
 
     // Check for fast-path stages.
     // TODO: Could we use the fast-path stages for each level when doing linear mipmap filtering?
-    SkColorType ct = upper.pm.colorType();
-    if ((ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType) &&
+    vx_color_type ct = upper.pm.colorType();
+    if ((ct == VX_COLOR_TYPE_RGBA_8888 || ct == VX_COLOR_TYPE_BGRA_8888) &&
         !sampling.useCubic && sampling.filter == SkFilterMode::kLinear &&
         sampling.mipmap != SkMipmapMode::kLinear &&
         fTileModeX == SkTileMode::kClamp && fTileModeY == SkTileMode::kClamp) {
@@ -718,17 +718,17 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
             p->append(SkRasterPipelineOp::bilerp_clamp_8888, upper.gather);
         }
 
-        if (ct == kBGRA_8888_SkColorType) {
+        if (ct == VX_COLOR_TYPE_BGRA_8888) {
             p->append(SkRasterPipelineOp::swap_rb);
         }
         return append_misc();
     }
-    if ((ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType) &&
+    if ((ct == VX_COLOR_TYPE_RGBA_8888 || ct == VX_COLOR_TYPE_BGRA_8888) &&
         sampling.useCubic &&
         fTileModeX == SkTileMode::kClamp && fTileModeY == SkTileMode::kClamp) {
 
         p->append(SkRasterPipelineOp::bicubic_clamp_8888, upper.gather);
-        if (ct == kBGRA_8888_SkColorType) {
+        if (ct == VX_COLOR_TYPE_BGRA_8888) {
             p->append(SkRasterPipelineOp::swap_rb);
         }
         return append_misc();

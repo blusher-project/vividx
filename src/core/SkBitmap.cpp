@@ -121,7 +121,7 @@ bool SkBitmap::setInfo(const SkImageInfo& info, size_t rowBytes) {
         return reset_return_false(this);
     }
 
-    if (kUnknown_SkColorType == info.colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == info.colorType()) {
         rowBytes = 0;
     } else if (0 == rowBytes) {
         rowBytes = (size_t)mrb;
@@ -172,13 +172,13 @@ SkIPoint SkBitmap::pixelRefOrigin() const {
 void SkBitmap::setPixelRef(sk_sp<SkPixelRef> pr, int dx, int dy) {
 #ifdef SK_DEBUG
     if (pr) {
-        if (kUnknown_SkColorType != this->colorType()) {
+        if (VX_COLOR_TYPE_UNKNOWN != this->colorType()) {
             SkASSERT(dx >= 0 && this->width() + dx <= pr->width());
             SkASSERT(dy >= 0 && this->height() + dy <= pr->height());
         }
     }
 #endif
-    fPixelRef = kUnknown_SkColorType != this->colorType() ? std::move(pr) : nullptr;
+    fPixelRef = VX_COLOR_TYPE_UNKNOWN != this->colorType() ? std::move(pr) : nullptr;
     void* p = nullptr;
     size_t rowBytes = this->rowBytes();
     // ignore dx,dy if there is no pixelref
@@ -195,7 +195,7 @@ void SkBitmap::setPixelRef(sk_sp<SkPixelRef> pr, int dx, int dy) {
 }
 
 void SkBitmap::setPixels(void* p) {
-    if (kUnknown_SkColorType == this->colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == this->colorType()) {
         p = nullptr;
     }
     size_t rb = this->rowBytes();
@@ -265,7 +265,7 @@ bool SkBitmap::tryAllocPixels(const SkImageInfo& requestedInfo, size_t rowBytes)
 
     // setInfo may have corrected info (e.g. 565 is always opaque).
     const SkImageInfo& correctedInfo = this->info();
-    if (kUnknown_SkColorType == correctedInfo.colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == correctedInfo.colorType()) {
         return true;
     }
     // setInfo may have computed a valid rowbytes if 0 were passed in
@@ -356,7 +356,7 @@ void SkBitmap::notifyPixelsChanged() const {
  */
 bool SkBitmap::HeapAllocator::allocPixelRef(SkBitmap* dst) {
     const SkImageInfo& info = dst->info();
-    if (kUnknown_SkColorType == info.colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == info.colorType()) {
 //        SkDebugf("unsupported config for info %d\n", dst->config());
         return false;
     }
@@ -400,7 +400,7 @@ void* SkBitmap::getAddr(int x, int y) const {
 void SkBitmap::erase(SkColor4f c, const SkIRect& area) const {
     SkDEBUGCODE(this->validate();)
 
-    if (kUnknown_SkColorType == this->colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == this->colorType()) {
         // TODO: can we ASSERT that we never get here?
         return; // can't erase. Should we bzero so the memory is not uninitialized?
     }

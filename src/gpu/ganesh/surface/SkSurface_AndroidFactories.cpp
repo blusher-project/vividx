@@ -121,7 +121,7 @@ sk_sp<SkSurface> WrapAndroidHardwareBuffer(GrDirectContext* dContext,
         return nullptr;
     }
 
-    SkColorType colorType =
+    vx_color_type colorType =
             AHardwareBufferUtils::GetSkColorTypeFromBufferFormat(bufferDesc.format);
 
     // Will call deleteImageProc if SkSurface creation fails.

@@ -26,7 +26,7 @@
 #include <cstddef>
 #include <cstdint>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 namespace skgpu::graphite {
 namespace {
@@ -52,7 +52,7 @@ ComputePathAtlas::ComputePathAtlas(Recorder* recorder)
 
 bool ComputePathAtlas::initializeTextureIfNeeded() {
     if (!fTexture) {
-        SkColorType targetCT = ComputeShaderCoverageMaskTargetFormat(fRecorder->priv().caps());
+        vx_color_type targetCT = ComputeShaderCoverageMaskTargetFormat(fRecorder->priv().caps());
         fTexture = fRecorder->priv().atlasProvider()->getAtlasTexture(fRecorder,
                                                                       this->width(),
                                                                       this->height(),

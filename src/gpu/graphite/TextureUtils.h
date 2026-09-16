@@ -19,7 +19,7 @@
 #include <utility>
 
 class SkBitmap;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 class SkImage;
 struct SkImageInfo;
 struct SkSamplingOptions;
@@ -89,7 +89,7 @@ std::pair<sk_sp<SkImage>, SkSamplingOptions> GetGraphiteBacked(Recorder*,
 
 // Return the color format used for coverage mask textures that are rendered by a GPU
 // compute program.
-SkColorType ComputeShaderCoverageMaskTargetFormat(const Caps*);
+vx_color_type ComputeShaderCoverageMaskTargetFormat(const Caps*);
 
 } // namespace skgpu::graphite
 
@@ -99,7 +99,7 @@ class Backend;
 
 sk_sp<Backend> MakeGraphiteBackend(skgpu::graphite::Recorder* recorder,
                                    const SkSurfaceProps&,
-                                   SkColorType);
+                                   vx_color_type);
 
 }  // namespace skif
 

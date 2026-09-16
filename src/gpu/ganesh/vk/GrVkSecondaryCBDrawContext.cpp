@@ -133,7 +133,7 @@ bool GrVkSecondaryCBDrawContext::characterize(GrSurfaceCharacterization* charact
     }
 
     SkImageInfo ii = fDevice->imageInfo();
-    if (ii.colorType() == kUnknown_SkColorType) {
+    if (ii.colorType() == VX_COLOR_TYPE_UNKNOWN) {
         return false;
     }
 
@@ -190,7 +190,7 @@ bool GrVkSecondaryCBDrawContext::isCompatible(
     }
 
     SkImageInfo ii = fDevice->imageInfo();
-    if (ii.colorType() == kUnknown_SkColorType) {
+    if (ii.colorType() == VX_COLOR_TYPE_UNKNOWN) {
         return false;
     }
 

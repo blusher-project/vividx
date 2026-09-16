@@ -17,58 +17,58 @@
 
 namespace skgpu {
 
-float DitherRangeForConfig(SkColorType dstColorType) {
-    SkASSERT(dstColorType != kUnknown_SkColorType);
+float DitherRangeForConfig(vx_color_type dstColorType) {
+    SkASSERT(dstColorType != VX_COLOR_TYPE_UNKNOWN);
 
     // We use 1 / (2^bitdepth-1) as the range since each channel can hold 2^bitdepth values
     switch (dstColorType) {
         // 4 bit
-        case kARGB_4444_SkColorType:
+        case VX_COLOR_TYPE_ARGB_4444:
             return 1 / 15.f;
 
         // 6 bit
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             return 1 / 63.f;
 
         // 8 bit
-        case kAlpha_8_SkColorType:
-        case kGray_8_SkColorType:
-        case kR8_unorm_SkColorType:
-        case kR8G8_unorm_SkColorType:
-        case kRGB_888x_SkColorType:
-        case kRGBA_8888_SkColorType:
-        case kSRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
+        case VX_COLOR_TYPE_GRAY_8:
+        case VX_COLOR_TYPE_R8_UNORM:
+        case VX_COLOR_TYPE_R8G8_UNORM:
+        case VX_COLOR_TYPE_RGB_888X:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_SRGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
             return 1 / 255.f;
 
         // 10 bit
-        case kRGBA_1010102_SkColorType:
-        case kBGRA_1010102_SkColorType:
-        case kRGB_101010x_SkColorType:
-        case kBGR_101010x_SkColorType:
-        case kBGR_101010x_XR_SkColorType:
-        case kBGRA_10101010_XR_SkColorType:
-        case kRGBA_10x6_SkColorType:
+        case VX_COLOR_TYPE_RGBA_1010102:
+        case VX_COLOR_TYPE_BGRA_1010102:
+        case VX_COLOR_TYPE_RGB_101010X:
+        case VX_COLOR_TYPE_BGR_101010X:
+        case VX_COLOR_TYPE_BGR_101010X_XR:
+        case VX_COLOR_TYPE_BGRA_10101010_XR:
+        case VX_COLOR_TYPE_RGBA_10X6:
             return 1 / 1023.f;
 
         // 16 bit
-        case kA16_unorm_SkColorType:
-        case kR16_unorm_SkColorType:
-        case kR16G16_unorm_SkColorType:
-        case kR16G16B16A16_unorm_SkColorType:
+        case VX_COLOR_TYPE_A16_UNORM:
+        case VX_COLOR_TYPE_R16_UNORM:
+        case VX_COLOR_TYPE_R16G16_UNORM:
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM:
             return 1 / 32767.f;
 
         // Unknown
-        case kUnknown_SkColorType:
+        case VX_COLOR_TYPE_UNKNOWN:
         // Half
-        case kA16_float_SkColorType:
-        case kR16_float_SkColorType:
-        case kR16G16_float_SkColorType:
-        case kRGBA_F16_SkColorType:
-        case kRGB_F16F16F16x_SkColorType:
-        case kRGBA_F16Norm_SkColorType:
+        case VX_COLOR_TYPE_A16_FLOAT:
+        case VX_COLOR_TYPE_R16_FLOAT:
+        case VX_COLOR_TYPE_R16G16_FLOAT:
+        case VX_COLOR_TYPE_RGBA_F16:
+        case VX_COLOR_TYPE_RGB_F16F16F16X:
+        case VX_COLOR_TYPE_RGBA_F16NORM:
         // Float
-        case kRGBA_F32_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F32:
             return 0.f; // no dithering
     }
     SkUNREACHABLE;

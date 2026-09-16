@@ -95,12 +95,12 @@ static std::unique_ptr<GrFragmentProcessor> make_textured_colorizer(
 
     // Use 8888 or F16, depending on the destination config.
     // TODO: Use 1010102 for opaque gradients, at least if destination is 1010102?
-    SkColorType colorType = kRGBA_8888_SkColorType;
+    vx_color_type colorType = VX_COLOR_TYPE_RGBA_8888;
     if (GrColorTypeIsWiderThan(args.fDstColorInfo->colorType(), 8)) {
         auto f16Format = args.fSurfaceDrawContext->caps()->getDefaultBackendFormat(
                 GrColorType::kRGBA_F16, GrRenderable::kNo);
         if (f16Format.isValid()) {
-            colorType = kRGBA_F16_SkColorType;
+            colorType = VX_COLOR_TYPE_RGBA_F16;
         }
     }
     vx_alpha_type alphaType = static_cast<bool>(interpolation.fInPremul) ? VX_ALPHA_TYPE_PREMULTIPLIED

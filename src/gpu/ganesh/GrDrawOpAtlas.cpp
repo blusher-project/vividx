@@ -71,7 +71,7 @@ void GrDrawOpAtlas::instantiate(GrOnFlushResourceProvider* onFlushResourceProvid
 
 std::unique_ptr<GrDrawOpAtlas> GrDrawOpAtlas::Make(GrProxyProvider* proxyProvider,
                                                    const GrBackendFormat& format,
-                                                   SkColorType colorType,
+                                                   vx_color_type colorType,
                                                    size_t bpp,
                                                    int width, int height,
                                                    int plotWidth, int plotHeight,
@@ -101,7 +101,7 @@ std::unique_ptr<GrDrawOpAtlas> GrDrawOpAtlas::Make(GrProxyProvider* proxyProvide
 
 GrDrawOpAtlas::GrDrawOpAtlas(GrProxyProvider* proxyProvider,
                              const GrBackendFormat& format,
-                             SkColorType colorType,
+                             vx_color_type colorType,
                              size_t bpp,
                              int width, int height,
                              int plotWidth, int plotHeight,

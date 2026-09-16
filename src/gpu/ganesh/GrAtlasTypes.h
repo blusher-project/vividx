@@ -27,6 +27,8 @@
 #include <cstring>
 #include <utility>
 
+#include <vividx/core/color-type.h>
+
 class SkPixmap;
 
 /**
@@ -316,7 +318,7 @@ public:
            GrAtlasGenerationCounter* generationCounter,
            int offX, int offY,
            int width, int height,
-           SkColorType colorType,
+           vx_color_type colorType,
            size_t bpp);
 
     uint32_t pageIndex() const { return this->plotLocator().pageIndex(); }
@@ -401,7 +403,7 @@ private:
     const int fY;
     skgpu::RectanizerSkyline fRectanizer;
     const SkIPoint16 fOffset;  // the offset of the plot in the backing texture
-    const SkColorType fColorType;
+    const vx_color_type fColorType;
     const size_t fBytesPerPixel;
     SkIRect fDirtyRect;  // area in the Plot that needs to be uploaded
     SkDEBUGCODE(bool fDirty;)

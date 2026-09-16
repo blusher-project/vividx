@@ -118,35 +118,35 @@ private:
 };
 
 #ifdef SK_CODEC_USES_PNG_WITH_RUST_FOR_ANDROID
-std::vector<uint8_t> GetSbitData(SkColorType colorType) {
+std::vector<uint8_t> GetSbitData(vx_color_type colorType) {
     switch (colorType) {
-        case kRGBA_F16Norm_SkColorType:
-        case kRGBA_F16_SkColorType:
-        case kRGBA_F32_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16NORM:
+        case VX_COLOR_TYPE_RGBA_F16:
+        case VX_COLOR_TYPE_RGBA_F32:
             return {16, 16, 16, 16};
-        case kRGB_F16F16F16x_SkColorType:
+        case VX_COLOR_TYPE_RGB_F16F16F16X:
             return {16, 16, 16};
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             return {8};
-        case kRGB_888x_SkColorType:
+        case VX_COLOR_TYPE_RGB_888X:
             return {8, 8, 8};
-        case kARGB_4444_SkColorType:
+        case VX_COLOR_TYPE_ARGB_4444:
             return {4, 4, 4, 4};
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             return {5, 6, 5};
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             return {kGraySigBit_GrayAlphaIsJustAlpha, 8};
-        case kRGBA_1010102_SkColorType:
-        case kBGRA_1010102_SkColorType:
+        case VX_COLOR_TYPE_RGBA_1010102:
+        case VX_COLOR_TYPE_BGRA_1010102:
             return {10, 10, 10, 2};
-        case kBGR_101010x_XR_SkColorType:
-        case kRGB_101010x_SkColorType:
-        case kBGR_101010x_SkColorType:
+        case VX_COLOR_TYPE_BGR_101010X_XR:
+        case VX_COLOR_TYPE_RGB_101010X:
+        case VX_COLOR_TYPE_BGR_101010X:
             return {10, 10, 10};
-        case kBGRA_10101010_XR_SkColorType:
+        case VX_COLOR_TYPE_BGRA_10101010_XR:
             return {10, 10, 10, 10};
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
             return {8, 8, 8, 8};
         default:
             return {};
@@ -175,7 +175,7 @@ bool WriteChunk(rust_png::Writer& writer, std::array<uint8_t, 4> name, SkSpan<co
 }
 
 bool WriteSbitChunk(rust_png::Writer& writer,
-                    SkColorType colorType,
+                    vx_color_type colorType,
                     rust_png::ColorType rustEncoderColorType) {
     std::vector<uint8_t> sbitData = GetSbitData(colorType);
     if (sbitData.empty()) {
@@ -250,7 +250,7 @@ bool WriteGainmapChunks(rust_png::Writer& writer, const SkPngRustEncoder::Option
     return true;
 }
 #else
-inline bool WriteSbitChunk(rust_png::Writer&, SkColorType, rust_png::ColorType) { return true; }
+inline bool WriteSbitChunk(rust_png::Writer&, vx_color_type, rust_png::ColorType) { return true; }
 inline bool WriteGainmapChunks(rust_png::Writer&, const SkPngRustEncoder::Options&) { return true; }
 #endif
 
@@ -299,13 +299,13 @@ std::unique_ptr<SkEncoder> SkPngRustEncoderImpl::Make(SkWStream* dst,
             if (maybeDstRowInfo) {
                 if (maybeDstRowInfo->isOpaque()) {
                     rustEncoderColorType = rust_png::ColorType::Rgb;
-                    if (maybeDstRowInfo->colorType() == kR16G16B16A16_unorm_SkColorType) {
+                    if (maybeDstRowInfo->colorType() == VX_COLOR_TYPE_R16G16B16A16_UNORM) {
                         extraRowTransform = kRgba16leToRgb16be_ExtraRowTransform;
                     } else {
-                        SkASSERT_RELEASE(maybeDstRowInfo->colorType() == kRGB_888x_SkColorType);
+                        SkASSERT_RELEASE(maybeDstRowInfo->colorType() == VX_COLOR_TYPE_RGB_888X);
                         extraRowTransform = kRgba8ToRgb8_ExtraRowTransform;
                     }
-                } else if (maybeDstRowInfo->colorType() == kR16G16B16A16_unorm_SkColorType) {
+                } else if (maybeDstRowInfo->colorType() == VX_COLOR_TYPE_R16G16B16A16_UNORM) {
                     extraRowTransform = kRgba16leToRgba16be_ExtraRowTransform;
                 }
             }

@@ -22,7 +22,7 @@
 
 class SkMatrix;
 enum class SkRasterPipelineOp;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 struct SkImageInfo;
 struct skcms_TransferFunction;
 
@@ -126,9 +126,9 @@ public:
         this->appendSetRGB(alloc, color.vec());
     }
 
-    void appendLoad(SkColorType, const SkRasterPipelineContexts::MemoryCtx*);
-    void appendLoadDst(SkColorType, const SkRasterPipelineContexts::MemoryCtx*);
-    void appendStore(SkColorType, const SkRasterPipelineContexts::MemoryCtx*);
+    void appendLoad(vx_color_type, const SkRasterPipelineContexts::MemoryCtx*);
+    void appendLoadDst(vx_color_type, const SkRasterPipelineContexts::MemoryCtx*);
+    void appendStore(vx_color_type, const SkRasterPipelineContexts::MemoryCtx*);
 
     void appendClampIfNormalized(const SkImageInfo&);
 

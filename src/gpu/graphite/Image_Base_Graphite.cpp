@@ -164,7 +164,7 @@ sk_sp<SkSurface> Image_Base::onMakeSurface(SkRecorder* recorder, const SkImageIn
 }
 
 sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(SkRecorder* recorder,
-                                                      SkColorType targetCT,
+                                                      vx_color_type targetCT,
                                                       sk_sp<SkColorSpace> targetCS,
                                                       RequiredProperties requiredProps) const {
     auto gRecorder = AsGraphiteRecorder(recorder);

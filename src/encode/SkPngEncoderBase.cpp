@@ -54,8 +54,8 @@ SkEncodedInfo makeRgba16Info(const SkImageInfo& srcInfo) {
 }
 
 SkPngEncoderBase::TargetInfo makeTargetInfo(SkEncodedInfo dstInfo, const SkImageInfo& srcImageInfo,
-                                            SkColorType dstCT, vx_alpha_type dstAT) {
-    SkASSERT(dstCT != kAlpha_8_SkColorType);
+                                            vx_color_type dstCT, vx_alpha_type dstAT) {
+    SkASSERT(dstCT != VX_COLOR_TYPE_ALPHA_8);
     SkImageInfo dstRowInfo = SkImageInfo::Make(srcImageInfo.width(), 1, dstCT, dstAT);
     return SkPngEncoderBase::TargetInfo {srcImageInfo.makeWH(srcImageInfo.width(), 1),
                                          dstRowInfo,
@@ -87,7 +87,7 @@ std::optional<SkPngEncoderBase::TargetInfo> makeAlpha8TargetInfo(SkEncodedInfo d
 std::optional<SkPngEncoderBase::TargetInfo> SkPngEncoderBase::getTargetInfo(
         const SkImageInfo& srcInfo) {
 
-SkColorType srcCT = srcInfo.colorType();
+vx_color_type srcCT = srcInfo.colorType();
 vx_alpha_type srcAT = srcInfo.alphaType();
 int numChannels = SkColorTypeNumChannels(srcCT);
 
@@ -100,7 +100,7 @@ switch(numChannels) {
       }
       // We support encoding kAlpha_8_SkColorType to GrayAlpha images and just ignore gray.
       // Otherwise, there is no sensible way to encode alpha only images.
-      if (srcCT == kAlpha_8_SkColorType) {
+      if (srcCT == VX_COLOR_TYPE_ALPHA_8) {
           return makeAlpha8TargetInfo(makeGrayAlpha8Info(srcInfo));
       }
       break;
@@ -115,12 +115,12 @@ switch(numChannels) {
       if (maxBitsPerChannel <= 8) {
           return makeTargetInfo(makeRgba8Info(srcInfo),
                                 srcInfo,
-                                kRGB_888x_SkColorType,
+                                VX_COLOR_TYPE_RGB_888X,
                                 VX_ALPHA_TYPE_OPAQUE);
       } else if (maxBitsPerChannel <= 32) {
           return makeTargetInfo(makeRgba16Info(srcInfo),
                                 srcInfo,
-                                kR16G16B16A16_unorm_SkColorType,
+                                VX_COLOR_TYPE_R16G16B16A16_UNORM,
                                 VX_ALPHA_TYPE_OPAQUE);
       }
       break;
@@ -135,23 +135,23 @@ switch(numChannels) {
           if (srcAT == VX_ALPHA_TYPE_OPAQUE) {
               return makeTargetInfo(makeRgba8Info(srcInfo),
                                     srcInfo,
-                                    kRGB_888x_SkColorType,
+                                    VX_COLOR_TYPE_RGB_888X,
                                     VX_ALPHA_TYPE_OPAQUE);
           }
           return makeTargetInfo(makeRgba8Info(srcInfo),
                                 srcInfo,
-                                kRGBA_8888_SkColorType,
+                                VX_COLOR_TYPE_RGBA_8888,
                                 VX_ALPHA_TYPE_UNPREMULTIPLIED);
       } else if (maxBitsPerChannel <= 32) {
           if (srcAT == VX_ALPHA_TYPE_OPAQUE) {
               return makeTargetInfo(makeRgba16Info(srcInfo),
                                     srcInfo,
-                                    kR16G16B16A16_unorm_SkColorType,
+                                    VX_COLOR_TYPE_R16G16B16A16_UNORM,
                                     VX_ALPHA_TYPE_OPAQUE);
           }
           return makeTargetInfo(makeRgba16Info(srcInfo),
                                 srcInfo,
-                                kR16G16B16A16_unorm_SkColorType,
+                                VX_COLOR_TYPE_R16G16B16A16_UNORM,
                                 VX_ALPHA_TYPE_UNPREMULTIPLIED);
       }
   }
@@ -162,7 +162,7 @@ return std::nullopt;
 
 SkPngEncoderBase::SkPngEncoderBase(TargetInfo targetInfo, const SkPixmap& src)
         : SkEncoder(src, targetInfo.fDstRowSize), fTargetInfo(std::move(targetInfo)) {
-    SkASSERT(src.colorType() == kAlpha_8_SkColorType
+    SkASSERT(src.colorType() == VX_COLOR_TYPE_ALPHA_8
              || (fTargetInfo.fSrcRowInfo && fTargetInfo.fDstRowInfo));
 }
 
@@ -186,7 +186,7 @@ bool SkPngEncoderBase::onEncodeRows(int numRows) {
         sk_msan_assert_initialized(srcRow,
                                    (const uint8_t*)srcRow + (fSrc.width() << fSrc.shiftPerPixel()));
 
-        if (fSrc.colorType() == kAlpha_8_SkColorType) {
+        if (fSrc.colorType() == VX_COLOR_TYPE_ALPHA_8) {
             // This is a special case where we store kAlpha_8 images as GrayAlpha in png.
             transform_scanline_A8_to_GrayAlpha((char*)fStorage.get(),
                                                (const char*)srcRow,

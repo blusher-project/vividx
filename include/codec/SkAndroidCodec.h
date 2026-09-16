@@ -108,7 +108,7 @@ public:
      *  Otherwise, this returns a color type that is an appropriate
      *  match for the the encoded data.
      */
-    SkColorType computeOutputColorType(SkColorType requestedColorType);
+    vx_color_type computeOutputColorType(vx_color_type requestedColorType);
 
     /**
      *  @param requestedUnpremul  Indicates if the client requested
@@ -127,7 +127,7 @@ public:
      *
      *  Returns the appropriate color space to decode to.
      */
-    sk_sp<SkColorSpace> computeOutputColorSpace(SkColorType outputColorType,
+    sk_sp<SkColorSpace> computeOutputColorSpace(vx_color_type outputColorType,
                                                 sk_sp<SkColorSpace> prefColorSpace = nullptr);
 
     /**

@@ -74,7 +74,7 @@
 class SkDevice;
 class SkMatrix;
 class SkSurfaceProps;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 class SkSpecialImage;
 
@@ -127,7 +127,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> RasterAsView(GrRecordingContext* rCo
 // may be different from the color type on the image in the case where we need up upload CPU
 // data to a texture but the GPU doesn't support the format of CPU data. In this case we convert
 // the data to RGBA_8888 unorm on the CPU then upload that.
-GrColorType ColorTypeOfLockTextureProxy(const GrCaps* caps, SkColorType sct) {
+GrColorType ColorTypeOfLockTextureProxy(const GrCaps* caps, vx_color_type sct) {
     GrColorType ct = SkColorTypeToGrColorType(sct);
     GrBackendFormat format = caps->getDefaultBackendFormat(ct, GrRenderable::kNo);
     if (!format.isValid()) {
@@ -741,7 +741,7 @@ public:
     GaneshBackend(sk_sp<GrRecordingContext> context,
                   GrSurfaceOrigin origin,
                   const SkSurfaceProps& surfaceProps,
-                  SkColorType colorType)
+                  vx_color_type colorType)
             : Backend(SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize),
                       surfaceProps, colorType)
             , fContext(std::move(context))
@@ -801,7 +801,7 @@ public:
 
     // SkBlurEngine
     const SkBlurEngine::Algorithm* findAlgorithm(SkSize sigma,
-                                                 SkColorType colorType) const override {
+                                                 vx_color_type colorType) const override {
         // GrBlurUtils supports all tile modes and color types
         return this;
     }
@@ -829,7 +829,7 @@ private:
 sk_sp<Backend> MakeGaneshBackend(sk_sp<GrRecordingContext> context,
                                  GrSurfaceOrigin origin,
                                  const SkSurfaceProps& surfaceProps,
-                                 SkColorType colorType) {
+                                 vx_color_type colorType) {
     SkASSERT(context);
     return sk_make_sp<GaneshBackend>(std::move(context), origin, surfaceProps, colorType);
 }

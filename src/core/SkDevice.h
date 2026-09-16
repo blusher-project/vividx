@@ -51,7 +51,7 @@ class SkRRect;
 class SkRecorder;
 class SkSurface;
 class SkVertices;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkBlendMode;
 enum class SkScalerContextFlags : uint32_t;
 struct SkRSXform;
@@ -480,7 +480,7 @@ public:
      * The provided color type will be used for any intermediate surfaces that need to be created as
      * part of filter evaluation. It does not have to be src's color type or this Device's type.
      */
-    void drawFilteredImage(const skif::Mapping& mapping, SkSpecialImage* src, SkColorType ct,
+    void drawFilteredImage(const skif::Mapping& mapping, SkSpecialImage* src, vx_color_type ct,
                            const SkImageFilter*, const SkSamplingOptions&, const SkPaint&);
 
 protected:
@@ -516,7 +516,7 @@ private:
 
     // Defaults to a CPU image filtering backend.
     virtual sk_sp<skif::Backend> createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
-                                                             SkColorType colorType) const;
+                                                             vx_color_type colorType) const;
 
     // Implementations can assume that the device from (x,y) to (w,h) will fit within dst.
     virtual bool onReadPixels(const SkPixmap&, int x, int y) { return false; }

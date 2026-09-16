@@ -200,7 +200,7 @@ sk_sp<SkImage> GrDirectContextPriv::testingOnly_getFontAtlasImage(MaskFormat for
         return nullptr;
     }
 
-    SkColorType colorType = skgpu::MaskFormatToColorType(format);
+    vx_color_type colorType = skgpu::MaskFormatToColorType(format);
     SkASSERT(views[index].proxy()->priv().isExact());
     return sk_make_sp<SkImage_Ganesh>(sk_ref_sp(this->context()),
                                       kNeedNewImageUniqueID,
@@ -273,7 +273,7 @@ static bool test_for_preserving_PM_conversions(GrDirectContext* dContext) {
     }
 
     const SkImageInfo pmII =
-            SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED);
+            SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     const SkImageInfo upmII = pmII.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     auto readSFC =

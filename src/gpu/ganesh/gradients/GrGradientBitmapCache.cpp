@@ -161,7 +161,7 @@ void GrGradientBitmapCache::getGradient(const SkPMColor4f* colors,
                                         const SkGradient::Interpolation& interpolation,
                                         const SkColorSpace* intermediateColorSpace,
                                         const SkColorSpace* dstColorSpace,
-                                        SkColorType colorType,
+                                        vx_color_type colorType,
                                         vx_alpha_type alphaType,
                                         SkBitmap* bitmap) {
     // Build our key:

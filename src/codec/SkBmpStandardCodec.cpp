@@ -78,7 +78,7 @@ SkCodec::Result SkBmpStandardCodec::onGetPixels(const SkImageInfo& dstInfo,
 /*
  * Process the color table for the bmp input
  */
- bool SkBmpStandardCodec::createColorTable(SkColorType dstColorType, vx_alpha_type dstAlphaType) {
+ bool SkBmpStandardCodec::createColorTable(vx_color_type dstColorType, vx_alpha_type dstAlphaType) {
     // Allocate memory for color table
     uint32_t colorBytes = 0;
     SkPMColor colorTable[256];
@@ -97,10 +97,10 @@ SkCodec::Result SkBmpStandardCodec::onGetPixels(const SkImageInfo& dstInfo,
             return false;
         }
 
-        SkColorType packColorType = dstColorType;
+        vx_color_type packColorType = dstColorType;
         vx_alpha_type packAlphaType = dstAlphaType;
         if (this->colorXform()) {
-            packColorType = kBGRA_8888_SkColorType;
+            packColorType = VX_COLOR_TYPE_BGRA_8888;
             packAlphaType = VX_ALPHA_TYPE_UNPREMULTIPLIED;
         }
 
@@ -310,9 +310,9 @@ void SkBmpStandardCodec::decodeIcoMask(SkStream* stream, const SkImageInfo& dstI
         void* dst, size_t dstRowBytes) {
     // BMP in ICO have transparency, so this cannot be 565. The below code depends
     // on the output being an SkPMColor.
-    SkASSERT(kRGBA_8888_SkColorType == dstInfo.colorType() ||
-             kBGRA_8888_SkColorType == dstInfo.colorType() ||
-             kRGBA_F16_SkColorType == dstInfo.colorType());
+    SkASSERT(VX_COLOR_TYPE_RGBA_8888 == dstInfo.colorType() ||
+             VX_COLOR_TYPE_BGRA_8888 == dstInfo.colorType() ||
+             VX_COLOR_TYPE_RGBA_F16 == dstInfo.colorType());
 
     // If we are sampling, make sure that we only mask the sampled pixels.
     // We do not need to worry about sampling in the y-dimension because that
@@ -330,7 +330,7 @@ void SkBmpStandardCodec::decodeIcoMask(SkStream* stream, const SkImageInfo& dstI
         }
 
         auto applyMask = [dstInfo](void* dstRow, int x, uint64_t bit) {
-            if (kRGBA_F16_SkColorType == dstInfo.colorType()) {
+            if (VX_COLOR_TYPE_RGBA_F16 == dstInfo.colorType()) {
                 uint64_t* dst64 = (uint64_t*) dstRow;
                 dst64[x] &= bit - 1;
             } else {

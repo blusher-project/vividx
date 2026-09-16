@@ -216,7 +216,7 @@ sk_sp<Device> Device::Make(GrRecordingContext* rContext,
 }
 
 SkImageInfo Device::MakeInfo(SurfaceContext* sc, DeviceFlags flags) {
-    SkColorType colorType = GrColorTypeToSkColorType(sc->colorInfo().colorType());
+    vx_color_type colorType = GrColorTypeToSkColorType(sc->colorInfo().colorType());
     return SkImageInfo::Make(sc->width(), sc->height(), colorType,
                              flags & DeviceFlags::kIsOpaque ? VX_ALPHA_TYPE_OPAQUE
                                                             : VX_ALPHA_TYPE_PREMULTIPLIED,
@@ -257,7 +257,7 @@ sk_sp<Device> Device::Make(std::unique_ptr<SurfaceDrawContext> sdc,
         return nullptr;
     }
 
-    SkColorType ct = GrColorTypeToSkColorType(sdc->colorInfo().colorType());
+    vx_color_type ct = GrColorTypeToSkColorType(sdc->colorInfo().colorType());
 
     DeviceFlags flags;
     if (!rContext->colorTypeSupportedAsSurface(ct) ||
@@ -793,7 +793,7 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint) {
 }
 
 sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
-                                                         SkColorType colorType) const {
+                                                         vx_color_type colorType) const {
     return skif::MakeGaneshBackend(
             fContext, fSurfaceDrawContext->origin(), surfaceProps, colorType);
 }
@@ -1320,7 +1320,7 @@ sk_sp<SkDevice> Device::createDevice(const CreateInfo& cinfo, const SkPaint*) {
     SkSurfaceProps props =
         this->surfaceProps().cloneWithPixelGeometry(cinfo.fPixelGeometry);
 
-    SkASSERT(cinfo.fInfo.colorType() != kRGBA_1010102_SkColorType);
+    SkASSERT(cinfo.fInfo.colorType() != VX_COLOR_TYPE_RGBA_1010102);
 
     auto sdc = SurfaceDrawContext::MakeWithFallback(
             fContext.get(),

@@ -152,64 +152,64 @@ bool SkPngEncoderMgr::setHeader(const SkPngEncoderBase::TargetInfo& targetInfo,
     png_color_8 sigBit;
     bool sigBitSet = true;
     switch (srcInfo.colorType()) {
-        case kRGBA_F16Norm_SkColorType:
-        case kRGBA_F16_SkColorType:
-        case kRGBA_F32_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16NORM:
+        case VX_COLOR_TYPE_RGBA_F16:
+        case VX_COLOR_TYPE_RGBA_F32:
             sigBit.red = 16;
             sigBit.green = 16;
             sigBit.blue = 16;
             sigBit.alpha = 16;
             break;
-        case kRGB_F16F16F16x_SkColorType:
+        case VX_COLOR_TYPE_RGB_F16F16F16X:
             sigBit.red = 16;
             sigBit.green = 16;
             sigBit.blue = 16;
             break;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             sigBit.gray = 8;
             break;
-        case kRGB_888x_SkColorType:
+        case VX_COLOR_TYPE_RGB_888X:
             sigBit.red = 8;
             sigBit.green = 8;
             sigBit.blue = 8;
             break;
-        case kARGB_4444_SkColorType:
+        case VX_COLOR_TYPE_ARGB_4444:
             sigBit.red = 4;
             sigBit.green = 4;
             sigBit.blue = 4;
             sigBit.alpha = 4;
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             sigBit.red = 5;
             sigBit.green = 6;
             sigBit.blue = 5;
             break;
-        case kAlpha_8_SkColorType:  // store as gray+alpha, but ignore gray
+        case VX_COLOR_TYPE_ALPHA_8:  // store as gray+alpha, but ignore gray
             sigBit.gray = kGraySigBit_GrayAlphaIsJustAlpha;
             sigBit.alpha = 8;
             break;
-        case kRGBA_1010102_SkColorType:
-        case kBGRA_1010102_SkColorType:
+        case VX_COLOR_TYPE_RGBA_1010102:
+        case VX_COLOR_TYPE_BGRA_1010102:
             sigBit.red = 10;
             sigBit.green = 10;
             sigBit.blue = 10;
             sigBit.alpha = 2;
             break;
-        case kBGR_101010x_XR_SkColorType:
-        case kRGB_101010x_SkColorType:
-        case kBGR_101010x_SkColorType:
+        case VX_COLOR_TYPE_BGR_101010X_XR:
+        case VX_COLOR_TYPE_RGB_101010X:
+        case VX_COLOR_TYPE_BGR_101010X:
             sigBit.red = 10;
             sigBit.green = 10;
             sigBit.blue = 10;
             break;
-        case kBGRA_10101010_XR_SkColorType:
+        case VX_COLOR_TYPE_BGRA_10101010_XR:
             sigBit.red = 10;
             sigBit.green = 10;
             sigBit.blue = 10;
             sigBit.alpha = 10;
             break;
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
             sigBit.red = 8;
             sigBit.green = 8;
             sigBit.blue = 8;

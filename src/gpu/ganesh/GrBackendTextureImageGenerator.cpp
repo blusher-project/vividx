@@ -59,7 +59,7 @@ std::unique_ptr<GrTextureGenerator>
 GrBackendTextureImageGenerator::Make(const sk_sp<GrTexture>& texture,
                                      GrSurfaceOrigin origin,
                                      std::unique_ptr<GrSemaphore> semaphore,
-                                     SkColorType colorType,
+                                     vx_color_type colorType,
                                      vx_alpha_type alphaType,
                                      sk_sp<SkColorSpace> colorSpace) {
     GrDirectContext* dContext = texture->getContext();

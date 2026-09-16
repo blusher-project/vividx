@@ -39,7 +39,7 @@ class SkPixmap;
 class SkSurface;
 class SkTaskGroup;
 class SkTraceMemoryDump;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTextureCompressionType;
 struct GrMockOptions;
 
@@ -579,7 +579,7 @@ public:
      */
     GrBackendTexture createBackendTexture(int width,
                                           int height,
-                                          SkColorType,
+                                          vx_color_type,
                                           skgpu::Mipmapped,
                                           GrRenderable,
                                           GrProtected = GrProtected::kNo,
@@ -618,7 +618,7 @@ public:
      */
     GrBackendTexture createBackendTexture(int width,
                                           int height,
-                                          SkColorType,
+                                          vx_color_type,
                                           const SkColor4f& color,
                                           skgpu::Mipmapped,
                                           GrRenderable,
@@ -708,7 +708,7 @@ public:
      *      VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
      */
     bool updateBackendTexture(const GrBackendTexture&,
-                              SkColorType skColorType,
+                              vx_color_type skColorType,
                               const SkColor4f& color,
                               GrGpuFinishedProc finishedProc,
                               GrGpuFinishedContext finishedContext);

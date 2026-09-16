@@ -109,16 +109,16 @@ bool SkJpegEncoderMgr::initializeRGB(const SkImageInfo& srcInfo,
     SkImageInfo dstInfo;
     fUseColorXform = false;
 
-    SkColorType srcCT = srcInfo.colorType();
+    vx_color_type srcCT = srcInfo.colorType();
     const bool applyPremul = SkJpegEncoder::AlphaOption::kBlendOnBlack == options.fAlphaOption
                               && srcInfo.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED;
-    if (srcCT == kRGB_888x_SkColorType) {
+    if (srcCT == VX_COLOR_TYPE_RGB_888X) {
         jpegColorType = JCS_EXT_RGBX;
         numComponents = 4;
-    } else if (!applyPremul && srcCT == kRGBA_8888_SkColorType){
+    } else if (!applyPremul && srcCT == VX_COLOR_TYPE_RGBA_8888){
         jpegColorType = JCS_EXT_RGBA;
         numComponents = 4;
-    } else if (!applyPremul && srcCT == kBGRA_8888_SkColorType) {
+    } else if (!applyPremul && srcCT == VX_COLOR_TYPE_BGRA_8888) {
         jpegColorType = JCS_EXT_BGRA;
         numComponents = 4;
     } else {
@@ -128,7 +128,7 @@ bool SkJpegEncoderMgr::initializeRGB(const SkImageInfo& srcInfo,
           // We support encoding kAlpha_8_SkColorType pixmaps as JCS_GRAYSCALE as
           // this come up often. Otherwise we have no sensible way to encode alpha
           // images.
-          if (SkColorTypeIsAlphaOnly(srcCT) && srcCT != kAlpha_8_SkColorType) {
+          if (SkColorTypeIsAlphaOnly(srcCT) && srcCT != VX_COLOR_TYPE_ALPHA_8) {
             return false;
           }
           jpegColorType = JCS_GRAYSCALE;
@@ -137,14 +137,14 @@ bool SkJpegEncoderMgr::initializeRGB(const SkImageInfo& srcInfo,
         case 3:
           jpegColorType = JCS_EXT_RGBX;
           numComponents = 4;
-          dstInfo = SkImageInfo::Make(srcInfo.width(), 1, kRGB_888x_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
+          dstInfo = SkImageInfo::Make(srcInfo.width(), 1, VX_COLOR_TYPE_RGB_888X, VX_ALPHA_TYPE_UNPREMULTIPLIED);
           fUseColorXform = true;
           break;
         case 4: {
             vx_alpha_type dstAT = applyPremul ? VX_ALPHA_TYPE_PREMULTIPLIED : srcInfo.alphaType();
             jpegColorType = JCS_EXT_RGBA;
             numComponents = 4;
-            dstInfo = SkImageInfo::Make(srcInfo.width(), 1, kRGBA_8888_SkColorType, dstAT);
+            dstInfo = SkImageInfo::Make(srcInfo.width(), 1, VX_COLOR_TYPE_RGBA_8888, dstAT);
             fUseColorXform = true;
             break;
         }

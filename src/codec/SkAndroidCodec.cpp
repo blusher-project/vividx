@@ -83,42 +83,42 @@ std::unique_ptr<SkAndroidCodec> SkAndroidCodec::MakeFromData(sk_sp<const SkData>
     return MakeFromStream(SkMemoryStream::Make(std::move(data)), chunkReader);
 }
 
-SkColorType SkAndroidCodec::computeOutputColorType(SkColorType requestedColorType) {
+vx_color_type SkAndroidCodec::computeOutputColorType(vx_color_type requestedColorType) {
     bool highPrecision = fCodec->getEncodedInfo().bitsPerComponent() > 8;
     uint8_t colorDepth = fCodec->getEncodedInfo().getColorDepth();
     switch (requestedColorType) {
-        case kARGB_4444_SkColorType:
-            return kN32_SkColorType;
-        case kN32_SkColorType:
+        case VX_COLOR_TYPE_ARGB_4444:
+            return VX_COLOR_TYPE_N32;
+        case VX_COLOR_TYPE_N32:
             break;
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             // Fall through to kGray_8.  Before kGray_8_SkColorType existed,
             // we allowed clients to request kAlpha_8 when they wanted a
             // grayscale decode.
-        case kGray_8_SkColorType:
-            if (kGray_8_SkColorType == this->getInfo().colorType()) {
-                return kGray_8_SkColorType;
+        case VX_COLOR_TYPE_GRAY_8:
+            if (VX_COLOR_TYPE_GRAY_8 == this->getInfo().colorType()) {
+                return VX_COLOR_TYPE_GRAY_8;
             }
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             if (VX_ALPHA_TYPE_OPAQUE == this->getInfo().alphaType()) {
-                return kRGB_565_SkColorType;
+                return VX_COLOR_TYPE_RGB_565;
             }
             break;
-        case kRGBA_1010102_SkColorType:
+        case VX_COLOR_TYPE_RGBA_1010102:
             if (colorDepth == 10) {
-              return kRGBA_1010102_SkColorType;
+              return VX_COLOR_TYPE_RGBA_1010102;
             }
             break;
-        case kRGBA_F16_SkColorType:
-            return kRGBA_F16_SkColorType;
+        case VX_COLOR_TYPE_RGBA_F16:
+            return VX_COLOR_TYPE_RGBA_F16;
         default:
             break;
     }
 
     // F16 is the Android default for high precision images.
-    return highPrecision ? kRGBA_F16_SkColorType :
-        (colorDepth == 10 ? kRGBA_1010102_SkColorType : kN32_SkColorType);
+    return highPrecision ? VX_COLOR_TYPE_RGBA_F16 :
+        (colorDepth == 10 ? VX_COLOR_TYPE_RGBA_1010102 : VX_COLOR_TYPE_N32);
 }
 
 vx_alpha_type SkAndroidCodec::computeOutputAlphaType(bool requestedUnpremul) {
@@ -128,14 +128,14 @@ vx_alpha_type SkAndroidCodec::computeOutputAlphaType(bool requestedUnpremul) {
     return requestedUnpremul ? VX_ALPHA_TYPE_UNPREMULTIPLIED : VX_ALPHA_TYPE_PREMULTIPLIED;
 }
 
-sk_sp<SkColorSpace> SkAndroidCodec::computeOutputColorSpace(SkColorType outputColorType,
+sk_sp<SkColorSpace> SkAndroidCodec::computeOutputColorSpace(vx_color_type outputColorType,
                                                             sk_sp<SkColorSpace> prefColorSpace) {
     switch (outputColorType) {
-        case kRGBA_F16_SkColorType:
-        case kRGB_565_SkColorType:
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
-        case kRGBA_1010102_SkColorType: {
+        case VX_COLOR_TYPE_RGBA_F16:
+        case VX_COLOR_TYPE_RGB_565:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
+        case VX_COLOR_TYPE_RGBA_1010102: {
             // If |prefColorSpace| is supplied, choose it.
             if (prefColorSpace) {
                 return prefColorSpace;

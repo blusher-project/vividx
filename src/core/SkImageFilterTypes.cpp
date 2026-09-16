@@ -183,7 +183,7 @@ std::optional<LayerSpace<SkMatrix>> periodic_axis_transform(
 class RasterBackend : public Backend {
 public:
 
-    RasterBackend(const SkSurfaceProps& surfaceProps, SkColorType colorType)
+    RasterBackend(const SkSurfaceProps& surfaceProps, vx_color_type colorType)
             : Backend(SkImageFilterCache::Get(), surfaceProps, colorType) {}
 
     sk_sp<SkDevice> makeDevice(SkISize size,
@@ -215,14 +215,14 @@ public:
 
 Backend::Backend(sk_sp<SkImageFilterCache> cache,
                  const SkSurfaceProps& surfaceProps,
-                 const SkColorType colorType)
+                 const vx_color_type colorType)
         : fCache(std::move(cache))
         , fSurfaceProps(surfaceProps)
         , fColorType(colorType) {}
 
 Backend::~Backend() = default;
 
-sk_sp<Backend> MakeRasterBackend(const SkSurfaceProps& surfaceProps, SkColorType colorType) {
+sk_sp<Backend> MakeRasterBackend(const SkSurfaceProps& surfaceProps, vx_color_type colorType) {
     return sk_make_sp<RasterBackend>(surfaceProps, colorType);
 }
 

@@ -28,7 +28,7 @@ class SkData;
 class SkPixmap;
 class SkSurface;
 class SkImageShader;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 struct SkIRect;
 struct SkImageInfo;
 
@@ -54,7 +54,7 @@ public:
         return true;
     }
     sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
-                                              SkColorType targetColorType,
+                                              vx_color_type targetColorType,
                                               sk_sp<SkColorSpace> targetColorSpace,
                                               RequiredProperties) const override;
 

@@ -29,18 +29,18 @@ namespace skgpu::graphite {
 namespace {
 
 // This should be kept in sync w/ SkPaintPriv::ShouldDither and PaintOption::shouldDither
-bool should_dither(const PaintParams& p, SkColorType dstCT) {
+bool should_dither(const PaintParams& p, vx_color_type dstCT) {
     // The paint dither flag can veto.
     if (!p.dither()) {
         return false;
     }
 
-    if (dstCT == kUnknown_SkColorType) {
+    if (dstCT == VX_COLOR_TYPE_UNKNOWN) {
         return false;
     }
 
     // We always dither 565 or 4444 when requested.
-    if (dstCT == kRGB_565_SkColorType || dstCT == kARGB_4444_SkColorType) {
+    if (dstCT == VX_COLOR_TYPE_RGB_565 || dstCT == VX_COLOR_TYPE_ARGB_4444) {
         return true;
     }
 
@@ -391,7 +391,7 @@ bool ShadingParams::handleColorFilter(const KeyContext& keyContext) const {
 bool ShadingParams::handleDithering(const KeyContext& keyContext) const {
 
 #ifndef SK_IGNORE_GPU_DITHER
-    SkColorType ct = keyContext.dstColorInfo().colorType();
+    vx_color_type ct = keyContext.dstColorInfo().colorType();
     if (should_dither(fPaint, ct)) {
         bool srcIsOpaque = false;
         Compose(keyContext,

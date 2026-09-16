@@ -26,7 +26,7 @@ class GrSurfaceCharacterization;
 class GrThreadSafeCache;
 class GrThreadSafePipelineBuilder;
 class SkSurfaceProps;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTextureCompressionType;
 struct SkImageInfo;
 
@@ -108,7 +108,7 @@ public:
      *
      * The caller should check that the returned format is valid.
      */
-    GrBackendFormat defaultBackendFormat(SkColorType ct, GrRenderable renderable) const;
+    GrBackendFormat defaultBackendFormat(vx_color_type ct, GrRenderable renderable) const;
 
     /**
      * Retrieve the GrBackendFormat for a given SkTextureCompressionType. This is
@@ -124,7 +124,7 @@ public:
      * rendering is supported for the color type. 0 is returned if rendering to this color type
      * is not supported at all.
      */
-    int maxSurfaceSampleCountForColorType(SkColorType colorType) const;
+    int maxSurfaceSampleCountForColorType(vx_color_type colorType) const;
 
     bool isValid() const { return nullptr != fCaps; }
 

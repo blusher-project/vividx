@@ -710,9 +710,9 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
                                                            const GrFPArgs& args,
                                                            const SkShaders::MatrixRec& mRec) {
     auto ctx = args.fSurfaceDrawContext->recordingContext();
-    SkColorType dstColorType = GrColorTypeToSkColorType(args.fDstColorInfo->colorType());
-    if (dstColorType == kUnknown_SkColorType) {
-        dstColorType = kRGBA_8888_SkColorType;
+    vx_color_type dstColorType = GrColorTypeToSkColorType(args.fDstColorInfo->colorType());
+    if (dstColorType == VX_COLOR_TYPE_UNKNOWN) {
+        dstColorType = VX_COLOR_TYPE_RGBA_8888;
     }
     sk_sp<SkColorSpace> dstCS = SkColorSpace::MakeSRGB();
     if (args.fDstColorInfo->colorSpace()) {
@@ -731,7 +731,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
 
     // Gotta be sure the GPU can support our requested colortype (might be FP16)
     if (!ctx->colorTypeSupportedAsSurface(info.imageInfo.colorType())) {
-        info.imageInfo = info.imageInfo.makeColorType(kRGBA_8888_SkColorType);
+        info.imageInfo = info.imageInfo.makeColorType(VX_COLOR_TYPE_RGBA_8888);
     }
 
     static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();

@@ -145,7 +145,7 @@ bool GrContextThreadSafeProxy::isValidCharacterizationForVulkan(
     return false;  // handled by a subclass
 }
 
-GrBackendFormat GrContextThreadSafeProxy::defaultBackendFormat(SkColorType skColorType,
+GrBackendFormat GrContextThreadSafeProxy::defaultBackendFormat(vx_color_type skColorType,
                                                                GrRenderable renderable) const {
     SkASSERT(fCaps);
     GrColorType grColorType = SkColorTypeToGrColorType(skColorType);
@@ -170,7 +170,7 @@ GrBackendFormat GrContextThreadSafeProxy::compressedBackendFormat(SkTextureCompr
     return format;
 }
 
-int GrContextThreadSafeProxy::maxSurfaceSampleCountForColorType(SkColorType colorType) const {
+int GrContextThreadSafeProxy::maxSurfaceSampleCountForColorType(vx_color_type colorType) const {
     SkASSERT(fCaps);
 
     GrBackendFormat format = fCaps->getDefaultBackendFormat(SkColorTypeToGrColorType(colorType),

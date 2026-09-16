@@ -67,7 +67,7 @@ void SkImage_Base::onAsyncRescaleAndReadPixels(const SkImageInfo& info,
 bool SkImage_Base::onAsLegacyBitmap(GrDirectContext* dContext, SkBitmap* bitmap) const {
     // As the base-class, all we can do is make a copy (regardless of mode).
     // Subclasses that want to be more optimal should override.
-    SkImageInfo info = fInfo.makeColorType(kN32_SkColorType).makeColorSpace(nullptr);
+    SkImageInfo info = fInfo.makeColorType(VX_COLOR_TYPE_N32).makeColorSpace(nullptr);
     if (!bitmap->tryAllocPixels(info)) {
         return false;
     }

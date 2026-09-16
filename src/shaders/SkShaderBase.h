@@ -29,7 +29,7 @@ class SkColorSpace;
 class SkImage;
 class SkRuntimeEffect;
 class SkWriteBuffer;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTileMode;
 struct SkDeserialProcs;
 struct SkStageRec;
@@ -269,7 +269,7 @@ public:
     struct ContextRec {
         ContextRec(SkAlpha paintAlpha,
                    const SkShaders::MatrixRec& matrixRec,
-                   SkColorType dstColorType,
+                   vx_color_type dstColorType,
                    SkColorSpace* dstColorSpace,
                    const SkSurfaceProps& props)
                 : fMatrixRec(matrixRec)
@@ -287,7 +287,7 @@ public:
         }
 
         const SkShaders::MatrixRec fMatrixRec;
-        SkColorType                fDstColorType;   // the color type of the dest surface
+        vx_color_type                fDstColorType;   // the color type of the dest surface
         SkColorSpace*              fDstColorSpace;  // the color space of the dest surface (if any)
         SkSurfaceProps             fProps;          // props of the dest surface
         SkAlpha                    fPaintAlpha;

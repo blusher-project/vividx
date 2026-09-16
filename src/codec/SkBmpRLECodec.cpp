@@ -79,7 +79,7 @@ SkCodec::Result SkBmpRLECodec::onGetPixels(const SkImageInfo& dstInfo,
 /*
  * Process the color table for the bmp input
  */
- bool SkBmpRLECodec::createColorTable(SkColorType dstColorType) {
+ bool SkBmpRLECodec::createColorTable(vx_color_type dstColorType) {
     // Allocate memory for color table
     uint32_t colorBytes = 0;
     SkPMColor colorTable[256];
@@ -192,13 +192,13 @@ void SkBmpRLECodec::setPixel(void* dst, size_t dstRowBytes,
         // Set the pixel based on destination color type
         const int dstX = SkCodecPriv::GetDstCoord(x, fSampleX);
         switch (dstInfo.colorType()) {
-            case kRGBA_8888_SkColorType:
-            case kBGRA_8888_SkColorType: {
+            case VX_COLOR_TYPE_RGBA_8888:
+            case VX_COLOR_TYPE_BGRA_8888: {
                 SkPMColor* dstRow = SkTAddOffset<SkPMColor>(dst, row * (int) dstRowBytes);
                 dstRow[dstX] = fColorTable->operator[](index);
                 break;
             }
-            case kRGB_565_SkColorType: {
+            case VX_COLOR_TYPE_RGB_565: {
                 uint16_t* dstRow = SkTAddOffset<uint16_t>(dst, row * (int) dstRowBytes);
                 dstRow[dstX] = SkPixel32ToPixel16(fColorTable->operator[](index));
                 break;
@@ -226,17 +226,17 @@ void SkBmpRLECodec::setRGBPixel(void* dst, size_t dstRowBytes,
         // Set the pixel based on destination color type
         const int dstX = SkCodecPriv::GetDstCoord(x, fSampleX);
         switch (dstInfo.colorType()) {
-            case kRGBA_8888_SkColorType: {
+            case VX_COLOR_TYPE_RGBA_8888: {
                 SkPMColor* dstRow = SkTAddOffset<SkPMColor>(dst, row * (int) dstRowBytes);
                 dstRow[dstX] = SkPackARGB_as_RGBA(0xFF, red, green, blue);
                 break;
             }
-            case kBGRA_8888_SkColorType: {
+            case VX_COLOR_TYPE_BGRA_8888: {
                 SkPMColor* dstRow = SkTAddOffset<SkPMColor>(dst, row * (int) dstRowBytes);
                 dstRow[dstX] = SkPackARGB_as_BGRA(0xFF, red, green, blue);
                 break;
             }
-            case kRGB_565_SkColorType: {
+            case VX_COLOR_TYPE_RGB_565: {
                 uint16_t* dstRow = SkTAddOffset<uint16_t>(dst, row * (int) dstRowBytes);
                 dstRow[dstX] = SkPack888ToRGB16(red, green, blue);
                 break;
@@ -263,11 +263,11 @@ SkCodec::Result SkBmpRLECodec::onPrepareToDecode(const SkImageInfo& dstInfo,
     fSampleX = 1;
     fLinesToSkip = 0;
 
-    SkColorType colorTableColorType = dstInfo.colorType();
+    vx_color_type colorTableColorType = dstInfo.colorType();
     if (this->colorXform()) {
         // Just set a known colorType for the colorTable.  No need to actually transform
         // the colors in the colorTable.
-        colorTableColorType = kBGRA_8888_SkColorType;
+        colorTableColorType = VX_COLOR_TYPE_BGRA_8888;
     }
 
     // Create the color table if necessary and prepare the stream for decode
@@ -324,7 +324,7 @@ int SkBmpRLECodec::decodeRows(const SkImageInfo& info, void* dst, size_t dstRowB
     if (decodeDst) {
         if (this->colorXform()) {
             decodeInfo = decodeInfo.makeColorType(kXformSrcColorType);
-            if (kRGBA_F16_SkColorType == dstInfo.colorType()) {
+            if (VX_COLOR_TYPE_RGBA_F16 == dstInfo.colorType()) {
                 SkSafeMath safe;
                 int count = safe.mulInt(height, dstInfo.width());
                 size_t xformBufferSize = safe.mul(count, sizeof(uint32_t));
@@ -542,7 +542,7 @@ int SkBmpRLECodec::decodeRLE(const SkImageInfo& dstInfo, void* dst, size_t dstRo
 
 bool SkBmpRLECodec::skipRows(int count) {
     const SkImageInfo rowInfo = SkImageInfo::Make(this->dimensions().width(), count,
-                                                  kN32_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
+                                                  VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     return count == this->decodeRows(rowInfo, nullptr, 0, this->options());
 }
 

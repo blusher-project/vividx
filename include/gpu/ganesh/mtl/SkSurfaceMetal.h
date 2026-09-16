@@ -38,7 +38,7 @@ SK_API sk_sp<SkSurface> WrapCAMetalLayer(GrRecordingContext* context,
                                          GrMTLHandle layer,
                                          GrSurfaceOrigin origin,
                                          int sampleCnt,
-                                         SkColorType colorType,
+                                         vx_color_type colorType,
                                          sk_sp<SkColorSpace> colorSpace,
                                          const SkSurfaceProps* surfaceProps,
                                          GrMTLHandle* drawable) SK_API_AVAILABLE_CA_METAL_LAYER;
@@ -64,7 +64,7 @@ SK_API sk_sp<SkSurface> WrapMTKView(GrRecordingContext* context,
                                     GrMTLHandle mtkView,
                                     GrSurfaceOrigin origin,
                                     int sampleCnt,
-                                    SkColorType colorType,
+                                    vx_color_type colorType,
                                     sk_sp<SkColorSpace> colorSpace,
                                     const SkSurfaceProps* surfaceProps)
         SK_API_AVAILABLE(macos(10.11), ios(9.0), tvos(9.0));

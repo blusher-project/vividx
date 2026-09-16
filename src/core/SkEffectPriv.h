@@ -12,6 +12,8 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkRect.h"
 
+#include <vividx/core/color-type.h>
+
 class SkArenaAlloc;
 class SkColorSpace;
 class SkRasterPipeline;
@@ -21,7 +23,7 @@ class SkSurfaceProps;
 struct SkStageRec {
     SkRasterPipeline*       fPipeline;
     SkArenaAlloc*           fAlloc;
-    SkColorType             fDstColorType;
+    enum vx_color_type      fDstColorType;
     SkColorSpace*           fDstCS;         // may be nullptr
     SkColor4f               fPaintColor;
     const SkSurfaceProps&   fSurfaceProps;

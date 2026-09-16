@@ -49,7 +49,7 @@ class SkStrokeRec;
 class SkSurface;
 class SkSurfaceProps;
 class SkVertices;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkBackingFit;
 enum class SkBlendMode;
 enum class SkClipOp;
@@ -276,7 +276,7 @@ private:
     void onClipShader(sk_sp<SkShader> shader) override;
 
     sk_sp<skif::Backend> createImageFilteringBackend(const SkSurfaceProps& surfaceProps,
-                                                     SkColorType colorType) const override;
+                                                     vx_color_type colorType) const override;
 
     // Applies any path effect and modifies the geometry and style before calling drawGeometry(),
     // or forwards to drawGeometry directly if `pathEffect` is null.

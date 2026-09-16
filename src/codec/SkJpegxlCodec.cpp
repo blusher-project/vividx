@@ -67,7 +67,7 @@ public:
     void* fDst = nullptr;
     size_t fPixelShift = 0;
     size_t fRowBytes = 0;
-    SkColorType fDstColorType;
+    vx_color_type fDstColorType;
 
 protected:
     const SkFrame* onGetFrame(int i) const override {
@@ -258,7 +258,7 @@ SkCodec::Result SkJpegxlCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst
     //    and with 8-bit precision it is likely that visual artefact will appear
     //    (like banding, etc.)
     bool halfFloatOutput = false;
-    if (fCodec->fDstColorType == kRGBA_F16_SkColorType) halfFloatOutput = true;
+    if (fCodec->fDstColorType == VX_COLOR_TYPE_RGBA_F16) halfFloatOutput = true;
     if (colorXform()) halfFloatOutput = true;
     auto dataType = halfFloatOutput ? JXL_TYPE_FLOAT16 : JXL_TYPE_UINT8;
 
@@ -298,21 +298,21 @@ bool SkJpegxlCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOp
                                         bool needsColorXform) {
     fCodec->fDstColorType = dstInfo.colorType();
     switch (dstInfo.colorType()) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             return true;  // memcpy
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             return true;  // rgba->bgra
 
-        case kRGBA_F16_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16:
             SkASSERT(needsColorXform);  // TODO(eustas): not necessary for JXL.
             return true;  // memcpy
 
         // TODO(eustas): implement
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             return false;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             return false;
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             return false;
 
         default:
@@ -332,13 +332,13 @@ void SkJpegxlCodec::imageOutCallback(void* opaque, size_t x, size_t y,
         return;
     }
     switch (codec.fDstColorType) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             memcpy(dst, pixels, 4 * num_pixels);
             return;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             SkOpts::RGBA_to_bgrA((uint32_t*) dst, (const uint32_t*)(pixels), num_pixels);
             return;
-        case kRGBA_F16_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16:
             memcpy(dst, pixels, 8 * num_pixels);
             return;
         default:

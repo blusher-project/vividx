@@ -12,12 +12,12 @@
 
 #ifndef SK_IGNORE_GPU_DITHER
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 class SkBitmap;
 
 namespace skgpu {
 
-float DitherRangeForConfig(SkColorType dstColorType);
+float DitherRangeForConfig(vx_color_type dstColorType);
 
 SkBitmap MakeDitherLUT();
 

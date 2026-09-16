@@ -15,9 +15,9 @@
 namespace AHardwareBufferUtils {
 
 // SkColorType expected for AHBs imported as external images
-static const SkColorType kExternalFormatColorType = SkColorType::kRGBA_8888_SkColorType;
+static const vx_color_type kExternalFormatColorType = vx_color_type::VX_COLOR_TYPE_RGBA_8888;
 
-SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat);
+vx_color_type GetSkColorTypeFromBufferFormat(uint32_t bufferFormat);
 
 }  // namespace AHardwareBufferUtils
 

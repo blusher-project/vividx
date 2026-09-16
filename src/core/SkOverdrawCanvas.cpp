@@ -65,7 +65,7 @@ public:
     TextDevice(SkCanvas* overdrawCanvas, const SkSurfaceProps& props)
             : SkNoPixelsDevice{SkIRect::MakeWH(32767, 32767), props},
               fOverdrawCanvas{overdrawCanvas},
-              fPainter{props, kN32_SkColorType, nullptr} {}
+              fPainter{props, VX_COLOR_TYPE_N32, nullptr} {}
 
     void paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& paint) const override {
         for (auto [glyph, pos] : accepted) {

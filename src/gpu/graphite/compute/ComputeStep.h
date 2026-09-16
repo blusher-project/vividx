@@ -21,7 +21,7 @@
 #include <string_view>
 #include <tuple>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 struct SkISize;
 
 namespace skgpu {
@@ -194,7 +194,7 @@ public:
     // This method will be called for storage texture entries in the ComputeStep's resource list to
     // determine the required dimensions and color type. The ComputeStep must return a non-zero
     // value for the size and a valid color type.
-    virtual std::tuple<SkISize, SkColorType> calculateTextureParameters(int resourceIndex,
+    virtual std::tuple<SkISize, vx_color_type> calculateTextureParameters(int resourceIndex,
                                                                         const ResourceDesc&) const;
 
     // This method will be called for sampler entries in the ComputeStep's resource list to

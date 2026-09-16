@@ -71,7 +71,7 @@ sk_sp<SkImage> SkImage_Picture::onMakeSubset(SkRecorder*,
     SkMatrix matrix = pictureIG->fMatrix;
     matrix.postTranslate(-subset.left(), -subset.top());
     SkImages::BitDepth bitDepth =
-            this->colorType() == kRGBA_F16_SkColorType ? SkImages::BitDepth::kF16
+            this->colorType() == VX_COLOR_TYPE_RGBA_F16 ? SkImages::BitDepth::kF16
                                                        : SkImages::BitDepth::kU8;
 
     return SkImage_Picture::Make(pictureIG->fPicture, subset.size(),
@@ -103,7 +103,7 @@ bool SkImage_Picture::getImageKeyValues(
         return false;
     }
 
-    bool isU8 = ii.colorType() != kRGBA_F16_SkColorType;
+    bool isU8 = ii.colorType() != VX_COLOR_TYPE_RGBA_F16;
     uint32_t pixelGeometry = this->props()->pixelGeometry();
     uint32_t surfacePropFlags = this->props()->flags();
     int width = ii.width();

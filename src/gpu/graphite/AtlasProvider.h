@@ -15,7 +15,7 @@
 #include <memory>
 #include <unordered_map>
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 namespace skgpu::graphite {
 
@@ -56,7 +56,7 @@ public:
 
     // Return a TextureProxy with the given dimensions and color type.
     sk_sp<TextureProxy> getAtlasTexture(
-            Recorder*, uint16_t width, uint16_t height, SkColorType, uint16_t identifier,
+            Recorder*, uint16_t width, uint16_t height, vx_color_type, uint16_t identifier,
             bool requireStorageUsage);
 
     // This frees textures held in the atlas pool, and compacts the pages within the other

@@ -251,7 +251,7 @@ sk_sp<SkImage> SkImage_Raster::onMakeWithMipmaps(sk_sp<SkMipmap> mips) const {
 }
 
 sk_sp<SkImage> SkImage_Raster::makeColorTypeAndColorSpace(SkRecorder*,
-                                                          SkColorType targetColorType,
+                                                          vx_color_type targetColorType,
                                                           sk_sp<SkColorSpace> targetColorSpace,
                                                           RequiredProperties) const {
     SkPixmap src;

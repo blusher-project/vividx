@@ -34,7 +34,7 @@ namespace skgpu::graphite {
 
 namespace {
 
-constexpr auto kAssumedColorType = kRGBA_8888_SkColorType;
+constexpr auto kAssumedColorType = VX_COLOR_TYPE_RGBA_8888;
 
 static constexpr int kY = static_cast<int>(SkYUVAInfo::kY);
 static constexpr int kU = static_cast<int>(SkYUVAInfo::kU);

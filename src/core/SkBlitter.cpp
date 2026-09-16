@@ -647,7 +647,7 @@ bool SkBlitter::UseLegacyBlitter(const SkPixmap& device,
     }
 
     // Only kN32 is handled by legacy blitters now
-    return device.colorType() == kN32_SkColorType;
+    return device.colorType() == VX_COLOR_TYPE_N32;
 #endif
 }
 
@@ -661,7 +661,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
                              const SkRect& devBounds) {
     SkASSERT(alloc);
 
-    if (kUnknown_SkColorType == device.colorType()) {
+    if (VX_COLOR_TYPE_UNKNOWN == device.colorType()) {
         return alloc->make<SkNullBlitter>();
     }
 
@@ -698,7 +698,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
     SkASSERT(!paint->getColorFilter());
 
     if (drawCoverage == SkDrawCoverage::kYes) {
-        if (device.colorType() == kAlpha_8_SkColorType) {
+        if (device.colorType() == VX_COLOR_TYPE_ALPHA_8) {
             SkASSERT(!paint->getShader());
             SkASSERT(paint->isSrcOver());
             return alloc->make<SkA8_Coverage_Blitter>(device, *paint);
@@ -723,7 +723,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
     }
 
     // Everything but legacy kN32_SkColorType should already be handled.
-    SkASSERT(device.colorType() == kN32_SkColorType);
+    SkASSERT(device.colorType() == VX_COLOR_TYPE_N32);
 
     // And we should be blending with SrcOver
     SkASSERT(paint->asBlendMode() == SkBlendMode::kSrcOver);

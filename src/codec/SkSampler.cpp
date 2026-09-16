@@ -30,8 +30,8 @@ void SkSampler::Fill(const SkImageInfo& info, void* dst, size_t rowBytes,
 
     // Use the proper memset routine to fill the remaining bytes
     switch (info.colorType()) {
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType: {
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888: {
             uint32_t* dstRow = (uint32_t*) dst;
             for (int row = 0; row < numRows; row++) {
                 SkOpts::memset32(dstRow, 0, width);
@@ -39,7 +39,7 @@ void SkSampler::Fill(const SkImageInfo& info, void* dst, size_t rowBytes,
             }
             break;
         }
-        case kRGB_565_SkColorType: {
+        case VX_COLOR_TYPE_RGB_565: {
             uint16_t* dstRow = (uint16_t*) dst;
             for (int row = 0; row < numRows; row++) {
                 SkOpts::memset16(dstRow, 0, width);
@@ -47,7 +47,7 @@ void SkSampler::Fill(const SkImageInfo& info, void* dst, size_t rowBytes,
             }
             break;
         }
-        case kGray_8_SkColorType: {
+        case VX_COLOR_TYPE_GRAY_8: {
             uint8_t* dstRow = (uint8_t*) dst;
             for (int row = 0; row < numRows; row++) {
                 memset(dstRow, 0, width);
@@ -55,7 +55,7 @@ void SkSampler::Fill(const SkImageInfo& info, void* dst, size_t rowBytes,
             }
             break;
         }
-        case kRGBA_F16_SkColorType: {
+        case VX_COLOR_TYPE_RGBA_F16: {
             uint64_t* dstRow = (uint64_t*) dst;
             for (int row = 0; row < numRows; row++) {
                 SkOpts::memset64(dstRow, 0, width);

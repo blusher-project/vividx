@@ -81,7 +81,7 @@ SK_API sk_sp<SkSurface> RenderTarget(skgpu::graphite::Recorder*,
  */
 SK_API sk_sp<SkSurface> WrapBackendTexture(skgpu::graphite::Recorder*,
                                            const skgpu::graphite::BackendTexture&,
-                                           SkColorType colorType,
+                                           vx_color_type colorType,
                                            sk_sp<SkColorSpace> colorSpace,
                                            const SkSurfaceProps* props,
                                            TextureReleaseProc = nullptr,

@@ -854,7 +854,7 @@ SkColor4fXformer::SkColor4fXformer(const SkGradientBaseShader* shader,
     fIntermediateColorSpace = intermediate_color_space(interpolation.fColorSpace, dst);
 
     // 2) Convert all colors to the intermediate color space
-    auto info = SkImageInfo::Make(colorCount, 1, kRGBA_F32_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
+    auto info = SkImageInfo::Make(colorCount, 1, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     auto dstInfo = info.makeColorSpace(fIntermediateColorSpace);
     auto srcInfo = info.makeColorSpace(shader->colorSpace());

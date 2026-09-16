@@ -84,7 +84,7 @@ void SkRescaleAndReadPixels(SkBitmap bmp,
         !bmp.info().colorSpace()->gammaIsLinear()) {
         auto cs = bmp.info().colorSpace()->makeLinearGamma();
         // Promote to F16 color type to preserve precision.
-        auto ii = SkImageInfo::Make(srcW, srcH, kRGBA_F16_SkColorType, bmp.info().alphaType(),
+        auto ii = SkImageInfo::Make(srcW, srcH, VX_COLOR_TYPE_RGBA_F16, bmp.info().alphaType(),
                                     std::move(cs));
         auto linearSurf = SkSurfaces::Raster(ii);
         if (!linearSurf) {

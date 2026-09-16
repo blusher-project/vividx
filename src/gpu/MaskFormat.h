@@ -8,7 +8,7 @@
 #ifndef skgpu_MaskFormat_DEFINED
 #define skgpu_MaskFormat_DEFINED
 
-#include "include/core/SkColorType.h"
+#include <vividx/core/color-type.h>
 
 namespace skgpu {
 
@@ -36,11 +36,11 @@ constexpr int MaskFormatBytesPerPixel(MaskFormat format) {
     SkUNREACHABLE;
 }
 
-static constexpr SkColorType MaskFormatToColorType(MaskFormat format) {
+static constexpr vx_color_type MaskFormatToColorType(MaskFormat format) {
     switch (format) {
-        case MaskFormat::kA8:   return kAlpha_8_SkColorType;
-        case MaskFormat::kA565: return kRGB_565_SkColorType;
-        case MaskFormat::kARGB: return kRGBA_8888_SkColorType;
+        case MaskFormat::kA8:   return VX_COLOR_TYPE_ALPHA_8;
+        case MaskFormat::kA565: return VX_COLOR_TYPE_RGB_565;
+        case MaskFormat::kARGB: return VX_COLOR_TYPE_RGBA_8888;
     }
     SkUNREACHABLE;
 }

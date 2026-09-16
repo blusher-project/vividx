@@ -209,7 +209,7 @@ prepare_for_direct_bitmap_drawing(SkStrike* strike,
 
 namespace skcpu {
 GlyphRunListPainter::GlyphRunListPainter(const SkSurfaceProps& props,
-                                         SkColorType colorType,
+                                         vx_color_type colorType,
                                          SkColorSpace* cs)
         : fDeviceProps{props}
         , fBitmapFallbackProps{props.cloneWithPixelGeometry(kUnknown_SkPixelGeometry)}
@@ -235,7 +235,7 @@ void GlyphRunListPainter::drawForBitmapDevice(SkCanvas* canvas,
 
     // The bitmap blitters can only draw lcd text to a N32 bitmap in srcOver. Otherwise,
     // convert the lcd text into A8 text. The props communicate this to the scaler.
-    auto& props = (kN32_SkColorType == fColorType && paint.isSrcOver())
+    auto& props = (VX_COLOR_TYPE_N32 == fColorType && paint.isSrcOver())
                           ? fDeviceProps
                           : fBitmapFallbackProps;
 

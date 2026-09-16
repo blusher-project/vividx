@@ -17,11 +17,11 @@
 namespace SkNDKConversions {
     // Supports a small subset of SkColorType. Others are treated as
     // ANDROID_BITMAP_FORMAT_NONE.
-    AndroidBitmapFormat toAndroidBitmapFormat(SkColorType);
+    AndroidBitmapFormat toAndroidBitmapFormat(vx_color_type);
 
     uint32_t toAndroidBitmapAlphaFlags(vx_alpha_type);
 
-    SkColorType toColorType(AndroidBitmapFormat);
+    vx_color_type toColorType(AndroidBitmapFormat);
 
     // Treats null as ADATASPACE_SRGB.
     ADataSpace toDataSpace(SkColorSpace*);

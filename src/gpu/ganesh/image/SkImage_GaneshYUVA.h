@@ -48,7 +48,7 @@ namespace skgpu::ganesh { class SurfaceDrawContext; }
 // proxy will be stored and used for any future rendering.
 class SkImage_GaneshYUVA final : public SkImage_GaneshBase {
 public:
-    static constexpr auto kAssumedColorType = kRGBA_8888_SkColorType;
+    static constexpr auto kAssumedColorType = VX_COLOR_TYPE_RGBA_8888;
 
     SkImage_GaneshYUVA(sk_sp<GrImageContext>,
                        uint32_t uniqueID,
@@ -64,7 +64,7 @@ public:
     bool onIsProtected() const override;
 
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(GrDirectContext*,
-                                                SkColorType,
+                                                vx_color_type,
                                                 sk_sp<SkColorSpace>) const final;
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;

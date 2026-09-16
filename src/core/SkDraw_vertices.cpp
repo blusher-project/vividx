@@ -80,9 +80,9 @@ static SkPMColor4f* convert_colors(const SkColor src[],
     // Passing `nullptr` for the destination CS effectively disables color conversion.
     auto dstCS = skipColorXform ? nullptr : sk_ref_sp(deviceCS);
     SkImageInfo srcInfo = SkImageInfo::Make(
-            count, 1, kBGRA_8888_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGB());
+            count, 1, VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGB());
     SkImageInfo dstInfo =
-            SkImageInfo::Make(count, 1, kRGBA_F32_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED, dstCS);
+            SkImageInfo::Make(count, 1, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_PREMULTIPLIED, dstCS);
     SkAssertResult(SkConvertPixels(dstInfo, dst, 0, srcInfo, src, 0));
     return dst;
 }

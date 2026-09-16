@@ -7,8 +7,10 @@ project(vividx
 set(VIVIDX_PUBLIC_HEADERS
     include/vividx/common.h
     include/vividx/core/canvas.h
+    include/vividx/core/color-space.h
     include/vividx/core/color-type.h
     include/vividx/core/color.h
+    include/vividx/core/image-info.h
     include/vividx/core/point.h
     include/vividx/core/rect.h
     include/vividx/core/size.h
@@ -24,7 +26,9 @@ set(VIVIDX_PUBLIC_HEADERS
 set(VIVIDX_CORE_SOURCES
     src/common.cpp
     src/core/canvas.cpp
+    src/core/color-space.cpp
     src/core/converts.h
+    src/core/image-info.c
     src/core/point.c
     src/core/rect.c
     src/core/size.c

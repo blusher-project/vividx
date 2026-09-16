@@ -73,7 +73,7 @@ namespace {
 //
 // This function takes in the `srcCT` as well because it can enable some fallbacks that are not
 // otherwise possible (e.g. gray -> red -> gray).
-SkColorType renderable_colortype(SkColorType srcCT, SkColorType dstCT) {
+vx_color_type renderable_colortype(vx_color_type srcCT, vx_color_type dstCT) {
     // This mapping only includes color types that are often deemed non-renderable because of
     // semantics (e.g. can't blend into an alpha channel that is meant to be masked during sampling,
     // or can't render gray from an arbitrary RGB source).
@@ -86,26 +86,26 @@ SkColorType renderable_colortype(SkColorType srcCT, SkColorType dstCT) {
         // blending because every draw operation uses kSrc and we're filling all pixels. The
         // image view will then still use an rgb1 swizzle to hide any bad alpha data from the
         // original image.
-        case kRGB_101010x_SkColorType:    return kRGBA_1010102_SkColorType;
-        case kBGR_101010x_SkColorType:    return kBGRA_1010102_SkColorType;
-        case kRGB_F16F16F16x_SkColorType: return kRGBA_F16_SkColorType;
-        case kRGBA_F16Norm_SkColorType:   return kRGBA_F16_SkColorType;
+        case VX_COLOR_TYPE_RGB_101010X:    return VX_COLOR_TYPE_RGBA_1010102;
+        case VX_COLOR_TYPE_BGR_101010X:    return VX_COLOR_TYPE_BGRA_1010102;
+        case VX_COLOR_TYPE_RGB_F16F16F16X: return VX_COLOR_TYPE_RGBA_F16;
+        case VX_COLOR_TYPE_RGBA_F16NORM:   return VX_COLOR_TYPE_RGBA_F16;
 
         // While it is the case that a BGRA format can be used with a kRGB_888x colortype, we
         // don't look at srcCT to guess the format and switch to kBGRA_8888. In the event that
         // this copied image will be read back to the CPU, it's best to match the color type's
         // channel ordering.
-        case kRGB_888x_SkColorType:       return kRGBA_8888_SkColorType;
+        case VX_COLOR_TYPE_RGB_888X:       return VX_COLOR_TYPE_RGBA_8888;
 
         // Normally kGray is never renderable from arbitrary RGB color data because calculating the
         // luminance/gray level is a dot product. However, if the source color type is also gray,
         // then the only channel we care about is R, which is renderable. After rendering to R,
         // the image view's swizzle can splat that out to produce grayscale.
-        case kGray_8_SkColorType:
-            if (srcCT == kGray_8_SkColorType) {
-                return kR8_unorm_SkColorType;
+        case VX_COLOR_TYPE_GRAY_8:
+            if (srcCT == VX_COLOR_TYPE_GRAY_8) {
+                return VX_COLOR_TYPE_R8_UNORM;
             } else {
-                return kUnknown_SkColorType;
+                return VX_COLOR_TYPE_UNKNOWN;
             }
 
         default:
@@ -256,7 +256,7 @@ TextureProxyView MakeBitmapProxyView(Recorder* recorder,
                                      std::string_view label) {
     // Adjust params based on input and Caps
     const Caps* caps = recorder->priv().caps();
-    const SkColorType ct = bitmap.info().colorType();
+    const vx_color_type ct = bitmap.info().colorType();
 
     if (bitmap.dimensions().area() <= 1) {
         mipmapped = Mipmapped::kNo;
@@ -698,14 +698,14 @@ TextureProxyView AsView(const SkImage* image) {
     return gi->textureProxyView();
 }
 
-SkColorType ComputeShaderCoverageMaskTargetFormat(const Caps* caps) {
+vx_color_type ComputeShaderCoverageMaskTargetFormat(const Caps* caps) {
     // GPU compute coverage mask renderers need to bind the mask texture as a storage binding, which
     // support a limited set of color formats. In general, we use RGBA8 if Alpha8 can't be
     // supported.
-    if (caps->isStorage(caps->getDefaultStorageTextureInfo(kAlpha_8_SkColorType))) {
-        return kAlpha_8_SkColorType;
+    if (caps->isStorage(caps->getDefaultStorageTextureInfo(VX_COLOR_TYPE_ALPHA_8))) {
+        return VX_COLOR_TYPE_ALPHA_8;
     }
-    return kRGBA_8888_SkColorType;
+    return VX_COLOR_TYPE_RGBA_8888;
 }
 
 } // namespace skgpu::graphite
@@ -725,7 +725,7 @@ public:
 
     GraphiteBackend(skgpu::graphite::Recorder* recorder,
                     const SkSurfaceProps& surfaceProps,
-                    SkColorType colorType)
+                    vx_color_type colorType)
             : Backend(SkImageFilterCache::Create(SkImageFilterCache::kDefaultTransientSize),
                       surfaceProps, colorType)
             , fRecorder(recorder) {}
@@ -771,7 +771,7 @@ public:
 
     // SkBlurEngine
     const SkBlurEngine::Algorithm* findAlgorithm(SkSize sigma,
-                                                 SkColorType colorType) const override {
+                                                 vx_color_type colorType) const override {
         // The runtime effect blurs handle all tilemodes and color types
         return this;
     }
@@ -796,7 +796,7 @@ private:
 
 sk_sp<Backend> MakeGraphiteBackend(skgpu::graphite::Recorder* recorder,
                                    const SkSurfaceProps& surfaceProps,
-                                   SkColorType colorType) {
+                                   vx_color_type colorType) {
     SkASSERT(recorder);
     return sk_make_sp<GraphiteBackend>(recorder, surfaceProps, colorType);
 }

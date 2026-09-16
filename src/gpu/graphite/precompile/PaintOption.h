@@ -54,7 +54,7 @@ private:
 
     void handleClipping(const KeyContext&) const;
 
-    bool shouldDither(SkColorType dstCT) const;
+    bool shouldDither(vx_color_type dstCT) const;
 
     bool fOpaquePaintColor;
     std::pair<sk_sp<PrecompileBlender>, int> fFinalBlender;

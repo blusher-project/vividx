@@ -44,7 +44,7 @@ private:
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
         const Caps* caps = keyContext.caps();
         // TODO: pull Protected-ness from 'renderPassDescIn'
-        TextureInfo info = caps->getDefaultSampledTextureInfo(kAlpha_8_SkColorType,
+        TextureInfo info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_ALPHA_8,
                                                               Mipmapped::kNo,
                                                               Protected::kNo,
                                                               Renderable::kYes);

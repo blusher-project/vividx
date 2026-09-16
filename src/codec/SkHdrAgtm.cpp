@@ -315,7 +315,7 @@ MakeGainCurveXYMImage(const AdaptiveGlobalToneMap::HeadroomAdaptiveToneMap& hatm
     SkBitmap bm32;
     bm32.allocPixels(SkImageInfo::Make(
             maxNumControlPoints, hatm.fAlternateImages.size(),
-            kRGBA_F32_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED));
+            VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_PREMULTIPLIED));
     for (size_t a = 0; a < hatm.fAlternateImages.size(); ++a) {
         const auto& alt = hatm.fAlternateImages[a];
         const auto& curve = alt.fColorGainFunction.fGainCurve;
@@ -330,7 +330,7 @@ MakeGainCurveXYMImage(const AdaptiveGlobalToneMap::HeadroomAdaptiveToneMap& hatm
 
     // Convert from F32 to F16 for use on the GPU.
     SkBitmap bm16;
-    bm16.allocPixels(bm32.info().makeColorType(kRGBA_F16_SkColorType));
+    bm16.allocPixels(bm32.info().makeColorType(VX_COLOR_TYPE_RGBA_F16));
     if (!bm32.readPixels(bm16.pixmap())) {
         return nullptr;
     }

@@ -14,7 +14,7 @@
 class SkColorSpace;
 class SkReadBuffer;
 class SkWriteBuffer;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 class SkPaintPriv {
 public:
@@ -32,7 +32,7 @@ public:
      */
     static bool Overwrites(const SkPaint* paint, ShaderOverrideOpacity);
 
-    static bool ShouldDither(const SkPaint&, SkColorType);
+    static bool ShouldDither(const SkPaint&, vx_color_type);
 
     /*
      * The luminance color is used to determine which Gamma Canonical color to map to.  This is

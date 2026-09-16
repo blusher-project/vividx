@@ -380,7 +380,7 @@ DispatchResourceOptional Builder::allocateResource(const ComputeStep* step,
         case Type::kWriteOnlyStorageTexture: {
             auto [size, colorType] = step->calculateTextureParameters(resourceIdx, resource);
             SkASSERT(!size.isEmpty());
-            SkASSERT(colorType != kUnknown_SkColorType);
+            SkASSERT(colorType != VX_COLOR_TYPE_UNKNOWN);
 
             auto textureInfo = fRecorder->priv().caps()->getDefaultStorageTextureInfo(colorType);
             sk_sp<TextureProxy> texture = TextureProxy::Make(

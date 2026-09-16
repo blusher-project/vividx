@@ -28,7 +28,7 @@ class SkMatrix;
 class SkPaint;
 class SkShader;
 
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 enum class SkTileMode;
 
 enum {
@@ -68,7 +68,7 @@ public:
 
     const SkColorInfo& colorInfo() const { return fColorInfo; }
     vx_alpha_type alphaType() const { return fColorInfo.alphaType(); }
-    SkColorType colorType() const { return fColorInfo.colorType(); }
+    vx_color_type colorType() const { return fColorInfo.colorType(); }
     SkColorSpace* getColorSpace() const { return fColorInfo.colorSpace(); }
 
     /**

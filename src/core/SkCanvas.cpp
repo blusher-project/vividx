@@ -668,12 +668,12 @@ get_layer_mapping_and_bounds(
 // Ideally image filters operate in the dst color type, but if there is insufficient alpha bits
 // we move some bits from color channels into the alpha channel since that can greatly improve
 // the quality of blurs and other filters.
-static SkColorType image_filter_color_type(const SkColorInfo& dstInfo) {
+static vx_color_type image_filter_color_type(const SkColorInfo& dstInfo) {
     if (dstInfo.bytesPerPixel() <= 4 &&
-        dstInfo.colorType() != kRGBA_8888_SkColorType &&
-        dstInfo.colorType() != kBGRA_8888_SkColorType) {
+        dstInfo.colorType() != VX_COLOR_TYPE_RGBA_8888 &&
+        dstInfo.colorType() != VX_COLOR_TYPE_BGRA_8888) {
         // "Upgrade" A8, G8, 565, 4444, 1010102, 101010x, and 888x to 8888
-        return kN32_SkColorType;
+        return VX_COLOR_TYPE_N32;
     } else {
         return dstInfo.colorType();
     }
@@ -712,8 +712,8 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
 
     sk_sp<SkColorSpace> filterColorSpace = filterColorInfo.refColorSpace();
 
-    const SkColorType filterColorType =
-            srcIsCoverageLayer ? kAlpha_8_SkColorType : image_filter_color_type(filterColorInfo);
+    const vx_color_type filterColorType =
+            srcIsCoverageLayer ? VX_COLOR_TYPE_ALPHA_8 : image_filter_color_type(filterColorInfo);
 
     // 'filter' sees the src device's buffer as the implicit input image, and processes the image
     // in this device space (referred to as the "layer" space). However, the filter
@@ -1009,12 +1009,12 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
     if (strategy == kFullLayer_SaveLayerStrategy) {
         SkASSERT(!layerBounds.isEmpty());
 
-        SkColorType layerColorType;
+        vx_color_type layerColorType;
         if (coverageOnly) {
-            layerColorType = kAlpha_8_SkColorType;
+            layerColorType = VX_COLOR_TYPE_ALPHA_8;
         } else {
             layerColorType = SkToBool(rec.fSaveLayerFlags & kF16ColorType)
-                                    ? kRGBA_F16_SkColorType
+                                    ? VX_COLOR_TYPE_RGBA_F16
                                     : image_filter_color_type(priorDevice->imageInfo().colorInfo());
         }
         SkImageInfo info =

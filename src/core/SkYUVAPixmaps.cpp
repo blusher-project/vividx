@@ -27,38 +27,38 @@ void SkYUVAPixmapInfo::SupportedDataTypes::enableDataType(DataType type, int num
 //////////////////////////////////////////////////////////////////////////////
 
 std::tuple<int, SkYUVAPixmapInfo::DataType> SkYUVAPixmapInfo::NumChannelsAndDataType(
-        SkColorType ct) {
+        vx_color_type ct) {
     // We could allow BGR[A] color types, but then we'd have to decide whether B should be the 0th
     // or 2nd channel. Our docs currently say channel order is always R=0, G=1, B=2[, A=3].
     switch (ct) {
-        case kR8_unorm_SkColorType:
-        case kAlpha_8_SkColorType:
-        case kGray_8_SkColorType:    return {1, DataType::kUnorm8 };
-        case kR16_unorm_SkColorType:
-        case kA16_unorm_SkColorType: return {1, DataType::kUnorm16};
-        case kR16_float_SkColorType:
-        case kA16_float_SkColorType: return {1, DataType::kFloat16};
+        case VX_COLOR_TYPE_R8_UNORM:
+        case VX_COLOR_TYPE_ALPHA_8:
+        case VX_COLOR_TYPE_GRAY_8:    return {1, DataType::kUnorm8 };
+        case VX_COLOR_TYPE_R16_UNORM:
+        case VX_COLOR_TYPE_A16_UNORM: return {1, DataType::kUnorm16};
+        case VX_COLOR_TYPE_R16_FLOAT:
+        case VX_COLOR_TYPE_A16_FLOAT: return {1, DataType::kFloat16};
 
-        case kR8G8_unorm_SkColorType:   return {2, DataType::kUnorm8  };
-        case kR16G16_unorm_SkColorType: return {2, DataType::kUnorm16 };
-        case kR16G16_float_SkColorType: return {2, DataType::kFloat16 };
+        case VX_COLOR_TYPE_R8G8_UNORM:   return {2, DataType::kUnorm8  };
+        case VX_COLOR_TYPE_R16G16_UNORM: return {2, DataType::kUnorm16 };
+        case VX_COLOR_TYPE_R16G16_FLOAT: return {2, DataType::kFloat16 };
 
-        case kRGB_888x_SkColorType:       return {3, DataType::kUnorm8          };
-        case kRGB_101010x_SkColorType:    return {3, DataType::kUnorm10_Unorm2  };
-        case kRGB_F16F16F16x_SkColorType: return {3, DataType::kFloat16         };
+        case VX_COLOR_TYPE_RGB_888X:       return {3, DataType::kUnorm8          };
+        case VX_COLOR_TYPE_RGB_101010X:    return {3, DataType::kUnorm10_Unorm2  };
+        case VX_COLOR_TYPE_RGB_F16F16F16X: return {3, DataType::kFloat16         };
 
-        case kRGBA_8888_SkColorType:          return {4, DataType::kUnorm8  };
-        case kR16G16B16A16_unorm_SkColorType: return {4, DataType::kUnorm16 };
-        case kRGBA_F16_SkColorType:           return {4, DataType::kFloat16 };
-        case kRGBA_F16Norm_SkColorType:       return {4, DataType::kFloat16 };
-        case kRGBA_1010102_SkColorType:       return {4, DataType::kUnorm10_Unorm2 };
+        case VX_COLOR_TYPE_RGBA_8888:          return {4, DataType::kUnorm8  };
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: return {4, DataType::kUnorm16 };
+        case VX_COLOR_TYPE_RGBA_F16:           return {4, DataType::kFloat16 };
+        case VX_COLOR_TYPE_RGBA_F16NORM:       return {4, DataType::kFloat16 };
+        case VX_COLOR_TYPE_RGBA_1010102:       return {4, DataType::kUnorm10_Unorm2 };
 
         default: return {0, DataType::kUnorm8 };
     }
 }
 
 SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
-                                   const SkColorType colorTypes[kMaxPlanes],
+                                   const vx_color_type colorTypes[kMaxPlanes],
                                    const size_t rowBytes[kMaxPlanes])
         : fYUVAInfo(yuvaInfo) {
     if (!yuvaInfo.isValid()) {
@@ -101,7 +101,7 @@ SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
 SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
                                    DataType dataType,
                                    const size_t rowBytes[kMaxPlanes]) {
-    SkColorType colorTypes[kMaxPlanes] = {};
+    vx_color_type colorTypes[kMaxPlanes] = {};
     int numPlanes = yuvaInfo.numPlanes();
     for (int i = 0; i < numPlanes; ++i) {
         int numChannels = yuvaInfo.numChannelsInPlane(i);
@@ -158,14 +158,14 @@ bool SkYUVAPixmapInfo::isSupported(const SupportedDataTypes& supportedDataTypes)
 
 //////////////////////////////////////////////////////////////////////////////
 
-SkColorType SkYUVAPixmaps::RecommendedRGBAColorType(DataType dataType) {
+vx_color_type SkYUVAPixmaps::RecommendedRGBAColorType(DataType dataType) {
     switch (dataType) {
-        case DataType::kUnorm8:         return kRGBA_8888_SkColorType;
+        case DataType::kUnorm8:         return VX_COLOR_TYPE_RGBA_8888;
         // F16 has better GPU support than 16 bit unorm. Often "16" bit unorm values are actually
         // lower precision.
-        case DataType::kUnorm16:        return kRGBA_F16_SkColorType;
-        case DataType::kFloat16:        return kRGBA_F16_SkColorType;
-        case DataType::kUnorm10_Unorm2: return kRGBA_1010102_SkColorType;
+        case DataType::kUnorm16:        return VX_COLOR_TYPE_RGBA_F16;
+        case DataType::kFloat16:        return VX_COLOR_TYPE_RGBA_F16;
+        case DataType::kUnorm10_Unorm2: return VX_COLOR_TYPE_RGBA_1010102;
     }
     SkUNREACHABLE;
 }
@@ -221,7 +221,7 @@ SkYUVAPixmaps SkYUVAPixmaps::FromExternalMemory(const SkYUVAPixmapInfo& yuvaPixm
 
 SkYUVAPixmaps SkYUVAPixmaps::FromExternalPixmaps(const SkYUVAInfo& yuvaInfo,
                                                  const SkPixmap pixmaps[kMaxPlanes]) {
-    SkColorType colorTypes[kMaxPlanes] = {};
+    vx_color_type colorTypes[kMaxPlanes] = {};
     size_t rowBytes[kMaxPlanes] = {};
     int numPlanes = yuvaInfo.numPlanes();
     for (int i = 0; i < numPlanes; ++i) {
@@ -256,7 +256,7 @@ SkYUVAPixmapInfo SkYUVAPixmaps::pixmapsInfo() const {
     if (!this->isValid()) {
         return {};
     }
-    SkColorType colorTypes[kMaxPlanes] = {};
+    vx_color_type colorTypes[kMaxPlanes] = {};
     size_t rowBytes[kMaxPlanes] = {};
     int numPlanes = this->numPlanes();
     for (int i = 0; i < numPlanes; ++i) {

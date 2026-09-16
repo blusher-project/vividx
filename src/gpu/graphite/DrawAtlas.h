@@ -32,7 +32,7 @@
 #include <vector>
 
 class SkPixmap;
-enum SkColorType : int;
+#include <vividx/core/color-type.h>
 
 namespace skgpu {
 enum class MaskFormat : int;

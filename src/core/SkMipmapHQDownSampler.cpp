@@ -449,8 +449,8 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
     FilterProc* proc_3_3 = nullptr;
 
     switch (root.colorType()) {
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
             proc_1_2 = downsample_1_2<ColorTypeFilter_8888>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_8888>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_8888>;
@@ -460,7 +460,7 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_8888>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_8888>;
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             proc_1_2 = downsample_1_2<ColorTypeFilter_565>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_565>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_565>;
@@ -470,7 +470,7 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_565>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_565>;
             break;
-        case kARGB_4444_SkColorType:
+        case VX_COLOR_TYPE_ARGB_4444:
             proc_1_2 = downsample_1_2<ColorTypeFilter_4444>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_4444>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_4444>;
@@ -480,9 +480,9 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_4444>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_4444>;
             break;
-        case kAlpha_8_SkColorType:
-        case kGray_8_SkColorType:
-        case kR8_unorm_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
+        case VX_COLOR_TYPE_GRAY_8:
+        case VX_COLOR_TYPE_R8_UNORM:
             proc_1_2 = downsample_1_2<ColorTypeFilter_8>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_8>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_8>;
@@ -492,8 +492,8 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_8>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_8>;
             break;
-        case kRGBA_F16Norm_SkColorType:
-        case kRGBA_F16_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16NORM:
+        case VX_COLOR_TYPE_RGBA_F16:
             proc_1_2 = downsample_1_2<ColorTypeFilter_RGBA_F16>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_RGBA_F16>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_RGBA_F16>;
@@ -503,7 +503,7 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_RGBA_F16>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_RGBA_F16>;
             break;
-        case kR8G8_unorm_SkColorType:
+        case VX_COLOR_TYPE_R8G8_UNORM:
             proc_1_2 = downsample_1_2<ColorTypeFilter_88>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_88>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_88>;
@@ -513,7 +513,7 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_88>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_88>;
             break;
-        case kR16G16_unorm_SkColorType:
+        case VX_COLOR_TYPE_R16G16_UNORM:
             proc_1_2 = downsample_1_2<ColorTypeFilter_1616>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_1616>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_1616>;
@@ -523,8 +523,8 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_1616>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_1616>;
             break;
-        case kA16_unorm_SkColorType:
-        case kR16_unorm_SkColorType:
+        case VX_COLOR_TYPE_A16_UNORM:
+        case VX_COLOR_TYPE_R16_UNORM:
             proc_1_2 = downsample_1_2<ColorTypeFilter_16>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_16>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_16>;
@@ -534,8 +534,8 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_16>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_16>;
             break;
-        case kRGBA_1010102_SkColorType:
-        case kBGRA_1010102_SkColorType:
+        case VX_COLOR_TYPE_RGBA_1010102:
+        case VX_COLOR_TYPE_BGRA_1010102:
             proc_1_2 = downsample_1_2<ColorTypeFilter_1010102>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_1010102>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_1010102>;
@@ -545,8 +545,8 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_1010102>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_1010102>;
             break;
-        case kA16_float_SkColorType:
-        case kR16_float_SkColorType:
+        case VX_COLOR_TYPE_A16_FLOAT:
+        case VX_COLOR_TYPE_R16_FLOAT:
             proc_1_2 = downsample_1_2<ColorTypeFilter_F16>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_F16>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_F16>;
@@ -556,7 +556,7 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_F16>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_F16>;
             break;
-        case kR16G16_float_SkColorType:
+        case VX_COLOR_TYPE_R16G16_FLOAT:
             proc_1_2 = downsample_1_2<ColorTypeFilter_F16F16>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_F16F16>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_F16F16>;
@@ -566,7 +566,7 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_2 = downsample_3_2<ColorTypeFilter_F16F16>;
             proc_3_3 = downsample_3_3<ColorTypeFilter_F16F16>;
             break;
-        case kR16G16B16A16_unorm_SkColorType:
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM:
             proc_1_2 = downsample_1_2<ColorTypeFilter_16161616>;
             proc_1_3 = downsample_1_3<ColorTypeFilter_16161616>;
             proc_2_1 = downsample_2_1<ColorTypeFilter_16161616>;
@@ -577,18 +577,18 @@ std::unique_ptr<SkMipmapDownSampler> SkMipmap::MakeDownSampler(const SkPixmap& r
             proc_3_3 = downsample_3_3<ColorTypeFilter_16161616>;
             break;
 
-        case kUnknown_SkColorType:
-        case kRGB_888x_SkColorType:     // TODO: use 8888?
-        case kRGB_101010x_SkColorType:  // TODO: use 1010102?
-        case kBGR_101010x_SkColorType:  // TODO: use 1010102?
-        case kBGR_101010x_XR_SkColorType:  // TODO: use 1010102?
-        case kRGB_F16F16F16x_SkColorType:  // TODO: use F16?
-        case kBGRA_10101010_XR_SkColorType:
-        case kRGBA_10x6_SkColorType:
-        case kRGBA_F32_SkColorType:
+        case VX_COLOR_TYPE_UNKNOWN:
+        case VX_COLOR_TYPE_RGB_888X:     // TODO: use 8888?
+        case VX_COLOR_TYPE_RGB_101010X:  // TODO: use 1010102?
+        case VX_COLOR_TYPE_BGR_101010X:  // TODO: use 1010102?
+        case VX_COLOR_TYPE_BGR_101010X_XR:  // TODO: use 1010102?
+        case VX_COLOR_TYPE_RGB_F16F16F16X:  // TODO: use F16?
+        case VX_COLOR_TYPE_BGRA_10101010_XR:
+        case VX_COLOR_TYPE_RGBA_10X6:
+        case VX_COLOR_TYPE_RGBA_F32:
             return nullptr;
 
-        case kSRGBA_8888_SkColorType:  // TODO: needs careful handling
+        case VX_COLOR_TYPE_SRGBA_8888:  // TODO: needs careful handling
             return nullptr;
     }
 
