@@ -16,15 +16,15 @@
 #include <cstddef>
 
 class SkColorSpace;
-enum SkAlphaType : int;
+
 struct SkImageInfo;
 
 class GrImageInfo {
 public:
     GrImageInfo();
     GrImageInfo(const SkImageInfo& info);
-    GrImageInfo(GrColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs, int w, int h);
-    GrImageInfo(GrColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs, const SkISize& dimensions);
+    GrImageInfo(GrColorType ct, vx_alpha_type at, sk_sp<SkColorSpace> cs, int w, int h);
+    GrImageInfo(GrColorType ct, vx_alpha_type at, sk_sp<SkColorSpace> cs, const SkISize& dimensions);
     GrImageInfo(const GrColorInfo& info, const SkISize& dimensions);
     GrImageInfo(GrColorInfo&& info, const SkISize& dimensions);
 
@@ -34,7 +34,7 @@ public:
     GrImageInfo& operator=(GrImageInfo&&);
 
     GrImageInfo makeColorType(GrColorType ct) const;
-    GrImageInfo makeAlphaType(SkAlphaType at) const;
+    GrImageInfo makeAlphaType(vx_alpha_type at) const;
     GrImageInfo makeColorSpace(sk_sp<SkColorSpace> cs) const;
     GrImageInfo makeDimensions(SkISize dimensions) const ;
     GrImageInfo makeWH(int width, int height) const;
@@ -43,7 +43,7 @@ public:
 
     GrColorType colorType() const { return fColorInfo.colorType(); }
 
-    SkAlphaType alphaType() const { return fColorInfo.alphaType(); }
+    vx_alpha_type alphaType() const { return fColorInfo.alphaType(); }
 
     SkColorSpace* colorSpace() const { return fColorInfo.colorSpace(); }
 

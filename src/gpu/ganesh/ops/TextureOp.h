@@ -22,7 +22,7 @@ class GrQuad;
 class GrRecordingContext;
 class GrSurfaceProxyView;
 class SkMatrix;
-enum SkAlphaType : int;
+
 enum class GrAAType : unsigned int;
 enum class SkBlendMode;
 struct DrawQuad;
@@ -60,7 +60,7 @@ public:
      */
     static GrOp::Owner Make(GrRecordingContext*,
                             GrSurfaceProxyView,
-                            SkAlphaType srcAlphaType,
+                            vx_alpha_type srcAlphaType,
                             sk_sp<GrColorSpaceXform>,
                             GrSamplerState::Filter,
                             GrSamplerState::MipmapMode,

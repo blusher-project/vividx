@@ -6,7 +6,7 @@
  */
 
 #include "gm/gm.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"

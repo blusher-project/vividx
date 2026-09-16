@@ -19,7 +19,7 @@
 #include <type_traits>
 
 class SkRasterPipeline;
-enum SkAlphaType : int;
+
 
 namespace skgpu {
 
@@ -63,7 +63,7 @@ public:
     constexpr std::array<float, 4> applyTo(std::array<float, 4> color) const;
 
     /** Convenience version for SkRGBA colors. */
-    template <SkAlphaType AlphaType>
+    template <vx_alpha_type AlphaType>
     constexpr SkRGBA4f<AlphaType> applyTo(SkRGBA4f<AlphaType> color) const {
         std::array<float, 4> result = this->applyTo(color.array());
         return {result[0], result[1], result[2], result[3]};

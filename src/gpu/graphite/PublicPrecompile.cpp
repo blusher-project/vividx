@@ -133,7 +133,7 @@ void Precompile(PrecompileContext* precompileContext,
                                          *writeSwizzle,
                                          caps->getDstReadStrategy());
 
-            SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, rpp.fDstCS);
+            SkColorInfo ci(rpp.fDstCT, VX_ALPHA_TYPE_PREMULTIPLIED, rpp.fDstCS);
 
             // The PipelineDataGatherer handles uniform data; the StorageBufferManager may handle
             // mixed data. In the pre-compile case we don't need to record the uniform data but the

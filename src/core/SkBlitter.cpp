@@ -7,7 +7,7 @@
 
 #include "src/core/SkBlitter.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
@@ -631,7 +631,7 @@ bool SkBlitter::UseLegacyBlitter(const SkPixmap& device,
     const SkMaskFilterBase* mf = as_MFB(paint.getMaskFilter());
 
     // The legacy blitters cannot handle any of these "complex" features (anymore).
-    if (device.alphaType() == kUnpremul_SkAlphaType   ||
+    if (device.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED   ||
         !paint.isSrcOver()                            ||
         (mf && mf->getFormat() == SkMask::k3D_Format)) {
         return false;

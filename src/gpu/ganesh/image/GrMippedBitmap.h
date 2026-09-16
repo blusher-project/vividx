@@ -7,7 +7,7 @@
 #ifndef GrMippedBitmap_DEFINED
 #define GrMippedBitmap_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixelRef.h"
@@ -31,7 +31,7 @@ public:
     GrMippedBitmap& operator=(const GrMippedBitmap&) = default;
     GrMippedBitmap& operator=(GrMippedBitmap&&) = default;
 
-    SkAlphaType alphaType() const { return fBitmap.alphaType(); }
+    vx_alpha_type alphaType() const { return fBitmap.alphaType(); }
     SkBitmap bitmap() const { return fBitmap; }
     SkColorType colorType() const { return fBitmap.colorType(); }
     sk_sp<const SkMipmap> mips() const { return fMips; }

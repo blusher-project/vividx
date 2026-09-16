@@ -7,7 +7,7 @@
 
 #include "src/pdf/SkPDFGradientShader.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkPaint.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkShader.h"
@@ -1069,7 +1069,7 @@ static SkPDFGradientShader::Key make_key(const SkShader* shader,
             if (c.fA != 1.0f) {
                 changedByPremul = true;
             }
-            SkRGBA4f<kPremul_SkAlphaType> pm = c.premul();
+            SkRGBA4f<VX_ALPHA_TYPE_PREMULTIPLIED> pm = c.premul();
             c = SkColor4f{pm.fR, pm.fG, pm.fB, pm.fA};
         }
         if (!changedByPremul) {

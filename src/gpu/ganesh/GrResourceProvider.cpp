@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrResourceProvider.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRect.h"
@@ -871,8 +871,8 @@ static bool prepare_level(const GrMipLevel& inLevel,
     data->reset(new char[tempRB * dimensions.fHeight]);
     outLevel->fPixels = data->get();
     outLevel->fRowBytes = tempRB;
-    GrImageInfo srcInfo(   origColorType, kUnpremul_SkAlphaType, nullptr, dimensions);
-    GrImageInfo dstInfo(allowedColorType, kUnpremul_SkAlphaType, nullptr, dimensions);
+    GrImageInfo srcInfo(   origColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, dimensions);
+    GrImageInfo dstInfo(allowedColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, dimensions);
     return GrConvertPixels( GrPixmap(dstInfo,     data->get(),   tempRB),
                            GrCPixmap(srcInfo, inLevel.fPixels, actualRB));
 }

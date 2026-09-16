@@ -69,7 +69,7 @@ static inline bool SkColorTypeIsAlphaOnly(SkColorType ct) {
 }
 
 static inline bool SkAlphaTypeIsValid(unsigned value) {
-    return value <= kLastEnum_SkAlphaType;
+    return value <= VX_ALPHA_TYPE_LASTENUM;
 }
 
 static int SkColorTypeShiftPerPixel(SkColorType ct) {
@@ -214,7 +214,7 @@ static inline int SkColorTypeMaxBitsPerChannel(SkColorType ct) {
  *  Returns true if |info| contains a valid colorType and alphaType.
  */
 static inline bool SkColorInfoIsValid(const SkColorInfo& info) {
-    return info.colorType() != kUnknown_SkColorType && info.alphaType() != kUnknown_SkAlphaType;
+    return info.colorType() != kUnknown_SkColorType && info.alphaType() != VX_ALPHA_TYPE_UNKNOWN;
 }
 
 /**

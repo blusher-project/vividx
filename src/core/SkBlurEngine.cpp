@@ -7,7 +7,7 @@
 
 #include "src/core/SkBlurEngine.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkClipOp.h"
@@ -1546,7 +1546,7 @@ sk_sp<SkSpecialImage> SkShaderBlurAlgorithm::renderBlur(SkRuntimeShaderBuilder* 
                                                         const SkIRect& dstRect) const {
     SkImageInfo outII = SkImageInfo::Make({dstRect.width(), dstRect.height()},
                                           input->colorType(),
-                                          kPremul_SkAlphaType,
+                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                           input->colorInfo().refColorSpace());
     sk_sp<SkDevice> device = this->makeDevice(outII);
     if (!device) {

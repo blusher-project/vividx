@@ -7,7 +7,7 @@
 
 #include "include/effects/SkHighContrastFilter.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
@@ -19,6 +19,8 @@
 #include "src/core/SkKnownRuntimeEffects.h"
 
 #include <cfloat>
+
+#include <vividx/core/alpha-type.h>
 
 sk_sp<SkColorFilter> SkHighContrastFilter::Make(const SkHighContrastConfig& config) {
     if (!config.isValid()) {
@@ -42,7 +44,7 @@ sk_sp<SkColorFilter> SkHighContrastFilter::Make(const SkHighContrastConfig& conf
     const SkRuntimeEffect* highContrastEffect =
             GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kHighContrast);
 
-    const SkAlphaType kUnpremul = kUnpremul_SkAlphaType;
+    const enum vx_alpha_type kUnpremul = VX_ALPHA_TYPE_UNPREMULTIPLIED;
     return SkColorFilterPriv::WithWorkingFormat(
             highContrastEffect->makeColorFilter(SkData::MakeWithCopy(&uniforms,sizeof(uniforms))),
             &SkNamedTransferFn::kLinear,

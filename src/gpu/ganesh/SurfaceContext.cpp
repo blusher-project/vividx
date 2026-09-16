@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/SurfaceContext.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
@@ -91,9 +91,9 @@ const GrDrawingManager* SurfaceContext::drawingManager() const {
 skgpu::SingleOwner* SurfaceContext::singleOwner() const { return fContext->priv().singleOwner(); }
 #endif
 
-static bool alpha_types_compatible(SkAlphaType srcAlphaType, SkAlphaType dstAlphaType) {
+static bool alpha_types_compatible(vx_alpha_type srcAlphaType, vx_alpha_type dstAlphaType) {
     // If both alpha types are kUnknown things make sense. If not, it's too underspecified.
-    return (srcAlphaType == kUnknown_SkAlphaType) == (dstAlphaType == kUnknown_SkAlphaType);
+    return (srcAlphaType == VX_ALPHA_TYPE_UNKNOWN) == (dstAlphaType == VX_ALPHA_TYPE_UNKNOWN);
 }
 
 bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoint pt) {
@@ -186,7 +186,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
                 }
             }
 
-            SkAlphaType alphaType = canvas2DFastPath ? dst.alphaType()
+            vx_alpha_type alphaType = canvas2DFastPath ? dst.alphaType()
                                                      : this->colorInfo().alphaType();
             GrImageInfo tempInfo(colorType,
                                  alphaType,
@@ -453,7 +453,7 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
         skgpu::Swizzle tempReadSwizzle;
         if (canvas2DFastPath) {
             tempColorInfo = {GrColorType::kRGBA_8888,
-                             kUnpremul_SkAlphaType,
+                             VX_ALPHA_TYPE_UNPREMULTIPLIED,
                              this->colorInfo().refColorSpace()};
             format = rgbaDefaultFormat;
         } else {

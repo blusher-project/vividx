@@ -19,11 +19,11 @@
 
 class GrGLSLProgramDataManager;
 class GrGLSLUniformHandler;
-enum SkAlphaType : int;
+
 struct GrShaderCaps;
 
-sk_sp<GrColorSpaceXform> GrColorSpaceXform::Make(SkColorSpace* src, SkAlphaType srcAT,
-                                                 SkColorSpace* dst, SkAlphaType dstAT) {
+sk_sp<GrColorSpaceXform> GrColorSpaceXform::Make(SkColorSpace* src, vx_alpha_type srcAT,
+                                                 SkColorSpace* dst, vx_alpha_type dstAT) {
     SkColorSpaceXformSteps steps(src, srcAT, dst, dstAT);
     return steps.fFlags.mask() == 0 ? nullptr  /* Noop transform */
                                    : sk_make_sp<GrColorSpaceXform>(steps);
@@ -158,8 +158,8 @@ SkPMColor4f GrColorSpaceXformEffect::constantOutputForConstantInput(
 
 std::unique_ptr<GrFragmentProcessor> GrColorSpaceXformEffect::Make(
         std::unique_ptr<GrFragmentProcessor> child,
-        SkColorSpace* src, SkAlphaType srcAT,
-        SkColorSpace* dst, SkAlphaType dstAT) {
+        SkColorSpace* src, vx_alpha_type srcAT,
+        SkColorSpace* dst, vx_alpha_type dstAT) {
     return Make(std::move(child), GrColorSpaceXform::Make(src, srcAT, dst, dstAT));
 }
 

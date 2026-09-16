@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrBlurUtils.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlurTypes.h"
@@ -123,7 +123,7 @@ static bool draw_mask(skgpu::ganesh::SurfaceDrawContext* sdc,
                                           -SkIntToScalar(maskBounds.fTop));
     matrix.preConcat(viewMatrix);
     paint.setCoverageFragmentProcessor(
-            GrTextureEffect::Make(std::move(mask), kUnknown_SkAlphaType, matrix));
+            GrTextureEffect::Make(std::move(mask), VX_ALPHA_TYPE_UNKNOWN, matrix));
 
     sdc->fillPixelsWithLocalMatrix(clip, std::move(paint), maskBounds, *inverse);
     return true;
@@ -479,7 +479,7 @@ static std::unique_ptr<GrFragmentProcessor> create_profile_effect(GrRecordingCon
     if (profileView) {
         SkASSERT(profileView.asTextureProxy());
         SkASSERT(profileView.origin() == kTopLeft_GrSurfaceOrigin);
-        return GrTextureEffect::Make(std::move(profileView), kPremul_SkAlphaType, texM);
+        return GrTextureEffect::Make(std::move(profileView), VX_ALPHA_TYPE_PREMULTIPLIED, texM);
     }
 
     SkBitmap bm;
@@ -497,7 +497,7 @@ static std::unique_ptr<GrFragmentProcessor> create_profile_effect(GrRecordingCon
     }
 
     profileView = threadSafeCache->add(key, profileView);
-    return GrTextureEffect::Make(std::move(profileView), kPremul_SkAlphaType, texM);
+    return GrTextureEffect::Make(std::move(profileView), VX_ALPHA_TYPE_PREMULTIPLIED, texM);
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeCircleBlur(GrRecordingContext* context,
@@ -562,7 +562,7 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_integral_fp(GrRecordingCon
     if (view) {
         SkASSERT(view.origin() == kTopLeft_GrSurfaceOrigin);
         return GrTextureEffect::Make(
-                std::move(view), kPremul_SkAlphaType, m, GrSamplerState::Filter::kLinear);
+                std::move(view), VX_ALPHA_TYPE_PREMULTIPLIED, m, GrSamplerState::Filter::kLinear);
     }
 
     SkBitmap bm = skgpu::CreateIntegralTable(width);
@@ -579,7 +579,7 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_integral_fp(GrRecordingCon
 
     SkASSERT(view.origin() == kTopLeft_GrSurfaceOrigin);
     return GrTextureEffect::Make(
-            std::move(view), kPremul_SkAlphaType, m, GrSamplerState::Filter::kLinear);
+            std::move(view), VX_ALPHA_TYPE_PREMULTIPLIED, m, GrSamplerState::Filter::kLinear);
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeRectBlur(GrRecordingContext* context,
@@ -867,7 +867,7 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
         if (view != lazyView) {
             SkASSERT(view.asTextureProxy());
             SkASSERT(view.origin() == kBlurredRRectMaskOrigin);
-            return GrTextureEffect::Make(std::move(view), kPremul_SkAlphaType, m);
+            return GrTextureEffect::Make(std::move(view), VX_ALPHA_TYPE_PREMULTIPLIED, m);
         }
 
         if (!fillin_view_on_gpu(dContext,
@@ -886,7 +886,7 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
         if (view) {
             SkASSERT(view.asTextureProxy());
             SkASSERT(view.origin() == kBlurredRRectMaskOrigin);
-            return GrTextureEffect::Make(std::move(view), kPremul_SkAlphaType, m);
+            return GrTextureEffect::Make(std::move(view), VX_ALPHA_TYPE_PREMULTIPLIED, m);
         }
 
         view = create_mask_on_cpu(rContext, rrectToDraw, dimensions, xformedSigma);
@@ -899,7 +899,7 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
 
     SkASSERT(view.asTextureProxy());
     SkASSERT(view.origin() == kBlurredRRectMaskOrigin);
-    return GrTextureEffect::Make(std::move(view), kPremul_SkAlphaType, m);
+    return GrTextureEffect::Make(std::move(view), VX_ALPHA_TYPE_PREMULTIPLIED, m);
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeRRectBlur(GrRecordingContext* context,
@@ -1243,7 +1243,7 @@ static GrSurfaceProxyView filter_mask(GrRecordingContext* context,
                                       const SkMaskFilterBase* maskFilter,
                                       GrSurfaceProxyView srcView,
                                       GrColorType srcColorType,
-                                      SkAlphaType srcAlphaType,
+                                      vx_alpha_type srcAlphaType,
                                       const SkMatrix& ctm,
                                       const SkIRect& maskRect) {
     if (maskFilter->type() != SkMaskFilterBase::Type::kBlur) {
@@ -1616,7 +1616,7 @@ enum class Direction { kX, kY };
 
 std::unique_ptr<GrFragmentProcessor> make_texture_effect(const GrCaps* caps,
                                                          GrSurfaceProxyView srcView,
-                                                         SkAlphaType srcAlphaType,
+                                                         vx_alpha_type srcAlphaType,
                                                          const GrSamplerState& sampler,
                                                          const SkIRect& srcSubset,
                                                          const SkIRect& srcRelativeDstRect,
@@ -1658,7 +1658,7 @@ static void convolve_gaussian_1d(skgpu::ganesh::SurfaceFillContext* sfc,
                                  const SkIRect& srcSubset,
                                  SkIVector dstToSrcOffset,
                                  const SkIRect& dstRect,
-                                 SkAlphaType srcAlphaType,
+                                 vx_alpha_type srcAlphaType,
                                  Direction direction,
                                  int radius,
                                  float sigma,
@@ -1738,7 +1738,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian_2d(
     GrSamplerState sampler{SkTileModeToWrapMode(mode), GrSamplerState::Filter::kNearest};
     auto child = make_texture_effect(sdc->caps(),
                                      std::move(srcView),
-                                     kPremul_SkAlphaType,
+                                     VX_ALPHA_TYPE_PREMULTIPLIED,
                                      sampler,
                                      srcBounds,
                                      dstBounds,
@@ -1772,7 +1772,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian(
         GrRecordingContext* rContext,
         GrSurfaceProxyView srcView,
         GrColorType srcColorType,
-        SkAlphaType srcAlphaType,
+        vx_alpha_type srcAlphaType,
         SkIRect srcBounds,
         SkIRect dstBounds,
         Direction direction,
@@ -1958,7 +1958,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> reexpand(
     }
 
     GrColorType srcColorType = src->colorInfo().colorType();
-    SkAlphaType srcAlphaType = src->colorInfo().alphaType();
+    vx_alpha_type srcAlphaType = src->colorInfo().alphaType();
 
 #if defined(SK_USE_PADDED_BLUR_UPSCALE)
     // The blur output completely filled the src SurfaceContext, so that is our subset boundary,
@@ -2010,7 +2010,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> two_pass_gaussian(
         GrRecordingContext* rContext,
         GrSurfaceProxyView srcView,
         GrColorType srcColorType,
-        SkAlphaType srcAlphaType,
+        vx_alpha_type srcAlphaType,
         sk_sp<SkColorSpace> colorSpace,
         SkIRect srcBounds,
         SkIRect dstBounds,
@@ -2136,7 +2136,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> two_pass_gaussian(
 std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingContext* rContext,
                                                                 GrSurfaceProxyView srcView,
                                                                 GrColorType srcColorType,
-                                                                SkAlphaType srcAlphaType,
+                                                                vx_alpha_type srcAlphaType,
                                                                 sk_sp<SkColorSpace> colorSpace,
                                                                 SkIRect dstBounds,
                                                                 SkIRect srcBounds,

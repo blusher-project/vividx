@@ -8,7 +8,7 @@
 #ifndef GrColorInfo_DEFINED
 #define GrColorInfo_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkRefCnt.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
@@ -23,7 +23,7 @@ public:
     GrColorInfo();
     GrColorInfo(const GrColorInfo&);
     GrColorInfo& operator=(const GrColorInfo&);
-    GrColorInfo(GrColorType, SkAlphaType, sk_sp<SkColorSpace>);
+    GrColorInfo(GrColorType, vx_alpha_type, sk_sp<SkColorSpace>);
     /* implicit */ GrColorInfo(const SkColorInfo&);
     ~GrColorInfo();
 
@@ -41,19 +41,19 @@ public:
     sk_sp<GrColorSpaceXform> refColorSpaceXformFromSRGB() const { return fColorXformFromSRGB; }
 
     GrColorType colorType() const { return fColorType; }
-    SkAlphaType alphaType() const { return fAlphaType; }
+    vx_alpha_type alphaType() const { return fAlphaType; }
 
     bool isAlphaOnly() const { return GrColorTypeIsAlphaOnly(fColorType); }
 
     bool isValid() const {
-        return fColorType != GrColorType::kUnknown && fAlphaType != kUnknown_SkAlphaType;
+        return fColorType != GrColorType::kUnknown && fAlphaType != VX_ALPHA_TYPE_UNKNOWN;
     }
 
 private:
     sk_sp<SkColorSpace> fColorSpace;
     sk_sp<GrColorSpaceXform> fColorXformFromSRGB;
     GrColorType fColorType = GrColorType::kUnknown;
-    SkAlphaType fAlphaType = kUnknown_SkAlphaType;
+    vx_alpha_type fAlphaType = VX_ALPHA_TYPE_UNKNOWN;
 };
 
 #endif

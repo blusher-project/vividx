@@ -8,7 +8,7 @@
 #ifndef SkColorData_DEFINED
 #define SkColorData_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkCPUTypes.h"
@@ -379,7 +379,7 @@ static inline SkPMColor SkPixel4444ToPixel32(U16CPU c) {
     return d | (d << 4);
 }
 
-using SkPMColor4f = SkRGBA4f<kPremul_SkAlphaType>;
+using SkPMColor4f = SkRGBA4f<VX_ALPHA_TYPE_PREMULTIPLIED>;
 
 constexpr SkPMColor4f SK_PMColor4fTRANSPARENT = { 0, 0, 0, 0 };
 constexpr SkPMColor4f SK_PMColor4fBLACK = { 0, 0, 0, 1 };

@@ -14,11 +14,11 @@
 #include <utility>
 
 GrColorInfo::GrColorInfo(
-        GrColorType colorType, SkAlphaType alphaType, sk_sp<SkColorSpace> colorSpace)
+        GrColorType colorType, vx_alpha_type alphaType, sk_sp<SkColorSpace> colorSpace)
         : fColorSpace(std::move(colorSpace)), fColorType(colorType), fAlphaType(alphaType) {
     // sRGB sources are very common (SkColor, etc...), so we cache that transformation
-    fColorXformFromSRGB = GrColorSpaceXform::Make(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                                                  fColorSpace.get(),   kUnpremul_SkAlphaType);
+    fColorXformFromSRGB = GrColorSpaceXform::Make(sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                                  fColorSpace.get(),   VX_ALPHA_TYPE_UNPREMULTIPLIED);
 }
 
 GrColorInfo::GrColorInfo(const SkColorInfo& ci)

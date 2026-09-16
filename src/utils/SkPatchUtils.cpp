@@ -7,7 +7,7 @@
 
 #include "src/utils/SkPatchUtils.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -239,17 +239,17 @@ void SkPatchUtils::GetRightCubic(const SkPoint cubics[12], SkPoint points[4]) {
 
 static void skcolor_to_float(SkPMColor4f* dst, const SkColor* src, int count, SkColorSpace* dstCS) {
     SkImageInfo srcInfo = SkImageInfo::Make(count, 1, kBGRA_8888_SkColorType,
-                                            kUnpremul_SkAlphaType, SkColorSpace::MakeSRGB());
+                                            VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGB());
     SkImageInfo dstInfo = SkImageInfo::Make(count, 1, kRGBA_F32_SkColorType,
-                                            kPremul_SkAlphaType, sk_ref_sp(dstCS));
+                                            VX_ALPHA_TYPE_PREMULTIPLIED, sk_ref_sp(dstCS));
     SkAssertResult(SkConvertPixels(dstInfo, dst, 0, srcInfo, src, 0));
 }
 
 static void float_to_skcolor(SkColor* dst, const SkPMColor4f* src, int count, SkColorSpace* srcCS) {
     SkImageInfo srcInfo = SkImageInfo::Make(count, 1, kRGBA_F32_SkColorType,
-                                            kPremul_SkAlphaType, sk_ref_sp(srcCS));
+                                            VX_ALPHA_TYPE_PREMULTIPLIED, sk_ref_sp(srcCS));
     SkImageInfo dstInfo = SkImageInfo::Make(count, 1, kBGRA_8888_SkColorType,
-                                            kUnpremul_SkAlphaType, SkColorSpace::MakeSRGB());
+                                            VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGB());
     SkAssertResult(SkConvertPixels(dstInfo, dst, 0, srcInfo, src, 0));
 }
 

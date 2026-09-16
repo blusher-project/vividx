@@ -7,7 +7,7 @@
 
 #include "src/core/SkColorSpaceXformSteps.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
@@ -38,11 +38,11 @@ static void set_ootf_Y(const SkColorSpace* cs, float* Y) {
     }
 }
 
-SkColorSpaceXformSteps::SkColorSpaceXformSteps(const SkColorSpace* src, SkAlphaType srcAT,
-                                               const SkColorSpace* dst, SkAlphaType dstAT) {
+SkColorSpaceXformSteps::SkColorSpaceXformSteps(const SkColorSpace* src, vx_alpha_type srcAT,
+                                               const SkColorSpace* dst, vx_alpha_type dstAT) {
     // Opaque outputs are treated as the same alpha type as the source input.
     // TODO: we'd really like to have a good way of explaining why we think this is useful.
-    if (dstAT == kOpaque_SkAlphaType) {
+    if (dstAT == VX_ALPHA_TYPE_OPAQUE) {
         dstAT =  srcAT;
     }
 
@@ -134,10 +134,10 @@ SkColorSpaceXformSteps::SkColorSpaceXformSteps(const SkColorSpace* src, SkAlphaT
             break;
     }
 
-    this->fFlags.unpremul        = srcAT == kPremul_SkAlphaType;
+    this->fFlags.unpremul        = srcAT == VX_ALPHA_TYPE_PREMULTIPLIED;
     this->fFlags.gamut_transform = src->toXYZD50Hash() != dst->toXYZD50Hash() ||
                                    scaleFactor != 1.f;
-    this->fFlags.premul          = srcAT != kOpaque_SkAlphaType && dstAT == kPremul_SkAlphaType;
+    this->fFlags.premul          = srcAT != VX_ALPHA_TYPE_OPAQUE && dstAT == VX_ALPHA_TYPE_PREMULTIPLIED;
 
     if (this->fFlags.gamut_transform) {
         skcms_Matrix3x3 src_to_dst;  // TODO: switch fSrcToDstMatrix to row-major

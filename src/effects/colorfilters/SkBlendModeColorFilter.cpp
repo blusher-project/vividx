@@ -7,7 +7,7 @@
 
 #include "src/effects/colorfilters/SkBlendModeColorFilter.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
@@ -71,8 +71,8 @@ sk_sp<SkFlattenable> SkBlendModeColorFilter::CreateProc(SkReadBuffer& buffer) {
 bool SkBlendModeColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOpaque) const {
     rec.fPipeline->append(SkRasterPipelineOp::move_src_dst);
     SkColor4f color = fColor;
-    SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                           rec.fDstCS,          kPremul_SkAlphaType).apply(color.vec());
+    SkColorSpaceXformSteps(sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                           rec.fDstCS,          VX_ALPHA_TYPE_PREMULTIPLIED).apply(color.vec());
     rec.fPipeline->appendConstantColor(rec.fAlloc, color.vec());
     SkBlendMode_AppendStages(fMode, rec.fPipeline);
     return true;
@@ -90,8 +90,8 @@ sk_sp<SkColorFilter> SkColorFilters::Blend(const SkColor4f& color,
     // First map to sRGB to simplify storage in the actual SkColorFilter instance, staying unpremul
     // until the final dst color space is known when actually filtering. Also pin the alpha to [0,1]
     SkColor4f srgb = color.pinAlpha();
-    SkColorSpaceXformSteps(colorSpace.get(),    kUnpremul_SkAlphaType,
-                           sk_srgb_singleton(), kUnpremul_SkAlphaType).apply(srgb.vec());
+    SkColorSpaceXformSteps(colorSpace.get(),    VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                           sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED).apply(srgb.vec());
 
     // Next collapse some modes if possible
     float alpha = srgb.fA;

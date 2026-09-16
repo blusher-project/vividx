@@ -19,7 +19,7 @@
 
 class GrColorInfo;
 class SkColorSpace;
-enum SkAlphaType : int;
+
 struct GrShaderCaps;
 
 namespace skgpu { class KeyBuilder; }
@@ -31,8 +31,8 @@ class GrColorSpaceXform : public SkRefCnt {
 public:
     GrColorSpaceXform(const SkColorSpaceXformSteps& steps) : fSteps(steps) {}
 
-    static sk_sp<GrColorSpaceXform> Make(SkColorSpace* src, SkAlphaType srcAT,
-                                         SkColorSpace* dst, SkAlphaType dstAT);
+    static sk_sp<GrColorSpaceXform> Make(SkColorSpace* src, vx_alpha_type srcAT,
+                                         SkColorSpace* dst, vx_alpha_type dstAT);
 
     static sk_sp<GrColorSpaceXform> Make(const GrColorInfo& srcInfo, const GrColorInfo& dstInfo);
 
@@ -61,8 +61,8 @@ public:
      *  the color space of the output from src to dst. If the child is null, fInputColor is used.
      */
     static std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> child,
-                                                     SkColorSpace* src, SkAlphaType srcAT,
-                                                     SkColorSpace* dst, SkAlphaType dstAT);
+                                                     SkColorSpace* src, vx_alpha_type srcAT,
+                                                     SkColorSpace* dst, vx_alpha_type dstAT);
     static std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> child,
                                                      const GrColorInfo& srcInfo,
                                                      const GrColorInfo& dstInfo);

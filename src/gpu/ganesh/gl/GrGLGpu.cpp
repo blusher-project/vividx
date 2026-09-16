@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
@@ -1182,7 +1182,7 @@ bool GrGLGpu::uploadColorToTex(GrGLFormat textureFormat,
         if (levelMask & (1 << i)) {
             if (!pixelStorage) {
                 // Make one tight image at the first size and reuse it for smaller levels.
-                GrImageInfo ii(colorType, kUnpremul_SkAlphaType, nullptr, levelDims);
+                GrImageInfo ii(colorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, levelDims);
                 size_t rb = ii.minRowBytes();
                 pixelStorage.reset(new char[rb * levelDims.height()]);
                 if (!GrClearImage(ii, pixelStorage.get(), ii.minRowBytes(), color)) {

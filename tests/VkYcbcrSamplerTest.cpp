@@ -8,7 +8,7 @@
 #include "include/core/SkTypes.h"
 
 #if defined(SK_GANESH) && defined(SK_VULKAN)
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"

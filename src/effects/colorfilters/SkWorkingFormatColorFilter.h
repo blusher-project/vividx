@@ -18,7 +18,7 @@
 class SkColorSpace;
 class SkReadBuffer;
 class SkWriteBuffer;
-enum SkAlphaType : int;
+
 enum class SkBlendMode;
 struct SkStageRec;
 
@@ -26,9 +26,9 @@ class SkWorkingFormatCalculator {
 public:
     SkWorkingFormatCalculator(const skcms_TransferFunction* tf,
                               const skcms_Matrix3x3* gamut,
-                              const SkAlphaType* at);
+                              const vx_alpha_type* at);
 
-    sk_sp<SkColorSpace> workingFormat(const sk_sp<SkColorSpace>& dstCS, SkAlphaType* outAT) const;
+    sk_sp<SkColorSpace> workingFormat(const sk_sp<SkColorSpace>& dstCS, vx_alpha_type* outAT) const;
 
     void flatten(SkWriteBuffer& buffer) const;
 
@@ -37,7 +37,7 @@ private:
     bool fUseDstTF = true;
     skcms_Matrix3x3 fGamut;
     bool fUseDstGamut = true;
-    SkAlphaType fAT;
+    vx_alpha_type fAT;
     bool fUseDstAT = true;
 };
 
@@ -46,9 +46,9 @@ public:
     SkWorkingFormatColorFilter(sk_sp<SkColorFilter> child,
                                const skcms_TransferFunction* tf,
                                const skcms_Matrix3x3* gamut,
-                               const SkAlphaType* at);
+                               const vx_alpha_type* at);
 
-    sk_sp<SkColorSpace> workingFormat(const sk_sp<SkColorSpace>& dstCS, SkAlphaType* outAT) const;
+    sk_sp<SkColorSpace> workingFormat(const sk_sp<SkColorSpace>& dstCS, vx_alpha_type* outAT) const;
 
     SkColorFilterBase::Type type() const override {
         return SkColorFilterBase::Type::kWorkingFormat;

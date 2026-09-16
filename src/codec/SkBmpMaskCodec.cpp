@@ -7,7 +7,7 @@
 
 #include "src/codec/SkBmpMaskCodec.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
@@ -67,8 +67,8 @@ SkCodec::Result SkBmpMaskCodec::onPrepareToDecode(const SkImageInfo& dstInfo,
     SkImageInfo swizzlerInfo = dstInfo;
     if (this->colorXform()) {
         swizzlerInfo = swizzlerInfo.makeColorType(kXformSrcColorType);
-        if (kPremul_SkAlphaType == dstInfo.alphaType()) {
-            swizzlerInfo = swizzlerInfo.makeAlphaType(kUnpremul_SkAlphaType);
+        if (VX_ALPHA_TYPE_PREMULTIPLIED == dstInfo.alphaType()) {
+            swizzlerInfo = swizzlerInfo.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
         }
     }
 

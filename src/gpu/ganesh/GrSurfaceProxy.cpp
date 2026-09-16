@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPoint.h"
 #include "include/gpu/GpuTypes.h"
@@ -311,7 +311,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
     SkASSERT(format.isValid());
 
     if (src->backendFormat().textureType() != GrTextureType::kExternal) {
-        GrImageInfo info(GrColorType::kUnknown, kUnknown_SkAlphaType, nullptr, {width, height});
+        GrImageInfo info(GrColorType::kUnknown, VX_ALPHA_TYPE_UNKNOWN, nullptr, {width, height});
         auto dstContext = rContext->priv().makeSC(info,
                                                   format,
                                                   label,
@@ -331,7 +331,7 @@ sk_sp<GrSurfaceProxy> GrSurfaceProxy::Copy(GrRecordingContext* rContext,
         }
     }
     if (src->asTextureProxy()) {
-        auto dstContext = rContext->priv().makeSFC(kUnknown_SkAlphaType,
+        auto dstContext = rContext->priv().makeSFC(VX_ALPHA_TYPE_UNKNOWN,
                                                    nullptr,
                                                    {width, height},
                                                    fit,

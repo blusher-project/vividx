@@ -27,7 +27,7 @@ class SkImage;
 class SkMatrix;
 class SkPaint;
 class SkShader;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 enum class SkTileMode;
 
@@ -67,7 +67,7 @@ public:
     bool isExactFit() const { return fSubset == SkIRect::MakeSize(this->backingStoreDimensions()); }
 
     const SkColorInfo& colorInfo() const { return fColorInfo; }
-    SkAlphaType alphaType() const { return fColorInfo.alphaType(); }
+    vx_alpha_type alphaType() const { return fColorInfo.alphaType(); }
     SkColorType colorType() const { return fColorInfo.colorType(); }
     SkColorSpace* getColorSpace() const { return fColorInfo.colorSpace(); }
 

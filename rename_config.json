@@ -1,7 +1,8 @@
 {
   "enum_types": {
     "CommonColor": "mylib_common_color",
-    "SkYUVColorSpace": "vx_yuv_color_space"
+    "SkYUVColorSpace": "vx_yuv_color_space",
+    "SkAlphaType": "vx_alpha_type"
   },
   "enum_constants": {
     "kColorRed_CommonColor": "COMMON_COLOR_COLOR_RED",
@@ -42,6 +43,14 @@
     "kJPEG_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_JPEG",
     "kRec601_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_REC601",
     "kRec709_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_REC709",
-    "kBT2020_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020"
+    "kBT2020_SkYUVColorSpace": "VX_YUV_COLOR_SPACE_BT2020",
+
+    "kUnknown_SkAlphaType": "VX_ALPHA_TYPE_UNKNOWN",
+    "kOpaque_SkAlphaType": "VX_ALPHA_TYPE_OPAQUE",
+    "kPremul_SkAlphaType": "VX_ALPHA_TYPE_PREMULTIPLIED",
+    "kUnpremul_SkAlphaType": "VX_ALPHA_TYPE_UNPREMULTIPLIED",
+    "kLastEnum_SkAlphaType": "VX_ALPHA_TYPE_LASTENUM",
+
+    "_LAST": "_LAST"
   }
 }

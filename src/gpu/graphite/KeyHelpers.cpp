@@ -1153,9 +1153,9 @@ SkMatrix swizzle_gamut_transform(const float* gamut, Swizzle readSwizzle) {
 }  // anonymous namespace
 
 ColorSpaceTransformBlock::ColorSpaceTransformData::ColorSpaceTransformData(const SkColorSpace* src,
-                                                                           SkAlphaType srcAT,
+                                                                           vx_alpha_type srcAT,
                                                                            const SkColorSpace* dst,
-                                                                           SkAlphaType dstAT)
+                                                                           vx_alpha_type dstAT)
         : fSteps(src, srcAT, dst, dstAT) {}
 
 void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
@@ -1437,7 +1437,7 @@ void AddPrimitiveColor(const KeyContext& keyContext, bool skipColorXform) {
      * If skipColorXform is false (most cases), the primitive color is assumed to be in sRGB.
     */
     ColorSpaceTransformBlock::ColorSpaceTransformData toDst(sk_srgb_singleton(),
-                                                            kPremul_SkAlphaType,
+                                                            VX_ALPHA_TYPE_PREMULTIPLIED,
                                                             keyContext.dstColorInfo().colorSpace(),
                                                             keyContext.dstColorInfo().alphaType());
 
@@ -1575,13 +1575,13 @@ void RuntimeEffectBlock::HandleIntrinsics(const KeyContext& keyContext, const Sk
         // The conversions use kOpaque for their alpha type because the public signature takes a
         // half3 value; any alpha is assumed to be handled by the calling runtime effect.
         ColorSpaceTransformBlock::ColorSpaceTransformData dstToLinear(dstCS,
-                                                                      kOpaque_SkAlphaType,
+                                                                      VX_ALPHA_TYPE_OPAQUE,
                                                                       sk_srgb_linear_singleton(),
-                                                                      kOpaque_SkAlphaType);
+                                                                      VX_ALPHA_TYPE_OPAQUE);
         ColorSpaceTransformBlock::ColorSpaceTransformData linearToDst(sk_srgb_linear_singleton(),
-                                                                      kOpaque_SkAlphaType,
+                                                                      VX_ALPHA_TYPE_OPAQUE,
                                                                       dstCS,
-                                                                      kOpaque_SkAlphaType);
+                                                                      VX_ALPHA_TYPE_OPAQUE);
 
         // Like working color space shaders, we allow these color space conversions to be
         // specialized as much as possible.
@@ -1693,9 +1693,9 @@ void AddToKey(const KeyContext& keyContext, const SkBlender* blender) {
 static SkPMColor4f map_color(const SkColor4f& c,
                              SkColorSpace* src,
                              SkColorSpace* dst,
-                             SkAlphaType dstAlphaType) {
+                             vx_alpha_type dstAlphaType) {
     SkPMColor4f color = {c.fR, c.fG, c.fB, c.fA};
-    SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType, dst, dstAlphaType).apply(color.vec());
+    SkColorSpaceXformSteps(src, VX_ALPHA_TYPE_UNPREMULTIPLIED, dst, dstAlphaType).apply(color.vec());
     return color;
 }
 static void add_to_key(const KeyContext& keyContext, const SkBlendModeColorFilter* filter) {
@@ -1711,7 +1711,7 @@ static void add_to_key(const KeyContext& keyContext, const SkBlendModeColorFilte
 static void add_to_key(const KeyContext& keyContext, const SkColorSpaceXformColorFilter* filter) {
     SkASSERT(filter);
 
-    constexpr SkAlphaType kAlphaType = kPremul_SkAlphaType;
+    constexpr vx_alpha_type kAlphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
     ColorSpaceTransformBlock::ColorSpaceTransformData csData(filter->src().get(), kAlphaType,
                                                              filter->dst().get(), kAlphaType);
     ColorSpaceTransformBlock::AddBlock(keyContext, csData);
@@ -1784,7 +1784,7 @@ static void add_to_key(const KeyContext& keyContext, const SkWorkingFormatColorF
     SkASSERT(filter);
 
     const SkColorInfo& dstInfo = keyContext.dstColorInfo();
-    const SkAlphaType dstAT = dstInfo.alphaType();
+    const vx_alpha_type dstAT = dstInfo.alphaType();
     sk_sp<SkColorSpace> dstCS = dstInfo.refColorSpace();
     if (!dstCS) {
         dstCS = SkColorSpace::MakeSRGB();
@@ -1792,7 +1792,7 @@ static void add_to_key(const KeyContext& keyContext, const SkWorkingFormatColorF
 
     KeyContext csOptimize{keyContext, KeyGenFlags::kSpecializeColorSpaceXform};
 
-    SkAlphaType workingAT;
+    vx_alpha_type workingAT;
     sk_sp<SkColorSpace> workingCS = filter->workingFormat(dstCS, &workingAT);
     KeyContext workingContext =
             csOptimize.withColorInfo({dstInfo.colorType(), workingAT, workingCS});
@@ -2055,8 +2055,8 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
 
     // The actual output from the YUV image shader for non-opaque images is unpremul so
     // we need to correct for the fact that the Image_YUVA_Graphite's alpha type is premul.
-    SkAlphaType srcAT = imageToDraw->alphaType() == kPremul_SkAlphaType
-                                ? kUnpremul_SkAlphaType
+    vx_alpha_type srcAT = imageToDraw->alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED
+                                ? VX_ALPHA_TYPE_UNPREMULTIPLIED
                                 : imageToDraw->alphaType();
     if (isRaw) {
         // Because we've avoided the premul alpha step in the YUV shader, we need to make sure
@@ -2066,12 +2066,12 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
                                        imageToDraw->colorSpace(),
                                        imageToDraw->alphaType());
     } else {
-        SkAlphaType dstAT = keyContext.dstColorInfo().alphaType();
+        vx_alpha_type dstAT = keyContext.dstColorInfo().alphaType();
         // Setting the dst alphaType up this way is necessary because otherwise the constructor
         // for SkColorSpaceXformSteps will set dstAT = srcAT when dstAT == kOpaque, and the
         // premul step needed for non-opaque images won't occur.
-        if (dstAT == kOpaque_SkAlphaType && srcAT == kUnpremul_SkAlphaType) {
-            dstAT = kPremul_SkAlphaType;
+        if (dstAT == VX_ALPHA_TYPE_OPAQUE && srcAT == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
+            dstAT = VX_ALPHA_TYPE_PREMULTIPLIED;
         }
         steps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
                                        srcAT,
@@ -2435,7 +2435,7 @@ static void add_to_key(const KeyContext& keyContext,
     SkASSERT(shader);
 
     const SkColorInfo& dstInfo = keyContext.dstColorInfo();
-    const SkAlphaType dstAT = dstInfo.alphaType();
+    const vx_alpha_type dstAT = dstInfo.alphaType();
     sk_sp<SkColorSpace> dstCS = dstInfo.refColorSpace();
     if (!dstCS) {
         dstCS = SkColorSpace::MakeSRGB();
@@ -2443,7 +2443,7 @@ static void add_to_key(const KeyContext& keyContext,
 
     // It requires C++20 to use an auto structured binding and then reference them in the lambda.
     sk_sp<SkColorSpace> inputCS, outputCS;
-    SkAlphaType workingAT;
+    vx_alpha_type workingAT;
     std::tie(inputCS, outputCS, workingAT) = shader->workingSpace(dstCS, dstAT);
 
     KeyContext csContext{keyContext, KeyGenFlags::kSpecializeColorSpaceXform};
@@ -2492,7 +2492,7 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
     SkColorSpace* dstColorSpace =
             dstColorInfo.colorSpace() ? dstColorInfo.colorSpace() : sk_srgb_singleton();
 
-    SkAlphaType intermediateAlphaType = inputPremul ? kPremul_SkAlphaType : kUnpremul_SkAlphaType;
+    vx_alpha_type intermediateAlphaType = inputPremul ? VX_ALPHA_TYPE_PREMULTIPLIED : VX_ALPHA_TYPE_UNPREMULTIPLIED;
 
     ColorSpaceTransformBlock::ColorSpaceTransformData data(
             intermediateCS, intermediateAlphaType, dstColorSpace, dstColorInfo.alphaType());

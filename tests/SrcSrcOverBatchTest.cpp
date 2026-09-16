@@ -8,7 +8,7 @@
 // We want to make sure that if we collapse src-over down to src when blending, that batching still
 // works correctly with a draw that explicitly requests src.
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"

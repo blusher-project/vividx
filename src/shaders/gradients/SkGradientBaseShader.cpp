@@ -7,7 +7,7 @@
 
 #include "src/shaders/gradients/SkGradientBaseShader.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -553,12 +553,12 @@ void SkGradientBaseShader::AppendInterpolatedToDstStages(SkRasterPipeline* p,
     if (!dstColorSpace) {
         dstColorSpace = sk_srgb_singleton();
     }
-    SkAlphaType intermediateAlphaType = colorIsPremul ? kPremul_SkAlphaType : kUnpremul_SkAlphaType;
+    vx_alpha_type intermediateAlphaType = colorIsPremul ? VX_ALPHA_TYPE_PREMULTIPLIED : VX_ALPHA_TYPE_UNPREMULTIPLIED;
     // TODO(skbug.com/40044213): Get dst alpha type correctly
-    SkAlphaType dstAlphaType = kPremul_SkAlphaType;
+    vx_alpha_type dstAlphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
 
     if (colorsAreOpaque) {
-        intermediateAlphaType = dstAlphaType = kUnpremul_SkAlphaType;
+        intermediateAlphaType = dstAlphaType = VX_ALPHA_TYPE_UNPREMULTIPLIED;
     }
 
     alloc->make<SkColorSpaceXformSteps>(
@@ -854,7 +854,7 @@ SkColor4fXformer::SkColor4fXformer(const SkGradientBaseShader* shader,
     fIntermediateColorSpace = intermediate_color_space(interpolation.fColorSpace, dst);
 
     // 2) Convert all colors to the intermediate color space
-    auto info = SkImageInfo::Make(colorCount, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType);
+    auto info = SkImageInfo::Make(colorCount, 1, kRGBA_F32_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     auto dstInfo = info.makeColorSpace(fIntermediateColorSpace);
     auto srcInfo = info.makeColorSpace(shader->colorSpace());

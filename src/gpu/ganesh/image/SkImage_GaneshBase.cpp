@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/image/SkImage_GaneshBase.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -73,7 +73,7 @@ bool SkImage_GaneshBase::ValidateBackendTexture(const GrCaps* caps,
                                                 const GrBackendTexture& tex,
                                                 GrColorType grCT,
                                                 SkColorType ct,
-                                                SkAlphaType at,
+                                                vx_alpha_type at,
                                                 sk_sp<SkColorSpace> cs) {
     if (!tex.isValid()) {
         return false;
@@ -92,7 +92,7 @@ bool SkImage_GaneshBase::ValidateBackendTexture(const GrCaps* caps,
 
 bool SkImage_GaneshBase::ValidateCompressedBackendTexture(const GrCaps* caps,
                                                           const GrBackendTexture& tex,
-                                                          SkAlphaType at) {
+                                                          vx_alpha_type at) {
     if (!tex.isValid() || tex.width() <= 0 || tex.height() <= 0) {
         return false;
     }
@@ -101,7 +101,7 @@ bool SkImage_GaneshBase::ValidateCompressedBackendTexture(const GrCaps* caps,
         return false;
     }
 
-    if (at == kUnknown_SkAlphaType) {
+    if (at == VX_ALPHA_TYPE_UNKNOWN) {
         return false;
     }
 

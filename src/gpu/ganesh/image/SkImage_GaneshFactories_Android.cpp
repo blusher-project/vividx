@@ -13,7 +13,7 @@
 
 #include "include/android/AHardwareBufferUtils.h"
 #include "include/android/GrAHardwareBufferUtils.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
@@ -75,14 +75,14 @@
 
 namespace SkImages {
 
-sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer, SkAlphaType at) {
+sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer, vx_alpha_type at) {
     auto gen = GrAHardwareBufferImageGenerator::Make(graphicBuffer, at, nullptr,
                                                      kTopLeft_GrSurfaceOrigin);
     return DeferredFromTextureGenerator(std::move(gen));
 }
 
 sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer,
-                                           SkAlphaType at,
+                                           vx_alpha_type at,
                                            sk_sp<SkColorSpace> cs,
                                            GrSurfaceOrigin surfaceOrigin) {
     auto gen = GrAHardwareBufferImageGenerator::Make(graphicBuffer, at, cs, surfaceOrigin);

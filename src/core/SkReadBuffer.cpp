@@ -7,7 +7,7 @@
 
 #include "src/core/SkReadBuffer.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkData.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageGenerator.h"
@@ -344,7 +344,7 @@ uint32_t SkReadBuffer::getArrayCount() {
 }
 
 static sk_sp<SkImage> deserialize_image(sk_sp<SkData> data, SkDeserialProcs dProcs,
-                                        std::optional<SkAlphaType> alphaType) {
+                                        std::optional<vx_alpha_type> alphaType) {
     sk_sp<SkImage> image;
     if (dProcs.fImageDataProc) {
         image = dProcs.fImageDataProc(data, alphaType, dProcs.fImageCtx);
@@ -359,7 +359,7 @@ static sk_sp<SkImage> deserialize_image(sk_sp<SkData> data, SkDeserialProcs dPro
 }
 
 static sk_sp<SkImage> add_mipmaps(sk_sp<SkImage> img, sk_sp<SkData> data,
-                                  SkDeserialProcs dProcs, std::optional<SkAlphaType> alphaType) {
+                                  SkDeserialProcs dProcs, std::optional<vx_alpha_type> alphaType) {
     SkMipmapBuilder builder(img->imageInfo());
 
     SkReadBuffer buffer(data->data(), data->size());
@@ -408,9 +408,9 @@ static sk_sp<SkImage> add_mipmaps(sk_sp<SkImage> img, sk_sp<SkData> data,
 sk_sp<SkImage> SkReadBuffer::readImage() {
     uint32_t flags = this->read32();
 
-    std::optional<SkAlphaType> alphaType = std::nullopt;
+    std::optional<vx_alpha_type> alphaType = std::nullopt;
     if (flags & SkWriteBufferImageFlags::kUnpremul) {
-        alphaType = kUnpremul_SkAlphaType;
+        alphaType = VX_ALPHA_TYPE_UNPREMULTIPLIED;
     }
     sk_sp<SkImage> image;
     {

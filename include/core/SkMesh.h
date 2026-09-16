@@ -26,7 +26,7 @@
 
 class GrDirectContext;
 class SkColorSpace;
-enum SkAlphaType : int;
+
 
 namespace SkSL { struct Program; }
 
@@ -152,7 +152,7 @@ public:
                        const SkString&         vs,
                        const SkString&         fs,
                        sk_sp<SkColorSpace>     cs,
-                       SkAlphaType             at);
+                       vx_alpha_type             at);
 
     SkSpan<const Attribute> attributes() const { return SkSpan(fAttributes); }
 
@@ -203,7 +203,7 @@ private:
                                             const SkString&         vs,
                                             const SkString&         fs,
                                             sk_sp<SkColorSpace>     cs,
-                                            SkAlphaType             at);
+                                            vx_alpha_type             at);
 
     SkMeshSpecification(SkSpan<const Attribute>,
                         size_t,
@@ -216,7 +216,7 @@ private:
                         std::unique_ptr<const SkSL::Program>,
                         ColorType,
                         sk_sp<SkColorSpace>,
-                        SkAlphaType);
+                        vx_alpha_type);
 
     SkMeshSpecification(const SkMeshSpecification&) = delete;
     SkMeshSpecification(SkMeshSpecification&&) = delete;
@@ -236,7 +236,7 @@ private:
     const uint32_t                             fDeadVaryingMask;
     const ColorType                            fColorType;
     const sk_sp<SkColorSpace>                  fColorSpace;
-    const SkAlphaType                          fAlphaType;
+    const vx_alpha_type                          fAlphaType;
 };
 
 /**

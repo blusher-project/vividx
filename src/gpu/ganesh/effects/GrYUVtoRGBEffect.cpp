@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrYUVtoRGBEffect.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
@@ -164,7 +164,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                 // just outside planeSubset.
                 SkRect* domainRect = domain ? &planeDomain : nullptr;
                 planeFPs[i] = GrTextureEffect::MakeCustomLinearFilterInset(std::move(view),
-                                                                           kUnknown_SkAlphaType,
+                                                                           VX_ALPHA_TYPE_UNKNOWN,
                                                                            planeMatrix,
                                                                            samplerState.wrapModeX(),
                                                                            samplerState.wrapModeY(),
@@ -175,7 +175,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                                                                            planeBorders[i]);
             } else if (domain) {
                 planeFPs[i] = GrTextureEffect::MakeSubset(std::move(view),
-                                                          kUnknown_SkAlphaType,
+                                                          VX_ALPHA_TYPE_UNKNOWN,
                                                           planeMatrix,
                                                           samplerState,
                                                           planeSubset,
@@ -184,7 +184,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                                                           planeBorders[i]);
             } else {
                 planeFPs[i] = GrTextureEffect::MakeSubset(std::move(view),
-                                                          kUnknown_SkAlphaType,
+                                                          VX_ALPHA_TYPE_UNKNOWN,
                                                           planeMatrix,
                                                           samplerState,
                                                           planeSubset,
@@ -200,7 +200,7 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                                               samplerState.mipmapMode());
             }
             planeFPs[i] = GrTextureEffect::Make(std::move(view),
-                                                kUnknown_SkAlphaType,
+                                                VX_ALPHA_TYPE_UNKNOWN,
                                                 planeMatrix,
                                                 planeSampler,
                                                 caps,
@@ -216,9 +216,9 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
     return GrMatrixEffect::Make(localMatrix, std::move(fp));
 }
 
-static SkAlphaType alpha_type(const SkYUVAInfo::YUVALocations locations) {
-    return locations[SkYUVAInfo::YUVAChannels::kA].fPlane >= 0 ? kPremul_SkAlphaType
-                                                               : kOpaque_SkAlphaType;
+static vx_alpha_type alpha_type(const SkYUVAInfo::YUVALocations locations) {
+    return locations[SkYUVAInfo::YUVAChannels::kA].fPlane >= 0 ? VX_ALPHA_TYPE_PREMULTIPLIED
+                                                               : VX_ALPHA_TYPE_OPAQUE;
 }
 
 GrYUVtoRGBEffect::GrYUVtoRGBEffect(std::unique_ptr<GrFragmentProcessor> planeFPs[4],

@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrDataUtils.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkPixmap.h"
@@ -313,10 +313,10 @@ bool GrConvertPixels(const GrPixmap& dst, const GrCPixmap& src, bool flipY) {
     SkASSERT(dst.rowBytes() % dstBpp == 0);
     SkASSERT(src.rowBytes() % srcBpp == 0);
 
-    bool premul   = src.alphaType() == kUnpremul_SkAlphaType &&
-                    dst.alphaType() == kPremul_SkAlphaType;
-    bool unpremul = src.alphaType() == kPremul_SkAlphaType &&
-                    dst.alphaType() == kUnpremul_SkAlphaType;
+    bool premul   = src.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED &&
+                    dst.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED;
+    bool unpremul = src.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED &&
+                    dst.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED;
     bool alphaOrCSConversion =
             premul || unpremul || !SkColorSpace::Equals(src.colorSpace(), dst.colorSpace());
 

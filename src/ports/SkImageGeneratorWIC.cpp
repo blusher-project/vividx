@@ -133,7 +133,7 @@ std::unique_ptr<SkImageGenerator> SkImageGeneratorWIC::MakeFromEncodedWIC(
     // FIXME: We are stuck recommending kPremul for all indexed formats
     //        (Ex: GUID_WICPixelFormat8bppIndexed) because we don't have
     //        a way to check if the image has alpha.
-    SkAlphaType alphaType = kPremul_SkAlphaType;
+    vx_alpha_type alphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
 
     if (GUID_WICPixelFormat16bppBGR555 == format ||
         GUID_WICPixelFormat16bppBGR565 == format ||
@@ -171,7 +171,7 @@ std::unique_ptr<SkImageGenerator> SkImageGeneratorWIC::MakeFromEncodedWIC(
         GUID_WICPixelFormat8bppCr == format ||
         GUID_WICPixelFormat16bppCbCr == format)
     {
-        alphaType = kOpaque_SkAlphaType;
+        alphaType = VX_ALPHA_TYPE_OPAQUE;
     }
 
     // FIXME: If we change the implementation to handle swizzling ourselves,
@@ -212,7 +212,7 @@ bool ImageGeneratorWIC::onGetPixels(const SkImageInfo& info, void* pixels, size_
     }
 
     GUID format = GUID_WICPixelFormat32bppPBGRA;
-    if (kUnpremul_SkAlphaType == info.alphaType()) {
+    if (VX_ALPHA_TYPE_UNPREMULTIPLIED == info.alphaType()) {
         format = GUID_WICPixelFormat32bppBGRA;
     }
 

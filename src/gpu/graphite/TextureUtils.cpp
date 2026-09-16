@@ -115,17 +115,17 @@ SkColorType renderable_colortype(SkColorType srcCT, SkColorType dstCT) {
     }
 }
 
-SkAlphaType renderable_alphatype(SkAlphaType srcAT, SkAlphaType dstAT) {
+vx_alpha_type renderable_alphatype(vx_alpha_type srcAT, vx_alpha_type dstAT) {
     switch (srcAT) {
-        case kUnknown_SkAlphaType:
+        case VX_ALPHA_TYPE_UNKNOWN:
             // The src image will be forced opaque as part of sampling, so the output pixels will
             // be guaranteed opaque (can upgrade requested kPremul or kUnpremul to kOpaque since the
             // RGB values are unchanged).
-            return kOpaque_SkAlphaType;
-        case kOpaque_SkAlphaType:
+            return VX_ALPHA_TYPE_OPAQUE;
+        case VX_ALPHA_TYPE_OPAQUE:
             // The src image claims to be opaque, so the output pixels should be opaque.
-            return kOpaque_SkAlphaType;
-        case kPremul_SkAlphaType:
+            return VX_ALPHA_TYPE_OPAQUE;
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             // Always render to kPremul, regardless of the requested dst AT. If the dst AT was
             // kPremul this is a no-op. If it was kOpaque, SkColorSpaceXformSteps treats it as the
             // src AT, so it's also a no-op. If it was kUnknown, the image view will presumably be
@@ -133,19 +133,19 @@ SkAlphaType renderable_alphatype(SkAlphaType srcAT, SkAlphaType dstAT) {
             // having blended with solid black. If it is kUnpremul, there is no current way to
             // render to a kUnpremul render target; using kPremul here allows the copy to proceed
             // and then any unpremul math will happen during sampling or readback conversion.
-            return kPremul_SkAlphaType;
-        case kUnpremul_SkAlphaType:
+            return VX_ALPHA_TYPE_PREMULTIPLIED;
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
             // If the requested dst AT is kPremul, then keep that so the premultiply is performed
             // during the copy conversion. In all other cases, switch to kOpaque so that we are
             // deemed renderable and color conversion in SkColorSpaceXformSteps produces a no-op.
             // Since the only actual rendering to this surface will be pixel-filling with kSrc
             // blending, this alpha type manipulation is valid.
-            return dstAT == kPremul_SkAlphaType ? kPremul_SkAlphaType : kOpaque_SkAlphaType;
+            return dstAT == VX_ALPHA_TYPE_PREMULTIPLIED ? VX_ALPHA_TYPE_PREMULTIPLIED : VX_ALPHA_TYPE_OPAQUE;
     }
     SkUNREACHABLE;
 }
 
-SkAlphaType final_alphatype(SkAlphaType srcAT, SkAlphaType renderedAT) {
+vx_alpha_type final_alphatype(vx_alpha_type srcAT, vx_alpha_type renderedAT) {
     // Assuming `renderedAT` was the result of calling `renderable_alphatype` for `srcAT` and some
     // `dstAT`, the final AT to use for the image view is almost always `renderedAT` because it is
     // either more accurate (propogates src opaque-ness into the copy's alpha type), a no-op (it
@@ -155,8 +155,8 @@ SkAlphaType final_alphatype(SkAlphaType srcAT, SkAlphaType renderedAT) {
     // The only exception is for when both srcAT and dstAT were unpremul, in which case
     // `renderedAT` is manipulated to be kOpaque for rendering but in actuality the output remains
     // unpremul and that should be reflected in the final image info as well.
-    return (srcAT == kUnpremul_SkAlphaType && renderedAT == kOpaque_SkAlphaType) ?
-            kUnpremul_SkAlphaType : renderedAT;
+    return (srcAT == VX_ALPHA_TYPE_UNPREMULTIPLIED && renderedAT == VX_ALPHA_TYPE_OPAQUE) ?
+            VX_ALPHA_TYPE_UNPREMULTIPLIED : renderedAT;
 }
 
 SkColorInfo make_renderable(const SkColorInfo& srcInfo, const SkColorInfo& dstInfo) {
@@ -570,7 +570,7 @@ bool GenerateMipmaps(Recorder* recorder, DrawContext* drawContext, sk_sp<Texture
     // each sample to linear+premul space, average them, and then convert that to the source color
     // space and alpha type.
     auto [colorType, _] = TextureFormatColorTypeInfo(texture->format());
-    SkColorInfo colorInfo{colorType, kOpaque_SkAlphaType, /*cs=*/nullptr};
+    SkColorInfo colorInfo{colorType, VX_ALPHA_TYPE_OPAQUE, /*cs=*/nullptr};
     // Since we are creating the color info from the default color type for the texture format,
     // it should match what we'd expect from make_renderable already.
     SkASSERT(make_renderable(colorInfo, colorInfo) == colorInfo);
@@ -736,7 +736,7 @@ public:
                                const SkSurfaceProps* props) const override {
         SkImageInfo imageInfo = SkImageInfo::Make(size,
                                                   this->colorType(),
-                                                  kPremul_SkAlphaType,
+                                                  VX_ALPHA_TYPE_PREMULTIPLIED,
                                                   std::move(colorSpace));
         return skgpu::graphite::Device::Make(fRecorder,
                                              imageInfo,

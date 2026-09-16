@@ -22,7 +22,7 @@
 #include <cstdint>
 
 class SkColorSpace;
-enum SkAlphaType : int;
+
 struct SkMask;
 
 /** \class SkPixmap
@@ -177,7 +177,7 @@ public:
 
     SkColorType colorType() const { return fInfo.colorType(); }
 
-    SkAlphaType alphaType() const { return fInfo.alphaType(); }
+    vx_alpha_type alphaType() const { return fInfo.alphaType(); }
 
     /** Returns SkColorSpace, the range of colors, associated with SkImageInfo. The
         reference count of SkColorSpace is unchanged. The returned SkColorSpace is

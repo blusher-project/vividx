@@ -7,7 +7,7 @@
 
 #include "include/encode/SkWebpEncoder.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
@@ -90,7 +90,7 @@ static bool preprocess_webp_picture(WebPPicture* pic,
 
     {
         const SkColorType ct = pixmap.colorType();
-        const bool premul = pixmap.alphaType() == kPremul_SkAlphaType;
+        const bool premul = pixmap.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED;
 
         SkBitmap tmpBm;
         WebPPictureImportProc importProc = nullptr;
@@ -109,7 +109,7 @@ static bool preprocess_webp_picture(WebPPicture* pic,
             importProc = WebPPictureImportRGBA;
             auto info = pixmap.info()
                                 .makeColorType(kRGBA_8888_SkColorType)
-                                .makeAlphaType(kUnpremul_SkAlphaType);
+                                .makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
             if (!tmpBm.tryAllocPixels(info) ||
                 !pixmap.readPixels(tmpBm.info(), tmpBm.getPixels(), tmpBm.rowBytes())) {
                 return false;

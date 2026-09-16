@@ -8,7 +8,7 @@
 
 #if defined(GPU_TEST_UTILS)
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -342,10 +342,10 @@ sk_sp<GrColorSpaceXform> TestColorXform(SkRandom* random) {
         // No gamut change
         gXforms[0] = nullptr;
         gXforms[1] = GrColorSpaceXform::Make(
-                             srgb.get(), kPremul_SkAlphaType, spin.get(), kPremul_SkAlphaType)
+                             srgb.get(), VX_ALPHA_TYPE_PREMULTIPLIED, spin.get(), VX_ALPHA_TYPE_PREMULTIPLIED)
                              .release();
         gXforms[2] = GrColorSpaceXform::Make(
-                             spin.get(), kPremul_SkAlphaType, srgb.get(), kPremul_SkAlphaType)
+                             spin.get(), VX_ALPHA_TYPE_PREMULTIPLIED, srgb.get(), VX_ALPHA_TYPE_PREMULTIPLIED)
                              .release();
     });
     return sk_ref_sp(gXforms[random->nextULessThan(static_cast<uint32_t>(std::size(gXforms)))]);
@@ -353,7 +353,7 @@ sk_sp<GrColorSpaceXform> TestColorXform(SkRandom* random) {
 
 TestAsFPArgs::TestAsFPArgs(GrProcessorTestData* d)
         : fColorInfoStorage(std::make_unique<GrColorInfo>(
-                  GrColorType::kRGBA_8888, kPremul_SkAlphaType, TestColorSpace(d->fRandom)))
+                  GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, TestColorSpace(d->fRandom)))
         , fArgs(d->surfaceDrawContext(), fColorInfoStorage.get(), fSurfaceProps,
                 GrFPArgs::Scope::kDefault) {}
 

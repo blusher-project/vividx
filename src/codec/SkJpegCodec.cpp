@@ -9,7 +9,7 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkJpegDecoder.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
@@ -294,11 +294,11 @@ bool SkJpegCodec::conversionSupported(const SkImageInfo& dstInfo, bool srcIsOpaq
                                       bool needsColorXform) {
     SkASSERT(srcIsOpaque);
 
-    if (kUnknown_SkAlphaType == dstInfo.alphaType()) {
+    if (VX_ALPHA_TYPE_UNKNOWN == dstInfo.alphaType()) {
         return false;
     }
 
-    if (kOpaque_SkAlphaType != dstInfo.alphaType()) {
+    if (VX_ALPHA_TYPE_OPAQUE != dstInfo.alphaType()) {
         SkCodecPrintf("Warning: an opaque image should be decoded as opaque "
                       "- it is being decoded as non-opaque, which will draw slower\n");
     }

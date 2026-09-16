@@ -7,7 +7,7 @@
 
 #include "include/core/SkPixmap.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkUnPreMultiply.h"
@@ -193,7 +193,7 @@ SkColor SkPixmap::getColor(int x, int y) const {
     SkASSERT((unsigned)x < (unsigned)this->width());
     SkASSERT((unsigned)y < (unsigned)this->height());
 
-    const bool needsUnpremul = (kPremul_SkAlphaType == fInfo.alphaType());
+    const bool needsUnpremul = (VX_ALPHA_TYPE_PREMULTIPLIED == fInfo.alphaType());
     auto toColor = [needsUnpremul](uint32_t maybePremulColor) {
         return needsUnpremul ? SkUnPreMultiply::PMColorToColor(maybePremulColor)
                              : SkSwizzle_BGRA_to_PMColor(maybePremulColor);
@@ -396,7 +396,7 @@ SkColor4f SkPixmap::getColor4f(int x, int y) const {
     SkASSERT((unsigned)x < (unsigned)this->width());
     SkASSERT((unsigned)y < (unsigned)this->height());
 
-    const bool needsUnpremul = (kPremul_SkAlphaType == fInfo.alphaType());
+    const bool needsUnpremul = (VX_ALPHA_TYPE_PREMULTIPLIED == fInfo.alphaType());
     auto toColor = [needsUnpremul](uint32_t maybePremulColor) {
         return needsUnpremul ? SkUnPreMultiply::PMColorToColor(maybePremulColor)
                              : SkSwizzle_BGRA_to_PMColor(maybePremulColor);
@@ -762,7 +762,7 @@ bool SkPixmap::erase(const SkColor4f& color, const SkIRect* subset) const {
 
     const auto dst = SkImageInfo::Make(1, 1, this->colorType(), this->alphaType(),
                                        sk_ref_sp(this->colorSpace()));
-    const auto src = SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, kPremul_SkAlphaType, nullptr);
+    const auto src = SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
 
     uint64_t dstPixel[2] = {};   // be large enough for our widest config (F32 x 4)
     SkASSERT((size_t)dst.bytesPerPixel() <= sizeof(dstPixel));

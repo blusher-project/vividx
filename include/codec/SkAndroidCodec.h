@@ -20,7 +20,7 @@
 
 // TODO(kjlubick, bungeman) Replace these includes with forward declares
 #include "include/codec/SkEncodedImageFormat.h" // IWYU pragma: keep
-#include "include/core/SkAlphaType.h" // IWYU pragma: keep
+#include <vividx/core/alpha-type.h> // IWYU pragma: keep
 #include "include/core/SkColorType.h" // IWYU pragma: keep
 
 #include <cstddef>
@@ -117,7 +117,7 @@ public:
      *  Returns the appropriate alpha type to decode to.  If the image
      *  has alpha, the value of requestedUnpremul will be honored.
      */
-    SkAlphaType computeOutputAlphaType(bool requestedUnpremul);
+    vx_alpha_type computeOutputAlphaType(bool requestedUnpremul);
 
     /**
      *  @param outputColorType Color type that the client will decode to.

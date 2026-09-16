@@ -12,7 +12,7 @@
  * have been selected to require 32 bits of precision and full IEEE conformance
  */
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"

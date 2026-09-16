@@ -6,7 +6,7 @@
  */
 #include "src/gpu/graphite/Device.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkArc.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkClipOp.h"

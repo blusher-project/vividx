@@ -1903,6 +1903,9 @@ skia_source_set("core") {
   public = skia_core_public
   sources = skia_core_sources
   # Build from CMake.
+  public -= [
+    "//include/core/SkAlphaType.h",
+  ]
   sources -= [
     # "//src/core/SkBase64.cpp",
     # "//src/core/SkMD5.cpp",

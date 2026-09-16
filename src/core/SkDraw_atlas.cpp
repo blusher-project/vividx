@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkMatrix.h"
@@ -112,8 +112,8 @@ void Draw::drawAtlas(SkSpan<const SkRSXform> xform,
     }
 
     SkRasterPipelineContexts::UniformColorCtx* uniformCtx = nullptr;
-    SkColorSpaceXformSteps steps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                                 rec.fDstCS, kUnpremul_SkAlphaType);
+    SkColorSpaceXformSteps steps(sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                 rec.fDstCS, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     if (!colors.empty()) {
         // we will late-bind the values in ctx, once for each color in the loop
         uniformCtx = alloc.make<SkRasterPipelineContexts::UniformColorCtx>();

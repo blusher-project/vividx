@@ -173,13 +173,13 @@ public:
         return ((srcCoord - startCoord) % sampleFactor) == 0;
     }
 
-    static bool ValidAlpha(SkAlphaType dstAlpha, bool srcIsOpaque) {
-        if (kUnknown_SkAlphaType == dstAlpha) {
+    static bool ValidAlpha(vx_alpha_type dstAlpha, bool srcIsOpaque) {
+        if (VX_ALPHA_TYPE_UNKNOWN == dstAlpha) {
             return false;
         }
 
         if (srcIsOpaque) {
-            if (kOpaque_SkAlphaType != dstAlpha) {
+            if (VX_ALPHA_TYPE_OPAQUE != dstAlpha) {
                 SkCodecPrintf(
                         "Warning: an opaque image should be decoded as opaque "
                         "- it is being decoded as non-opaque, which will draw slower\n");
@@ -187,7 +187,7 @@ public:
             return true;
         }
 
-        return dstAlpha != kOpaque_SkAlphaType;
+        return dstAlpha != VX_ALPHA_TYPE_OPAQUE;
     }
 
     /*

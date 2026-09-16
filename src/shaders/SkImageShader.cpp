@@ -7,7 +7,7 @@
 
 #include "src/shaders/SkImageShader.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColorType.h"
@@ -215,7 +215,7 @@ static bool legacy_shader_can_handle(const SkMatrix& inv) {
 SkShaderBase::Context* SkImageShader::onMakeContext(const ContextRec& rec,
                                                     SkArenaAlloc* alloc) const {
     SkASSERT(!needs_subset(fImage.get(), fSubset)); // TODO(skbug.com/40043877)
-    if (fImage->alphaType() == kUnpremul_SkAlphaType) {
+    if (fImage->alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         return nullptr;
     }
     if (fImage->colorType() != kN32_SkColorType) {
@@ -662,7 +662,7 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
 
     auto append_misc = [&] {
         SkColorSpace* cs = upper.pm.colorSpace();
-        SkAlphaType   at = upper.pm.alphaType();
+        vx_alpha_type   at = upper.pm.alphaType();
 
         // Color for alpha-only images comes from the paint (already converted to dst color space).
         // If we were sampled by a runtime effect, the paint color was replaced with transparent
@@ -671,19 +671,19 @@ bool SkImageShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixR
             p->appendSetRGB(alloc, rec.fPaintColor);
 
             cs = rec.fDstCS;
-            at = kUnpremul_SkAlphaType;
+            at = VX_ALPHA_TYPE_UNPREMULTIPLIED;
         }
 
         // Bicubic filtering naturally produces out of range values on both sides of [0,1].
         if (sampling.useCubic) {
-            p->append(at == kUnpremul_SkAlphaType || fClampAsIfUnpremul
+            p->append(at == VX_ALPHA_TYPE_UNPREMULTIPLIED || fClampAsIfUnpremul
                           ? SkRasterPipelineOp::clamp_01
                           : SkRasterPipelineOp::clamp_gamut);
         }
 
         // Transform color space and alpha type to match shader convention (dst CS, premul alpha).
         if (!fRaw) {
-            alloc->make<SkColorSpaceXformSteps>(cs, at, rec.fDstCS, kPremul_SkAlphaType)->apply(p);
+            alloc->make<SkColorSpaceXformSteps>(cs, at, rec.fDstCS, VX_ALPHA_TYPE_PREMULTIPLIED)->apply(p);
         }
 
         return true;

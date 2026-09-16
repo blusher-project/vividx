@@ -9,7 +9,7 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"

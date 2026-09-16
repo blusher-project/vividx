@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/LatticeOp.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -190,7 +190,7 @@ public:
                             GrPaint&& paint,
                             const SkMatrix& viewMatrix,
                             GrSurfaceProxyView view,
-                            SkAlphaType alphaType,
+                            vx_alpha_type alphaType,
                             sk_sp<GrColorSpaceXform> colorSpaceXForm,
                             GrSamplerState::Filter filter,
                             std::unique_ptr<SkLatticeIter> iter,
@@ -204,7 +204,7 @@ public:
 
     NonAALatticeOp(GrProcessorSet* processorSet, const SkPMColor4f& color,
                    const SkMatrix& viewMatrix, GrSurfaceProxyView view,
-                   SkAlphaType alphaType, sk_sp<GrColorSpaceXform> colorSpaceXform,
+                   vx_alpha_type alphaType, sk_sp<GrColorSpaceXform> colorSpaceXform,
                    GrSamplerState::Filter filter, std::unique_ptr<SkLatticeIter> iter,
                    const SkRect& dst)
             : INHERITED(ClassID())
@@ -238,7 +238,7 @@ public:
 
     GrProcessorSet::Analysis finalize(const GrCaps& caps, const GrAppliedClip* clip,
                                       GrClampType clampType) override {
-        auto opaque = fPatches[0].fColor.isOpaque() && fAlphaType == kOpaque_SkAlphaType
+        auto opaque = fPatches[0].fColor.isOpaque() && fAlphaType == VX_ALPHA_TYPE_OPAQUE
                               ? GrProcessorAnalysisColor::Opaque::kYes
                               : GrProcessorAnalysisColor::Opaque::kNo;
         auto analysisColor = GrProcessorAnalysisColor(opaque);
@@ -436,7 +436,7 @@ private:
     Helper fHelper;
     STArray<1, Patch, true> fPatches;
     GrSurfaceProxyView fView;
-    SkAlphaType fAlphaType;
+    vx_alpha_type fAlphaType;
     sk_sp<GrColorSpaceXform> fColorSpaceXform;
     GrSamplerState::Filter fFilter;
     bool fWideColor;
@@ -453,7 +453,7 @@ GrOp::Owner MakeNonAA(GrRecordingContext* context,
                       GrPaint&& paint,
                       const SkMatrix& viewMatrix,
                       GrSurfaceProxyView view,
-                      SkAlphaType alphaType,
+                      vx_alpha_type alphaType,
                       sk_sp<GrColorSpaceXform> colorSpaceXform,
                       GrSamplerState::Filter filter,
                       std::unique_ptr<SkLatticeIter> iter,
@@ -585,7 +585,7 @@ GR_DRAW_OP_TEST_DEFINE(NonAALatticeOp) {
                                                           std::move(paint),
                                                           viewMatrix,
                                                           std::move(view),
-                                                          kPremul_SkAlphaType,
+                                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                                           std::move(csxf),
                                                           filter,
                                                           std::move(iter),

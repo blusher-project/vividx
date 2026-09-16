@@ -58,7 +58,7 @@ class SkMesh;
 class SkPath;
 class SkRRect;
 class SkVertices;
-enum SkAlphaType : int;
+
 enum class SkBackingFit;
 enum class SkBlendMode;
 struct GrQuadSetEntry;
@@ -265,7 +265,7 @@ public:
      */
     void drawTexture(const GrClip*,
                      GrSurfaceProxyView,
-                     SkAlphaType,
+                     vx_alpha_type,
                      GrSamplerState::Filter,
                      GrSamplerState::MipmapMode,
                      SkBlendMode,
@@ -286,7 +286,7 @@ public:
     void drawTextureQuad(const GrClip* clip,
                          GrSurfaceProxyView view,
                          GrColorType srcColorType,
-                         SkAlphaType srcAlphaType,
+                         vx_alpha_type srcAlphaType,
                          GrSamplerState::Filter filter,
                          GrSamplerState::MipmapMode mm,
                          SkBlendMode mode,
@@ -496,7 +496,7 @@ public:
                           GrPaint&&,
                           const SkMatrix& viewMatrix,
                           GrSurfaceProxyView,
-                          SkAlphaType alphaType,
+                          vx_alpha_type alphaType,
                           sk_sp<GrColorSpaceXform>,
                           GrSamplerState::Filter,
                           std::unique_ptr<SkLatticeIter>,
@@ -677,7 +677,7 @@ private:
     // 'quad' may be modified in place to reflect final geometry.
     void drawTexturedQuad(const GrClip* clip,
                           GrSurfaceProxyView proxyView,
-                          SkAlphaType alphaType,
+                          vx_alpha_type alphaType,
                           sk_sp<GrColorSpaceXform> textureXform,
                           GrSamplerState::Filter filter,
                           GrSamplerState::MipmapMode,

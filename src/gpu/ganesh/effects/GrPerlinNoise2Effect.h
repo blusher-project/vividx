@@ -8,7 +8,7 @@
 #ifndef GrPerlinNoise2Effect_DEFINED
 #define GrPerlinNoise2Effect_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkSamplingOptions.h"
@@ -46,12 +46,12 @@ public:
                                                            GrSamplerState::WrapMode::kClamp,
                                                            GrSamplerState::Filter::kNearest};
         auto permutationsFP = GrTextureEffect::Make(std::move(permutationsView),
-                                                    kPremul_SkAlphaType,
+                                                    VX_ALPHA_TYPE_PREMULTIPLIED,
                                                     SkMatrix::I(),
                                                     kRepeatXSampler,
                                                     caps);
         auto noiseFP = GrTextureEffect::Make(
-                std::move(noiseView), kPremul_SkAlphaType, SkMatrix::I(), kRepeatXSampler, caps);
+                std::move(noiseView), VX_ALPHA_TYPE_PREMULTIPLIED, SkMatrix::I(), kRepeatXSampler, caps);
 
         return std::unique_ptr<GrFragmentProcessor>(
                 new GrPerlinNoise2Effect(type,

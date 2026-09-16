@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/SoftwarePathRenderer.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -258,7 +258,7 @@ void SoftwarePathRenderer::DrawToTargetWithShapeMask(
     maskMatrix.preConcat(viewMatrix);
 
     paint.setCoverageFragmentProcessor(GrTextureEffect::Make(
-            std::move(view), kPremul_SkAlphaType, maskMatrix, GrSamplerState::Filter::kNearest));
+            std::move(view), VX_ALPHA_TYPE_PREMULTIPLIED, maskMatrix, GrSamplerState::Filter::kNearest));
     DrawNonAARect(sdc, std::move(paint), userStencilSettings, clip, SkMatrix::I(),
                   dstRect, invert);
 }

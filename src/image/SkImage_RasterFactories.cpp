@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
@@ -47,7 +47,7 @@ static bool valid_args(const SkImageInfo& info, size_t rowBytes, size_t* minSize
     if ((unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType) {
         return false;
     }
-    if ((unsigned)info.alphaType() > (unsigned)kLastEnum_SkAlphaType) {
+    if ((unsigned)info.alphaType() > (unsigned)VX_ALPHA_TYPE_LASTENUM) {
         return false;
     }
 
@@ -136,8 +136,8 @@ sk_sp<SkImage> RasterFromCompressedTextureData(sk_sp<SkData> data,
         return nullptr;
     }
 
-    SkAlphaType at =
-            SkTextureCompressionTypeIsOpaque(type) ? kOpaque_SkAlphaType : kPremul_SkAlphaType;
+    vx_alpha_type at =
+            SkTextureCompressionTypeIsOpaque(type) ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_PREMULTIPLIED;
 
     SkImageInfo ii = SkImageInfo::MakeN32(width, height, at);
 

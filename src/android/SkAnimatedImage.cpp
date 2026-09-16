@@ -293,8 +293,8 @@ int SkAnimatedImage::decodeNextFrame() {
         }
     }
 
-    auto alphaType = kOpaque_SkAlphaType == frameInfo.fAlphaType ?
-                     kOpaque_SkAlphaType : kPremul_SkAlphaType;
+    auto alphaType = VX_ALPHA_TYPE_OPAQUE == frameInfo.fAlphaType ?
+                     VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_PREMULTIPLIED;
     auto info = fDecodeInfo.makeAlphaType(alphaType);
     SkBitmap* dst = &fDecodingFrame.fBitmap;
     if (!fDecodingFrame.init(info, Frame::OnInit::kRestoreIfNecessary)) {
@@ -374,7 +374,7 @@ sk_sp<SkImage> SkAnimatedImage::getCurrentFrame() {
     auto imageInfo = fDisplayFrame.fBitmap.info().makeDimensions(fCropRect.size());
     if (fPostProcess) {
         // Defensively use premul in case the post process adds alpha.
-        imageInfo = imageInfo.makeAlphaType(kPremul_SkAlphaType);
+        imageInfo = imageInfo.makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     }
 
     SkBitmap dst;

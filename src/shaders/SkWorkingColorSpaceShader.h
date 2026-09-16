@@ -37,11 +37,11 @@ public:
 
     std::tuple</*inputCS=*/sk_sp<SkColorSpace>,
                /*outputCS=*/sk_sp<SkColorSpace>,
-               /*workingAT=*/SkAlphaType>
-    workingSpace(sk_sp<SkColorSpace> dstCS, SkAlphaType dstAT) const {
+               /*workingAT=*/vx_alpha_type>
+    workingSpace(sk_sp<SkColorSpace> dstCS, vx_alpha_type dstAT) const {
         sk_sp<SkColorSpace> inputSpace  = fInputSpace  ? fInputSpace  : dstCS;
         sk_sp<SkColorSpace> outputSpace = fOutputSpace ? fOutputSpace : inputSpace;
-        return {inputSpace, outputSpace, fWorkInUnpremul ? kUnpremul_SkAlphaType : dstAT};
+        return {inputSpace, outputSpace, fWorkInUnpremul ? VX_ALPHA_TYPE_UNPREMULTIPLIED : dstAT};
     }
 
 private:

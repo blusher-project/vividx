@@ -59,11 +59,11 @@ sk_sp<Image> Image::WrapDevice(sk_sp<Device> device, std::optional<SkColorInfo> 
         }
         // For alpha type, it should match the device's alpha type or be changing from kOpaque back
         // to kPremul or kUnpremul.
-        const SkAlphaType overrideAT = overrideInfo->alphaType();
-        const SkAlphaType devAT = device->imageInfo().alphaType();
+        const vx_alpha_type overrideAT = overrideInfo->alphaType();
+        const vx_alpha_type devAT = device->imageInfo().alphaType();
         if (overrideAT != devAT &&
-            (devAT != kOpaque_SkAlphaType || (overrideAT != kPremul_SkAlphaType &&
-                                              overrideAT != kUnpremul_SkAlphaType))) {
+            (devAT != VX_ALPHA_TYPE_OPAQUE || (overrideAT != VX_ALPHA_TYPE_PREMULTIPLIED &&
+                                              overrideAT != VX_ALPHA_TYPE_UNPREMULTIPLIED))) {
             return nullptr;
         }
 

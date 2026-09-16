@@ -7,7 +7,7 @@
 
 #include "include/core/SkMallocPixelRef.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
@@ -19,7 +19,7 @@
 static bool is_valid(const SkImageInfo& info) {
     if (info.width() < 0 || info.height() < 0 ||
         (unsigned)info.colorType() > (unsigned)kLastEnum_SkColorType ||
-        (unsigned)info.alphaType() > (unsigned)kLastEnum_SkAlphaType)
+        (unsigned)info.alphaType() > (unsigned)VX_ALPHA_TYPE_LASTENUM)
     {
         return false;
     }

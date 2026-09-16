@@ -18,7 +18,7 @@
 #include <memory>
 #include <optional>
 
-enum SkAlphaType : int;
+
 struct SkImageInfo;
 
 class SkCodecImageGenerator : public SkImageGenerator {
@@ -28,10 +28,10 @@ public:
      * return an SkCodecImageGenerator.  Otherwise return nullptr.
      */
     static std::unique_ptr<SkImageGenerator> MakeFromEncodedCodec(
-            sk_sp<const SkData>, std::optional<SkAlphaType> = std::nullopt);
+            sk_sp<const SkData>, std::optional<vx_alpha_type> = std::nullopt);
 
     static std::unique_ptr<SkImageGenerator> MakeFromCodec(
-            std::unique_ptr<SkCodec>, std::optional<SkAlphaType> = std::nullopt);
+            std::unique_ptr<SkCodec>, std::optional<vx_alpha_type> = std::nullopt);
 
     /**
      * Return a size that approximately supports the desired scale factor. The codec may not be able
@@ -119,7 +119,7 @@ private:
     /*
      * Takes ownership of codec
      */
-    SkCodecImageGenerator(std::unique_ptr<SkCodec>, std::optional<SkAlphaType>);
+    SkCodecImageGenerator(std::unique_ptr<SkCodec>, std::optional<vx_alpha_type>);
 
     std::unique_ptr<SkCodec> fCodec;
     sk_sp<const SkData> fCachedData = nullptr;

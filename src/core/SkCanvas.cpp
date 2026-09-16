@@ -7,7 +7,7 @@
 
 #include "include/core/SkCanvas.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
@@ -1021,7 +1021,7 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec,
                 SkImageInfo::Make(layerBounds.width(),
                                   layerBounds.height(),
                                   layerColorType,
-                                  kPremul_SkAlphaType,
+                                  VX_ALPHA_TYPE_PREMULTIPLIED,
                                   rec.fColorSpace ? sk_ref_sp(rec.fColorSpace)
                                                   : priorDevice->imageInfo().refColorSpace());
 

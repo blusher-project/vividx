@@ -29,10 +29,10 @@ namespace SkImages {
     @return                created SkImage, or nullptr
 */
 SK_API sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* hardwareBuffer,
-                                                  SkAlphaType alphaType = kPremul_SkAlphaType);
+                                                  vx_alpha_type alphaType = VX_ALPHA_TYPE_PREMULTIPLIED);
 SK_API sk_sp<SkImage> DeferredFromAHardwareBuffer(
         AHardwareBuffer* hardwareBuffer,
-        SkAlphaType alphaType,
+        vx_alpha_type alphaType,
         sk_sp<SkColorSpace> colorSpace,
         GrSurfaceOrigin surfaceOrigin = kTopLeft_GrSurfaceOrigin);
 

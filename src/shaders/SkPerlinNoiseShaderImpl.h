@@ -7,7 +7,7 @@
 #ifndef SkPerlinNoiseShaderImpl_DEFINED
 #define SkPerlinNoiseShaderImpl_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkFlattenable.h"
@@ -78,7 +78,7 @@ public:
             fPermutationsBitmap.installPixels(info, fLatticeSelector, info.minRowBytes());
             fPermutationsBitmap.setImmutable();
 
-            info = SkImageInfo::Make(kBlockSize, 4, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            info = SkImageInfo::Make(kBlockSize, 4, kRGBA_8888_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED);
             fNoiseBitmap.installPixels(info, fNoise[0][0], info.minRowBytes());
             fNoiseBitmap.setImmutable();
         }

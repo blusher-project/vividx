@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/image/GrImageUtils.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
@@ -196,7 +196,7 @@ static GrSurfaceProxyView texture_proxy_view_from_planes(GrRecordingContext* ctx
 
     // TODO: investigate preallocating mip maps here
     GrImageInfo info(SkColorTypeToGrColorType(img->colorType()),
-                     kPremul_SkAlphaType,
+                     VX_ALPHA_TYPE_PREMULTIPLIED,
                      /*color space*/ nullptr,
                      img->dimensions());
 
@@ -230,8 +230,8 @@ static GrSurfaceProxyView texture_proxy_view_from_planes(GrRecordingContext* ctx
     // If the caller expects the pixels in a different color space than the one from the image,
     // apply a color conversion to do this.
     fp = GrColorSpaceXformEffect::Make(std::move(fp),
-                                       srcColorSpace, kOpaque_SkAlphaType,
-                                       dstColorSpace, kOpaque_SkAlphaType);
+                                       srcColorSpace, VX_ALPHA_TYPE_OPAQUE,
+                                       dstColorSpace, VX_ALPHA_TYPE_OPAQUE);
     sfc->fillWithFP(std::move(fp));
 
     return sfc->readSurfaceView();
@@ -441,7 +441,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> AsView(GrRecordingContext* rContext,
 
 static std::unique_ptr<GrFragmentProcessor> make_fp_from_view(GrRecordingContext* rContext,
                                                               GrSurfaceProxyView view,
-                                                              SkAlphaType at,
+                                                              vx_alpha_type at,
                                                               SkSamplingOptions sampling,
                                                               const SkTileMode tileModes[2],
                                                               const SkMatrix& m,
@@ -587,7 +587,7 @@ std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(SurfaceDrawContext* sdc
 std::unique_ptr<GrFragmentProcessor> MakeFragmentProcessorFromView(
         GrRecordingContext* rContext,
         GrSurfaceProxyView view,
-        SkAlphaType at,
+        vx_alpha_type at,
         SkSamplingOptions sampling,
         const SkTileMode tileModes[2],
         const SkMatrix& m,
@@ -753,7 +753,7 @@ public:
                                const SkSurfaceProps* props) const override {
         SkImageInfo imageInfo = SkImageInfo::Make(size,
                                                   this->colorType(),
-                                                  kPremul_SkAlphaType,
+                                                  VX_ALPHA_TYPE_PREMULTIPLIED,
                                                   std::move(colorSpace));
 
         return fContext->priv().createDevice(skgpu::Budgeted::kYes,

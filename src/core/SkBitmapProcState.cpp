@@ -7,7 +7,7 @@
 
 #include "src/core/SkBitmapProcState.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkTileMode.h"
@@ -264,8 +264,8 @@ bool SkBitmapProcState::chooseProcs() {
     SkASSERT(!fInvMatrix.hasPerspective());
     SkASSERT(SkOpts::S32_alpha_D32_filter_DXDY || fInvMatrix.isScaleTranslate());
     SkASSERT(fPixmap.colorType() == kN32_SkColorType);
-    SkASSERT(fPixmap.alphaType() == kPremul_SkAlphaType ||
-             fPixmap.alphaType() == kOpaque_SkAlphaType);
+    SkASSERT(fPixmap.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED ||
+             fPixmap.alphaType() == VX_ALPHA_TYPE_OPAQUE);
 
     SkASSERT(fTileModeX != SkTileMode::kDecal);
 

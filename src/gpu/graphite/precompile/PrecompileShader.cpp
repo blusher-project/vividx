@@ -381,7 +381,7 @@ void PrecompileImageShader::addToKey(const KeyContext& keyContext, int desiredCo
 
     if (!fRaw) {
         const SkColorSpace* dstColorSpace = sk_srgb_singleton();
-        SkAlphaType dstAT = colorInfo.alphaType();
+        vx_alpha_type dstAT = colorInfo.alphaType();
         if (fUseDstColorInfo) {
             dstColorSpace = keyContext.dstColorInfo().colorSpace();
             dstAT = keyContext.dstColorInfo().alphaType();
@@ -687,8 +687,8 @@ private:
                                             : sk_srgb_singleton();
 
         ColorSpaceTransformBlock::ColorSpaceTransformData csData(
-                intermediateCS.get(), kPremul_SkAlphaType,
-                dstCS, kPremul_SkAlphaType);
+                intermediateCS.get(), VX_ALPHA_TYPE_PREMULTIPLIED,
+                dstCS, VX_ALPHA_TYPE_PREMULTIPLIED);
 
         Compose(keyContext,
                 /* addInnerToKey= */ [&]() -> void {
@@ -1025,7 +1025,7 @@ private:
         }
 
         const SkColorInfo& dstInfo = keyContext.dstColorInfo();
-        const SkAlphaType dstAT = dstInfo.alphaType();
+        const vx_alpha_type dstAT = dstInfo.alphaType();
         sk_sp<SkColorSpace> dstCS = dstInfo.refColorSpace();
         if (!dstCS) {
             dstCS = SkColorSpace::MakeSRGB();
@@ -1043,7 +1043,7 @@ private:
         KeyContext csContext{keyContext, KeyGenFlags::kSpecializeColorSpaceXform};
         // SkWorkingColorSpaceShader's workInUnpremul is not exposed yet in the public API so
         // precompile can assume that it'll always use dstAT.
-        const SkAlphaType workingAT = dstAT;
+        const vx_alpha_type workingAT = dstAT;
         KeyContext workingContext =
                 csContext.withColorInfo({dstInfo.colorType(), workingAT, inputCS});
 

@@ -15,13 +15,15 @@
 #include <cstddef>
 #include <optional>
 
+#include <vividx/core/alpha-type.h>
+
 class SkData;
 class SkImage;
 class SkPicture;
 class SkTypeface;
 class SkReadBuffer;
 class SkStream;
-enum SkAlphaType : int;
+
 namespace sktext::gpu {
     class Slug;
 }
@@ -65,11 +67,11 @@ using SkDeserialImageProc = sk_sp<SkImage> (*)(const void* data, size_t length, 
 #else
 using SkDeserialImageProc = sk_sp<SkImage> (*)(const void* data,
                                                size_t length,
-                                               std::optional<SkAlphaType>,
+                                               std::optional<vx_alpha_type>,
                                                void* ctx);
 #endif
 using SkDeserialImageFromDataProc = sk_sp<SkImage> (*)(sk_sp<SkData>,
-                                                       std::optional<SkAlphaType>,
+                                                       std::optional<vx_alpha_type>,
                                                        void* ctx);
 
 /**

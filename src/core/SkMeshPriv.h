@@ -35,7 +35,7 @@ struct SkMeshSpecificationPriv {
         return spec.fColorSpace.get();
     }
 
-    static SkAlphaType AlphaType(const SkMeshSpecification& spec) { return spec.fAlphaType; }
+    static vx_alpha_type AlphaType(const SkMeshSpecification& spec) { return spec.fAlphaType; }
 
     static SkSLType VaryingTypeAsSLType(Varying::Type type) {
         switch (type) {

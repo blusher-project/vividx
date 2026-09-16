@@ -19,7 +19,7 @@
 class GrCaps;
 class GrSurfaceProxyView;
 class SkMatrix;
-enum SkAlphaType : int;
+
 struct GrShaderCaps;
 struct SkRect;
 
@@ -49,7 +49,7 @@ public:
      * Create a bicubic filter effect with specified texture matrix with clamp wrap mode.
      */
     static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView view,
-                                                     SkAlphaType,
+                                                     vx_alpha_type,
                                                      const SkMatrix&,
                                                      SkCubicResampler,
                                                      Direction);
@@ -58,7 +58,7 @@ public:
      * Create a bicubic filter effect for a texture with arbitrary wrap modes.
      */
     static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView view,
-                                                     SkAlphaType,
+                                                     vx_alpha_type,
                                                      const SkMatrix&,
                                                      const GrSamplerState::WrapMode wrapX,
                                                      const GrSamplerState::WrapMode wrapY,
@@ -71,7 +71,7 @@ public:
      * rectangle subset. The WrapModes apply to the subset.
      */
     static std::unique_ptr<GrFragmentProcessor> MakeSubset(GrSurfaceProxyView view,
-                                                           SkAlphaType,
+                                                           vx_alpha_type,
                                                            const SkMatrix&,
                                                            const GrSamplerState::WrapMode wrapX,
                                                            const GrSamplerState::WrapMode wrapY,
@@ -85,7 +85,7 @@ public:
      * occurs. Note that this is a bound on the coords after transformed by the matrix parameter.
      */
     static std::unique_ptr<GrFragmentProcessor> MakeSubset(GrSurfaceProxyView view,
-                                                           SkAlphaType,
+                                                           vx_alpha_type,
                                                            const SkMatrix&,
                                                            const GrSamplerState::WrapMode wrapX,
                                                            const GrSamplerState::WrapMode wrapY,
@@ -100,7 +100,7 @@ public:
      * discrete samples of the provided processor are at half-integer coords.
      */
     static std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor>,
-                                                     SkAlphaType,
+                                                     vx_alpha_type,
                                                      const SkMatrix&,
                                                      SkCubicResampler,
                                                      Direction);

@@ -67,7 +67,7 @@ namespace PrecompileColorFiltersPriv {
             SkSpan<const sk_sp<PrecompileColorFilter>> childOptions,
             const skcms_TransferFunction* tf,
             const skcms_Matrix3x3* gamut,
-            const SkAlphaType* at);
+            const vx_alpha_type* at);
 
 } // namespace PrecompileColorFiltersPriv
 

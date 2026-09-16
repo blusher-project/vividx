@@ -8,7 +8,7 @@
 #ifndef GrFragmentProcessor_DEFINED
 #define GrFragmentProcessor_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
@@ -336,7 +336,7 @@ protected:
      * callers must determine on their own if the sampling uses a decal strategy in any way, in
      * which case the texture may become transparent regardless of the color type.
      */
-    static OptimizationFlags ModulateForSamplerOptFlags(SkAlphaType alphaType, bool samplingDecal) {
+    static OptimizationFlags ModulateForSamplerOptFlags(vx_alpha_type alphaType, bool samplingDecal) {
         if (samplingDecal) {
             return kCompatibleWithCoverageAsAlpha_OptimizationFlag;
         } else {
@@ -345,8 +345,8 @@ protected:
     }
 
     // As above, but callers should somehow ensure or assert their sampler still uses clamping
-    static OptimizationFlags ModulateForClampedSamplerOptFlags(SkAlphaType alphaType) {
-        if (alphaType == kOpaque_SkAlphaType) {
+    static OptimizationFlags ModulateForClampedSamplerOptFlags(vx_alpha_type alphaType) {
+        if (alphaType == VX_ALPHA_TYPE_OPAQUE) {
             return kCompatibleWithCoverageAsAlpha_OptimizationFlag |
                    kPreservesOpaqueInput_OptimizationFlag;
         } else {

@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
 #include "include/core/SkString.h"
@@ -391,14 +391,14 @@ void GrSkSLFP::addColorTransformChildren(SkColorSpace* dstColorSpace) {
     // this way leverages per-FP name mangling to avoid conflicts.
     auto workingToLinear = GrColorSpaceXformEffect::Make(nullptr,
                                                          dstColorSpace,
-                                                         kUnpremul_SkAlphaType,
+                                                         VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                                          sk_srgb_linear_singleton(),
-                                                         kUnpremul_SkAlphaType);
+                                                         VX_ALPHA_TYPE_UNPREMULTIPLIED);
     auto linearToWorking = GrColorSpaceXformEffect::Make(nullptr,
                                                          sk_srgb_linear_singleton(),
-                                                         kUnpremul_SkAlphaType,
+                                                         VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                                          dstColorSpace,
-                                                         kUnpremul_SkAlphaType);
+                                                         VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     fToLinearSrgbChildIndex = this->numChildProcessors();
     SkASSERT((size_t)fToLinearSrgbChildIndex >= fEffect->fSampleUsages.size());

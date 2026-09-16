@@ -280,7 +280,7 @@ private:
         SkASSERT(dstCombination < static_cast<int>(fDst.size()));
 
         // The alpha type is unused for determining which color space transform block to use.
-        constexpr SkAlphaType kAlphaType = kPremul_SkAlphaType;
+        constexpr vx_alpha_type kAlphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
 
         ColorSpaceTransformBlock::ColorSpaceTransformData csData =
                 ColorSpaceTransformBlock::ColorSpaceTransformData(
@@ -373,7 +373,7 @@ sk_sp<PrecompileColorFilter> PrecompileColorFilters::HighContrast() {
     // These color space working format arguments should match those from
     // src/effects/SkHighContrastFilter.cpp.
     const skcms_TransferFunction kTF = SkNamedTransferFn::kLinear;
-    const SkAlphaType kUnpremul = kUnpremul_SkAlphaType;
+    const vx_alpha_type kUnpremul = VX_ALPHA_TYPE_UNPREMULTIPLIED;
     return PrecompileColorFiltersPriv::WithWorkingFormat(
             {{std::move(cf)}}, &kTF, /* gamut= */ nullptr, &kUnpremul);
 }
@@ -414,7 +414,7 @@ public:
     PrecompileWithWorkingFormatColorFilter(SkSpan<const sk_sp<PrecompileColorFilter>> childOptions,
                                            const skcms_TransferFunction* tf,
                                            const skcms_Matrix3x3* gamut,
-                                           const SkAlphaType* at)
+                                           const vx_alpha_type* at)
             : fChildOptions(childOptions.begin(), childOptions.end())
             , fWorkingFormatCalculator(tf, gamut, at) {
         fNumChildCombos = 0;
@@ -435,11 +435,11 @@ private:
         SkASSERT(desiredCombination < fNumChildCombos);
 
         const SkColorInfo& dstInfo = keyContext.dstColorInfo();
-        const SkAlphaType dstAT = dstInfo.alphaType();
+        const vx_alpha_type dstAT = dstInfo.alphaType();
         const sk_sp<SkColorSpace> dstCS = keyContext.dstColorInfo().colorSpace()
                                                   ? keyContext.dstColorInfo().refColorSpace()
                                                   : SkColorSpace::MakeSRGB();
-        SkAlphaType workingAT;
+        vx_alpha_type workingAT;
         sk_sp<SkColorSpace> workingCS = fWorkingFormatCalculator.workingFormat(dstCS, &workingAT);
 
         KeyContext csOptimize{keyContext, KeyGenFlags::kSpecializeColorSpaceXform};
@@ -483,7 +483,7 @@ sk_sp<PrecompileColorFilter> PrecompileColorFiltersPriv::WithWorkingFormat(
         SkSpan<const sk_sp<PrecompileColorFilter>> childOptions,
         const skcms_TransferFunction* tf,
         const skcms_Matrix3x3* gamut,
-        const SkAlphaType* at) {
+        const vx_alpha_type* at) {
     return sk_make_sp<PrecompileWithWorkingFormatColorFilter>(childOptions, tf, gamut, at);
 }
 

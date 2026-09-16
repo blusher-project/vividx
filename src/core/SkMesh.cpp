@@ -7,7 +7,7 @@
 
 #include "include/core/SkMesh.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/private/SkAlign.h"
@@ -397,7 +397,7 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
                 vs,
                 fs,
                 SkColorSpace::MakeSRGB(),
-                kPremul_SkAlphaType);
+                VX_ALPHA_TYPE_PREMULTIPLIED);
 }
 
 SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> attributes,
@@ -406,7 +406,7 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
                                                       const SkString& vs,
                                                       const SkString& fs,
                                                       sk_sp<SkColorSpace> cs) {
-    return Make(attributes, vertexStride, varyings, vs, fs, std::move(cs), kPremul_SkAlphaType);
+    return Make(attributes, vertexStride, varyings, vs, fs, std::move(cs), VX_ALPHA_TYPE_PREMULTIPLIED);
 }
 
 SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> attributes,
@@ -415,7 +415,7 @@ SkMeshSpecification::Result SkMeshSpecification::Make(SkSpan<const Attribute> at
                                                       const SkString& vs,
                                                       const SkString& fs,
                                                       sk_sp<SkColorSpace> cs,
-                                                      SkAlphaType at) {
+                                                      vx_alpha_type at) {
     SkString attributesStruct("struct Attributes {\n");
     for (const auto& a : attributes) {
         attributesStruct.appendf("  %s %s;\n", attribute_type_string(a.type), a.name.c_str());
@@ -477,7 +477,7 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
         const SkString&         vs,
         const SkString&         fs,
         sk_sp<SkColorSpace>     cs,
-        SkAlphaType             at) {
+        vx_alpha_type             at) {
     if (auto [ok, error] = check_vertex_offsets_and_stride(attributes, stride); !ok) {
         return {nullptr, error};
     }
@@ -559,12 +559,12 @@ SkMeshSpecification::Result SkMeshSpecification::MakeFromSourceWithStructs(
 
     if (ct == ColorType::kNone) {
         cs = nullptr;
-        at = kPremul_SkAlphaType;
+        at = VX_ALPHA_TYPE_PREMULTIPLIED;
     } else {
         if (!cs) {
             return {nullptr, SkString{"Must provide a color space if FS returns a color."}};
         }
-        if (at == kUnknown_SkAlphaType) {
+        if (at == VX_ALPHA_TYPE_UNKNOWN) {
             return {nullptr, SkString{"Must provide a valid alpha type if FS returns a color."}};
         }
     }
@@ -606,7 +606,7 @@ SkMeshSpecification::SkMeshSpecification(
         std::unique_ptr<const SkSL::Program> fs,
         ColorType                            ct,
         sk_sp<SkColorSpace>                  cs,
-        SkAlphaType                          at)
+        vx_alpha_type                          at)
         : fAttributes(attributes.begin(), attributes.end())
         , fVaryings(varyings.begin(), varyings.end())
         , fUniforms(std::move(uniforms))

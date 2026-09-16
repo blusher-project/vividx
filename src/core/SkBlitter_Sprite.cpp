@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
@@ -151,10 +151,10 @@ public:
                 // Alpha-only images get their r,g,b from the paint color, so they're also sRGB.
                 srcCS = sk_srgb_singleton();
             }
-            auto srcAT = fSource.isOpaque() ? kOpaque_SkAlphaType
-                                            : kPremul_SkAlphaType;
+            auto srcAT = fSource.isOpaque() ? VX_ALPHA_TYPE_OPAQUE
+                                            : VX_ALPHA_TYPE_PREMULTIPLIED;
             fAlloc->make<SkColorSpaceXformSteps>(srcCS, srcAT,
-                                                 dstCS, kPremul_SkAlphaType)
+                                                 dstCS, VX_ALPHA_TYPE_PREMULTIPLIED)
                 ->apply(&p);
         }
         if (fPaintColor.fA != 1.0f) {
@@ -207,7 +207,7 @@ SkBlitter* SkBlitter::ChooseSprite(const SkPixmap& dst, const SkPaint& paint,
     SkASSERT(alloc != nullptr);
 
     // TODO: in principle SkRasterPipelineSpriteBlitter could be made to handle this.
-    if (source.alphaType() == kUnpremul_SkAlphaType) {
+    if (source.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         return nullptr;
     }
 

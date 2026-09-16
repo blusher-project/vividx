@@ -19,7 +19,7 @@ namespace SkNDKConversions {
     // ANDROID_BITMAP_FORMAT_NONE.
     AndroidBitmapFormat toAndroidBitmapFormat(SkColorType);
 
-    uint32_t toAndroidBitmapAlphaFlags(SkAlphaType);
+    uint32_t toAndroidBitmapAlphaFlags(vx_alpha_type);
 
     SkColorType toColorType(AndroidBitmapFormat);
 

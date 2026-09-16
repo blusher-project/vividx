@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurfaceProps.h"
@@ -116,8 +116,8 @@ std::unique_ptr<skgpu::ganesh::SurfaceContext> GrRecordingContextPriv::makeSC(
                                                          info.colorType());
         }
         GrSurfaceProxyView writeView(readView.refProxy(), readView.origin(), writeSwizzle);
-        if (info.alphaType() == kPremul_SkAlphaType ||
-            info.alphaType() == kOpaque_SkAlphaType) {
+        if (info.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED ||
+            info.alphaType() == VX_ALPHA_TYPE_OPAQUE) {
             sc = std::make_unique<skgpu::ganesh::SurfaceDrawContext>(this->context(),
                                                                      std::move(readView),
                                                                      std::move(writeView),
@@ -184,7 +184,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceFillContext> GrRecordingContextPriv::makeS
         GrProtected isProtected,
         GrSurfaceOrigin origin,
         skgpu::Budgeted budgeted) {
-    if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
+    if (info.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED || info.alphaType() == VX_ALPHA_TYPE_OPAQUE) {
         return skgpu::ganesh::SurfaceDrawContext::Make(this->context(),
                                                        info.colorType(),
                                                        info.refColorSpace(),
@@ -226,7 +226,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceFillContext> GrRecordingContextPriv::makeS
 }
 
 std::unique_ptr<skgpu::ganesh::SurfaceFillContext> GrRecordingContextPriv::makeSFC(
-        SkAlphaType alphaType,
+        vx_alpha_type alphaType,
         sk_sp<SkColorSpace> colorSpace,
         SkISize dimensions,
         SkBackingFit fit,
@@ -242,7 +242,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceFillContext> GrRecordingContextPriv::makeS
     SkASSERT(!dimensions.isEmpty());
     SkASSERT(sampleCount >= 1);
     SkASSERT(format.isValid() && format.backend() == fContext->backend());
-    if (alphaType == kPremul_SkAlphaType || alphaType == kOpaque_SkAlphaType) {
+    if (alphaType == VX_ALPHA_TYPE_PREMULTIPLIED || alphaType == VX_ALPHA_TYPE_OPAQUE) {
         return skgpu::ganesh::SurfaceDrawContext::Make(this->context(),
                                                        std::move(colorSpace),
                                                        fit,
@@ -290,7 +290,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceFillContext> GrRecordingContextPriv::makeS
         GrProtected isProtected,
         GrSurfaceOrigin origin,
         skgpu::Budgeted budgeted) {
-    if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
+    if (info.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED || info.alphaType() == VX_ALPHA_TYPE_OPAQUE) {
         return skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(this->context(),
                                                                    info.colorType(),
                                                                    info.refColorSpace(),
@@ -327,7 +327,7 @@ GrRecordingContextPriv::makeSFCFromBackendTexture(GrColorInfo info,
                                                   sk_sp<skgpu::RefCntedCallback> releaseHelper) {
     SkASSERT(sampleCount > 0);
 
-    if (info.alphaType() == kPremul_SkAlphaType || info.alphaType() == kOpaque_SkAlphaType) {
+    if (info.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED || info.alphaType() == VX_ALPHA_TYPE_OPAQUE) {
         return skgpu::ganesh::SurfaceDrawContext::MakeFromBackendTexture(this->context(),
                                                                          info.colorType(),
                                                                          info.refColorSpace(),

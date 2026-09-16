@@ -25,7 +25,7 @@
 
 class GrGLSLProgramDataManager;
 class GrTexture;
-enum SkAlphaType : int;
+
 namespace skgpu { class KeyBuilder; }
 struct GrShaderCaps;
 
@@ -54,7 +54,7 @@ public:
     /** Make from a filter. The sampler will be configured with clamp mode. */
     static std::unique_ptr<GrFragmentProcessor> Make(
             GrSurfaceProxyView,
-            SkAlphaType,
+            vx_alpha_type,
             const SkMatrix& = SkMatrix::I(),
             GrSamplerState::Filter = GrSamplerState::Filter::kNearest,
             GrSamplerState::MipmapMode mipmapMode = GrSamplerState::MipmapMode::kNone);
@@ -63,7 +63,7 @@ public:
      * Make from a full GrSamplerState. Caps are required to determine support for kClampToBorder.
      * This will be emulated in the shader if there is no hardware support.
      */
-    static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView, SkAlphaType,
+    static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView, vx_alpha_type,
                                                      const SkMatrix&, GrSamplerState,
                                                      const GrCaps& caps,
                                                      const float border[4] = kDefaultBorder);
@@ -81,7 +81,7 @@ public:
      * subset contains the entire texture.
      */
     static std::unique_ptr<GrFragmentProcessor> MakeSubset(GrSurfaceProxyView,
-                                                           SkAlphaType,
+                                                           vx_alpha_type,
                                                            const SkMatrix&,
                                                            GrSamplerState,
                                                            const SkRect& subset,
@@ -96,7 +96,7 @@ public:
      * draw, etc. It is only used to attempt to optimize away the shader subset calculations.
      */
     static std::unique_ptr<GrFragmentProcessor> MakeSubset(GrSurfaceProxyView,
-                                                           SkAlphaType,
+                                                           vx_alpha_type,
                                                            const SkMatrix&,
                                                            GrSamplerState,
                                                            const SkRect& subset,
@@ -116,7 +116,7 @@ public:
      */
     static std::unique_ptr<GrFragmentProcessor> MakeCustomLinearFilterInset(
             GrSurfaceProxyView,
-            SkAlphaType,
+            vx_alpha_type,
             const SkMatrix&,
             GrSamplerState::WrapMode wx,
             GrSamplerState::WrapMode wy,
@@ -195,7 +195,7 @@ private:
     SkRect fClamp;
     ShaderMode fShaderModes[2];
 
-    inline GrTextureEffect(GrSurfaceProxyView, SkAlphaType, const Sampling&);
+    inline GrTextureEffect(GrSurfaceProxyView, vx_alpha_type, const Sampling&);
 
     explicit GrTextureEffect(const GrTextureEffect& src);
 

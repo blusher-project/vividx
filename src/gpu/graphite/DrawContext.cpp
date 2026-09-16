@@ -6,7 +6,7 @@
  */
 #include "src/gpu/graphite/DrawContext.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorType.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSize.h"
@@ -62,8 +62,8 @@ sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
         return nullptr;
     }
     // We don't render to unknown or unpremul alphatypes
-    if (colorInfo.alphaType() == kUnknown_SkAlphaType ||
-        colorInfo.alphaType() == kUnpremul_SkAlphaType) {
+    if (colorInfo.alphaType() == VX_ALPHA_TYPE_UNKNOWN ||
+        colorInfo.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         return nullptr;
     }
     if (!caps->isRenderable(target->textureInfo())) {

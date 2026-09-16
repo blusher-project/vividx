@@ -7,7 +7,7 @@
 
 #include "include/core/SkYUVAPixmaps.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/private/SkDebug.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkRectMemcpy.h"
@@ -81,7 +81,7 @@ SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
         // Use kUnpremul so that we never multiply alpha when copying data in.
         fPlaneInfos[i] = SkImageInfo::Make(planeDimensions[i],
                                            colorTypes[i],
-                                           kUnpremul_SkAlphaType);
+                                           VX_ALPHA_TYPE_UNPREMULTIPLIED);
         int numRequiredChannels = yuvaInfo.numChannelsInPlane(i);
         SkASSERT(numRequiredChannels > 0);
         auto [numColorTypeChannels, colorTypeDataType] = NumChannelsAndDataType(colorTypes[i]);

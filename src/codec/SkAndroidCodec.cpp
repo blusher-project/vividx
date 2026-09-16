@@ -9,7 +9,7 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRect.h"
@@ -101,7 +101,7 @@ SkColorType SkAndroidCodec::computeOutputColorType(SkColorType requestedColorTyp
             }
             break;
         case kRGB_565_SkColorType:
-            if (kOpaque_SkAlphaType == this->getInfo().alphaType()) {
+            if (VX_ALPHA_TYPE_OPAQUE == this->getInfo().alphaType()) {
                 return kRGB_565_SkColorType;
             }
             break;
@@ -121,11 +121,11 @@ SkColorType SkAndroidCodec::computeOutputColorType(SkColorType requestedColorTyp
         (colorDepth == 10 ? kRGBA_1010102_SkColorType : kN32_SkColorType);
 }
 
-SkAlphaType SkAndroidCodec::computeOutputAlphaType(bool requestedUnpremul) {
-    if (kOpaque_SkAlphaType == this->getInfo().alphaType()) {
-        return kOpaque_SkAlphaType;
+vx_alpha_type SkAndroidCodec::computeOutputAlphaType(bool requestedUnpremul) {
+    if (VX_ALPHA_TYPE_OPAQUE == this->getInfo().alphaType()) {
+        return VX_ALPHA_TYPE_OPAQUE;
     }
-    return requestedUnpremul ? kUnpremul_SkAlphaType : kPremul_SkAlphaType;
+    return requestedUnpremul ? VX_ALPHA_TYPE_UNPREMULTIPLIED : VX_ALPHA_TYPE_PREMULTIPLIED;
 }
 
 sk_sp<SkColorSpace> SkAndroidCodec::computeOutputColorSpace(SkColorType outputColorType,

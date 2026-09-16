@@ -307,13 +307,13 @@ SkCodec::Result ToSkCodecResult(rust_png::DecodingResult rustResult) {
 void blendRow(SkSpan<uint8_t> dstRow,
               SkSpan<const uint8_t> srcRow,
               SkColorType color,
-              SkAlphaType alpha) {
+              vx_alpha_type alpha) {
     SkASSERT_RELEASE(dstRow.size() >= srcRow.size());
     SkRasterPipeline_<256> p;
 
     SkRasterPipelineContexts::MemoryCtx dstCtx = {dstRow.data(), 0};
     p.appendLoadDst(color, &dstCtx);
-    if (kUnpremul_SkAlphaType == alpha) {
+    if (VX_ALPHA_TYPE_UNPREMULTIPLIED == alpha) {
         p.append(SkRasterPipelineOp::premul_dst);
     }
 
@@ -322,13 +322,13 @@ void blendRow(SkSpan<uint8_t> dstRow,
         0,
     };
     p.appendLoad(color, &srcCtx);
-    if (kUnpremul_SkAlphaType == alpha) {
+    if (VX_ALPHA_TYPE_UNPREMULTIPLIED == alpha) {
         p.append(SkRasterPipelineOp::premul);
     }
 
     p.append(SkRasterPipelineOp::srcover);
 
-    if (kUnpremul_SkAlphaType == alpha) {
+    if (VX_ALPHA_TYPE_UNPREMULTIPLIED == alpha) {
         p.append(SkRasterPipelineOp::unpremul);
     }
     p.appendStore(color, &dstCtx);
@@ -346,7 +346,7 @@ void blendAllRows(SkSpan<uint8_t> dstFrame,
                   size_t rowSize,
                   size_t rowStride,
                   SkColorType color,
-                  SkAlphaType alpha) {
+                  vx_alpha_type alpha) {
     while (srcFrame.size() >= rowSize) {
         blendRow(dstFrame, srcFrame.first(rowSize), color, alpha);
 
@@ -788,7 +788,7 @@ bool SkPngRustCodec::isSampling() const {
 // can use rust_png::Reader::read_row to decode directly into dst.
 bool SkPngRustCodec::canReadRow() {
     // Check alpha types
-    if (this->dstInfo().alphaType() != kUnpremul_SkAlphaType) {
+    if (this->dstInfo().alphaType() != VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         return false;
     }
     // We cannot decode directly when subsetting or sub-sampling.

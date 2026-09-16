@@ -7,7 +7,7 @@
 
 #include "src/codec/SkBmpRLECodec.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -542,7 +542,7 @@ int SkBmpRLECodec::decodeRLE(const SkImageInfo& dstInfo, void* dst, size_t dstRo
 
 bool SkBmpRLECodec::skipRows(int count) {
     const SkImageInfo rowInfo = SkImageInfo::Make(this->dimensions().width(), count,
-                                                  kN32_SkColorType, kUnpremul_SkAlphaType);
+                                                  kN32_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     return count == this->decodeRows(rowInfo, nullptr, 0, this->options());
 }
 

@@ -283,7 +283,7 @@ bool SkBmpRustCodec::onGetFrameInfo(int index, FrameInfo* info) const {
         info->fDuration = 0;
         info->fFullyReceived = fReader->image_data_loaded();
         info->fAlphaType = this->getInfo().alphaType();
-        info->fHasAlphaWithinBounds = info->fAlphaType != kOpaque_SkAlphaType;
+        info->fHasAlphaWithinBounds = info->fAlphaType != VX_ALPHA_TYPE_OPAQUE;
         info->fDisposalMethod = SkCodecAnimation::DisposalMethod::kKeep;
         info->fBlend = SkCodecAnimation::Blend::kSrc;
         info->fFrameRect = SkIRect::MakeSize(this->dimensions());
@@ -334,8 +334,8 @@ SkCodec::Result SkBmpRustCodec::initializeSwizzler(const SkImageInfo& dstInfo,
     if (this->xformOnDecode()) {
         fXformBuffer.reset(new uint32_t[dstInfo.width()]);
         swizzlerInfo = swizzlerInfo.makeColorType(kXformSrcColorType);
-        if (kPremul_SkAlphaType == dstInfo.alphaType()) {
-            swizzlerInfo = swizzlerInfo.makeAlphaType(kUnpremul_SkAlphaType);
+        if (VX_ALPHA_TYPE_PREMULTIPLIED == dstInfo.alphaType()) {
+            swizzlerInfo = swizzlerInfo.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
         }
         swizzlerOptions.fZeroInitialized = kNo_ZeroInitialized;
     }

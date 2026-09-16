@@ -8,7 +8,7 @@
 
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/codec/SkPixmapUtils.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkData.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
@@ -21,7 +21,7 @@
 #include <utility>
 
 std::unique_ptr<SkImageGenerator> SkCodecImageGenerator::MakeFromEncodedCodec(
-        sk_sp<const SkData> data, std::optional<SkAlphaType> at) {
+        sk_sp<const SkData> data, std::optional<vx_alpha_type> at) {
     auto codec = SkCodec::MakeFromData(data);
     if (codec == nullptr) {
         return nullptr;
@@ -31,21 +31,21 @@ std::unique_ptr<SkImageGenerator> SkCodecImageGenerator::MakeFromEncodedCodec(
 }
 
 std::unique_ptr<SkImageGenerator> SkCodecImageGenerator::MakeFromCodec(
-        std::unique_ptr<SkCodec> codec, std::optional<SkAlphaType> at) {
+        std::unique_ptr<SkCodec> codec, std::optional<vx_alpha_type> at) {
     return codec ? std::unique_ptr<SkImageGenerator>(
                            new SkCodecImageGenerator(std::move(codec), at))
                  : nullptr;
 }
 
-static SkImageInfo adjust_info(SkCodec* codec, std::optional<SkAlphaType> at) {
-    SkASSERT(at != kOpaque_SkAlphaType);
+static SkImageInfo adjust_info(SkCodec* codec, std::optional<vx_alpha_type> at) {
+    SkASSERT(at != VX_ALPHA_TYPE_OPAQUE);
     SkImageInfo info = codec->getInfo();
     if (at.has_value()) {
         // If a specific alpha type was requested, use that.
         info = info.makeAlphaType(*at);
-    } else if (kUnpremul_SkAlphaType == info.alphaType()) {
+    } else if (VX_ALPHA_TYPE_UNPREMULTIPLIED == info.alphaType()) {
         // Otherwise, prefer premul over unpremul (this produces better filtering in general)
-        info = info.makeAlphaType(kPremul_SkAlphaType);
+        info = info.makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     }
     if (SkEncodedOriginSwapsWidthHeight(codec->getOrigin())) {
         info = SkPixmapUtils::SwapWidthHeight(info);
@@ -54,7 +54,7 @@ static SkImageInfo adjust_info(SkCodec* codec, std::optional<SkAlphaType> at) {
 }
 
 SkCodecImageGenerator::SkCodecImageGenerator(std::unique_ptr<SkCodec> codec,
-                                             std::optional<SkAlphaType> at)
+                                             std::optional<vx_alpha_type> at)
         : SkImageGenerator(adjust_info(codec.get(), at)), fCodec(std::move(codec)) {}
 
 sk_sp<const SkData> SkCodecImageGenerator::onRefEncodedData() {

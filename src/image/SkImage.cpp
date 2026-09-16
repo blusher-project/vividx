@@ -183,7 +183,7 @@ bool SkImage::scalePixels(const SkPixmap& dst, const SkSamplingOptions& sampling
 
 SkColorType SkImage::colorType() const { return fInfo.colorType(); }
 
-SkAlphaType SkImage::alphaType() const { return fInfo.alphaType(); }
+vx_alpha_type SkImage::alphaType() const { return fInfo.alphaType(); }
 
 SkColorSpace* SkImage::colorSpace() const { return fInfo.colorSpace(); }
 

@@ -29,7 +29,7 @@ class GrRecordingContext;
 class GrXPFactory;
 class SkArenaAlloc;
 class SkRandom;
-enum SkAlphaType : int;
+
 enum class GrColorType;
 namespace skgpu::ganesh { class SurfaceDrawContext; }
 
@@ -52,7 +52,7 @@ std::unique_ptr<GrFragmentProcessor> MakeOptionalChildFP(GrProcessorTestData*);
  */
 class GrProcessorTestData {
 public:
-    using ViewInfo = std::tuple<GrSurfaceProxyView, GrColorType, SkAlphaType>;
+    using ViewInfo = std::tuple<GrSurfaceProxyView, GrColorType, vx_alpha_type>;
 
     GrProcessorTestData(SkRandom* random, skgpu::ganesh::SurfaceDrawContext* sdc,
                         int maxTreeDepth, SkSpan<const ViewInfo> views);

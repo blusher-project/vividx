@@ -31,13 +31,13 @@ namespace SkNDKConversions {
         return ANDROID_BITMAP_FORMAT_NONE;
     }
 
-    uint32_t toAndroidBitmapAlphaFlags(SkAlphaType alphaType) {
+    uint32_t toAndroidBitmapAlphaFlags(vx_alpha_type alphaType) {
         switch (alphaType) {
-            case kPremul_SkAlphaType:
+            case VX_ALPHA_TYPE_PREMULTIPLIED:
                 return ANDROID_BITMAP_FLAGS_ALPHA_PREMUL;
-            case kOpaque_SkAlphaType:
+            case VX_ALPHA_TYPE_OPAQUE:
                 return ANDROID_BITMAP_FLAGS_ALPHA_OPAQUE;
-            case kUnpremul_SkAlphaType:
+            case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                 return ANDROID_BITMAP_FLAGS_ALPHA_UNPREMUL;
             default:
                 SkDEBUGFAIL("unspecified alphaType");

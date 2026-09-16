@@ -21,38 +21,38 @@
 #include <climits>
 #include <memory>
 
-static CGBitmapInfo compute_cgalpha_info_rgba(SkAlphaType at) {
+static CGBitmapInfo compute_cgalpha_info_rgba(vx_alpha_type at) {
     CGBitmapInfo info = kCGBitmapByteOrder32Big;
     switch (at) {
-        case kUnknown_SkAlphaType:                                          break;
-        case kOpaque_SkAlphaType:   info |= kCGImageAlphaNoneSkipLast;      break;
-        case kPremul_SkAlphaType:   info |= kCGImageAlphaPremultipliedLast; break;
-        case kUnpremul_SkAlphaType: info |= kCGImageAlphaLast;              break;
+        case VX_ALPHA_TYPE_UNKNOWN:                                          break;
+        case VX_ALPHA_TYPE_OPAQUE:   info |= kCGImageAlphaNoneSkipLast;      break;
+        case VX_ALPHA_TYPE_PREMULTIPLIED:   info |= kCGImageAlphaPremultipliedLast; break;
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED: info |= kCGImageAlphaLast;              break;
     }
     return info;
 }
 
-static CGBitmapInfo compute_cgalpha_info_bgra(SkAlphaType at) {
+static CGBitmapInfo compute_cgalpha_info_bgra(vx_alpha_type at) {
     CGBitmapInfo info = kCGBitmapByteOrder32Little;
     switch (at) {
-        case kUnknown_SkAlphaType:                                           break;
-        case kOpaque_SkAlphaType:   info |= kCGImageAlphaNoneSkipFirst;      break;
-        case kPremul_SkAlphaType:   info |= kCGImageAlphaPremultipliedFirst; break;
-        case kUnpremul_SkAlphaType: info |= kCGImageAlphaFirst;              break;
+        case VX_ALPHA_TYPE_UNKNOWN:                                           break;
+        case VX_ALPHA_TYPE_OPAQUE:   info |= kCGImageAlphaNoneSkipFirst;      break;
+        case VX_ALPHA_TYPE_PREMULTIPLIED:   info |= kCGImageAlphaPremultipliedFirst; break;
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED: info |= kCGImageAlphaFirst;              break;
     }
     return info;
 }
-static CGBitmapInfo compute_cgalpha_info_4444(SkAlphaType at) {
+static CGBitmapInfo compute_cgalpha_info_4444(vx_alpha_type at) {
     CGBitmapInfo info = kCGBitmapByteOrder16Little;
     switch (at) {
-        case kOpaque_SkAlphaType: info |= kCGImageAlphaNoneSkipLast;      break;
+        case VX_ALPHA_TYPE_OPAQUE: info |= kCGImageAlphaNoneSkipLast;      break;
         default:                  info |= kCGImageAlphaPremultipliedLast; break;
     }
     return info;
 }
 
 static bool get_bitmap_info(SkColorType skColorType,
-                            SkAlphaType skAlphaType,
+                            vx_alpha_type skAlphaType,
                             size_t* bitsPerComponent,
                             CGBitmapInfo* info,
                             bool* upscaleTo32) {
@@ -66,7 +66,7 @@ static bool get_bitmap_info(SkColorType skColorType,
             }
             // now treat like RGBA
             *bitsPerComponent = 8;
-            *info = compute_cgalpha_info_rgba(kOpaque_SkAlphaType);
+            *info = compute_cgalpha_info_rgba(VX_ALPHA_TYPE_OPAQUE);
             break;
         case kRGBA_8888_SkColorType:
             *bitsPerComponent = 8;
@@ -239,12 +239,12 @@ bool SkCreateBitmapFromCGImage(SkBitmap* dst, CGImageRef image) {
         case kCGImageAlphaNoneSkipLast:
         case kCGImageAlphaNoneSkipFirst:
             SkASSERT(SkBitmap::ComputeIsOpaque(tmp));
-            tmp.setAlphaType(kOpaque_SkAlphaType);
+            tmp.setAlphaType(VX_ALPHA_TYPE_OPAQUE);
             break;
         default:
             // we don't know if we're opaque or not, so compute it.
             if (SkBitmap::ComputeIsOpaque(tmp)) {
-                tmp.setAlphaType(kOpaque_SkAlphaType);
+                tmp.setAlphaType(VX_ALPHA_TYPE_OPAQUE);
             }
     }
 

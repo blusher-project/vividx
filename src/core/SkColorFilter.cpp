@@ -6,7 +6,7 @@
  */
 #include "include/core/SkColorFilter.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkFlattenable.h"
@@ -44,8 +44,8 @@ sk_sp<SkColorFilter> SkColorFilter::Deserialize(const void* data, size_t size,
 SkColor4f SkColorFilter::filterColor4f(const SkColor4f& origSrcColor, SkColorSpace* srcCS,
                                        SkColorSpace* dstCS) const {
     SkPMColor4f color = { origSrcColor.fR, origSrcColor.fG, origSrcColor.fB, origSrcColor.fA };
-    SkColorSpaceXformSteps(srcCS, kUnpremul_SkAlphaType,
-                           dstCS, kPremul_SkAlphaType).apply(color.vec());
+    SkColorSpaceXformSteps(srcCS, VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                           dstCS, VX_ALPHA_TYPE_PREMULTIPLIED).apply(color.vec());
 
     // SkColor4f will assert if we allow alpha outside [0,1]. (SkSL color filters might do this).
     return as_CFB(this)->onFilterColor4f(color, dstCS).pinAlpha().unpremul();
@@ -62,6 +62,6 @@ sk_sp<SkColorFilter> SkColorFilter::makeWithWorkingColorSpace(
     skcms_Matrix3x3 toXYZ;
     workingSpace->transferFn(&tf);
     workingSpace->toXYZD50(&toXYZ);
-    const SkAlphaType* kOriginalAlphaType = nullptr;
+    const vx_alpha_type* kOriginalAlphaType = nullptr;
     return SkColorFilterPriv::WithWorkingFormat(sk_ref_sp(base), &tf, &toXYZ, kOriginalAlphaType);
 }

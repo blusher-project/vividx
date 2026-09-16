@@ -7,7 +7,7 @@
 #ifndef SurfaceFillContext_DEFINED
 #define SurfaceFillContext_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
@@ -67,13 +67,13 @@ public:
      * @param rect  the rect to clear to
      * @param color the color to clear to.
      */
-    template <SkAlphaType AlphaType>
+    template <vx_alpha_type AlphaType>
     void clear(const SkIRect& rect, const SkRGBA4f<AlphaType>& color) {
         this->internalClear(&rect, this->adjustColorAlphaType(color));
     }
 
     /** Clears the entire render target to the color. */
-    template <SkAlphaType AlphaType> void clear(const SkRGBA4f<AlphaType>& color) {
+    template <vx_alpha_type AlphaType> void clear(const SkRGBA4f<AlphaType>& color) {
         this->internalClear(nullptr, this->adjustColorAlphaType(color));
     }
 
@@ -81,7 +81,7 @@ public:
      * Clear at minimum the pixels within 'scissor', but is allowed to clear the full render target
      * if that is the more performant option.
      */
-    template <SkAlphaType AlphaType>
+    template <vx_alpha_type AlphaType>
     void clearAtLeast(const SkIRect& scissor, const SkRGBA4f<AlphaType>& color) {
         this->internalClear(&scissor,
                             this->adjustColorAlphaType(color),
@@ -148,10 +148,10 @@ protected:
 
     void addOp(GrOp::Owner);
 
-    template <SkAlphaType AlphaType>
+    template <vx_alpha_type AlphaType>
     static std::array<float, 4> ConvertColor(SkRGBA4f<AlphaType> color);
 
-    template <SkAlphaType AlphaType>
+    template <vx_alpha_type AlphaType>
     std::array<float, 4> adjustColorAlphaType(SkRGBA4f<AlphaType> color) const;
 
     GrSurfaceProxyView fWriteView;
@@ -186,21 +186,21 @@ private:
 };
 
 template<>
-inline std::array<float, 4> SurfaceFillContext::ConvertColor<kPremul_SkAlphaType>(
+inline std::array<float, 4> SurfaceFillContext::ConvertColor<VX_ALPHA_TYPE_PREMULTIPLIED>(
         SkPMColor4f color) {
     return color.unpremul().array();
 }
 
 template<>
-inline std::array<float, 4> SurfaceFillContext::ConvertColor<kUnpremul_SkAlphaType>(
+inline std::array<float, 4> SurfaceFillContext::ConvertColor<VX_ALPHA_TYPE_UNPREMULTIPLIED>(
         SkColor4f color) {
     return color.premul().array();
 }
 
-template <SkAlphaType AlphaType>
+template <vx_alpha_type AlphaType>
 std::array<float, 4> SurfaceFillContext::adjustColorAlphaType(SkRGBA4f<AlphaType> color) const {
-    if (AlphaType == kUnknown_SkAlphaType ||
-        this->colorInfo().alphaType() == kUnknown_SkAlphaType) {
+    if (AlphaType == VX_ALPHA_TYPE_UNKNOWN ||
+        this->colorInfo().alphaType() == VX_ALPHA_TYPE_UNKNOWN) {
         return color.array();
     }
     return (AlphaType == this->colorInfo().alphaType()) ? color.array() : ConvertColor(color);

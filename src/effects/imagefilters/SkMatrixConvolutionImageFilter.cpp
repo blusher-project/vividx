@@ -7,7 +7,7 @@
 
 #include "src/effects/imagefilters/SkMatrixConvolutionImageFilter.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkFlattenable.h"
@@ -207,7 +207,7 @@ SkBitmap create_kernel_bitmap(const SkISize& kernelSize, const float* kernel,
     SkBitmap kernelBM;
     if (!kernelBM.tryAllocPixels(SkImageInfo::Make({ quantizedKernelSize, 1 },
                                                    kAlpha_8_SkColorType,
-                                                   kPremul_SkAlphaType))) {
+                                                   VX_ALPHA_TYPE_PREMULTIPLIED))) {
         // OOM so return an empty bitmap, which will be detected later on in onFilterImage().
         return {};
     }

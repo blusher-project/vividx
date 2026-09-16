@@ -20,7 +20,7 @@ class SkMatrix;
 class SkPaint;
 class SkPicture;
 class SkSurfaceProps;
-enum SkAlphaType : int;
+
 namespace SkImages { enum class BitDepth; }
 struct SkISize;
 
@@ -54,7 +54,7 @@ std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize&,
  *  kOpaque_SkAlphaType is not supported, and will return NULL.
  */
 std::unique_ptr<SkImageGenerator> MakeFromEncoded(sk_sp<const SkData>,
-                                                  std::optional<SkAlphaType> = std::nullopt);
+                                                  std::optional<vx_alpha_type> = std::nullopt);
 }
 
 #endif

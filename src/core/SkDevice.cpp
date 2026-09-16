@@ -7,7 +7,7 @@
 
 #include "src/core/SkDevice.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkDrawable.h"
@@ -169,7 +169,7 @@ void SkDevice::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& l
     SkRect srcR, dstR;
     SkColor c;
     bool isFixedColor = false;
-    const SkImageInfo info = SkImageInfo::Make(1, 1, kBGRA_8888_SkColorType, kUnpremul_SkAlphaType);
+    const SkImageInfo info = SkImageInfo::Make(1, 1, kBGRA_8888_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     while (iter.next(&srcR, &dstR, &isFixedColor, &c)) {
         // TODO: support this fast-path for GPU images
@@ -512,7 +512,7 @@ SkNoPixelsDevice::SkNoPixelsDevice(const SkIRect& bounds, const SkSurfaceProps& 
 
 SkNoPixelsDevice::SkNoPixelsDevice(const SkIRect& bounds, const SkSurfaceProps& props,
                                    sk_sp<SkColorSpace> colorSpace)
-    : SkDevice(SkImageInfo::Make(bounds.size(), kUnknown_SkColorType, kUnknown_SkAlphaType,
+    : SkDevice(SkImageInfo::Make(bounds.size(), kUnknown_SkColorType, VX_ALPHA_TYPE_UNKNOWN,
                                  std::move(colorSpace)), props) {
     // this fails if we enable this assert: DiscardableImageMapTest.GetDiscardableImagesInRectMaxImage
     //SkASSERT(bounds.width() >= 0 && bounds.height() >= 0);

@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/ClipStack.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkClipOp.h"
 #include "include/core/SkColorSpace.h"
@@ -1335,7 +1335,7 @@ GrClip::Effect ClipStack::apply(GrRecordingContext* rContext,
     // Convert any clip shader first, since it's not geometrically related to the draw bounds
     std::unique_ptr<GrFragmentProcessor> clipFP = nullptr;
     if (cs.shader()) {
-        static const GrColorInfo kCoverageColorInfo{GrColorType::kUnknown, kPremul_SkAlphaType,
+        static const GrColorInfo kCoverageColorInfo{GrColorType::kUnknown, VX_ALPHA_TYPE_PREMULTIPLIED,
                                                     nullptr};
         GrFPArgs args(
                 sdc, &kCoverageColorInfo, sdc->surfaceProps(), GrFPArgs::Scope::kDefault);
@@ -1690,7 +1690,7 @@ GrFPResult ClipStack::GetSWMaskFP(GrRecordingContext* context, Mask::Stack* mask
     // We scissor to bounds. The mask's texel centers are aligned to device space
     // pixel centers. Hence this domain of texture coordinates.
     auto domain = subset.makeInset(0.5, 0.5);
-    auto fp = GrTextureEffect::MakeSubset(std::move(maskProxy), kPremul_SkAlphaType, m,
+    auto fp = GrTextureEffect::MakeSubset(std::move(maskProxy), VX_ALPHA_TYPE_PREMULTIPLIED, m,
                                           samplerState, subset, domain, *context->priv().caps());
     fp = GrFragmentProcessor::DeviceSpace(std::move(fp));
 

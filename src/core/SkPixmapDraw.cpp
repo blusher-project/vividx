@@ -7,7 +7,7 @@
  * This file contains implementations of SkPixmap methods which require the CPU backend.
  */
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
@@ -47,10 +47,10 @@ bool SkPixmap::scalePixels(const SkPixmap& actualDst, const SkSamplingOptions& s
     // pixels without ever premultiplying them (perhaps losing information in the color channels).
     // This is an idiosyncratic feature of scalePixels(), and is tested by scalepixels_unpremul GM.
     bool clampAsIfUnpremul = false;
-    if (src.alphaType() == kUnpremul_SkAlphaType &&
-        dst.alphaType() == kUnpremul_SkAlphaType) {
-        src.reset(src.info().makeAlphaType(kPremul_SkAlphaType), src.addr(), src.rowBytes());
-        dst.reset(dst.info().makeAlphaType(kOpaque_SkAlphaType), dst.addr(), dst.rowBytes());
+    if (src.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED &&
+        dst.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
+        src.reset(src.info().makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED), src.addr(), src.rowBytes());
+        dst.reset(dst.info().makeAlphaType(VX_ALPHA_TYPE_OPAQUE), dst.addr(), dst.rowBytes());
 
         // We'll need to tell the image shader to clamp to [0,1] instead of the
         // usual [0,a] when using a bicubic scaling (kHigh_SkFilterQuality).

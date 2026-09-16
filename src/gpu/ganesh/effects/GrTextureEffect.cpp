@@ -30,7 +30,7 @@
 #include <cmath>
 #include <utility>
 
-enum SkAlphaType : int;
+
 struct GrShaderCaps;
 
 using Wrap = GrSamplerState::WrapMode;
@@ -215,7 +215,7 @@ bool GrTextureEffect::Sampling::hasBorderAlpha() const {
 }
 
 std::unique_ptr<GrFragmentProcessor> GrTextureEffect::Make(GrSurfaceProxyView view,
-                                                           SkAlphaType alphaType,
+                                                           vx_alpha_type alphaType,
                                                            const SkMatrix& matrix,
                                                            Filter filter,
                                                            MipmapMode mm) {
@@ -227,7 +227,7 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::Make(GrSurfaceProxyView vi
 }
 
 std::unique_ptr<GrFragmentProcessor> GrTextureEffect::Make(GrSurfaceProxyView view,
-                                                           SkAlphaType alphaType,
+                                                           vx_alpha_type alphaType,
                                                            const SkMatrix& matrix,
                                                            GrSamplerState sampler,
                                                            const GrCaps& caps,
@@ -246,7 +246,7 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::Make(GrSurfaceProxyView vi
 }
 
 std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeSubset(GrSurfaceProxyView view,
-                                                                 SkAlphaType alphaType,
+                                                                 vx_alpha_type alphaType,
                                                                  const SkMatrix& matrix,
                                                                  GrSamplerState sampler,
                                                                  const SkRect& subset,
@@ -267,7 +267,7 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeSubset(GrSurfaceProxyV
 }
 
 std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeSubset(GrSurfaceProxyView view,
-                                                                 SkAlphaType alphaType,
+                                                                 vx_alpha_type alphaType,
                                                                  const SkMatrix& matrix,
                                                                  GrSamplerState sampler,
                                                                  const SkRect& subset,
@@ -283,7 +283,7 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeSubset(GrSurfaceProxyV
 
 std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeCustomLinearFilterInset(
         GrSurfaceProxyView view,
-        SkAlphaType alphaType,
+        vx_alpha_type alphaType,
         const SkMatrix& matrix,
         Wrap wx,
         Wrap wy,
@@ -819,7 +819,7 @@ bool GrTextureEffect::matrixEffectShouldNormalize() const {
 }
 
 GrTextureEffect::GrTextureEffect(GrSurfaceProxyView view,
-                                 SkAlphaType alphaType,
+                                 vx_alpha_type alphaType,
                                  const Sampling& sampling)
         : GrFragmentProcessor(kGrTextureEffect_ClassID,
                               ModulateForSamplerOptFlags(alphaType, sampling.hasBorderAlpha()))

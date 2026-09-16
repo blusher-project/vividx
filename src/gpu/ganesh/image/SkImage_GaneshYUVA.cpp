@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/image/SkImage_GaneshYUVA.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkSurface.h"
@@ -58,8 +58,8 @@ SkImage_GaneshYUVA::SkImage_GaneshYUVA(sk_sp<GrImageContext> context,
                                       // is because, although the planar data is always un-premul,
                                       // the final interleaved RGBA sample produced in the shader
                                       // is premul (and similar if flattened via asView).
-                                      proxies.yuvaInfo().hasAlpha() ? kPremul_SkAlphaType
-                                                                    : kOpaque_SkAlphaType,
+                                      proxies.yuvaInfo().hasAlpha() ? VX_ALPHA_TYPE_PREMULTIPLIED
+                                                                    : VX_ALPHA_TYPE_OPAQUE,
                                       std::move(imageColorSpace)),
                     uniqueID)
         , fYUVAProxies(std::move(proxies)) {

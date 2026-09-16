@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/Device.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
@@ -212,28 +212,28 @@ sk_sp<Device> Device::Make(GrRecordingContext* rContext,
                                         origin,
                                         surfaceProps);
 
-    return Device::Make(std::move(sdc), kPremul_SkAlphaType, init);
+    return Device::Make(std::move(sdc), VX_ALPHA_TYPE_PREMULTIPLIED, init);
 }
 
 SkImageInfo Device::MakeInfo(SurfaceContext* sc, DeviceFlags flags) {
     SkColorType colorType = GrColorTypeToSkColorType(sc->colorInfo().colorType());
     return SkImageInfo::Make(sc->width(), sc->height(), colorType,
-                             flags & DeviceFlags::kIsOpaque ? kOpaque_SkAlphaType
-                                                            : kPremul_SkAlphaType,
+                             flags & DeviceFlags::kIsOpaque ? VX_ALPHA_TYPE_OPAQUE
+                                                            : VX_ALPHA_TYPE_PREMULTIPLIED,
                              sc->colorInfo().refColorSpace());
 }
 
 
 /** Checks that the alpha type is legal and gets constructor flags. Returns false if device creation
     should fail. */
-bool Device::CheckAlphaTypeAndGetFlags(SkAlphaType alphaType,
+bool Device::CheckAlphaTypeAndGetFlags(vx_alpha_type alphaType,
                                        InitContents init,
                                        DeviceFlags* flags) {
     *flags = DeviceFlags::kNone;
     switch (alphaType) {
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             break;
-        case kOpaque_SkAlphaType:
+        case VX_ALPHA_TYPE_OPAQUE:
             *flags |= DeviceFlags::kIsOpaque;
             break;
         default: // If it is unpremul or unknown don't try to render
@@ -246,7 +246,7 @@ bool Device::CheckAlphaTypeAndGetFlags(SkAlphaType alphaType,
 }
 
 sk_sp<Device> Device::Make(std::unique_ptr<SurfaceDrawContext> sdc,
-                           SkAlphaType alphaType,
+                           vx_alpha_type alphaType,
                            InitContents init) {
     if (!sdc) {
         return nullptr;

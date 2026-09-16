@@ -7,7 +7,7 @@
 
 #include "src/shaders/SkColorShader.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
 #include "include/core/SkFlattenable.h"
@@ -63,8 +63,8 @@ void SkColorShader::flatten(SkWriteBuffer& buffer) const {
 
 bool SkColorShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const {
     SkColor4f color = fColor;
-    SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                           rec.fDstCS,          kPremul_SkAlphaType).apply(color.vec());
+    SkColorSpaceXformSteps(sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                           rec.fDstCS,          VX_ALPHA_TYPE_PREMULTIPLIED).apply(color.vec());
     rec.fPipeline->appendConstantColor(rec.fAlloc, color.vec());
     return true;
 }
@@ -89,8 +89,8 @@ sk_sp<SkShader> Color(const SkColor4f& color, sk_sp<SkColorSpace> space) {
     // Convert to sRGB to simplify what must be stored, remaining unpremul until the final dst
     // color space is known during actual shading. Also pin the alpha to [0,1].
     SkColor4f srgb = color.pinAlpha();
-    SkColorSpaceXformSteps(space.get(),         kUnpremul_SkAlphaType,
-                           sk_srgb_singleton(), kUnpremul_SkAlphaType).apply(srgb.vec());
+    SkColorSpaceXformSteps(space.get(),         VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                           sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED).apply(srgb.vec());
 
     return sk_make_sp<SkColorShader>(srgb);
 }

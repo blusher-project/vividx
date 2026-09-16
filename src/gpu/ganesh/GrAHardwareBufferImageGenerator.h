@@ -31,7 +31,7 @@ extern "C" {
  */
 class GrAHardwareBufferImageGenerator : public GrTextureGenerator {
 public:
-    static std::unique_ptr<GrAHardwareBufferImageGenerator> Make(AHardwareBuffer*, SkAlphaType,
+    static std::unique_ptr<GrAHardwareBufferImageGenerator> Make(AHardwareBuffer*, vx_alpha_type,
                                                   sk_sp<SkColorSpace>, GrSurfaceOrigin);
 
     ~GrAHardwareBufferImageGenerator() override;
@@ -39,7 +39,7 @@ public:
     static void DeleteGLTexture(void* ctx);
 
 private:
-    GrAHardwareBufferImageGenerator(const SkImageInfo&, AHardwareBuffer*, SkAlphaType,
+    GrAHardwareBufferImageGenerator(const SkImageInfo&, AHardwareBuffer*, vx_alpha_type,
                                     bool isProtectedContent, uint32_t bufferFormat,
                                     GrSurfaceOrigin surfaceOrigin);
 

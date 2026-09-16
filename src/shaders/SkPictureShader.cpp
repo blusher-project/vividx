@@ -7,7 +7,7 @@
 
 #include "src/shaders/SkPictureShader.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -237,7 +237,7 @@ SkPictureShader::CachedImageInfo SkPictureShader::CachedImageInfo::Make(
             tileScale,
             SkMatrix::RectToRectOrIdentity(bounds,
                                            SkRect::MakeIWH(tileSize.width(), tileSize.height())),
-            SkImageInfo::Make(tileSize, imgCT, kPremul_SkAlphaType, imgCS),
+            SkImageInfo::Make(tileSize, imgCT, VX_ALPHA_TYPE_PREMULTIPLIED, imgCS),
             props};
 }
 

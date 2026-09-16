@@ -8,7 +8,7 @@
 #ifndef SK_COMMON_FLAGS_CONFIG_H
 #define SK_COMMON_FLAGS_CONFIG_H
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "tools/flags/CommandLineFlags.h"

@@ -13,7 +13,7 @@
 #include "src/core/SkColorData.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 
-enum SkAlphaType : int;
+
 enum class GrQuadAAFlags;
 struct SkPoint;
 
@@ -28,7 +28,7 @@ struct GrQuadSetEntry {
 /** Used by SDC::drawTextureSet and TextureOp */
 struct GrTextureSetEntry {
     GrSurfaceProxyView fProxyView;
-    SkAlphaType fSrcAlphaType;
+    vx_alpha_type fSrcAlphaType;
     SkRect fSrcRect;
     SkRect fDstRect;
     const SkPoint* fDstClipQuad; // Must be null, or point to an array of 4 points

@@ -19,7 +19,7 @@ class GrRecordingContext;
 class GrSurfaceProxyView;
 class SkLatticeIter;
 class SkMatrix;
-enum SkAlphaType : int;
+
 struct SkRect;
 
 namespace skgpu::ganesh::LatticeOp {
@@ -28,7 +28,7 @@ GrOp::Owner MakeNonAA(GrRecordingContext*,
                       GrPaint&&,
                       const SkMatrix& viewMatrix,
                       GrSurfaceProxyView view,
-                      SkAlphaType alphaType,
+                      vx_alpha_type alphaType,
                       sk_sp<GrColorSpaceXform>,
                       GrSamplerState::Filter,
                       std::unique_ptr<SkLatticeIter>,

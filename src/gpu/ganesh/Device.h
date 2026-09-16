@@ -53,7 +53,7 @@ class SkSpecialImage;
 class SkSurfaceProps;
 class SkSurface_Ganesh;
 class SkVertices;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 enum class GrAA : bool;
 enum class GrColorType;
@@ -313,7 +313,7 @@ private:
     SK_DECL_BITFIELD_CLASS_OPS_FRIENDS(DeviceFlags);
 
     static SkImageInfo MakeInfo(SurfaceContext*,  DeviceFlags);
-    static bool CheckAlphaTypeAndGetFlags(SkAlphaType, InitContents, DeviceFlags*);
+    static bool CheckAlphaTypeAndGetFlags(vx_alpha_type, InitContents, DeviceFlags*);
 
     sk_sp<GrRecordingContext> fContext;
 
@@ -324,7 +324,7 @@ private:
     ClipStack fClip;
 
     static sk_sp<Device> Make(std::unique_ptr<SurfaceDrawContext>,
-                              SkAlphaType,
+                              vx_alpha_type,
                               InitContents);
 
     Device(std::unique_ptr<SurfaceDrawContext>, DeviceFlags);

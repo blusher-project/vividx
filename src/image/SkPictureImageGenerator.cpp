@@ -7,7 +7,7 @@
 
 #include "src/image/SkPictureImageGenerator.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -52,7 +52,7 @@ std::unique_ptr<SkImageGenerator> MakeFromPicture(const SkISize& size,
     }
 
     SkImageInfo info =
-            SkImageInfo::Make(size, colorType, kPremul_SkAlphaType, std::move(colorSpace));
+            SkImageInfo::Make(size, colorType, VX_ALPHA_TYPE_PREMULTIPLIED, std::move(colorSpace));
     return std::unique_ptr<SkImageGenerator>(
         new SkPictureImageGenerator(info, std::move(picture), matrix, paint, props));
 }

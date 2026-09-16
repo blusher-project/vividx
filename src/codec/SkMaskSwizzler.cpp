@@ -7,7 +7,7 @@
 
 #include "src/codec/SkMaskSwizzler.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -405,10 +405,10 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         proc = &swizzle_mask16_to_rgba_opaque;
                     } else {
                         switch (dstInfo.alphaType()) {
-                            case kUnpremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                                 proc = &swizzle_mask16_to_rgba_unpremul;
                                 break;
-                            case kPremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_PREMULTIPLIED:
                                 proc = &swizzle_mask16_to_rgba_premul;
                                 break;
                             default:
@@ -421,10 +421,10 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         proc = &swizzle_mask16_to_bgra_opaque;
                     } else {
                         switch (dstInfo.alphaType()) {
-                            case kUnpremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                                 proc = &swizzle_mask16_to_bgra_unpremul;
                                 break;
-                            case kPremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_PREMULTIPLIED:
                                 proc = &swizzle_mask16_to_bgra_premul;
                                 break;
                             default:
@@ -446,10 +446,10 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         proc = &swizzle_mask24_to_rgba_opaque;
                     } else {
                         switch (dstInfo.alphaType()) {
-                            case kUnpremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                                 proc = &swizzle_mask24_to_rgba_unpremul;
                                 break;
-                            case kPremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_PREMULTIPLIED:
                                 proc = &swizzle_mask24_to_rgba_premul;
                                 break;
                             default:
@@ -462,10 +462,10 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         proc = &swizzle_mask24_to_bgra_opaque;
                     } else {
                         switch (dstInfo.alphaType()) {
-                            case kUnpremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                                 proc = &swizzle_mask24_to_bgra_unpremul;
                                 break;
-                            case kPremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_PREMULTIPLIED:
                                 proc = &swizzle_mask24_to_bgra_premul;
                                 break;
                             default:
@@ -487,10 +487,10 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         proc = &swizzle_mask32_to_rgba_opaque;
                     } else {
                         switch (dstInfo.alphaType()) {
-                            case kUnpremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                                 proc = &swizzle_mask32_to_rgba_unpremul;
                                 break;
-                            case kPremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_PREMULTIPLIED:
                                 proc = &swizzle_mask32_to_rgba_premul;
                                 break;
                             default:
@@ -503,10 +503,10 @@ SkMaskSwizzler* SkMaskSwizzler::CreateMaskSwizzler(const SkImageInfo& dstInfo,
                         proc = &swizzle_mask32_to_bgra_opaque;
                     } else {
                         switch (dstInfo.alphaType()) {
-                            case kUnpremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                                 proc = &swizzle_mask32_to_bgra_unpremul;
                                 break;
-                            case kPremul_SkAlphaType:
+                            case VX_ALPHA_TYPE_PREMULTIPLIED:
                                 proc = &swizzle_mask32_to_bgra_premul;
                                 break;
                             default:

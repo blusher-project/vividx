@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/SkGr.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
@@ -345,7 +345,7 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
     SkASSERT(ct == GrColorType::kAlpha_8);
     GrSamplerState sampler(GrSamplerState::WrapMode::kRepeat, SkFilterMode::kNearest);
     auto te = GrTextureEffect::Make(
-            std::move(tex), kPremul_SkAlphaType, SkMatrix::I(), sampler, *caps);
+            std::move(tex), VX_ALPHA_TYPE_PREMULTIPLIED, SkMatrix::I(), sampler, *caps);
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "uniform half range;"
         "uniform shader inputFP;"

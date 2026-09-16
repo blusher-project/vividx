@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrModulateAtlasCoverageEffect.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkString.h"
 #include "include/private/SkSLSampleUsage.h"
@@ -37,7 +37,7 @@ GrModulateAtlasCoverageEffect::GrModulateAtlasCoverageEffect(
         , fFlags(flags)
         , fBounds((fFlags & Flags::kCheckBounds) ? devIBounds : SkIRect{0,0,0,0}) {
     this->registerChild(std::move(inputFP));
-    this->registerChild(GrTextureEffect::Make(std::move(atlasView), kUnknown_SkAlphaType,
+    this->registerChild(GrTextureEffect::Make(std::move(atlasView), VX_ALPHA_TYPE_UNKNOWN,
                                               devToAtlasMatrix, GrSamplerState::Filter::kNearest),
                         SkSL::SampleUsage::Explicit());
 }

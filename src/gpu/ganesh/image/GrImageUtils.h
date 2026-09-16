@@ -29,7 +29,7 @@ class SkImage_Raster;
 class SkMatrix;
 class SkSurfaceProps;
 enum GrSurfaceOrigin : int;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 enum class GrColorType;
 enum class SkTileMode;
@@ -116,7 +116,7 @@ inline std::unique_ptr<GrFragmentProcessor> AsFragmentProcessor(SurfaceDrawConte
 
 std::unique_ptr<GrFragmentProcessor> MakeFragmentProcessorFromView(GrRecordingContext*,
                                                                    GrSurfaceProxyView,
-                                                                   SkAlphaType,
+                                                                   vx_alpha_type,
                                                                    SkSamplingOptions,
                                                                    const SkTileMode[2],
                                                                    const SkMatrix&,

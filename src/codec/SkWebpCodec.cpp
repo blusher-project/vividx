@@ -10,7 +10,7 @@
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkCodecAnimation.h"
 #include "include/codec/SkWebpDecoder.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -519,10 +519,10 @@ namespace {
 // Requires that the src input be unpremultiplied (or opaque).
 class RPBlender final : SkNoncopyable {
 public:
-    RPBlender(SkColorType dstCT, SkColorType srcCT, SkAlphaType dstAt, bool srcHasAlpha)
+    RPBlender(SkColorType dstCT, SkColorType srcCT, vx_alpha_type dstAt, bool srcHasAlpha)
     {
         fRP.appendLoadDst(dstCT, &fDstCtx);
-        if (kUnpremul_SkAlphaType == dstAt) {
+        if (VX_ALPHA_TYPE_UNPREMULTIPLIED == dstAt) {
             fRP.append(SkRasterPipelineOp::premul_dst);
         }
 
@@ -533,7 +533,7 @@ public:
 
         fRP.append(SkRasterPipelineOp::srcover);
 
-        if (kUnpremul_SkAlphaType == dstAt) {
+        if (VX_ALPHA_TYPE_UNPREMULTIPLIED == dstAt) {
             fRP.append(SkRasterPipelineOp::unpremul);
         }
         fRP.appendStore(dstCT, &fDstCtx);
@@ -661,10 +661,10 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
 
     auto webpInfo = dstInfo;
     if (!frame.has_alpha) {
-        webpInfo = webpInfo.makeAlphaType(kOpaque_SkAlphaType);
+        webpInfo = webpInfo.makeAlphaType(VX_ALPHA_TYPE_OPAQUE);
     } else if (this->colorXform() || blendWithPrevFrame) {
         // the colorXform and blend_line expect unpremul.
-        webpInfo = webpInfo.makeAlphaType(kUnpremul_SkAlphaType);
+        webpInfo = webpInfo.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
     }
     if (this->colorXform()) {
         // Swizzling between RGBA and BGRA is zero cost in a color transform.  So when we have a
@@ -687,7 +687,7 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
     }
 
     config.output.colorspace = webp_decode_mode(webpInfo.colorType(),
-            webpInfo.alphaType() == kPremul_SkAlphaType);
+            webpInfo.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED);
     config.output.is_external_memory = 1;
 
     config.output.u.RGBA.rgba = reinterpret_cast<uint8_t*>(webpDst.getAddr(dstX, dstY));

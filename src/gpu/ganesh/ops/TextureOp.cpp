@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/ops/TextureOp.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
@@ -1177,7 +1177,7 @@ std::tuple<bool /* filter */, bool /* mipmap */> FilterAndMipmapHaveNoEffect(
 
 GrOp::Owner TextureOp::Make(GrRecordingContext* context,
                             GrSurfaceProxyView proxyView,
-                            SkAlphaType alphaType,
+                            vx_alpha_type alphaType,
                             sk_sp<GrColorSpaceXform> textureXform,
                             GrSamplerState::Filter filter,
                             GrSamplerState::MipmapMode mm,
@@ -1521,8 +1521,8 @@ GR_DRAW_OP_TEST_DEFINE(TextureOpImpl) {
     GrSurfaceProxyView proxyView(
             std::move(proxy), origin,
             context->priv().caps()->getReadSwizzle(format, GrColorType::kRGBA_8888));
-    auto alphaType = static_cast<SkAlphaType>(
-            random->nextRangeU(kUnknown_SkAlphaType + 1, kLastEnum_SkAlphaType));
+    auto alphaType = static_cast<vx_alpha_type>(
+            random->nextRangeU(VX_ALPHA_TYPE_UNKNOWN + 1, VX_ALPHA_TYPE_LASTENUM));
 
     DrawQuad quad = {GrQuad::MakeFromRect(rect, viewMatrix), GrQuad(srcRect), aaFlags};
     return TextureOp::Make(context, std::move(proxyView), alphaType,

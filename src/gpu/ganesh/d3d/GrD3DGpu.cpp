@@ -1422,7 +1422,7 @@ static bool copy_color_data(const GrD3DCaps& caps,
     if (colorType == GrColorType::kUnknown) {
         return false;
     }
-    GrImageInfo ii(colorType, kUnpremul_SkAlphaType, nullptr, dimensions);
+    GrImageInfo ii(colorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, dimensions);
     if (!GrClearImage(ii, mapPtr, placedFootprints[0].Footprint.RowPitch, color)) {
         return false;
     }

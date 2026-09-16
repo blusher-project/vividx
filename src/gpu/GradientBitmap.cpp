@@ -7,7 +7,7 @@
 
 #include "src/gpu/GradientBitmap.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -44,7 +44,7 @@ SkBitmap CreateGradientColorAndOffsetBitmap(int numStops,
                                             const float* offsets) {
     SkBitmap colorsAndOffsetsBitmap;
     if (!colorsAndOffsetsBitmap.tryAllocPixels(
-                SkImageInfo::Make(numStops, 2, kRGBA_F16_SkColorType, kPremul_SkAlphaType))) {
+                SkImageInfo::Make(numStops, 2, kRGBA_F16_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED))) {
         return {};
     }
 

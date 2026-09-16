@@ -6,7 +6,7 @@
  */
 #include "src/gpu/graphite/DrawAtlas.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
@@ -193,7 +193,7 @@ bool DrawAtlas::recordUploads(DrawContext* dc, Recorder* recorder) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     const SkColorType maskCT = MaskFormatToColorType(fMaskFormat);
     // Src and dst colorInfo are the same
-    const SkColorInfo colorInfo(maskCT, kUnknown_SkAlphaType, nullptr);
+    const SkColorInfo colorInfo(maskCT, VX_ALPHA_TYPE_UNKNOWN, nullptr);
     for (uint32_t pageIdx = 0; pageIdx < fNumActivePages; ++pageIdx) {
         PlotList::Iter plotIter;
         plotIter.init(fPages[pageIdx].fPlotList, PlotList::Iter::kHead_IterStart);
@@ -728,7 +728,7 @@ SkPixmap DrawAtlas::Plot::prepForRender(const AtlasLocator& al,
     }
     SkASSERT(padding >= 0);
     auto info = SkImageInfo::Make(
-            al.dimensions(), MaskFormatToColorType(fMaskFormat), kOpaque_SkAlphaType);
+            al.dimensions(), MaskFormatToColorType(fMaskFormat), VX_ALPHA_TYPE_OPAQUE);
     SkPixmap outerPM{info, this->dataAt(al.topLeft() - this->topLeftInAtlas()), this->rowBytes()};
     if (initialColor) {
 #if defined(SK_DEBUG)
@@ -755,7 +755,7 @@ SkPixmap DrawAtlas::Plot::entryPixmap(EntryID entryID, int padding,
     SkIRect localRect = *rect;
     SkASSERT(padding >= 0);
     auto info = SkImageInfo::Make(
-            localRect.size(), MaskFormatToColorType(fMaskFormat), kOpaque_SkAlphaType);
+            localRect.size(), MaskFormatToColorType(fMaskFormat), VX_ALPHA_TYPE_OPAQUE);
     SkPixmap outerPM{info, this->dataAt(localRect.topLeft()), this->rowBytes()};
     if (clearColor) {
 #if defined(SK_DEBUG)

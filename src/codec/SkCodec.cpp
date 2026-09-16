@@ -9,7 +9,7 @@
 
 #include "include/codec/SkCodecAnimation.h"
 #include "include/codec/SkPixmapUtils.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -876,7 +876,7 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
             return false;
         }
         if (encodedAlpha == SkEncodedInfo::kUnpremul_Alpha
-                && dstInfo.alphaType() == kPremul_SkAlphaType) {
+                && dstInfo.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED) {
             fDstXformAlphaFormat = skcms_AlphaFormat_PremulAsEncoded;
         } else {
             fDstXformAlphaFormat = skcms_AlphaFormat_Unpremul;
@@ -948,8 +948,8 @@ void SkFrame::fillIn(SkCodec::FrameInfo* frameInfo, bool fullyReceived) const {
     frameInfo->fRequiredFrame = fRequiredFrame;
     frameInfo->fDuration = fDuration;
     frameInfo->fFullyReceived = fullyReceived;
-    frameInfo->fAlphaType = fHasAlpha ? kUnpremul_SkAlphaType
-                                      : kOpaque_SkAlphaType;
+    frameInfo->fAlphaType = fHasAlpha ? VX_ALPHA_TYPE_UNPREMULTIPLIED
+                                      : VX_ALPHA_TYPE_OPAQUE;
     frameInfo->fHasAlphaWithinBounds = this->reportedAlpha() != SkEncodedInfo::kOpaque_Alpha;
     frameInfo->fDisposalMethod = fDisposalMethod;
     frameInfo->fBlend = fBlend;

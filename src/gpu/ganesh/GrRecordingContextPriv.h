@@ -39,7 +39,7 @@ class GrThreadSafeCache;
 class SkArenaAlloc;
 class SkColorSpace;
 class SkSurfaceProps;
-enum SkAlphaType : int;
+
 enum class GrColorType;
 struct SkISize;
 struct SkImageInfo;
@@ -205,7 +205,7 @@ public:
      * texture format and swizzles. The color type will be kUnknown. Returns a SurfaceDrawContext
      * if possible.
      */
-    std::unique_ptr<skgpu::ganesh::SurfaceFillContext> makeSFC(SkAlphaType,
+    std::unique_ptr<skgpu::ganesh::SurfaceFillContext> makeSFC(vx_alpha_type,
                                                                sk_sp<SkColorSpace>,
                                                                SkISize dimensions,
                                                                SkBackingFit,

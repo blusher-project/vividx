@@ -21,7 +21,7 @@
 
 class SkSampler;
 class SkStream;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 struct SkImageInfo;
 
@@ -75,7 +75,7 @@ protected:
     }
 
 private:
-    bool createColorTable(SkColorType colorType, SkAlphaType alphaType);
+    bool createColorTable(SkColorType colorType, vx_alpha_type alphaType);
     SkEncodedInfo swizzlerInfo() const;
     void initializeSwizzler(const SkImageInfo& dstInfo, const Options& opts);
 

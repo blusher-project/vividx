@@ -17,10 +17,10 @@ GrImageInfo::GrImageInfo() = default;
 GrImageInfo::GrImageInfo(const SkImageInfo& info)
         : fColorInfo(info.colorInfo()), fDimensions(info.dimensions()) {}
 
-GrImageInfo::GrImageInfo(GrColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs, int w, int h)
+GrImageInfo::GrImageInfo(GrColorType ct, vx_alpha_type at, sk_sp<SkColorSpace> cs, int w, int h)
         : fColorInfo(ct, at, std::move(cs)), fDimensions{w,h} {}
 
-GrImageInfo::GrImageInfo(GrColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs,
+GrImageInfo::GrImageInfo(GrColorType ct, vx_alpha_type at, sk_sp<SkColorSpace> cs,
                          const SkISize& dimensions)
         : fColorInfo(ct, at, std::move(cs)), fDimensions(dimensions) {}
 
@@ -39,7 +39,7 @@ GrImageInfo GrImageInfo::makeColorType(GrColorType ct) const {
     return {this->colorInfo().makeColorType(ct), this->dimensions()};
 }
 
-GrImageInfo GrImageInfo::makeAlphaType(SkAlphaType at) const {
+GrImageInfo GrImageInfo::makeAlphaType(vx_alpha_type at) const {
     return {this->colorType(), at, this->refColorSpace(), this->width(), this->height()};
 }
 

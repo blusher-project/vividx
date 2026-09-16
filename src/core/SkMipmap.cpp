@@ -49,7 +49,7 @@ SkMipmap* SkMipmap::Build(const SkPixmap& src, SkDiscardableFactoryProc fact,
     }
 
     const SkColorType ct = src.colorType();
-    const SkAlphaType at = src.alphaType();
+    const vx_alpha_type at = src.alphaType();
 
     // whip through our loop to compute the exact size needed
     size_t size = 0;

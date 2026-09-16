@@ -8,7 +8,6 @@
 #ifndef SkImage_DEFINED
 #define SkImage_DEFINED
 
-#include "include/core/SkAlphaType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -19,6 +18,8 @@
 #include <cstdint>
 #include <memory>
 #include <optional>
+
+#include <vividx/core/alpha-type.h>
 
 class GrDirectContext;
 class SkBitmap;
@@ -104,7 +105,7 @@ SK_API sk_sp<SkImage> RasterFromCompressedTextureData(sk_sp<SkData> data,
     example: https://fiddle.skia.org/c/@Image_DeferredFromEncodedData
 */
 SK_API sk_sp<SkImage> DeferredFromEncodedData(sk_sp<const SkData> encoded,
-                                              std::optional<SkAlphaType> alphaType = std::nullopt);
+                                              std::optional<vx_alpha_type> alphaType = std::nullopt);
 
 /** Creates SkImage from data returned by imageGenerator. The image data will not be created
     (on either the CPU or GPU) until the image is actually drawn.
@@ -317,7 +318,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Image_alphaType
     */
-    SkAlphaType alphaType() const;
+    enum vx_alpha_type alphaType() const;
 
     /** Returns SkColorType if known; otherwise, returns kUnknown_SkColorType.
 
@@ -370,7 +371,7 @@ public:
 
         @return  true if SkAlphaType is kOpaque_SkAlphaType
     */
-    bool isOpaque() const { return SkAlphaTypeIsOpaque(this->alphaType()); }
+    bool isOpaque() const { return vx_alpha_type_is_opaque(this->alphaType()); }
 
     /**
      *  Make a shader with the specified tiling and mipmap sampling.

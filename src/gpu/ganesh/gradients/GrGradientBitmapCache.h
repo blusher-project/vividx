@@ -18,7 +18,7 @@
 
 class SkBitmap;
 class SkColorSpace;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 
 class GrGradientBitmapCache : SkNoncopyable {
@@ -36,7 +36,7 @@ public:
                      const SkColorSpace* intermediateColorSpace,
                      const SkColorSpace* dstColorSpace,
                      SkColorType colorType,
-                     SkAlphaType alphaType,
+                     vx_alpha_type alphaType,
                      SkBitmap* bitmap);
 
 private:

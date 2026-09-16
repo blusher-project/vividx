@@ -71,7 +71,7 @@ sk_sp<Image> Surface::asImage() const {
     return fImageView;
 }
 
-sk_sp<Image> Surface::asImage(SkColorType otherCT, SkAlphaType otherAT) const {
+sk_sp<Image> Surface::asImage(SkColorType otherCT, vx_alpha_type otherAT) const {
     // No conversion, save a malloc.
     if (otherCT == fImageView->colorType() && otherAT == fImageView->alphaType()) {
         return fImageView;
@@ -295,7 +295,7 @@ sk_sp<SkSurface> WrapBackendTexture(Recorder* recorder,
 
     const Caps* caps = recorder->priv().caps();
 
-    SkColorInfo info(ct, kPremul_SkAlphaType, std::move(cs));
+    SkColorInfo info(ct, VX_ALPHA_TYPE_PREMULTIPLIED, std::move(cs));
 
     if (!validate_backend_texture(caps, backendTex, info)) {
         SKIA_LOG_E("validate_backend_texture failed: backendTex.info = %s; colorType = %d",

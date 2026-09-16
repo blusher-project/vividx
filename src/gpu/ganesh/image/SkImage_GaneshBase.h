@@ -36,7 +36,7 @@ class SkMatrix;
 class SkRecorder;
 class SkSurface;
 enum GrSurfaceOrigin : int;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 enum class GrColorType;
 enum class GrImageTexGenPolicy : int;
@@ -80,11 +80,11 @@ public:
                                        const GrBackendTexture& tex,
                                        GrColorType grCT,
                                        SkColorType ct,
-                                       SkAlphaType at,
+                                       vx_alpha_type at,
                                        sk_sp<SkColorSpace> cs);
     static bool ValidateCompressedBackendTexture(const GrCaps*,
                                                  const GrBackendTexture& tex,
-                                                 SkAlphaType);
+                                                 vx_alpha_type);
 
     // Helper for making a lazy proxy for a promise image.
     // PromiseImageTextureFulfillProc must not be null.

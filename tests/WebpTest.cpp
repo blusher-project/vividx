@@ -6,7 +6,7 @@
  */
 
 #include "include/codec/SkCodec.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImageInfo.h"
 #include "tests/Test.h"

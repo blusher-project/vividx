@@ -156,7 +156,7 @@ SkSerialReturnType SkCapture::serializeImageProc(SkImage* img, void* ctx) {
     return SkData::MakeWithCopy(&contentID, sizeof(int));
 }
 
-sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData>, std::optional<SkAlphaType>, void*) {
+sk_sp<SkImage> SkCapture::deserializeImageProc(sk_sp<SkData>, std::optional<vx_alpha_type>, void*) {
     // TODO: set up the SkCapture context and inspect it to grab SkPictures and pass them as images.
     SkBitmap b;
     b.allocN32Pixels(5, 5);

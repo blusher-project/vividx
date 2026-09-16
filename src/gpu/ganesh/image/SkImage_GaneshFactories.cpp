@@ -7,7 +7,7 @@
 
 #include "include/gpu/ganesh/SkImageGanesh.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
@@ -135,7 +135,7 @@ bool GetBackendTextureFromImage(const SkImage* img,
 sk_sp<SkImage> TextureFromCompressedTexture(GrRecordingContext* context,
                                             const GrBackendTexture& backendTexture,
                                             GrSurfaceOrigin origin,
-                                            SkAlphaType alphaType,
+                                            vx_alpha_type alphaType,
                                             sk_sp<SkColorSpace> colorSpace,
                                             TextureReleaseProc textureReleaseProc,
                                             ReleaseContext releaseContext) {
@@ -176,7 +176,7 @@ static sk_sp<SkImage> new_wrapped_texture_common(GrRecordingContext* rContext,
                                                  const GrBackendTexture& backendTex,
                                                  GrColorType colorType,
                                                  GrSurfaceOrigin origin,
-                                                 SkAlphaType at,
+                                                 vx_alpha_type at,
                                                  sk_sp<SkColorSpace> colorSpace,
                                                  GrWrapOwnership ownership,
                                                  sk_sp<skgpu::RefCntedCallback> releaseHelper) {
@@ -203,7 +203,7 @@ sk_sp<SkImage> BorrowTextureFrom(GrRecordingContext* context,
                                  const GrBackendTexture& backendTexture,
                                  GrSurfaceOrigin origin,
                                  SkColorType colorType,
-                                 SkAlphaType alphaType,
+                                 vx_alpha_type alphaType,
                                  sk_sp<SkColorSpace> colorSpace,
                                  TextureReleaseProc textureReleaseProc,
                                  ReleaseContext releaseContext) {
@@ -240,14 +240,14 @@ sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                 GrSurfaceOrigin textureOrigin,
                                 SkColorType colorType) {
     return AdoptTextureFrom(
-            context, backendTexture, textureOrigin, colorType, kPremul_SkAlphaType, nullptr);
+            context, backendTexture, textureOrigin, colorType, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
 }
 
 sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                 const GrBackendTexture& backendTexture,
                                 GrSurfaceOrigin textureOrigin,
                                 SkColorType colorType,
-                                SkAlphaType alphaType) {
+                                vx_alpha_type alphaType) {
     return AdoptTextureFrom(context, backendTexture, textureOrigin, colorType, alphaType, nullptr);
 }
 
@@ -255,7 +255,7 @@ sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                 const GrBackendTexture& backendTexture,
                                 GrSurfaceOrigin origin,
                                 SkColorType colorType,
-                                SkAlphaType alphaType,
+                                vx_alpha_type alphaType,
                                 sk_sp<SkColorSpace> colorSpace) {
     auto dContext = GrAsDirectContext(context);
     if (!dContext) {
@@ -318,7 +318,7 @@ sk_sp<SkImage> TextureFromCompressedTextureData(GrDirectContext* direct,
     return sk_make_sp<SkImage_Ganesh>(sk_ref_sp(direct),
                                       kNeedNewImageUniqueID,
                                       std::move(view),
-                                      SkColorInfo(colorType, kOpaque_SkAlphaType, nullptr));
+                                      SkColorInfo(colorType, VX_ALPHA_TYPE_OPAQUE, nullptr));
 }
 
 sk_sp<SkImage> PromiseTextureFrom(sk_sp<GrContextThreadSafeProxy> threadSafeProxy,
@@ -327,7 +327,7 @@ sk_sp<SkImage> PromiseTextureFrom(sk_sp<GrContextThreadSafeProxy> threadSafeProx
                                   skgpu::Mipmapped mipmapped,
                                   GrSurfaceOrigin origin,
                                   SkColorType colorType,
-                                  SkAlphaType alphaType,
+                                  vx_alpha_type alphaType,
                                   sk_sp<SkColorSpace> colorSpace,
                                   PromiseImageTextureFulfillProc textureFulfillProc,
                                   PromiseImageTextureReleaseProc textureReleaseProc,
@@ -616,8 +616,8 @@ sk_sp<SkImage> PromiseTextureFromYUVA(sk_sp<GrContextThreadSafeProxy> threadSafe
         return nullptr;
     }
 
-    SkAlphaType at =
-            backendTextureInfo.yuvaInfo().hasAlpha() ? kPremul_SkAlphaType : kOpaque_SkAlphaType;
+    vx_alpha_type at =
+            backendTextureInfo.yuvaInfo().hasAlpha() ? VX_ALPHA_TYPE_PREMULTIPLIED : VX_ALPHA_TYPE_OPAQUE;
     SkImageInfo info = SkImageInfo::Make(
             backendTextureInfo.yuvaInfo().dimensions(), SkImage_GaneshYUVA::kAssumedColorType, at,
             imageColorSpace);

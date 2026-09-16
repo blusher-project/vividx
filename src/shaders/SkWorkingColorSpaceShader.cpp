@@ -7,7 +7,7 @@
 
 #include "src/shaders/SkWorkingColorSpaceShader.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
@@ -52,7 +52,7 @@ bool SkWorkingColorSpaceShader::appendStages(const SkStageRec& rec,
     }
 
     // TODO(b/431253455): Should get the dstAT from `rec`
-    const SkAlphaType dstAT = kPremul_SkAlphaType;
+    const vx_alpha_type dstAT = VX_ALPHA_TYPE_PREMULTIPLIED;
     auto [inputCS, outputCS, workingAT]  = this->workingSpace(dstCS, dstAT);
 
     SkColorInfo dst    = {rec.fDstColorType, dstAT,     dstCS},

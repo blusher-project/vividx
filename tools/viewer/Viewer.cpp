@@ -10,7 +10,7 @@
 #include "bench/GpuTools.h"
 #include "gm/gm.h"
 #include "include/codec/SkCodec.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"

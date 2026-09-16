@@ -7,7 +7,7 @@
 
 #include "include/core/SkPaint.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkColorFilter.h"
@@ -121,8 +121,8 @@ void SkPaint::setColor(SkColor color) {
 }
 
 void SkPaint::setColor(const SkColor4f& color, SkColorSpace* colorSpace) {
-    SkColorSpaceXformSteps steps{colorSpace,          kUnpremul_SkAlphaType,
-                                 sk_srgb_singleton(), kUnpremul_SkAlphaType};
+    SkColorSpaceXformSteps steps{colorSpace,          VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                 sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED};
     fColor4f = color.pinAlpha();
     steps.apply(fColor4f.vec());
 }

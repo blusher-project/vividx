@@ -7,7 +7,7 @@
 
 #include "src/codec/SkBmpStandardCodec.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -78,7 +78,7 @@ SkCodec::Result SkBmpStandardCodec::onGetPixels(const SkImageInfo& dstInfo,
 /*
  * Process the color table for the bmp input
  */
- bool SkBmpStandardCodec::createColorTable(SkColorType dstColorType, SkAlphaType dstAlphaType) {
+ bool SkBmpStandardCodec::createColorTable(SkColorType dstColorType, vx_alpha_type dstAlphaType) {
     // Allocate memory for color table
     uint32_t colorBytes = 0;
     SkPMColor colorTable[256];
@@ -98,14 +98,14 @@ SkCodec::Result SkBmpStandardCodec::onGetPixels(const SkImageInfo& dstInfo,
         }
 
         SkColorType packColorType = dstColorType;
-        SkAlphaType packAlphaType = dstAlphaType;
+        vx_alpha_type packAlphaType = dstAlphaType;
         if (this->colorXform()) {
             packColorType = kBGRA_8888_SkColorType;
-            packAlphaType = kUnpremul_SkAlphaType;
+            packAlphaType = VX_ALPHA_TYPE_UNPREMULTIPLIED;
         }
 
         // Choose the proper packing function
-        bool isPremul = (kPremul_SkAlphaType == packAlphaType) && !fIsOpaque;
+        bool isPremul = (VX_ALPHA_TYPE_PREMULTIPLIED == packAlphaType) && !fIsOpaque;
         SkCodecPriv::PackColorProc packARGB =
                 SkCodecPriv::ChoosePackColorProc(isPremul, packColorType);
 
@@ -199,8 +199,8 @@ void SkBmpStandardCodec::initializeSwizzler(const SkImageInfo& dstInfo, const Op
     SkCodec::Options swizzlerOptions = opts;
     if (this->xformOnDecode()) {
         swizzlerInfo = swizzlerInfo.makeColorType(kXformSrcColorType);
-        if (kPremul_SkAlphaType == dstInfo.alphaType()) {
-            swizzlerInfo = swizzlerInfo.makeAlphaType(kUnpremul_SkAlphaType);
+        if (VX_ALPHA_TYPE_PREMULTIPLIED == dstInfo.alphaType()) {
+            swizzlerInfo = swizzlerInfo.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
         }
 
         swizzlerOptions.fZeroInitialized = kNo_ZeroInitialized;

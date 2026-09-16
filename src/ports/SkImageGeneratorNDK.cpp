@@ -88,8 +88,8 @@ std::unique_ptr<SkImageGenerator> SkImageGeneratorNDK::MakeFromEncodedNDK(
 
     // Although the encoded data stores unpremultiplied pixels, AImageDecoder defaults to premul
     // (if the image may have alpha).
-    SkAlphaType at = AImageDecoderHeaderInfo_getAlphaFlags(headerInfo)
-            == ANDROID_BITMAP_FLAGS_ALPHA_OPAQUE ? kOpaque_SkAlphaType : kPremul_SkAlphaType;
+    vx_alpha_type at = AImageDecoderHeaderInfo_getAlphaFlags(headerInfo)
+            == ANDROID_BITMAP_FLAGS_ALPHA_OPAQUE ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_PREMULTIPLIED;
     auto imageInfo = SkImageInfo::Make(width, height, ct, at, get_default_colorSpace(headerInfo));
     return std::unique_ptr<SkImageGenerator>(
             new ImageGeneratorNDK(imageInfo, std::move(data), rawDecoder));
@@ -185,19 +185,19 @@ bool ImageGeneratorNDK::onGetPixels(const SkImageInfo& info, void* pixels, size_
     }
 
     switch (info.alphaType()) {
-        case kUnknown_SkAlphaType:
+        case VX_ALPHA_TYPE_UNKNOWN:
             return false;
-        case kOpaque_SkAlphaType:
-            if (this->getInfo().alphaType() != kOpaque_SkAlphaType) {
+        case VX_ALPHA_TYPE_OPAQUE:
+            if (this->getInfo().alphaType() != VX_ALPHA_TYPE_OPAQUE) {
                 return false;
             }
             break;
-        case kUnpremul_SkAlphaType:
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
             if (!ok(AImageDecoder_setUnpremultipliedRequired(fDecoder, true))) {
                 return false;
             }
             break;
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             break;
     }
 

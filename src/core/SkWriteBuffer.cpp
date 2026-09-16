@@ -7,7 +7,7 @@
 
 #include "src/core/SkWriteBuffer.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkData.h"
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkImage.h"
@@ -207,7 +207,7 @@ void SkBinaryWriteBuffer::writeImage(const SkImage* image) {
     if (mips) {
         flags |= SkWriteBufferImageFlags::kHasMipmap;
     }
-    if (image->alphaType() == kUnpremul_SkAlphaType) {
+    if (image->alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         flags |= SkWriteBufferImageFlags::kUnpremul;
     }
 

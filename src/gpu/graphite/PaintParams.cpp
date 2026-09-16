@@ -213,8 +213,8 @@ PaintParams PaintParams::makeWithPrimitiveColor(const SkBlender* primitiveBlende
 
 SkColor4f PaintParams::Color4fPrepForDst(SkColor4f srcColor, const SkColorInfo& dstColorInfo) {
     // xform from sRGB to the destination colorspace
-    SkColorSpaceXformSteps steps(sk_srgb_singleton(),       kUnpremul_SkAlphaType,
-                                 dstColorInfo.colorSpace(), kUnpremul_SkAlphaType);
+    SkColorSpaceXformSteps steps(sk_srgb_singleton(),       VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                 dstColorInfo.colorSpace(), VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     SkColor4f result = srcColor;
     steps.apply(result.vec());

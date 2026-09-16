@@ -37,7 +37,7 @@ class SkPngChunkReader;
 class SkSampler;
 class SkStream;
 struct SkGainmapInfo;
-enum SkAlphaType : int;
+
 enum class SkEncodedImageFormat;
 
 namespace SkCodecAnimation {
@@ -710,7 +710,7 @@ public:
          *  This is conservative; it will still return non-opaque if e.g. a
          *  color index-based frame has a color with alpha but does not use it.
          */
-        SkAlphaType fAlphaType;
+        vx_alpha_type fAlphaType;
 
         /**
          *  Whether the updated rectangle contains alpha.
@@ -1172,7 +1172,7 @@ void SK_API Register(Decoder d);
  *  @return         created SkImage, or nullptr
  */
 SK_API sk_sp<SkImage> DeferredImage(std::unique_ptr<SkCodec> codec,
-                                    std::optional<SkAlphaType> alphaType = std::nullopt);
+                                    std::optional<vx_alpha_type> alphaType = std::nullopt);
 }
 
 #endif // SkCodec_DEFINED

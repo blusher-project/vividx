@@ -15,6 +15,8 @@
 #include <memory>
 #include <optional>
 
+#include <vividx/core/alpha-type.h>
+
 class GrClip;
 class GrFragmentProcessor;
 class GrPaint;
@@ -26,7 +28,7 @@ class SkMaskFilter;
 class SkMatrix;
 class SkPaint;
 class SkRRect;
-enum SkAlphaType : int;
+
 enum class GrColorType;
 enum class SkTileMode;
 namespace skgpu { namespace ganesh { class SurfaceDrawContext; } }
@@ -109,7 +111,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(
         GrRecordingContext*,
         GrSurfaceProxyView srcView,
         GrColorType srcColorType,
-        SkAlphaType srcAlphaType,
+        vx_alpha_type srcAlphaType,
         sk_sp<SkColorSpace> srcColorSpace,
         SkIRect dstBounds,
         SkIRect srcBounds,

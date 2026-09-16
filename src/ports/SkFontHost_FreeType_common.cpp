@@ -1802,7 +1802,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
             unscaledBitmap.setInfo(SkImageInfo::Make(face->glyph->bitmap.width,
                                                      face->glyph->bitmap.rows,
                                                      SkColorType_for_FTPixelMode(pixel_mode),
-                                                     kPremul_SkAlphaType));
+                                                     VX_ALPHA_TYPE_PREMULTIPLIED));
             if (!unscaledBitmap.tryAllocPixels()) {
                 // TODO: set the imageBuffer to indicate "missing"
                 memset(imageBuffer, 0, glyph.rowBytes() * glyph.height());
@@ -1828,7 +1828,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
             // TODO: mark this as sRGB when the blits will be sRGB.
             dstBitmap.setInfo(SkImageInfo::Make(glyph.width(), glyph.height(),
                                                 SkColorType_for_SkMaskFormat(maskFormat),
-                                                kPremul_SkAlphaType),
+                                                VX_ALPHA_TYPE_PREMULTIPLIED),
                               bitmapRowBytes);
             if (SkMask::kBW_Format == maskFormat || SkMask::kLCD16_Format == maskFormat) {
                 if (!dstBitmap.tryAllocPixels()) {

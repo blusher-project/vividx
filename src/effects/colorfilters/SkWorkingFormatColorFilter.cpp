@@ -7,7 +7,7 @@
 
 #include "src/effects/colorfilters/SkWorkingFormatColorFilter.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -28,14 +28,14 @@
 SkWorkingFormatColorFilter::SkWorkingFormatColorFilter(sk_sp<SkColorFilter> child,
                                                        const skcms_TransferFunction* tf,
                                                        const skcms_Matrix3x3* gamut,
-                                                       const SkAlphaType* at)
+                                                       const vx_alpha_type* at)
         : fWorkingFormatCalculator(tf, gamut, at) {
     SkASSERT(child);
     fChild = std::move(child);
 }
 
 sk_sp<SkColorSpace> SkWorkingFormatColorFilter::workingFormat(const sk_sp<SkColorSpace>& dstCS,
-                                                              SkAlphaType* outAT) const {
+                                                              vx_alpha_type* outAT) const {
     return fWorkingFormatCalculator.workingFormat(dstCS, outAT);
 }
 
@@ -46,10 +46,10 @@ bool SkWorkingFormatColorFilter::appendStages(const SkStageRec& rec, bool shader
         dstCS = SkColorSpace::MakeSRGB();
     }
 
-    SkAlphaType workingAT;
+    vx_alpha_type workingAT;
     sk_sp<SkColorSpace> workingCS = this->workingFormat(dstCS, &workingAT);
 
-    SkColorInfo dst = {rec.fDstColorType, kPremul_SkAlphaType, dstCS},
+    SkColorInfo dst = {rec.fDstColorType, VX_ALPHA_TYPE_PREMULTIPLIED, dstCS},
                 working = {rec.fDstColorType, workingAT, workingCS};
 
     const auto* dstToWorking = rec.fAlloc->make<SkColorSpaceXformSteps>(dst, working);
@@ -84,10 +84,10 @@ SkPMColor4f SkWorkingFormatColorFilter::onFilterColor4f(const SkPMColor4f& origC
         dstCS = SkColorSpace::MakeSRGB();
     }
 
-    SkAlphaType workingAT;
+    vx_alpha_type workingAT;
     sk_sp<SkColorSpace> workingCS = this->workingFormat(dstCS, &workingAT);
 
-    SkColorInfo dst = {kUnknown_SkColorType, kPremul_SkAlphaType, dstCS},
+    SkColorInfo dst = {kUnknown_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED, dstCS},
                 working = {kUnknown_SkColorType, workingAT, workingCS};
 
     SkPMColor4f color = origColor;
@@ -119,7 +119,7 @@ sk_sp<SkFlattenable> SkWorkingFormatColorFilter::CreateProc(SkReadBuffer& buffer
 
     skcms_TransferFunction tf;
     skcms_Matrix3x3 gamut;
-    SkAlphaType at;
+    vx_alpha_type at;
 
     if (!useDstTF) {
         buffer.readScalarArray({&tf.g, sizeof(skcms_TransferFunction) / sizeof(SkScalar)});
@@ -128,7 +128,7 @@ sk_sp<SkFlattenable> SkWorkingFormatColorFilter::CreateProc(SkReadBuffer& buffer
         buffer.readScalarArray({&gamut.vals[0][0], sizeof(skcms_Matrix3x3) / sizeof(SkScalar)});
     }
     if (!useDstAT) {
-        at = buffer.read32LE(kLastEnum_SkAlphaType);
+        at = buffer.read32LE(VX_ALPHA_TYPE_LASTENUM);
     }
 
     return SkColorFilterPriv::WithWorkingFormat(std::move(child),
@@ -140,7 +140,7 @@ sk_sp<SkFlattenable> SkWorkingFormatColorFilter::CreateProc(SkReadBuffer& buffer
 sk_sp<SkColorFilter> SkColorFilterPriv::WithWorkingFormat(sk_sp<SkColorFilter> child,
                                                           const skcms_TransferFunction* tf,
                                                           const skcms_Matrix3x3* gamut,
-                                                          const SkAlphaType* at) {
+                                                          const vx_alpha_type* at) {
     if (!child) {
         // This color filter applies a conversion from the 'dst' color space to the working format,
         // invokes the child, and then converts back to 'dst'. If `child` is null, it is the
@@ -157,7 +157,7 @@ void SkRegisterWorkingFormatColorFilterFlattenable() {
 
 SkWorkingFormatCalculator::SkWorkingFormatCalculator(const skcms_TransferFunction* tf,
                                                      const skcms_Matrix3x3* gamut,
-                                                     const SkAlphaType* at) {
+                                                     const vx_alpha_type* at) {
     if (tf) {
         fTF = *tf;
         fUseDstTF = false;
@@ -173,7 +173,7 @@ SkWorkingFormatCalculator::SkWorkingFormatCalculator(const skcms_TransferFunctio
 }
 
 sk_sp<SkColorSpace> SkWorkingFormatCalculator::workingFormat(const sk_sp<SkColorSpace>& dstCS,
-                                                             SkAlphaType* outAT) const {
+                                                             vx_alpha_type* outAT) const {
     skcms_TransferFunction tf;
     skcms_Matrix3x3 gamut;
 
@@ -187,7 +187,7 @@ sk_sp<SkColorSpace> SkWorkingFormatCalculator::workingFormat(const sk_sp<SkColor
     } else {
         gamut = fGamut;
     }
-    *outAT = fUseDstAT ? kPremul_SkAlphaType : fAT;
+    *outAT = fUseDstAT ? VX_ALPHA_TYPE_PREMULTIPLIED : fAT;
 
     return SkColorSpace::MakeRGB(tf, gamut);
 }

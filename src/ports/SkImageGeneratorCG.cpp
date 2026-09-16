@@ -84,7 +84,7 @@ std::unique_ptr<SkImageGenerator> SkImageGeneratorCG::MakeFromEncodedCG(sk_sp<co
     }
 
     bool hasAlpha = bool(CFDictionaryGetValue(properties.get(), kCGImagePropertyHasAlpha));
-    SkAlphaType alphaType = hasAlpha ? kPremul_SkAlphaType : kOpaque_SkAlphaType;
+    vx_alpha_type alphaType = hasAlpha ? VX_ALPHA_TYPE_PREMULTIPLIED : VX_ALPHA_TYPE_OPAQUE;
     SkImageInfo info = SkImageInfo::MakeS32(width, height, alphaType);
 
     SkEncodedOrigin origin = kDefault_SkEncodedOrigin;
@@ -124,12 +124,12 @@ bool ImageGeneratorCG::onGetPixels(const SkImageInfo& info, void* pixels, size_t
     }
 
     switch (info.alphaType()) {
-        case kOpaque_SkAlphaType:
-            if (kOpaque_SkAlphaType != this->getInfo().alphaType()) {
+        case VX_ALPHA_TYPE_OPAQUE:
+            if (VX_ALPHA_TYPE_OPAQUE != this->getInfo().alphaType()) {
                 return false;
             }
             break;
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             break;
         default:
             return false;

@@ -7,7 +7,7 @@
 
 #include "include/effects/SkRuntimeEffect.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlender.h"
 #include "include/core/SkCapabilities.h"
 #include "include/core/SkColor.h"
@@ -165,8 +165,8 @@ sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
         // There's no destination color-space; we can early-out immediately.
         return originalData;
     }
-    SkColorSpaceXformSteps steps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                                 dstCS,               kUnpremul_SkAlphaType);
+    SkColorSpaceXformSteps steps(sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                 dstCS,               VX_ALPHA_TYPE_UNPREMULTIPLIED);
     return TransformUniforms(uniforms, std::move(originalData), steps);
 }
 
@@ -342,8 +342,8 @@ bool RuntimeEffectRPCallbacks::appendBlender(int index) {
 // object(s), rather than re-creating them in the arena repeatedly.
 void RuntimeEffectRPCallbacks::toLinearSrgb(const void* color) {
     if (fStage.fDstCS) {
-        SkColorSpaceXformSteps xform{fStage.fDstCS,              kUnpremul_SkAlphaType,
-                                     sk_srgb_linear_singleton(), kUnpremul_SkAlphaType};
+        SkColorSpaceXformSteps xform{fStage.fDstCS,              VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                     sk_srgb_linear_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED};
         if (xform.fFlags.mask()) {
             // We have a non-identity colorspace transform; apply it.
             this->applyColorSpaceXform(xform, color);
@@ -353,8 +353,8 @@ void RuntimeEffectRPCallbacks::toLinearSrgb(const void* color) {
 
 void RuntimeEffectRPCallbacks::fromLinearSrgb(const void* color) {
     if (fStage.fDstCS) {
-        SkColorSpaceXformSteps xform{sk_srgb_linear_singleton(), kUnpremul_SkAlphaType,
-                                     fStage.fDstCS,              kUnpremul_SkAlphaType};
+        SkColorSpaceXformSteps xform{sk_srgb_linear_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                     fStage.fDstCS,              VX_ALPHA_TYPE_UNPREMULTIPLIED};
         if (xform.fFlags.mask()) {
             // We have a non-identity colorspace transform; apply it.
             this->applyColorSpaceXform(xform, color);

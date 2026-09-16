@@ -300,9 +300,9 @@ struct TableColorFilterBlock {
 struct ColorSpaceTransformBlock {
     struct ColorSpaceTransformData {
         ColorSpaceTransformData(const SkColorSpace* src,
-                                SkAlphaType srcAT,
+                                vx_alpha_type srcAT,
                                 const SkColorSpace* dst,
-                                SkAlphaType dstAT);
+                                vx_alpha_type dstAT);
         ColorSpaceTransformData(const SkColorSpaceXformSteps& steps) { fSteps = steps; }
         ColorSpaceTransformData(Swizzle swizzle) : fReadSwizzle(swizzle) {
             SkASSERT(fSteps.fFlags.mask() == 0);  // By default, the colorspace should have no effect

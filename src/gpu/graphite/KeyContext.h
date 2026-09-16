@@ -92,8 +92,8 @@ public:
         // We want to keep fPaintColor's alpha value but replace the RGB with values in the new
         // color space. By overriding the alpha type of the old and new dst color infos to be
         // kOpaque, SkColorSpaceXformSteps will leave the alpha channel alone.
-        SkColorSpaceXformSteps(fDstColorInfo.colorSpace(), kOpaque_SkAlphaType,
-                               info.colorSpace(),          kOpaque_SkAlphaType)
+        SkColorSpaceXformSteps(fDstColorInfo.colorSpace(), VX_ALPHA_TYPE_OPAQUE,
+                               info.colorSpace(),          VX_ALPHA_TYPE_OPAQUE)
                 .apply(o.fPaintColor.vec());
         SkASSERT(o.fPaintColor.fA == fPaintColor.fA);
         return o;

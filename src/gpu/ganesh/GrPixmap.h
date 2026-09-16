@@ -23,7 +23,7 @@
 
 class GrColorInfo;
 class SkColorSpace;
-enum SkAlphaType : int;
+
 enum class GrColorType;
 
 template <typename T, typename DERIVED> class GrPixmapBase {
@@ -42,7 +42,7 @@ public:
     int height() const { return fInfo.height(); }
     SkISize dimensions() const { return fInfo.dimensions(); }
     GrColorType colorType() const { return fInfo.colorType(); }
-    SkAlphaType alphaType() const { return fInfo.alphaType(); }
+    vx_alpha_type alphaType() const { return fInfo.alphaType(); }
     SkColorSpace* colorSpace() const { return fInfo.colorSpace(); }
     sk_sp<SkColorSpace> refColorSpace() const { return fInfo.refColorSpace(); }
 

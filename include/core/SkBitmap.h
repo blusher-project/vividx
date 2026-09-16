@@ -8,7 +8,6 @@
 #ifndef SkBitmap_DEFINED
 #define SkBitmap_DEFINED
 
-#include "include/core/SkAlphaType.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
@@ -23,6 +22,8 @@
 
 #include <cstddef>
 #include <cstdint>
+
+#include <vividx/core/alpha-type.h>
 
 class SkColorSpace;
 class SkImage;
@@ -157,7 +158,7 @@ public:
 
     SkColorType colorType() const { return fPixmap.colorType(); }
 
-    SkAlphaType alphaType() const { return fPixmap.alphaType(); }
+    vx_alpha_type alphaType() const { return fPixmap.alphaType(); }
 
     /** Returns SkColorSpace, the range of colors, associated with SkImageInfo. The
         reference count of SkColorSpace is unchanged. The returned SkColorSpace is
@@ -262,7 +263,7 @@ public:
 
         example: https://fiddle.skia.org/c/@Bitmap_setAlphaType
     */
-    bool setAlphaType(SkAlphaType alphaType);
+    bool setAlphaType(vx_alpha_type alphaType);
 
     /** Sets the SkColorSpace associated with this SkBitmap.
 
@@ -320,7 +321,7 @@ public:
         @return  true if SkImageInfo SkAlphaType is kOpaque_SkAlphaType
     */
     bool isOpaque() const {
-        return SkAlphaTypeIsOpaque(this->alphaType());
+        return vx_alpha_type_is_opaque(this->alphaType());
     }
 
     /** Resets to its initial state; all fields are set to zero, as if SkBitmap had

@@ -102,7 +102,7 @@ sk_sp<SkColorSpace> SkBitmap::refColorSpace() const { return fPixmap.info().refC
 ///////////////////////////////////////////////////////////////////////////////
 
 bool SkBitmap::setInfo(const SkImageInfo& info, size_t rowBytes) {
-    SkAlphaType newAT = info.alphaType();
+    vx_alpha_type newAT = info.alphaType();
     if (!SkColorTypeValidateAlphaType(info.colorType(), info.alphaType(), &newAT)) {
         return reset_return_false(this);
     }
@@ -135,7 +135,7 @@ bool SkBitmap::setInfo(const SkImageInfo& info, size_t rowBytes) {
     return true;
 }
 
-bool SkBitmap::setAlphaType(SkAlphaType newAlphaType) {
+bool SkBitmap::setAlphaType(vx_alpha_type newAlphaType) {
     if (!SkColorTypeValidateAlphaType(this->colorType(), newAlphaType, &newAlphaType)) {
         return false;
     }
@@ -215,13 +215,13 @@ bool SkBitmap::tryAllocPixels(Allocator* allocator) {
 
 bool SkBitmap::tryAllocN32Pixels(int width, int height, bool isOpaque) {
     SkImageInfo info = SkImageInfo::MakeN32(width, height,
-            isOpaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType);
+            isOpaque ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_PREMULTIPLIED);
     return this->tryAllocPixels(info);
 }
 
 void SkBitmap::allocN32Pixels(int width, int height, bool isOpaque) {
     SkImageInfo info = SkImageInfo::MakeN32(width, height,
-                                        isOpaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType);
+                                        isOpaque ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_PREMULTIPLIED);
     this->allocPixels(info);
 }
 

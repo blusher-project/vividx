@@ -9,7 +9,7 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
@@ -140,7 +140,7 @@ size_t do_deflated_alpha(const SkPixmap& pm, SkPDFDocument* doc, SkPDFIndirectRe
         SkASSERT(pm.rowBytes() == (size_t)pm.width());
         stream->write(pm.addr8(), pm.width() * pm.height());
     } else {
-        SkASSERT(pm.alphaType() == kUnpremul_SkAlphaType);
+        SkASSERT(pm.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED);
         SkASSERT(pm.colorType() == kBGRA_8888_SkColorType);
         SkASSERT(pm.rowBytes() == (size_t)pm.width() * 4);
         const uint32_t* ptr = pm.addr32();
@@ -233,7 +233,7 @@ size_t do_deflated_image(const SkPixmap& pm,
         default:
             colorSpace = SkPDFUnion::Name("DeviceRGB");
             channels = 3;
-            SkASSERT(pm.alphaType() == kUnpremul_SkAlphaType);
+            SkASSERT(pm.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED);
             SkASSERT(pm.colorType() == kBGRA_8888_SkColorType);
             SkASSERT(pm.rowBytes() == (size_t)pm.width() * 4);
             uint8_t byteBuffer[3072];
@@ -352,11 +352,11 @@ SkBitmap to_pixels(const SkImage* image) {
             bm.allocPixels(SkImageInfo::MakeA8(w, h));
             break;
         case kGray_8_SkColorType:
-            bm.allocPixels(SkImageInfo::Make(w, h, kGray_8_SkColorType, kOpaque_SkAlphaType));
+            bm.allocPixels(SkImageInfo::Make(w, h, kGray_8_SkColorType, VX_ALPHA_TYPE_OPAQUE));
             break;
         default: {
             // TODO: makeColorSpace(sRGB) or actually tag the images
-            SkAlphaType at = bm.isOpaque() ? kOpaque_SkAlphaType : kUnpremul_SkAlphaType;
+            vx_alpha_type at = bm.isOpaque() ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_UNPREMULTIPLIED;
             bm.allocPixels(
                 SkImageInfo::Make(w, h, kBGRA_8888_SkColorType, at, image->refColorSpace()));
         }

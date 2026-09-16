@@ -36,20 +36,20 @@ private:
     // These color info objects are defined assuming an sRGB destination.
     // Most specialized color space transform shader, no actual color space handling.
     static SkColorInfo DefaultColorInfoPremul() {
-        return { kRGBA_8888_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB() };
+        return { kRGBA_8888_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB() };
     }
     // sRGB-to-sRGB specialized color space transform shader.
     static SkColorInfo DefaultColorInfoSRGB() {
-        return { kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+        return { kRGBA_8888_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED,
                  sk_srgb_singleton()->makeColorSpin() };
     }
     // Most general color space transform shader.
     static SkColorInfo DefaultColorInfoGeneral() {
-        return { kRGBA_8888_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGBLinear() };
+        return { kRGBA_8888_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGBLinear() };
     }
     // Alpha-only, most general color space transform shader.
     static SkColorInfo DefaultColorInfoAlphaOnly() {
-        return { kAlpha_8_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGBLinear() };
+        return { kAlpha_8_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGBLinear() };
     }
 
     // A fixed list of SkColorInfos that will trigger each possible combination of alpha-only

@@ -8,7 +8,7 @@
 #include "include/utils/SkCanvasStateUtils.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorType.h"
@@ -285,7 +285,7 @@ make_canvas_from_canvas_layer(const SkCanvasLayerState& layerState) {
     }
 
     bitmap.installPixels(SkImageInfo::Make(layerState.width, layerState.height,
-                                           colorType, kPremul_SkAlphaType),
+                                           colorType, VX_ALPHA_TYPE_PREMULTIPLIED),
                          layerState.raster.pixels, (size_t) layerState.raster.rowBytes);
 
     SkASSERT(!bitmap.empty());

@@ -7,7 +7,7 @@
 
 #include "src/core/SkImageFilterTypes.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
@@ -191,7 +191,7 @@ public:
                                const SkSurfaceProps* props) const override {
         SkImageInfo imageInfo = SkImageInfo::Make(size,
                                                   this->colorType(),
-                                                  kPremul_SkAlphaType,
+                                                  VX_ALPHA_TYPE_PREMULTIPLIED,
                                                   std::move(colorSpace));
         return SkBitmapDevice::Create(imageInfo, props ? *props : this->surfaceProps());
     }

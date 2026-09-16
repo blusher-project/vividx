@@ -7,7 +7,7 @@
 
 #include "src/effects/colorfilters/SkColorSpaceXformColorFilter.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
 #include "include/core/SkRefCnt.h"
@@ -30,9 +30,9 @@ SkColorSpaceXformColorFilter::SkColorSpaceXformColorFilter(sk_sp<SkColorSpace> s
         , fDst(std::move(dst))
         , fSteps(  // We handle premul/unpremul separately, so here just always upm->upm.
                   fSrc.get(),
-                  kUnpremul_SkAlphaType,
+                  VX_ALPHA_TYPE_UNPREMULTIPLIED,
                   fDst.get(),
-                  kUnpremul_SkAlphaType) {}
+                  VX_ALPHA_TYPE_UNPREMULTIPLIED) {}
 
 bool SkColorSpaceXformColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOpaque) const {
     if (!shaderIsOpaque) {

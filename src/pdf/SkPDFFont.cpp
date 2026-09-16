@@ -8,7 +8,7 @@
 #include "src/pdf/SkPDFFont.h"
 
 #include "include/codec/SkCodec.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorType.h"
@@ -601,7 +601,7 @@ static ImageAndOffset to_image(SkGlyphID gid, SkBulkGlyphMetricsAndImages* small
             // Make a gray image, used to smask a rectangle.
             // TODO: emit as MaskImage?
             const SkISize size = bounds.size();
-            bm.allocPixels(SkImageInfo::Make(size, kGray_8_SkColorType, kUnknown_SkAlphaType));
+            bm.allocPixels(SkImageInfo::Make(size, kGray_8_SkColorType, VX_ALPHA_TYPE_UNKNOWN));
             for (int y = 0; y < bm.height(); ++y) {
                 for (int x8 = 0; x8 < bm.width(); x8 += 8) {
                     uint8_t v = *mask.getAddr1(x8 + bounds.x(), y + bounds.y());
@@ -618,7 +618,7 @@ static ImageAndOffset to_image(SkGlyphID gid, SkBulkGlyphMetricsAndImages* small
         case SkMask::k3D_Format:  // just do the A8 part
             // Make a gray image, used to smask a rectangle.
             return {SkImages::RasterFromData(
-                        SkImageInfo::Make(bounds.size(), kGray_8_SkColorType, kUnknown_SkAlphaType),
+                        SkImageInfo::Make(bounds.size(), kGray_8_SkColorType, VX_ALPHA_TYPE_UNKNOWN),
                         SkData::MakeWithCopy(mask.fImage, mask.computeImageSize()),
                         mask.fRowBytes),
                     {bounds.x(), bounds.y()}};

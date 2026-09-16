@@ -6,7 +6,7 @@
  */
 
 #include "include/codec/SkCodec.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkData.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkImage.h"
@@ -33,8 +33,8 @@ SkGraphics::SetImageGeneratorFromEncodedDataFactory(ImageGeneratorFromEncodedDat
 namespace SkImageGenerators {
 
 std::unique_ptr<SkImageGenerator> MakeFromEncoded(sk_sp<const SkData> data,
-                                                  std::optional<SkAlphaType> at) {
-    if (!data || at == kOpaque_SkAlphaType) {
+                                                  std::optional<vx_alpha_type> at) {
+    if (!data || at == VX_ALPHA_TYPE_OPAQUE) {
         return nullptr;
     }
     if (gFactory) {
@@ -50,7 +50,7 @@ std::unique_ptr<SkImageGenerator> MakeFromEncoded(sk_sp<const SkData> data,
 namespace SkImages {
 
 sk_sp<SkImage> DeferredFromEncodedData(sk_sp<const SkData> encoded,
-                                       std::optional<SkAlphaType> alphaType) {
+                                       std::optional<vx_alpha_type> alphaType) {
     if (nullptr == encoded || encoded->empty()) {
         return nullptr;
     }
@@ -61,7 +61,7 @@ sk_sp<SkImage> DeferredFromEncodedData(sk_sp<const SkData> encoded,
 
 namespace SkCodecs {
 
-sk_sp<SkImage> DeferredImage(std::unique_ptr<SkCodec> codec, std::optional<SkAlphaType> alphaType) {
+sk_sp<SkImage> DeferredImage(std::unique_ptr<SkCodec> codec, std::optional<vx_alpha_type> alphaType) {
     return SkImages::DeferredFromGenerator(
             SkCodecImageGenerator::MakeFromCodec(std::move(codec), alphaType));
 }

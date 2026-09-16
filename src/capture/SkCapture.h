@@ -8,7 +8,7 @@
 #ifndef SkCapture_DEFINED
 #define SkCapture_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSerialProcs.h"
 #include "include/private/SkTArray.h"
@@ -47,7 +47,7 @@ private:
     // TODO: add more awareness of the image meta data to a SkCaptureContext object
     static SkSerialReturnType serializeImageProc(SkImage* img, void* ctx);
     static sk_sp<SkImage> deserializeImageProc(sk_sp<SkData>,
-                                               std::optional<SkAlphaType>, void* ctx);
+                                               std::optional<vx_alpha_type>, void* ctx);
 
     Metadata fMetadata;
     //TODO(b/412351769): Replace pictures with SkCapturePicture structs that also include

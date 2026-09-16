@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkArc.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColorSpace.h"
@@ -313,7 +313,7 @@ SurfaceDrawContext::SurfaceDrawContext(GrRecordingContext* rContext,
         : SurfaceFillContext(rContext,
                              std::move(readView),
                              std::move(writeView),
-                             {colorType, kPremul_SkAlphaType, std::move(colorSpace)})
+                             {colorType, VX_ALPHA_TYPE_PREMULTIPLIED, std::move(colorSpace)})
         , fSurfaceProps(surfaceProps)
         , fCanUseDynamicMSAA(
                 (fSurfaceProps.flags() & SkSurfaceProps::kDynamicMSAA_Flag) &&
@@ -588,7 +588,7 @@ void SurfaceDrawContext::drawFilledQuad(const GrClip* clip,
 
 void SurfaceDrawContext::drawTexture(const GrClip* clip,
                                      GrSurfaceProxyView view,
-                                     SkAlphaType srcAlphaType,
+                                     vx_alpha_type srcAlphaType,
                                      GrSamplerState::Filter filter,
                                      GrSamplerState::MipmapMode mm,
                                      SkBlendMode blendMode,
@@ -647,7 +647,7 @@ void SurfaceDrawContext::drawTexture(const GrClip* clip,
 
 void SurfaceDrawContext::drawTexturedQuad(const GrClip* clip,
                                           GrSurfaceProxyView proxyView,
-                                          SkAlphaType srcAlphaType,
+                                          vx_alpha_type srcAlphaType,
                                           sk_sp<GrColorSpaceXform> textureXform,
                                           GrSamplerState::Filter filter,
                                           GrSamplerState::MipmapMode mm,
@@ -1465,7 +1465,7 @@ void SurfaceDrawContext::drawImageLattice(const GrClip* clip,
                                           GrPaint&& paint,
                                           const SkMatrix& viewMatrix,
                                           GrSurfaceProxyView view,
-                                          SkAlphaType alphaType,
+                                          vx_alpha_type alphaType,
                                           sk_sp<GrColorSpaceXform> csxf,
                                           GrSamplerState::Filter filter,
                                           std::unique_ptr<SkLatticeIter> iter,

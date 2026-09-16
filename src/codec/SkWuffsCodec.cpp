@@ -9,7 +9,7 @@
 #include "include/codec/SkCodecAnimation.h"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/codec/SkGifDecoder.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColorType.h"
@@ -142,8 +142,8 @@ static SkCodecAnimation::DisposalMethod wuffs_disposal_to_skia_disposal(
     }
 }
 
-static SkAlphaType to_alpha_type(bool opaque) {
-    return opaque ? kOpaque_SkAlphaType : kPremul_SkAlphaType;
+static vx_alpha_type to_alpha_type(bool opaque) {
+    return opaque ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_PREMULTIPLIED;
 }
 
 static SkCodec::Result reset_and_decode_image_config(wuffs_gif__decoder*       decoder,
@@ -657,7 +657,7 @@ SkCodec::Result SkWuffsCodec::onIncrementalDecodeTwoPass() {
     SkCodec::Result result = SkCodec::kSuccess;
     const char*     status = this->decodeFrame();
     bool            independent;
-    SkAlphaType     alphaType;
+    vx_alpha_type     alphaType;
     const int       index = options().fFrameIndex;
     if (index == 0) {
         independent = true;

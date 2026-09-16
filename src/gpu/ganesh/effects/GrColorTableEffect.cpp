@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrColorTableEffect.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
@@ -41,7 +41,7 @@ ColorTableEffect::ColorTableEffect(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrSurfaceProxyView view)
         // Not bothering with table-specific optimizations.
         : GrFragmentProcessor(kColorTableEffect_ClassID, kNone_OptimizationFlags) {
-    this->registerChild(GrTextureEffect::Make(std::move(view), kUnknown_SkAlphaType),
+    this->registerChild(GrTextureEffect::Make(std::move(view), VX_ALPHA_TYPE_UNKNOWN),
                         SkSL::SampleUsage::Explicit());
     this->registerChild(std::move(inputFP));
 }
@@ -77,7 +77,7 @@ std::unique_ptr<GrFragmentProcessor> ColorTableEffect::Make(
         std::unique_ptr<GrFragmentProcessor> inputFP,
         GrRecordingContext* context,
         const GrMippedBitmap& bitmap) {
-    SkASSERT(kPremul_SkAlphaType == bitmap.alphaType());
+    SkASSERT(VX_ALPHA_TYPE_PREMULTIPLIED == bitmap.alphaType());
 
     auto view = std::get<0>(GrMakeCachedBitmapProxyView(context,
                                                         bitmap,
@@ -121,7 +121,7 @@ std::unique_ptr<GrFragmentProcessor> ColorTableEffect::TestCreate(GrProcessorTes
             d->surfaceDrawContext(),
             filter.get(),
             d->inputFP(),
-            GrColorInfo(GrColorType::kRGBA_8888, kUnknown_SkAlphaType, std::move(colorSpace)),
+            GrColorInfo(GrColorType::kRGBA_8888, VX_ALPHA_TYPE_UNKNOWN, std::move(colorSpace)),
             props);
     SkASSERT(success);
     return std::move(fp);

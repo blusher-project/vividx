@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrFragmentProcessors.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
@@ -281,7 +281,7 @@ std::unique_ptr<GrFragmentProcessor> Make(const SkBlenderBase* blender,
 
 static SkPMColor4f map_color(const SkColor4f& c, SkColorSpace* src, SkColorSpace* dst) {
     SkPMColor4f color = {c.fR, c.fG, c.fB, c.fA};
-    SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType, dst, kPremul_SkAlphaType).apply(color.vec());
+    SkColorSpaceXformSteps(src, VX_ALPHA_TYPE_UNPREMULTIPLIED, dst, VX_ALPHA_TYPE_PREMULTIPLIED).apply(color.vec());
     return color;
 }
 static GrFPResult make_colorfilter_fp(skgpu::ganesh::SurfaceDrawContext*,
@@ -350,7 +350,7 @@ static GrFPResult make_colorfilter_fp(skgpu::ganesh::SurfaceDrawContext* sdc,
                                       const GrColorInfo&,
                                       const SkSurfaceProps&) {
     // wish our caller would let us know if our input was opaque...
-    constexpr SkAlphaType alphaType = kPremul_SkAlphaType;
+    constexpr vx_alpha_type alphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
     return GrFPSuccess(GrColorSpaceXformEffect::Make(
             std::move(inputFP), filter->src().get(), alphaType, filter->dst().get(), alphaType));
 }
@@ -461,7 +461,7 @@ static GrFPResult make_colorfilter_fp(skgpu::ganesh::SurfaceDrawContext* sdc,
         dstCS = SkColorSpace::MakeSRGB();
     }
 
-    SkAlphaType workingAT;
+    vx_alpha_type workingAT;
     sk_sp<SkColorSpace> workingCS = filter->workingFormat(dstCS, &workingAT);
 
     GrColorInfo dst = {dstColorInfo.colorType(), dstColorInfo.alphaType(), dstCS},
@@ -539,9 +539,9 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkColorShader* 
                                                            const GrFPArgs& args,
                                                            const SkShaders::MatrixRec& mRec) {
     SkColorSpaceXformSteps steps{sk_srgb_singleton(),
-                                 kUnpremul_SkAlphaType,
+                                 VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                  args.fDstColorInfo->colorSpace(),
-                                 kUnpremul_SkAlphaType};
+                                 VX_ALPHA_TYPE_UNPREMULTIPLIED};
     SkColor4f color = shader->color();
     steps.apply(color.vec());
     return GrFragmentProcessor::MakeColor(color.premul());
@@ -639,7 +639,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkImageShader* 
                                            shader->image()->colorSpace(),
                                            shader->image()->alphaType(),
                                            args.fDstColorInfo->colorSpace(),
-                                           kPremul_SkAlphaType);
+                                           VX_ALPHA_TYPE_PREMULTIPLIED);
 
         // Alpha-only image shaders are tinted by the input color (typically the paint color).
         // We suppress that behavior when sampled from a runtime effect.
@@ -783,7 +783,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkPictureShader
                                  static_cast<GrSamplerState::WrapMode>(shader->tileModeY()),
                                  shader->filter());
     auto fp = GrTextureEffect::Make(
-            std::move(view), kPremul_SkAlphaType, SkMatrix::I(), sampler, *ctx->priv().caps());
+            std::move(view), VX_ALPHA_TYPE_PREMULTIPLIED, SkMatrix::I(), sampler, *ctx->priv().caps());
     SkMatrix scale = SkMatrix::Scale(info.tileScale.width(), info.tileScale.height());
     auto [total, ok] = mRec.applyForFragmentProcessor(scale);
     if (!ok) {
@@ -844,7 +844,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkWorkingColorS
                                                            const GrFPArgs& args,
                                                            const SkShaders::MatrixRec& mRec) {
     const GrColorInfo* dstInfo = args.fDstColorInfo;
-    SkAlphaType dstAT = dstInfo->alphaType();
+    vx_alpha_type dstAT = dstInfo->alphaType();
     sk_sp<SkColorSpace> dstCS = dstInfo->refColorSpace();
     if (!dstCS) {
         dstCS = SkColorSpace::MakeSRGB();

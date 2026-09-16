@@ -7,7 +7,7 @@
 
 #include "src/encode/SkJpegEncoderImpl.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkData.h"
@@ -111,7 +111,7 @@ bool SkJpegEncoderMgr::initializeRGB(const SkImageInfo& srcInfo,
 
     SkColorType srcCT = srcInfo.colorType();
     const bool applyPremul = SkJpegEncoder::AlphaOption::kBlendOnBlack == options.fAlphaOption
-                              && srcInfo.alphaType() == kUnpremul_SkAlphaType;
+                              && srcInfo.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED;
     if (srcCT == kRGB_888x_SkColorType) {
         jpegColorType = JCS_EXT_RGBX;
         numComponents = 4;
@@ -137,11 +137,11 @@ bool SkJpegEncoderMgr::initializeRGB(const SkImageInfo& srcInfo,
         case 3:
           jpegColorType = JCS_EXT_RGBX;
           numComponents = 4;
-          dstInfo = SkImageInfo::Make(srcInfo.width(), 1, kRGB_888x_SkColorType, kUnpremul_SkAlphaType);
+          dstInfo = SkImageInfo::Make(srcInfo.width(), 1, kRGB_888x_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
           fUseColorXform = true;
           break;
         case 4: {
-            SkAlphaType dstAT = applyPremul ? kPremul_SkAlphaType : srcInfo.alphaType();
+            vx_alpha_type dstAT = applyPremul ? VX_ALPHA_TYPE_PREMULTIPLIED : srcInfo.alphaType();
             jpegColorType = JCS_EXT_RGBA;
             numComponents = 4;
             dstInfo = SkImageInfo::Make(srcInfo.width(), 1, kRGBA_8888_SkColorType, dstAT);

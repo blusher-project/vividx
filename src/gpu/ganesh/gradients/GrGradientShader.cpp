@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/gradients/GrGradientShader.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -103,8 +103,8 @@ static std::unique_ptr<GrFragmentProcessor> make_textured_colorizer(
             colorType = kRGBA_F16_SkColorType;
         }
     }
-    SkAlphaType alphaType = static_cast<bool>(interpolation.fInPremul) ? kPremul_SkAlphaType
-                                                                       : kUnpremul_SkAlphaType;
+    vx_alpha_type alphaType = static_cast<bool>(interpolation.fInPremul) ? VX_ALPHA_TYPE_PREMULTIPLIED
+                                                                       : VX_ALPHA_TYPE_UNPREMULTIPLIED;
 
     SkBitmap bitmap;
     gCache.getGradient(colors,
@@ -549,7 +549,7 @@ static std::unique_ptr<GrFragmentProcessor> make_buffered_colorizer(const SkPMCo
         return nullptr;
     }
     auto coefData = GrTextureEffect::Make(
-            std::move(view), kPremul_SkAlphaType, SkMatrix::I(), GrSamplerState::Filter::kNearest);
+            std::move(view), VX_ALPHA_TYPE_PREMULTIPLIED, SkMatrix::I(), GrSamplerState::Filter::kNearest);
 
     struct EffectCacheEntry {
         SkOnce once;
@@ -930,14 +930,14 @@ static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
     //    all the colors have a = 1, in which case premul is a no op. Note that this allOpaque check
     //    is more permissive than SkGradientBaseShader's isOpaque(), since we can optimize away the
     //    make-premul op for two point conical gradients (which report false for isOpaque).
-    SkAlphaType intermediateAlphaType = inputPremul ? kPremul_SkAlphaType : kUnpremul_SkAlphaType;
-    SkAlphaType dstAlphaType = kPremul_SkAlphaType;
+    vx_alpha_type intermediateAlphaType = inputPremul ? VX_ALPHA_TYPE_PREMULTIPLIED : VX_ALPHA_TYPE_UNPREMULTIPLIED;
+    vx_alpha_type dstAlphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
 
     // If all the colors were opaque, then we don't need to do any premultiplication. We describe
     // all the colors as *unpremul*, though. That will eliminate any extra unpremul/premul pair
     // that would be injected if we have to do a color-space conversion here.
     if (allOpaque) {
-        intermediateAlphaType = dstAlphaType = kUnpremul_SkAlphaType;
+        intermediateAlphaType = dstAlphaType = VX_ALPHA_TYPE_UNPREMULTIPLIED;
     }
 
     return GrColorSpaceXformEffect::Make(std::move(gradient),

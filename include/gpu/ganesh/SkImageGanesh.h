@@ -27,7 +27,7 @@ class SkImageFilter;
 struct SkIPoint;
 class SkPixmap;
 class SkYUVAPixmaps;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 enum class SkTextureCompressionType;
 struct SkIRect;
@@ -64,12 +64,12 @@ SK_API sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                        const GrBackendTexture& backendTexture,
                                        GrSurfaceOrigin textureOrigin,
                                        SkColorType colorType,
-                                       SkAlphaType alphaType);
+                                       vx_alpha_type alphaType);
 SK_API sk_sp<SkImage> AdoptTextureFrom(GrRecordingContext* context,
                                        const GrBackendTexture& backendTexture,
                                        GrSurfaceOrigin textureOrigin,
                                        SkColorType colorType,
-                                       SkAlphaType alphaType,
+                                       vx_alpha_type alphaType,
                                        sk_sp<SkColorSpace> colorSpace);
 
 /** Creates GPU-backed SkImage from the provided GPU texture associated with context.
@@ -97,7 +97,7 @@ SK_API sk_sp<SkImage> BorrowTextureFrom(GrRecordingContext* context,
                                         const GrBackendTexture& backendTexture,
                                         GrSurfaceOrigin origin,
                                         SkColorType colorType,
-                                        SkAlphaType alphaType,
+                                        vx_alpha_type alphaType,
                                         sk_sp<SkColorSpace> colorSpace,
                                         TextureReleaseProc textureReleaseProc = nullptr,
                                         ReleaseContext releaseContext = nullptr);
@@ -153,7 +153,7 @@ SK_API sk_sp<SkImage> CrossContextTextureFromPixmap(GrDirectContext* context,
 SK_API sk_sp<SkImage> TextureFromCompressedTexture(GrRecordingContext* context,
                                                    const GrBackendTexture& backendTexture,
                                                    GrSurfaceOrigin origin,
-                                                   SkAlphaType alphaType,
+                                                   vx_alpha_type alphaType,
                                                    sk_sp<SkColorSpace> colorSpace,
                                                    TextureReleaseProc textureReleaseProc = nullptr,
                                                    ReleaseContext releaseContext = nullptr);

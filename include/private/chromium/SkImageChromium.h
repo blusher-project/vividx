@@ -11,6 +11,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAPI.h"
 
+#include <vividx/core/alpha-type.h>
+
 class GrBackendFormat;
 class GrContextThreadSafeProxy;
 class GrPromiseImageTexture;
@@ -18,7 +20,7 @@ class GrDirectContext;
 class GrYUVABackendTextureInfo;
 class SkColorSpace;
 class SkImage;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 enum GrSurfaceOrigin : int;
 namespace skgpu {
@@ -70,7 +72,7 @@ SK_API sk_sp<SkImage> PromiseTextureFrom(sk_sp<GrContextThreadSafeProxy> gpuCont
                                          skgpu::Mipmapped mipmapped,
                                          GrSurfaceOrigin origin,
                                          SkColorType colorType,
-                                         SkAlphaType alphaType,
+                                         vx_alpha_type alphaType,
                                          sk_sp<SkColorSpace> colorSpace,
                                          PromiseImageTextureFulfillProc textureFulfillProc,
                                          PromiseImageTextureReleaseProc textureReleaseProc,

@@ -7,7 +7,7 @@
 
 #include "src/core/SkBitmapDevice.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlender.h"
 #include "include/core/SkCPURecorder.h"
 #include "include/core/SkClipOp.h"
@@ -217,13 +217,13 @@ public:
 };
 
 static bool valid_for_bitmap_device(const SkImageInfo& info,
-                                    SkAlphaType* newAlphaType) {
+                                    vx_alpha_type* newAlphaType) {
     if (info.width() < 0 || info.height() < 0 || kUnknown_SkColorType == info.colorType()) {
         return false;
     }
 
     if (newAlphaType) {
-        *newAlphaType = SkColorTypeIsAlwaysOpaque(info.colorType()) ? kOpaque_SkAlphaType
+        *newAlphaType = SkColorTypeIsAlwaysOpaque(info.colorType()) ? VX_ALPHA_TYPE_OPAQUE
                                                                     : info.alphaType();
     }
 
@@ -263,7 +263,7 @@ SkBitmapDevice::SkBitmapDevice(skcpu::RecorderImpl* recorder,
 sk_sp<SkBitmapDevice> SkBitmapDevice::Create(const SkImageInfo& origInfo,
                                              const SkSurfaceProps& surfaceProps,
                                              SkRasterHandleAllocator* allocator) {
-    SkAlphaType newAT = origInfo.alphaType();
+    vx_alpha_type newAT = origInfo.alphaType();
     if (!valid_for_bitmap_device(origInfo, &newAT)) {
         return nullptr;
     }

@@ -7,7 +7,7 @@
 
 #include "src/codec/SkSwizzler.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
@@ -839,7 +839,7 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
     RowProc proc = nullptr;
     SkCodec::ZeroInitialized zeroInit = options.fZeroInitialized;
     const bool premultiply = (SkEncodedInfo::kOpaque_Alpha != encodedInfo.alpha()) &&
-            (kPremul_SkAlphaType == dstInfo.alphaType());
+            (VX_ALPHA_TYPE_PREMULTIPLIED == dstInfo.alphaType());
 
     switch (encodedInfo.color()) {
         case SkEncodedInfo::kGray_Color:

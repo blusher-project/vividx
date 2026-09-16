@@ -315,7 +315,7 @@ MakeGainCurveXYMImage(const AdaptiveGlobalToneMap::HeadroomAdaptiveToneMap& hatm
     SkBitmap bm32;
     bm32.allocPixels(SkImageInfo::Make(
             maxNumControlPoints, hatm.fAlternateImages.size(),
-            kRGBA_F32_SkColorType, kPremul_SkAlphaType));
+            kRGBA_F32_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED));
     for (size_t a = 0; a < hatm.fAlternateImages.size(); ++a) {
         const auto& alt = hatm.fAlternateImages[a];
         const auto& curve = alt.fColorGainFunction.fGainCurve;

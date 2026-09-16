@@ -8,7 +8,7 @@
 #ifndef SkColor_DEFINED
 #define SkColor_DEFINED
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkCPUTypes.h"
@@ -261,7 +261,7 @@ static_assert(0 == (kGray_SkColorChannelFlag & kRGBA_SkColorChannelFlags), "bitf
     SkRGBA4f<kUnpremul_SkAlphaType>. For convenience, this type can also be referred to
     as SkColor4f.
 */
-template <SkAlphaType kAT>
+template <vx_alpha_type kAT>
 struct SkRGBA4f {
     float fR;  //!< red component
     float fG;  //!< green component
@@ -400,8 +400,8 @@ struct SkRGBA4f {
 
         @return       premultiplied color
     */
-    SkRGBA4f<kPremul_SkAlphaType> premul() const {
-        static_assert(kAT == kUnpremul_SkAlphaType, "");
+    SkRGBA4f<VX_ALPHA_TYPE_PREMULTIPLIED> premul() const {
+        static_assert(kAT == VX_ALPHA_TYPE_UNPREMULTIPLIED, "");
         return { fR * fA, fG * fA, fB * fA, fA };
     }
 
@@ -410,8 +410,8 @@ struct SkRGBA4f {
 
         @return       unpremultiplied color
     */
-    SkRGBA4f<kUnpremul_SkAlphaType> unpremul() const {
-        static_assert(kAT == kPremul_SkAlphaType, "");
+    SkRGBA4f<VX_ALPHA_TYPE_UNPREMULTIPLIED> unpremul() const {
+        static_assert(kAT == VX_ALPHA_TYPE_PREMULTIPLIED, "");
 
         if (fA == 0.0f) {
             return { 0, 0, 0, 0 };
@@ -464,7 +464,7 @@ struct SkRGBA4f {
 
     This is a specialization of SkRGBA4f. For details, @see SkRGBA4f.
 */
-using SkColor4f = SkRGBA4f<kUnpremul_SkAlphaType>;
+using SkColor4f = SkRGBA4f<VX_ALPHA_TYPE_UNPREMULTIPLIED>;
 
 template <> SK_API SkColor4f SkColor4f::FromColor(SkColor);
 template <> SK_API SkColor   SkColor4f::toSkColor() const;

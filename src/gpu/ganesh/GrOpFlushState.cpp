@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/GrOpFlushState.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRect.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
@@ -140,7 +140,7 @@ void GrOpFlushState::doUpload(GrDeferredTextureUploadFn& upload,
             (!fGpu->caps()->writePixelsRowBytesSupport() && rowBytes != tightRB)) {
             tmpPixels.reset(new char[rect.height()*tightRB]);
             // Use kUnknown to ensure no alpha type conversions or clamping occur.
-            static constexpr auto kAT = kUnknown_SkAlphaType;
+            static constexpr auto kAT = VX_ALPHA_TYPE_UNKNOWN;
             GrImageInfo srcInfo(colorType,                 kAT, nullptr, rect.size());
             GrImageInfo tmpInfo(supportedWrite.fColorType, kAT, nullptr, rect.size());
             if (!GrConvertPixels( GrPixmap(tmpInfo, tmpPixels.get(), tightRB ),

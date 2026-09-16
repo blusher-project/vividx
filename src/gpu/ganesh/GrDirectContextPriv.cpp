@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
@@ -205,7 +205,7 @@ sk_sp<SkImage> GrDirectContextPriv::testingOnly_getFontAtlasImage(MaskFormat for
     return sk_make_sp<SkImage_Ganesh>(sk_ref_sp(this->context()),
                                       kNeedNewImageUniqueID,
                                       views[index],
-                                      SkColorInfo(colorType, kPremul_SkAlphaType, nullptr));
+                                      SkColorInfo(colorType, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr));
 }
 
 void GrDirectContextPriv::testingOnly_flushAndRemoveOnFlushCallbackObject(
@@ -273,8 +273,8 @@ static bool test_for_preserving_PM_conversions(GrDirectContext* dContext) {
     }
 
     const SkImageInfo pmII =
-            SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    const SkImageInfo upmII = pmII.makeAlphaType(kUnpremul_SkAlphaType);
+            SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED);
+    const SkImageInfo upmII = pmII.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     auto readSFC =
             dContext->priv().makeSFC(upmII, "ReadSfcForPMUPMConversion", SkBackingFit::kExact);
@@ -289,7 +289,7 @@ static bool test_for_preserving_PM_conversions(GrDirectContext* dContext) {
     // pixel data alive in the proxy. Therefore the ReleaseProc is nullptr.
     std::optional<GrMippedBitmap> bitmap = GrMippedBitmap::Make(pmII, srcData, 4 * kSize);
     SkASSERT(bitmap);
-    SkASSERT(bitmap->alphaType() == kPremul_SkAlphaType);
+    SkASSERT(bitmap->alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED);
 
     auto dataView = std::get<0>(GrMakeUncachedBitmapProxyView(dContext, bitmap.value()));
     if (!dataView) {
@@ -309,7 +309,7 @@ static bool test_for_preserving_PM_conversions(GrDirectContext* dContext) {
     // We then verify that two reads produced the same values.
 
     auto fp1 =
-            make_unpremul_effect(GrTextureEffect::Make(std::move(dataView), kPremul_SkAlphaType));
+            make_unpremul_effect(GrTextureEffect::Make(std::move(dataView), VX_ALPHA_TYPE_PREMULTIPLIED));
     readSFC->fillRectWithFP(SkIRect::MakeWH(kSize, kSize), std::move(fp1));
     if (!readSFC->readPixels(dContext, firstReadPM, {0, 0})) {
         return false;

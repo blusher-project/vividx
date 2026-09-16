@@ -24,7 +24,7 @@ class SkColorInfo;
 class SkColorSpace;
 class SkRecorder;
 enum GrSurfaceOrigin : int;
-enum SkAlphaType : int;
+
 enum SkColorType : int;
 enum class GrImageTexGenPolicy : int;
 struct SkImageInfo;
@@ -50,7 +50,7 @@ class GrBackendTextureImageGenerator final : public GrTextureGenerator {
 public:
     static std::unique_ptr<GrTextureGenerator> Make(const sk_sp<GrTexture>&, GrSurfaceOrigin,
                                                     std::unique_ptr<GrSemaphore>, SkColorType,
-                                                    SkAlphaType, sk_sp<SkColorSpace>);
+                                                    vx_alpha_type, sk_sp<SkColorSpace>);
 
     ~GrBackendTextureImageGenerator() override;
 

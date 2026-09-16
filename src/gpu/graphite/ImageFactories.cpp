@@ -72,7 +72,7 @@ bool validate_backend_texture(const Caps* caps,
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
                            SkColorType ct,
-                           SkAlphaType at,
+                           vx_alpha_type at,
                            sk_sp<SkColorSpace> cs,
                            skgpu::Origin origin,
                            GenerateMipmapsFromBase genMipmaps,
@@ -128,7 +128,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
-                           SkAlphaType at,
+                           vx_alpha_type at,
                            sk_sp<SkColorSpace> cs,
                            skgpu::Origin origin,
                            GenerateMipmapsFromBase genMipmaps,
@@ -150,7 +150,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     // alpha-only (which impacts effect generation) or just as red data is resolved by looking at
     // the requested alpha type. If the alpha type is premul/unpremul we assume the texture should
     // be interpreted as an alpha texture; if it's opaque then it'll be red.
-    if (at == kPremul_SkAlphaType || at == kUnpremul_SkAlphaType) {
+    if (at == VX_ALPHA_TYPE_PREMULTIPLIED || at == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         switch (ct) {
             case kR8_unorm_SkColorType: ct = kAlpha_8_SkColorType; break;
             case kR16_unorm_SkColorType: ct = kA16_unorm_SkColorType; break;
@@ -163,8 +163,8 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     // An unknown alpha type needs to be forced to opaque by a swizzle if the texture format won't
     // do it for us automatically. Once we force it to opaque, we can report kOpaque for the
     // higher-level SkImage's alpha type so Skia's logic can benefit from our swizzling.
-    if (at == kUnknown_SkAlphaType) {
-        at = kOpaque_SkAlphaType;
+    if (at == VX_ALPHA_TYPE_UNKNOWN) {
+        at = VX_ALPHA_TYPE_OPAQUE;
         if (SkToBool(TextureFormatChannelMask(format) & kAlpha_SkColorChannelFlag) &&
             swizzle[3] != '1') {
             swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle::RGB1());
@@ -215,7 +215,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
                            SkColorType ct,
-                           SkAlphaType at,
+                           vx_alpha_type at,
                            sk_sp<SkColorSpace> cs,
                            skgpu::Origin origin,
                            TextureReleaseProc releaseP,
@@ -236,7 +236,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
 sk_sp<SkImage> WrapTexture(Recorder* recorder,
                            const BackendTexture& backendTex,
                            SkColorType ct,
-                           SkAlphaType at,
+                           vx_alpha_type at,
                            sk_sp<SkColorSpace> cs,
                            TextureReleaseProc releaseP,
                            ReleaseContext releaseC,

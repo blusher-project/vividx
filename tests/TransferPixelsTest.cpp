@@ -7,7 +7,7 @@
 
 // This is a GPU-backend specific test. It relies on static initializers to work
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"

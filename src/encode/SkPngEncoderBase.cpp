@@ -9,7 +9,7 @@
 
 #include <utility>
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -54,7 +54,7 @@ SkEncodedInfo makeRgba16Info(const SkImageInfo& srcInfo) {
 }
 
 SkPngEncoderBase::TargetInfo makeTargetInfo(SkEncodedInfo dstInfo, const SkImageInfo& srcImageInfo,
-                                            SkColorType dstCT, SkAlphaType dstAT) {
+                                            SkColorType dstCT, vx_alpha_type dstAT) {
     SkASSERT(dstCT != kAlpha_8_SkColorType);
     SkImageInfo dstRowInfo = SkImageInfo::Make(srcImageInfo.width(), 1, dstCT, dstAT);
     return SkPngEncoderBase::TargetInfo {srcImageInfo.makeWH(srcImageInfo.width(), 1),
@@ -88,7 +88,7 @@ std::optional<SkPngEncoderBase::TargetInfo> SkPngEncoderBase::getTargetInfo(
         const SkImageInfo& srcInfo) {
 
 SkColorType srcCT = srcInfo.colorType();
-SkAlphaType srcAT = srcInfo.alphaType();
+vx_alpha_type srcAT = srcInfo.alphaType();
 int numChannels = SkColorTypeNumChannels(srcCT);
 
 switch(numChannels) {
@@ -107,7 +107,7 @@ switch(numChannels) {
   }
   case 3: {
       SkASSERT(srcInfo.isOpaque());
-      if (srcAT == kUnknown_SkAlphaType) {
+      if (srcAT == VX_ALPHA_TYPE_UNKNOWN) {
           SkDEBUGFAIL("unknown alpha type");
           return std::nullopt;
       }
@@ -116,43 +116,43 @@ switch(numChannels) {
           return makeTargetInfo(makeRgba8Info(srcInfo),
                                 srcInfo,
                                 kRGB_888x_SkColorType,
-                                kOpaque_SkAlphaType);
+                                VX_ALPHA_TYPE_OPAQUE);
       } else if (maxBitsPerChannel <= 32) {
           return makeTargetInfo(makeRgba16Info(srcInfo),
                                 srcInfo,
                                 kR16G16B16A16_unorm_SkColorType,
-                                kOpaque_SkAlphaType);
+                                VX_ALPHA_TYPE_OPAQUE);
       }
       break;
   }
   case 4: {
-      if (srcAT == kUnknown_SkAlphaType) {
+      if (srcAT == VX_ALPHA_TYPE_UNKNOWN) {
           SkDEBUGFAIL("unknown alpha type");
           return std::nullopt;
       }
       int maxBitsPerChannel = SkColorTypeMaxBitsPerChannel(srcCT);
       if (maxBitsPerChannel <= 8) {
-          if (srcAT == kOpaque_SkAlphaType) {
+          if (srcAT == VX_ALPHA_TYPE_OPAQUE) {
               return makeTargetInfo(makeRgba8Info(srcInfo),
                                     srcInfo,
                                     kRGB_888x_SkColorType,
-                                    kOpaque_SkAlphaType);
+                                    VX_ALPHA_TYPE_OPAQUE);
           }
           return makeTargetInfo(makeRgba8Info(srcInfo),
                                 srcInfo,
                                 kRGBA_8888_SkColorType,
-                                kUnpremul_SkAlphaType);
+                                VX_ALPHA_TYPE_UNPREMULTIPLIED);
       } else if (maxBitsPerChannel <= 32) {
-          if (srcAT == kOpaque_SkAlphaType) {
+          if (srcAT == VX_ALPHA_TYPE_OPAQUE) {
               return makeTargetInfo(makeRgba16Info(srcInfo),
                                     srcInfo,
                                     kR16G16B16A16_unorm_SkColorType,
-                                    kOpaque_SkAlphaType);
+                                    VX_ALPHA_TYPE_OPAQUE);
           }
           return makeTargetInfo(makeRgba16Info(srcInfo),
                                 srcInfo,
                                 kR16G16B16A16_unorm_SkColorType,
-                                kUnpremul_SkAlphaType);
+                                VX_ALPHA_TYPE_UNPREMULTIPLIED);
       }
   }
   break;

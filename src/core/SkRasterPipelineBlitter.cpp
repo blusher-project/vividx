@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkBlender.h"
@@ -148,8 +148,8 @@ private:
 
 static SkColor4f paint_color_to_dst(const SkPaint& paint, const SkPixmap& dst) {
     SkColor4f paintColor = paint.getColor4f();
-    SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                           dst.colorSpace(),    kUnpremul_SkAlphaType).apply(paintColor.vec());
+    SkColorSpaceXformSteps(sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                           dst.colorSpace(),    VX_ALPHA_TYPE_UNPREMULTIPLIED).apply(paintColor.vec());
     return paintColor;
 }
 
@@ -500,13 +500,13 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
 
 void SkRasterPipelineBlitter::appendLoadDst(SkRasterPipeline* p) const {
     p->appendLoadDst(fDst.info().colorType(), &fDstPtr);
-    if (fDst.info().alphaType() == kUnpremul_SkAlphaType) {
+    if (fDst.info().alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         p->append(SkRasterPipelineOp::premul_dst);
     }
 }
 
 void SkRasterPipelineBlitter::appendStore(SkRasterPipeline* p) const {
-    if (fDst.info().alphaType() == kUnpremul_SkAlphaType) {
+    if (fDst.info().alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         p->append(SkRasterPipelineOp::unpremul);
     }
     p->appendStore(fDst.info().colorType(), &fDstPtr);
@@ -542,7 +542,7 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
                 && (fDst.info().colorType() == kRGBA_8888_SkColorType ||
                     fDst.info().colorType() == kBGRA_8888_SkColorType)
                 && !fDst.colorSpace()
-                && fDst.info().alphaType() != kUnpremul_SkAlphaType
+                && fDst.info().alphaType() != VX_ALPHA_TYPE_UNPREMULTIPLIED
                 && fDitherRate == 0.0f) {
             if (fDst.info().colorType() == kBGRA_8888_SkColorType) {
                 p.append(SkRasterPipelineOp::swap_rb);
@@ -746,7 +746,7 @@ std::optional<SkBlitter::DirectBlit> SkRasterPipelineBlitter::canDirectBlit() {
                  uint8_t u1[8];
             } dstBuffer;
             auto dst = SkImageInfo::Make(1, 1, fDst.info().colorType(), fDst.info().alphaType());
-            auto src = SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType);
+            auto src = SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
             if (!SkConvertPixels(dst, &dstBuffer, sizeof(dstBuffer),
                                  src, &fDirectBlitPaintColor, sizeof(fDirectBlitPaintColor))) {
                 goto FAIL;

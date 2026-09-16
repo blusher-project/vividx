@@ -14,7 +14,7 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedImageFormat.h"
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkColor.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
@@ -34,8 +34,8 @@ namespace {
 
 constexpr SkColorType kXformSrcColorType = kRGBA_8888_SkColorType;
 
-inline bool needs_premul(SkAlphaType dstAT, SkEncodedInfo::Alpha encodedAlpha) {
-    return kPremul_SkAlphaType == dstAT && SkEncodedInfo::kUnpremul_Alpha == encodedAlpha;
+inline bool needs_premul(vx_alpha_type dstAT, SkEncodedInfo::Alpha encodedAlpha) {
+    return VX_ALPHA_TYPE_PREMULTIPLIED == dstAT && SkEncodedInfo::kUnpremul_Alpha == encodedAlpha;
 }
 
 skcms_PixelFormat ToPixelFormat(const SkEncodedInfo& info) {
@@ -226,8 +226,8 @@ SkCodec::Result SkPngCodecBase::initializeSwizzler(const SkImageInfo& dstInfo,
         } else {
             swizzlerInfo = swizzlerInfo.makeColorType(kXformSrcColorType);
         }
-        if (kPremul_SkAlphaType == dstInfo.alphaType()) {
-            swizzlerInfo = swizzlerInfo.makeAlphaType(kUnpremul_SkAlphaType);
+        if (VX_ALPHA_TYPE_PREMULTIPLIED == dstInfo.alphaType()) {
+            swizzlerInfo = swizzlerInfo.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
         }
 
         fXformMode = kSwizzleColor_XformMode;

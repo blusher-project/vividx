@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/effects/GrBicubicEffect.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
@@ -124,18 +124,18 @@ void GrBicubicEffect::Impl::onSetData(const GrGLSLProgramDataManager& pdm,
 }
 
 std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(GrSurfaceProxyView view,
-                                                           SkAlphaType alphaType,
+                                                           vx_alpha_type alphaType,
                                                            const SkMatrix& matrix,
                                                            SkCubicResampler kernel,
                                                            Direction direction) {
     auto fp = GrTextureEffect::Make(std::move(view), alphaType, SkMatrix::I());
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = VX_ALPHA_TYPE_PREMULTIPLIED == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
 
 std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(GrSurfaceProxyView view,
-                                                           SkAlphaType alphaType,
+                                                           vx_alpha_type alphaType,
                                                            const SkMatrix& matrix,
                                                            const GrSamplerState::WrapMode wrapX,
                                                            const GrSamplerState::WrapMode wrapY,
@@ -145,14 +145,14 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(GrSurfaceProxyView vi
     GrSamplerState sampler(wrapX, wrapY, GrSamplerState::Filter::kNearest);
     std::unique_ptr<GrFragmentProcessor> fp;
     fp = GrTextureEffect::Make(std::move(view), alphaType, SkMatrix::I(), sampler, caps);
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = VX_ALPHA_TYPE_PREMULTIPLIED == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
 
 std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
         GrSurfaceProxyView view,
-        SkAlphaType alphaType,
+        vx_alpha_type alphaType,
         const SkMatrix& matrix,
         const GrSamplerState::WrapMode wrapX,
         const GrSamplerState::WrapMode wrapY,
@@ -164,14 +164,14 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
     std::unique_ptr<GrFragmentProcessor> fp;
     fp = GrTextureEffect::MakeSubset(
             std::move(view), alphaType, SkMatrix::I(), sampler, subset, caps);
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = VX_ALPHA_TYPE_PREMULTIPLIED == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
 
 std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
         GrSurfaceProxyView view,
-        SkAlphaType alphaType,
+        vx_alpha_type alphaType,
         const SkMatrix& matrix,
         const GrSamplerState::WrapMode wrapX,
         const GrSamplerState::WrapMode wrapY,
@@ -192,17 +192,17 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
     std::unique_ptr<GrFragmentProcessor> fp;
     fp = GrTextureEffect::MakeSubset(
             std::move(view), alphaType, SkMatrix::I(), sampler, subset, expandedDomain, caps);
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = VX_ALPHA_TYPE_PREMULTIPLIED == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
 
 std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::Make(std::unique_ptr<GrFragmentProcessor> fp,
-                                                           SkAlphaType alphaType,
+                                                           vx_alpha_type alphaType,
                                                            const SkMatrix& matrix,
                                                            SkCubicResampler kernel,
                                                            Direction direction) {
-    auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
+    auto clamp = VX_ALPHA_TYPE_PREMULTIPLIED == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
 }
@@ -295,10 +295,10 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::TestCreate(GrProcessorTest
             return Make(std::move(view), at, m, kernel, direction);
         }
         default: {
-            SkAlphaType at;
+            vx_alpha_type at;
             do {
-                at = static_cast<SkAlphaType>(d->fRandom->nextULessThan(kLastEnum_SkAlphaType + 1));
-            } while (at == kUnknown_SkAlphaType);
+                at = static_cast<vx_alpha_type>(d->fRandom->nextULessThan(VX_ALPHA_TYPE_LASTENUM + 1));
+            } while (at == VX_ALPHA_TYPE_UNKNOWN);
             return Make(GrProcessorUnitTest::MakeChildFP(d), at, m, kernel, direction);
         }
     }

@@ -12,9 +12,11 @@
 
 #include <cstdint>
 
+#include <vividx/core/alpha-type.h>
+
 class SkColorSpace;
 class SkRasterPipeline;
-enum SkAlphaType : int;
+
 
 struct SkColorSpaceXformSteps {
 
@@ -39,8 +41,8 @@ struct SkColorSpaceXformSteps {
     };
 
     SkColorSpaceXformSteps() {}
-    SkColorSpaceXformSteps(const SkColorSpace* src, SkAlphaType srcAT,
-                           const SkColorSpace* dst, SkAlphaType dstAT);
+    SkColorSpaceXformSteps(const SkColorSpace* src, vx_alpha_type srcAT,
+                           const SkColorSpace* dst, vx_alpha_type dstAT);
 
     template <typename S, typename D>
     SkColorSpaceXformSteps(const S& src, const D& dst)

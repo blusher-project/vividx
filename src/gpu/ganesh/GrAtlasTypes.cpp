@@ -7,7 +7,7 @@
 
 #include "src/gpu/ganesh/GrAtlasTypes.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/private/SkMalloc.h"

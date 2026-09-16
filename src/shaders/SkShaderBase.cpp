@@ -7,7 +7,7 @@
 
 #include "src/shaders/SkShaderBase.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColorFilter.h"
 #include "src/core/SkColorSpaceXformSteps.h"
@@ -121,7 +121,7 @@ SkShaderBase::Context::~Context() {}
 bool SkShaderBase::ContextRec::isLegacyCompatible(SkColorSpace* shaderColorSpace) const {
     // In legacy pipelines, shaders always produce premul (or opaque) and the destination is also
     // always premul (or opaque).  (And those "or opaque" caveats won't make any difference here.)
-    SkAlphaType shaderAT = kPremul_SkAlphaType, dstAT = kPremul_SkAlphaType;
+    vx_alpha_type shaderAT = VX_ALPHA_TYPE_PREMULTIPLIED, dstAT = VX_ALPHA_TYPE_PREMULTIPLIED;
     return 0 ==
            SkColorSpaceXformSteps{shaderColorSpace, shaderAT, fDstColorSpace, dstAT}.fFlags.mask();
 }

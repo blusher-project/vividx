@@ -34,7 +34,7 @@
 #include <android/hardware_buffer.h>
 
 std::unique_ptr<GrAHardwareBufferImageGenerator> GrAHardwareBufferImageGenerator::Make(
-        AHardwareBuffer* graphicBuffer, SkAlphaType alphaType, sk_sp<SkColorSpace> colorSpace,
+        AHardwareBuffer* graphicBuffer, vx_alpha_type alphaType, sk_sp<SkColorSpace> colorSpace,
         GrSurfaceOrigin surfaceOrigin) {
     AHardwareBuffer_Desc bufferDesc;
     AHardwareBuffer_describe(graphicBuffer, &bufferDesc);
@@ -51,7 +51,7 @@ std::unique_ptr<GrAHardwareBufferImageGenerator> GrAHardwareBufferImageGenerator
 }
 
 GrAHardwareBufferImageGenerator::GrAHardwareBufferImageGenerator(const SkImageInfo& info,
-        AHardwareBuffer* hardwareBuffer, SkAlphaType alphaType, bool isProtectedContent,
+        AHardwareBuffer* hardwareBuffer, vx_alpha_type alphaType, bool isProtectedContent,
         uint32_t bufferFormat, GrSurfaceOrigin surfaceOrigin)
     : GrTextureGenerator(info)
     , fHardwareBuffer(hardwareBuffer)

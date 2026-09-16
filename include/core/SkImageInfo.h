@@ -8,7 +8,6 @@
 #ifndef SkImageInfo_DEFINED
 #define SkImageInfo_DEFINED
 
-#include "include/core/SkAlphaType.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -22,6 +21,7 @@
 #include <cstdint>
 #include <utility>
 
+#include <vividx/core/alpha-type.h>
 #include <vividx/core/image-info.h>
 
 class SkColorSpace;
@@ -51,8 +51,8 @@ SK_API bool SkColorTypeIsAlwaysOpaque(SkColorType ct);
     @param canonical  storage for SkAlphaType
     @return           true if valid SkAlphaType can be associated with colorType
 */
-SK_API bool SkColorTypeValidateAlphaType(SkColorType colorType, SkAlphaType alphaType,
-                                         SkAlphaType* canonical = nullptr);
+SK_API bool SkColorTypeValidateAlphaType(SkColorType colorType, vx_alpha_type alphaType,
+                                         vx_alpha_type* canonical = nullptr);
 
 /** \enum SkImageInfo::SkYUVColorSpace
     Describes color range of YUV pixels. The color mapping from YUV to RGB varies
@@ -67,10 +67,10 @@ SK_API bool SkColorTypeValidateAlphaType(SkColorType colorType, SkAlphaType alph
     The identity colorspace exists to provide a utility mapping from Y to R, U to G and V to B.
     It can be used to visualize the YUV planes or to explicitly post process the YUV channels.
 */
-typedef enum vx_yuv_color_space SkYUVColorSpace;
+typedef enum vx_yuv_color_space vx_yuv_color_space;
 
 
-SK_API bool SkYUVColorSpaceIsLimitedRange(SkYUVColorSpace cs);
+SK_API bool SkYUVColorSpaceIsLimitedRange(vx_yuv_color_space cs);
 
 /** \struct SkColorInfo
     Describes pixel and encoding. SkImageInfo can be created from SkColorInfo by
@@ -98,7 +98,7 @@ public:
         combination is supported.
         @return        created SkColorInfo
     */
-    SkColorInfo(SkColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs);
+    SkColorInfo(SkColorType ct, vx_alpha_type at, sk_sp<SkColorSpace> cs);
 
     SkColorInfo(const SkColorInfo&);
     SkColorInfo(SkColorInfo&&);
@@ -109,10 +109,10 @@ public:
     SkColorSpace* colorSpace() const;
     sk_sp<SkColorSpace> refColorSpace() const;
     SkColorType colorType() const { return fColorType; }
-    SkAlphaType alphaType() const { return fAlphaType; }
+    vx_alpha_type alphaType() const { return fAlphaType; }
 
     bool isOpaque() const {
-        return SkAlphaTypeIsOpaque(fAlphaType)
+        return vx_alpha_type_is_opaque(fAlphaType)
             || SkColorTypeIsAlwaysOpaque(fColorType);
     }
 
@@ -130,7 +130,7 @@ public:
         Created SkColorInfo contains newAlphaType even if it is incompatible with
         SkColorType, in which case SkAlphaType in SkColorInfo is ignored.
     */
-    SkColorInfo makeAlphaType(SkAlphaType newAlphaType) const;
+    SkColorInfo makeAlphaType(vx_alpha_type newAlphaType) const;
 
     /** Creates new SkColorInfo with same SkAlphaType, SkColorSpace, with SkColorType
         set to newColorType.
@@ -163,7 +163,7 @@ public:
 private:
     sk_sp<SkColorSpace> fColorSpace;
     SkColorType fColorType = kUnknown_SkColorType;
-    SkAlphaType fAlphaType = kUnknown_SkAlphaType;
+    vx_alpha_type fAlphaType = VX_ALPHA_TYPE_UNKNOWN;
 };
 
 /** \struct SkImageInfo
@@ -200,11 +200,11 @@ public:
         @param cs      range of colors; may be nullptr
         @return        created SkImageInfo
     */
-    static SkImageInfo Make(int width, int height, SkColorType ct, SkAlphaType at);
-    static SkImageInfo Make(int width, int height, SkColorType ct, SkAlphaType at,
+    static SkImageInfo Make(int width, int height, SkColorType ct, vx_alpha_type at);
+    static SkImageInfo Make(int width, int height, SkColorType ct, vx_alpha_type at,
                             sk_sp<SkColorSpace> cs);
-    static SkImageInfo Make(SkISize dimensions, SkColorType ct, SkAlphaType at);
-    static SkImageInfo Make(SkISize dimensions, SkColorType ct, SkAlphaType at,
+    static SkImageInfo Make(SkISize dimensions, SkColorType ct, vx_alpha_type at);
+    static SkImageInfo Make(SkISize dimensions, SkColorType ct, vx_alpha_type at,
                             sk_sp<SkColorSpace> cs);
 
     /** Creates SkImageInfo from integral dimensions and SkColorInfo colorInfo,
@@ -239,8 +239,8 @@ public:
         @param cs      range of colors; may be nullptr
         @return        created SkImageInfo
     */
-    static SkImageInfo MakeN32(int width, int height, SkAlphaType at);
-    static SkImageInfo MakeN32(int width, int height, SkAlphaType at, sk_sp<SkColorSpace> cs);
+    static SkImageInfo MakeN32(int width, int height, vx_alpha_type at);
+    static SkImageInfo MakeN32(int width, int height, vx_alpha_type at, sk_sp<SkColorSpace> cs);
 
     /** Creates SkImageInfo from integral dimensions width and height, kN32_SkColorType,
         SkAlphaType at, with sRGB SkColorSpace.
@@ -254,7 +254,7 @@ public:
 
         example: https://fiddle.skia.org/c/@ImageInfo_MakeS32
     */
-    static SkImageInfo MakeS32(int width, int height, SkAlphaType at);
+    static SkImageInfo MakeS32(int width, int height, vx_alpha_type at);
 
     /** Creates SkImageInfo from integral dimensions width and height, kN32_SkColorType,
         kPremul_SkAlphaType, with optional SkColorSpace.
@@ -343,7 +343,7 @@ public:
 
     SkColorType colorType() const { return fColorInfo.colorType(); }
 
-    SkAlphaType alphaType() const { return fColorInfo.alphaType(); }
+    vx_alpha_type alphaType() const { return fColorInfo.alphaType(); }
 
     /** Returns SkColorSpace, the range of colors. The reference count of
         SkColorSpace is unchanged. The returned SkColorSpace is immutable.
@@ -434,7 +434,7 @@ public:
 
         @return              created SkImageInfo
     */
-    SkImageInfo makeAlphaType(SkAlphaType newAlphaType) const {
+    SkImageInfo makeAlphaType(vx_alpha_type newAlphaType) const {
         return Make(fDimensions, fColorInfo.makeAlphaType(newAlphaType));
     }
 

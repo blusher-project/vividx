@@ -6,7 +6,7 @@
  */
 #include "include/gpu/graphite/Context.h"
 
-#include "include/core/SkAlphaType.h"
+#include <vividx/core/alpha-type.h>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorFilter.h"
@@ -455,7 +455,7 @@ void Context::asyncRescaleAndReadPixelsYUV420(const SkImage* src,
     // Use kOpaque alpha type to signal that we don't read back the alpha channel
     SkImageInfo dstImageInfo = SkImageInfo::Make(dstSize,
                                                  kRGBA_8888_SkColorType,
-                                                 kOpaque_SkAlphaType,
+                                                 VX_ALPHA_TYPE_OPAQUE,
                                                  std::move(dstColorSpace));
     this->asyncRescaleAndReadImpl(&Context::asyncReadPixelsYUV420,
                                   rescaleGamma, rescaleMode,
@@ -499,7 +499,7 @@ void Context::asyncRescaleAndReadPixelsYUVA420(const SkImage* src,
                                                SkImage::ReadPixelsContext callbackContext) {
     SkImageInfo dstImageInfo = SkImageInfo::Make(dstSize,
                                                  kRGBA_8888_SkColorType,
-                                                 kPremul_SkAlphaType,
+                                                 VX_ALPHA_TYPE_PREMULTIPLIED,
                                                  std::move(dstColorSpace));
     this->asyncRescaleAndReadImpl(&Context::asyncReadPixelsYUV420,
                                   rescaleGamma, rescaleMode,
@@ -592,9 +592,9 @@ void Context::asyncReadPixelsYUV420(std::unique_ptr<Recorder> recorder,
     // Set up draws and transfers. This interleaves the drawing to a plane and the copy to the
     // transfer buffer, which will allow the scratch A8 surface to be reused for each plane.
     // TODO: Use one transfer buffer for all three planes to reduce map/unmap cost?
-    const bool readAlpha = params.fDstImageInfo.colorInfo().alphaType() != kOpaque_SkAlphaType;
+    const bool readAlpha = params.fDstImageInfo.colorInfo().alphaType() != VX_ALPHA_TYPE_OPAQUE;
     SkImageInfo yaInfo = params.fDstImageInfo.makeColorType(kAlpha_8_SkColorType)
-                                             .makeAlphaType(kPremul_SkAlphaType);
+                                             .makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     SkImageInfo uvInfo = yaInfo.makeWH(yaInfo.width()/2, yaInfo.height()/2);
     PixelTransferResult transfers[4];
 

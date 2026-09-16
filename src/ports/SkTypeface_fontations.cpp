@@ -757,7 +757,7 @@ protected:
         if (glyph.maskFormat() == SkMask::kARGB32_Format) {
             dstBitmap.installPixels(
                     SkImageInfo::Make(glyph.width(), glyph.height(),
-                                     kN32_SkColorType, kPremul_SkAlphaType),
+                                     kN32_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED),
                     imageBuffer, glyph.rowBytes());
         }else if (glyph.maskFormat() == SkMask::kA8_Format) {
             dstBitmap.installPixels(
@@ -808,7 +808,7 @@ protected:
             SkBitmap dstBitmap;
             dstBitmap.installPixels(
                     SkImageInfo::Make(
-                            glyph.width(), glyph.height(), kN32_SkColorType, kPremul_SkAlphaType),
+                            glyph.width(), glyph.height(), kN32_SkColorType, VX_ALPHA_TYPE_PREMULTIPLIED),
                     imageBuffer,
                     glyph.rowBytes());
 
