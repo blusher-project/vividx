@@ -22,7 +22,7 @@ void draw(SkCanvas* canvas) {
                                  } ) {
         for (SkAlphaType alphaType : alphaTypes) {
             SkAlphaType canonicalAlphaType  = kUnknown_SkAlphaType;
-            bool result = SkColorTypeValidateAlphaType(colorType, alphaType, &canonicalAlphaType);
+            bool result = vx_color_type_validate_alpha_type(colorType, alphaType, &canonicalAlphaType);
             SkString string;
             string.printf("%13s %10s %10s", colors[(int) colorType], alphas[(int) alphaType],
                      result ? alphas[(int) canonicalAlphaType] : "------  ");

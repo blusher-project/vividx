@@ -13,86 +13,14 @@
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkSafeMath.h"
 
-int SkColorTypeBytesPerPixel(vx_color_type ct) {
-    switch (ct) {
-        case VX_COLOR_TYPE_UNKNOWN:            return 0;
-        case VX_COLOR_TYPE_ALPHA_8:            return 1;
-        case VX_COLOR_TYPE_RGB_565:            return 2;
-        case VX_COLOR_TYPE_ARGB_4444:          return 2;
-        case VX_COLOR_TYPE_RGBA_8888:          return 4;
-        case VX_COLOR_TYPE_BGRA_8888:          return 4;
-        case VX_COLOR_TYPE_RGB_888X:           return 4;
-        case VX_COLOR_TYPE_RGBA_1010102:       return 4;
-        case VX_COLOR_TYPE_RGB_101010X:        return 4;
-        case VX_COLOR_TYPE_BGRA_1010102:       return 4;
-        case VX_COLOR_TYPE_BGR_101010X:        return 4;
-        case VX_COLOR_TYPE_BGR_101010X_XR:     return 4;
-        case VX_COLOR_TYPE_BGRA_10101010_XR:   return 8;
-        case VX_COLOR_TYPE_RGBA_10X6:          return 8;
-        case VX_COLOR_TYPE_GRAY_8:             return 1;
-        case VX_COLOR_TYPE_RGBA_F16NORM:       return 8;
-        case VX_COLOR_TYPE_RGBA_F16:           return 8;
-        case VX_COLOR_TYPE_RGB_F16F16F16X:     return 8;
-        case VX_COLOR_TYPE_RGBA_F32:           return 16;
-        case VX_COLOR_TYPE_R8G8_UNORM:         return 2;
-        case VX_COLOR_TYPE_A16_UNORM:          return 2;
-        case VX_COLOR_TYPE_R16_UNORM:          return 2;
-        case VX_COLOR_TYPE_R16G16_UNORM:       return 4;
-        case VX_COLOR_TYPE_A16_FLOAT:          return 2;
-        case VX_COLOR_TYPE_R16_FLOAT:          return 2;
-        case VX_COLOR_TYPE_R16G16_FLOAT:       return 4;
-        case VX_COLOR_TYPE_R16G16B16A16_UNORM: return 8;
-        case VX_COLOR_TYPE_SRGBA_8888:         return 4;
-        case VX_COLOR_TYPE_R8_UNORM:           return 1;
-    }
-    SkUNREACHABLE;
-}
+#include <vividx/core/color-type.h>
+
 
 bool SkColorTypeIsAlwaysOpaque(vx_color_type ct) {
     return !(SkColorTypeChannelFlags(ct) & kAlpha_SkColorChannelFlag);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool SkYUVColorSpaceIsLimitedRange(vx_yuv_color_space cs) {
-    switch (cs) {
-        case VX_YUV_COLOR_SPACE_REC601_LIMITED:
-        case VX_YUV_COLOR_SPACE_REC709_LIMITED:
-        case VX_YUV_COLOR_SPACE_BT2020_8BIT_LIMITED:
-        case VX_YUV_COLOR_SPACE_BT2020_10BIT_LIMITED:
-        case VX_YUV_COLOR_SPACE_BT2020_12BIT_LIMITED:
-        case VX_YUV_COLOR_SPACE_BT2020_16BIT_LIMITED:
-        case VX_YUV_COLOR_SPACE_FCC_LIMITED:
-        case VX_YUV_COLOR_SPACE_SMPTE240_LIMITED:
-        case VX_YUV_COLOR_SPACE_YDZDX_LIMITED:
-        case VX_YUV_COLOR_SPACE_GBR_LIMITED:
-        case VX_YUV_COLOR_SPACE_YCGCO_8BIT_LIMITED:
-        case VX_YUV_COLOR_SPACE_YCGCO_10BIT_LIMITED:
-        case VX_YUV_COLOR_SPACE_YCGCO_12BIT_LIMITED:
-        case VX_YUV_COLOR_SPACE_YCGCO_16BIT_LIMITED:
-            return true;
-
-        case VX_YUV_COLOR_SPACE_JPEG_FULL:
-        case VX_YUV_COLOR_SPACE_REC709_FULL:
-        case VX_YUV_COLOR_SPACE_BT2020_8BIT_FULL:
-        case VX_YUV_COLOR_SPACE_BT2020_10BIT_FULL:
-        case VX_YUV_COLOR_SPACE_BT2020_12BIT_FULL:
-        case VX_YUV_COLOR_SPACE_BT2020_16BIT_FULL:
-        case VX_YUV_COLOR_SPACE_FCC_FULL:
-        case VX_YUV_COLOR_SPACE_SMPTE240_FULL:
-        case VX_YUV_COLOR_SPACE_YDZDX_FULL:
-        case VX_YUV_COLOR_SPACE_GBR_FULL:
-        case VX_YUV_COLOR_SPACE_YCGCO_8BIT_FULL:
-        case VX_YUV_COLOR_SPACE_YCGCO_10BIT_FULL:
-        case VX_YUV_COLOR_SPACE_YCGCO_12BIT_FULL:
-        case VX_YUV_COLOR_SPACE_YCGCO_16BIT_FULL:
-        case VX_YUV_COLOR_SPACE_IDENTITY:
-            return false;
-
-        default:
-            SkUNREACHABLE;
-    }
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -130,7 +58,7 @@ SkColorInfo SkColorInfo::makeColorSpace(sk_sp<SkColorSpace> cs) const {
     return SkColorInfo(this->colorType(), this->alphaType(), std::move(cs));
 }
 
-int SkColorInfo::bytesPerPixel() const { return SkColorTypeBytesPerPixel(fColorType); }
+int SkColorInfo::bytesPerPixel() const { return vx_color_type_bytes_per_pixel(fColorType); }
 
 bool SkColorInfo::gammaCloseToSRGB() const {
     return fColorSpace && fColorSpace->gammaCloseToSRGB();
@@ -235,54 +163,3 @@ void SkImageInfo::validate() const {
     SkASSERT(SkAlphaTypeIsValid(this->alphaType()));
 }
 #endif
-
-bool SkColorTypeValidateAlphaType(vx_color_type colorType, vx_alpha_type alphaType,
-                                  vx_alpha_type* canonical) {
-    switch (colorType) {
-        case VX_COLOR_TYPE_UNKNOWN:
-            alphaType = VX_ALPHA_TYPE_UNKNOWN;
-            break;
-        case VX_COLOR_TYPE_ALPHA_8:         // fall-through
-        case VX_COLOR_TYPE_A16_UNORM:       // fall-through
-        case VX_COLOR_TYPE_A16_FLOAT:
-            if (VX_ALPHA_TYPE_UNPREMULTIPLIED == alphaType) {
-                alphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
-            }
-            [[fallthrough]];
-        case VX_COLOR_TYPE_ARGB_4444:
-        case VX_COLOR_TYPE_RGBA_8888:
-        case VX_COLOR_TYPE_SRGBA_8888:
-        case VX_COLOR_TYPE_BGRA_8888:
-        case VX_COLOR_TYPE_RGBA_1010102:
-        case VX_COLOR_TYPE_BGRA_1010102:
-        case VX_COLOR_TYPE_RGBA_10X6:
-        case VX_COLOR_TYPE_RGBA_F16NORM:
-        case VX_COLOR_TYPE_RGBA_F16:
-        case VX_COLOR_TYPE_RGBA_F32:
-        case VX_COLOR_TYPE_BGRA_10101010_XR:
-        case VX_COLOR_TYPE_R16G16B16A16_UNORM:
-            if (VX_ALPHA_TYPE_UNKNOWN == alphaType) {
-                return false;
-            }
-            break;
-        case VX_COLOR_TYPE_GRAY_8:
-        case VX_COLOR_TYPE_R8G8_UNORM:
-        case VX_COLOR_TYPE_R16_UNORM:
-        case VX_COLOR_TYPE_R16_FLOAT:
-        case VX_COLOR_TYPE_R16G16_UNORM:
-        case VX_COLOR_TYPE_R16G16_FLOAT:
-        case VX_COLOR_TYPE_RGB_565:
-        case VX_COLOR_TYPE_RGB_888X:
-        case VX_COLOR_TYPE_RGB_101010X:
-        case VX_COLOR_TYPE_BGR_101010X:
-        case VX_COLOR_TYPE_BGR_101010X_XR:
-        case VX_COLOR_TYPE_RGB_F16F16F16X:
-        case VX_COLOR_TYPE_R8_UNORM:
-            alphaType = VX_ALPHA_TYPE_OPAQUE;
-            break;
-    }
-    if (canonical) {
-        *canonical = alphaType;
-    }
-    return true;
-}

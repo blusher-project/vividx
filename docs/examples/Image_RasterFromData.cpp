@@ -3,7 +3,7 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Image_RasterFromData, 256, 256, false, 3) {
 void draw(SkCanvas* canvas) {
-    size_t rowBytes = image->width() * SkColorTypeBytesPerPixel(kRGBA_8888_SkColorType);
+    size_t rowBytes = image->width() * vx_color_type_bytes_per_pixel(kRGBA_8888_SkColorType);
     sk_sp<SkData> data = SkData::MakeUninitialized(rowBytes * image->height());
     SkImageInfo dstInfo = SkImageInfo::MakeN32(image->width(), image->height(),
                                                kPremul_SkAlphaType);

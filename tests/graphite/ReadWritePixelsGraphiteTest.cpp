@@ -257,7 +257,7 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
         const auto srcAT = srcPixels.info().alphaType();
         const auto rect = SkIRect::MakeWH(readInfo.width(), readInfo.height()).makeOffset(offset);
         const auto surfBounds = SkIRect::MakeWH(srcPixels.width(), srcPixels.height());
-        const size_t readBpp = SkColorTypeBytesPerPixel(readCT);
+        const size_t readBpp = vx_color_type_bytes_per_pixel(readCT);
 
         // Make the row bytes in the dst be loose for extra stress.
         const size_t dstRB = readBpp * readInfo.width() + 10 * readBpp;

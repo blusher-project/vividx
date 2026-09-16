@@ -197,7 +197,7 @@ int make_pixmaps(SkColorType ct,
         rowBytes[level] = ii[level].minRowBytes();
         // Make sure we test row bytes that aren't tight.
         if (!(level % 2)) {
-            rowBytes[level] += (level + 1)*SkColorTypeBytesPerPixel(ii[level].colorType());
+            rowBytes[level] += (level + 1)*vx_color_type_bytes_per_pixel(ii[level].colorType());
         }
         size += rowBytes[level]*ii[level].height();
         levelSize /= 2;

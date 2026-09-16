@@ -101,7 +101,7 @@ HashAndEncode::HashAndEncode(const SkBitmap& bitmap) : fSize(bitmap.info().dimen
             fPixels.reset(nullptr);
             break;
         }
-        src = (const char*)src + todo*SkColorTypeBytesPerPixel(bitmap.colorType());
+        src = (const char*)src + todo*vx_color_type_bytes_per_pixel(bitmap.colorType());
         dst = (      char*)dst + todo*sizeof(uint64_t);
         N -= todo;
     }

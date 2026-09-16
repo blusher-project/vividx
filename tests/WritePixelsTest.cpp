@@ -650,7 +650,7 @@ DEF_TEST(WritePixels_InvalidRowBytes, reporter) {
     for (int ct = 0; ct < kLastEnum_SkColorType + 1; ++ct) {
         auto colorType = static_cast<SkColorType>(ct);
 
-        size_t bpp = SkColorTypeBytesPerPixel(colorType);
+        size_t bpp = vx_color_type_bytes_per_pixel(colorType);
         if (bpp <= 1) {
             continue;
         }

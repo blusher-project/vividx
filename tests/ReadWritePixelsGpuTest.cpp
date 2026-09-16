@@ -333,7 +333,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
         const auto srcAT = srcPixels.info().alphaType();
         const auto rect = SkIRect::MakeWH(readInfo.width(), readInfo.height()).makeOffset(offset);
         const auto surfBounds = SkIRect::MakeWH(srcPixels.width(), srcPixels.height());
-        const size_t readBpp = SkColorTypeBytesPerPixel(readCT);
+        const size_t readBpp = vx_color_type_bytes_per_pixel(readCT);
 
         // Make the row bytes in the dst be loose for extra stress.
         const size_t dstRB = readBpp * readInfo.width() + 10 * readBpp;
@@ -639,7 +639,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ReadPixels_InvalidRowBytes_Gpu,
     auto surf = SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kYes, srcII);
     for (int ct = 0; ct < kLastEnum_SkColorType + 1; ++ct) {
         auto colorType = static_cast<SkColorType>(ct);
-        size_t bpp = SkColorTypeBytesPerPixel(colorType);
+        size_t bpp = vx_color_type_bytes_per_pixel(colorType);
         if (bpp <= 1) {
             continue;
         }
@@ -658,7 +658,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(WritePixels_InvalidRowBytes_Gpu,
     auto surf = SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kYes, dstII);
     for (int ct = 0; ct < kLastEnum_SkColorType + 1; ++ct) {
         auto colorType = static_cast<SkColorType>(ct);
-        size_t bpp = SkColorTypeBytesPerPixel(colorType);
+        size_t bpp = vx_color_type_bytes_per_pixel(colorType);
         if (bpp <= 1) {
             continue;
         }

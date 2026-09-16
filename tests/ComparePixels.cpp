@@ -96,7 +96,7 @@ bool CheckSolidPixels(const SkColor4f& col,
                       const SkPixmap& pixmap,
                       const float tolRGBA[4],
                       std::function<ComparePixmapsErrorReporter>& error) {
-    size_t floatBpp = SkColorTypeBytesPerPixel(kRGBA_F32_SkColorType);
+    size_t floatBpp = vx_color_type_bytes_per_pixel(kRGBA_F32_SkColorType);
 
     // First convert 'col' to be compatible with 'pixmap'
     SkAutoPixmapStorage colorPixmap;

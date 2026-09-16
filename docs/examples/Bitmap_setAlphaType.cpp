@@ -20,7 +20,7 @@ void draw(SkCanvas* canvas) {
     kGray_8_SkColorType, kRGBA_F16_SkColorType
                                  } ) {
         for (SkAlphaType canonicalAlphaType : alphaTypes) {
-            SkColorTypeValidateAlphaType(colorType, kUnknown_SkAlphaType, &canonicalAlphaType );
+            vx_color_type_validate_alpha_type(colorType, kUnknown_SkAlphaType, &canonicalAlphaType );
             SkDebugf("%12s %9s  ", colors[(int) colorType], alphas[(int) canonicalAlphaType ]);
             for (SkAlphaType alphaType : alphaTypes) {
                 bitmap.setInfo(SkImageInfo::Make(4, 4, colorType, canonicalAlphaType));

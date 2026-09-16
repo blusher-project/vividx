@@ -55,7 +55,7 @@ void run_test(skiatest::Reporter* reporter, bool testMipmaps,
 
             sk_sp<SkImage> gpu = convert2gpu(raster.get(), mm);
 
-            int bytesPerPixel = SkColorTypeBytesPerPixel(ct);
+            int bytesPerPixel = vx_color_type_bytes_per_pixel(ct);
 
             size_t expectedSize = bytesPerPixel * gpu->width() * gpu->height();
             if (mm == skgpu::Mipmapped::kYes) {

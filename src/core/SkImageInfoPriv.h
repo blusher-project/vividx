@@ -108,7 +108,7 @@ static int SkColorTypeShiftPerPixel(vx_color_type ct) {
 }
 
 static inline size_t SkColorTypeMinRowBytes(vx_color_type ct, int width) {
-    return (size_t)(width * SkColorTypeBytesPerPixel(ct));
+    return (size_t)(width * vx_color_type_bytes_per_pixel(ct));
 }
 
 static inline bool SkColorTypeIsValid(unsigned value) {

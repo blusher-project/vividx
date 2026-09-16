@@ -16,7 +16,7 @@ void draw(SkCanvas* canvas) {
     kBGRA_8888_SkColorType, kRGBA_1010102_SkColorType, kRGB_101010x_SkColorType,
     kGray_8_SkColorType, kRGBA_F16_SkColorType
                                  } ) {
-        int result = SkColorTypeBytesPerPixel(colorType);
+        int result = vx_color_type_bytes_per_pixel(colorType);
         SkString string;
         string.printf("%13s %4d", colors[(int) colorType], result);
         canvas->drawString(string, 10, y += 14, font, paint);

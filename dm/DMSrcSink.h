@@ -547,7 +547,7 @@ public:
     SkColorInfo colorInfo() const override {
         // If there's an appropriate alpha type for this color type, use it, otherwise use premul.
         SkAlphaType alphaType = kPremul_SkAlphaType;
-        (void)SkColorTypeValidateAlphaType(fColorType, alphaType, &alphaType);
+        (void)vx_color_type_validate_alpha_type(fColorType, alphaType, &alphaType);
 
         return SkColorInfo(fColorType, alphaType, fColorSpace);
     }

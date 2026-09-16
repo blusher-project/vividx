@@ -115,7 +115,7 @@ static sk_sp<SkColorSpace> make_small_gamut() {
 static void draw_image(GrDirectContext* dContext, SkCanvas* canvas, SkImage* image,
                        SkColorType dstColorType, SkAlphaType dstAlphaType,
                        sk_sp<SkColorSpace> dstColorSpace, SkImage::CachingHint hint) {
-    size_t rowBytes = image->width() * SkColorTypeBytesPerPixel(dstColorType);
+    size_t rowBytes = image->width() * vx_color_type_bytes_per_pixel(dstColorType);
     sk_sp<SkData> data = SkData::MakeUninitialized(rowBytes * image->height());
     SkImageInfo dstInfo = SkImageInfo::Make(image->width(), image->height(), dstColorType,
                                             dstAlphaType, dstColorSpace);

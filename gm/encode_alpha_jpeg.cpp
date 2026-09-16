@@ -57,7 +57,7 @@ protected:
             return DrawResult::kFail;
         }
         fStorage.reset(srcImg->width() * srcImg->height() *
-                SkColorTypeBytesPerPixel(kRGBA_F16_SkColorType));
+                vx_color_type_bytes_per_pixel(kRGBA_F16_SkColorType));
 
         SkPixmap src;
         SkImageInfo info = SkImageInfo::MakeN32Premul(srcImg->width(), srcImg->height(),

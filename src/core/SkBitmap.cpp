@@ -103,7 +103,7 @@ sk_sp<SkColorSpace> SkBitmap::refColorSpace() const { return fPixmap.info().refC
 
 bool SkBitmap::setInfo(const SkImageInfo& info, size_t rowBytes) {
     vx_alpha_type newAT = info.alphaType();
-    if (!SkColorTypeValidateAlphaType(info.colorType(), info.alphaType(), &newAT)) {
+    if (!vx_color_type_validate_alpha_type(info.colorType(), info.alphaType(), &newAT)) {
         return reset_return_false(this);
     }
     // don't look at info.alphaType(), since newAT is the real value...
@@ -136,7 +136,7 @@ bool SkBitmap::setInfo(const SkImageInfo& info, size_t rowBytes) {
 }
 
 bool SkBitmap::setAlphaType(vx_alpha_type newAlphaType) {
-    if (!SkColorTypeValidateAlphaType(this->colorType(), newAlphaType, &newAlphaType)) {
+    if (!vx_color_type_validate_alpha_type(this->colorType(), newAlphaType, &newAlphaType)) {
         return false;
     }
     if (this->alphaType() != newAlphaType) {

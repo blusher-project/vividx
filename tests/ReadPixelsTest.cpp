@@ -491,7 +491,7 @@ static void test_conversion(skiatest::Reporter* r, const SkImageInfo& dstInfo,
         }
 
         REPORTER_ASSERT(r, 0 == memcmp(dstPixels, five_reference_pixels(dstInfo.colorType()),
-                                       kNumPixels * SkColorTypeBytesPerPixel(dstInfo.colorType())));
+                                       kNumPixels * vx_color_type_bytes_per_pixel(dstInfo.colorType())));
     }
 }
 
@@ -541,7 +541,7 @@ DEF_TEST(ReadPixels_InvalidRowBytes, reporter) {
     auto surf = SkSurfaces::Raster(srcII);
     for (int ct = 0; ct < kLastEnum_SkColorType + 1; ++ct) {
         auto colorType = static_cast<SkColorType>(ct);
-        size_t bpp = SkColorTypeBytesPerPixel(colorType);
+        size_t bpp = vx_color_type_bytes_per_pixel(colorType);
         if (bpp <= 1) {
             continue;
         }

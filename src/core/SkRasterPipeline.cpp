@@ -144,10 +144,10 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
             SkRasterPipelineContexts::EmbossCtx* embossCtx =
                     (SkRasterPipelineContexts::EmbossCtx*)ctx;
             this->addMemoryContext(&embossCtx->add,
-                                   SkColorTypeBytesPerPixel(VX_COLOR_TYPE_ALPHA_8),
+                                   vx_color_type_bytes_per_pixel(VX_COLOR_TYPE_ALPHA_8),
                                    /*load=*/true, /*store=*/false);
             this->addMemoryContext(&embossCtx->mul,
-                                   SkColorTypeBytesPerPixel(VX_COLOR_TYPE_ALPHA_8),
+                                   vx_color_type_bytes_per_pixel(VX_COLOR_TYPE_ALPHA_8),
                                    /*load=*/true, /*store=*/false);
             break;
         }
@@ -171,7 +171,7 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
     if (isLoad || isStore) {
         SkASSERT(ct != VX_COLOR_TYPE_UNKNOWN);
         this->addMemoryContext((SkRasterPipelineContexts::MemoryCtx*)ctx,
-                               SkColorTypeBytesPerPixel(ct),
+                               vx_color_type_bytes_per_pixel(ct),
                                isLoad,
                                isStore);
     }

@@ -366,7 +366,7 @@ bool SkJpegEncoderImpl::onEncodeRows(int numRows) {
             jpeg_write_scanlines(fEncoderMgr->cinfo(), &jpegSrcRow, 1);
         }
     } else {
-        const size_t srcBytes = SkColorTypeBytesPerPixel(fSrc.colorType()) * fSrc.width();
+        const size_t srcBytes = vx_color_type_bytes_per_pixel(fSrc.colorType()) * fSrc.width();
         const size_t jpegSrcBytes = fEncoderMgr->cinfo()->input_components * fSrc.width();
         const void* srcRow = fSrc.addr(0, fCurrRow);
         for (int i = 0; i < numRows; i++) {

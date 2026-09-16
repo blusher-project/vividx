@@ -93,12 +93,12 @@ DEF_TEST(SwizzlerFill, r) {
             for (uint32_t padding : paddings) {
 
                 // Calculate row bytes
-                const size_t colorRowBytes = SkColorTypeBytesPerPixel(kN32_SkColorType) * width
+                const size_t colorRowBytes = vx_color_type_bytes_per_pixel(kN32_SkColorType) * width
                         + padding;
                 const size_t indexRowBytes = width + padding;
                 const size_t grayRowBytes = indexRowBytes;
                 const size_t color565RowBytes =
-                        SkColorTypeBytesPerPixel(kRGB_565_SkColorType) * width + padding;
+                        vx_color_type_bytes_per_pixel(kRGB_565_SkColorType) * width + padding;
 
                 // If there is padding, we can invent an offset to change the memory alignment
                 for (uint32_t offset = 0; offset <= padding; offset += 4) {

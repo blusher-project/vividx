@@ -125,7 +125,7 @@ DEF_TEST(PictureImageGenerator, reporter) {
             {100, 100}, picture, nullptr, nullptr, SkImages::BitDepth::kU8, colorspace);
 
     // worst case for all requests
-    SkAutoMalloc storage(100 * 100 * SkColorTypeBytesPerPixel(kRGBA_F32_SkColorType));
+    SkAutoMalloc storage(100 * 100 * vx_color_type_bytes_per_pixel(kRGBA_F32_SkColorType));
 
     for (const auto& rec : recs) {
         SkImageInfo info = SkImageInfo::Make(100, 100, rec.fColorType, rec.fAlphaType, colorspace);

@@ -191,7 +191,7 @@ bool SkPngEncoderBase::onEncodeRows(int numRows) {
             transform_scanline_A8_to_GrayAlpha((char*)fStorage.get(),
                                                (const char*)srcRow,
                                                fSrc.width(),
-                                               SkColorTypeBytesPerPixel(fSrc.colorType()));
+                                               vx_color_type_bytes_per_pixel(fSrc.colorType()));
         } else {
             SkASSERT(fSrc.width() == fTargetInfo.fSrcRowInfo->width());
             if (!SkConvertPixels(fTargetInfo.fDstRowInfo.value(),

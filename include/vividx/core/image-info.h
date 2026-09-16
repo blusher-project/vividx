@@ -9,6 +9,7 @@
 #ifndef VIVIDX_CORE_IMAGE_INFO_H
 #define VIVIDX_CORE_IMAGE_INFO_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include <vividx/common.h>
@@ -92,6 +93,8 @@ enum vx_yuv_color_space {
     VX_YUV_COLOR_SPACE_REC709 = VX_YUV_COLOR_SPACE_REC709_LIMITED,
     VX_YUV_COLOR_SPACE_BT2020 = VX_YUV_COLOR_SPACE_BT2020_8BIT_LIMITED,
 };
+
+VX_PUBLIC bool vx_yuv_color_space_is_limited_range(enum vx_yuv_color_space cs);
 
 
 //!<==================

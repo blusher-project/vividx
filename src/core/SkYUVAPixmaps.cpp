@@ -71,7 +71,7 @@ SkYUVAPixmapInfo::SkYUVAPixmapInfo(const SkYUVAInfo& yuvaInfo,
     size_t tempRowBytes[kMaxPlanes];
     if (!rowBytes) {
         for (int i = 0; i < n; ++i) {
-            tempRowBytes[i] = SkColorTypeBytesPerPixel(colorTypes[i]) * planeDimensions[i].width();
+            tempRowBytes[i] = vx_color_type_bytes_per_pixel(colorTypes[i]) * planeDimensions[i].width();
         }
         rowBytes = tempRowBytes;
     }

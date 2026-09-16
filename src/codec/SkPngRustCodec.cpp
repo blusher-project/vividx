@@ -334,7 +334,7 @@ void blendRow(SkSpan<uint8_t> dstRow,
     p.appendStore(color, &dstCtx);
 
     SkSafeMath safe;
-    size_t bpp = safe.castTo<size_t>(SkColorTypeBytesPerPixel(color));
+    size_t bpp = safe.castTo<size_t>(vx_color_type_bytes_per_pixel(color));
     SkASSERT_RELEASE(safe.ok());
 
     size_t width = srcRow.size() / bpp;

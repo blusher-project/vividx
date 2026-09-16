@@ -8,6 +8,47 @@
 extern "C" {
 #endif // __cplusplus
 
+bool vx_yuv_color_space_is_limited_range(enum vx_yuv_color_space cs)
+{
+    switch (cs) {
+    case VX_YUV_COLOR_SPACE_REC601_LIMITED:
+    case VX_YUV_COLOR_SPACE_REC709_LIMITED:
+    case VX_YUV_COLOR_SPACE_BT2020_8BIT_LIMITED:
+    case VX_YUV_COLOR_SPACE_BT2020_10BIT_LIMITED:
+    case VX_YUV_COLOR_SPACE_BT2020_12BIT_LIMITED:
+    case VX_YUV_COLOR_SPACE_BT2020_16BIT_LIMITED:
+    case VX_YUV_COLOR_SPACE_FCC_LIMITED:
+    case VX_YUV_COLOR_SPACE_SMPTE240_LIMITED:
+    case VX_YUV_COLOR_SPACE_YDZDX_LIMITED:
+    case VX_YUV_COLOR_SPACE_GBR_LIMITED:
+    case VX_YUV_COLOR_SPACE_YCGCO_8BIT_LIMITED:
+    case VX_YUV_COLOR_SPACE_YCGCO_10BIT_LIMITED:
+    case VX_YUV_COLOR_SPACE_YCGCO_12BIT_LIMITED:
+    case VX_YUV_COLOR_SPACE_YCGCO_16BIT_LIMITED:
+        return true;
+
+    case VX_YUV_COLOR_SPACE_JPEG_FULL:
+    case VX_YUV_COLOR_SPACE_REC709_FULL:
+    case VX_YUV_COLOR_SPACE_BT2020_8BIT_FULL:
+    case VX_YUV_COLOR_SPACE_BT2020_10BIT_FULL:
+    case VX_YUV_COLOR_SPACE_BT2020_12BIT_FULL:
+    case VX_YUV_COLOR_SPACE_BT2020_16BIT_FULL:
+    case VX_YUV_COLOR_SPACE_FCC_FULL:
+    case VX_YUV_COLOR_SPACE_SMPTE240_FULL:
+    case VX_YUV_COLOR_SPACE_YDZDX_FULL:
+    case VX_YUV_COLOR_SPACE_GBR_FULL:
+    case VX_YUV_COLOR_SPACE_YCGCO_8BIT_FULL:
+    case VX_YUV_COLOR_SPACE_YCGCO_10BIT_FULL:
+    case VX_YUV_COLOR_SPACE_YCGCO_12BIT_FULL:
+    case VX_YUV_COLOR_SPACE_YCGCO_16BIT_FULL:
+    case VX_YUV_COLOR_SPACE_IDENTITY:
+        return false;
+
+    default:
+        __builtin_trap();
+    }
+}
+
 struct vx_color_info_t {
     vx_color_space_t *color_space;
     enum vx_color_type color_type; // = kUnknown_SkColorType;

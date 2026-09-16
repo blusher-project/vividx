@@ -61,7 +61,7 @@ void draw(SkCanvas* canvas) {
              "Unpremul\n", " ");
     for (SkColorType colorType : kColorTypes) {
         for (SkAlphaType canonicalAlphaType : kAlphaTypes) {
-            SkColorTypeValidateAlphaType(colorType, kUnknown_SkAlphaType, &canonicalAlphaType);
+            vx_color_type_validate_alpha_type(colorType, kUnknown_SkAlphaType, &canonicalAlphaType);
             SkDebugf("%15s %10s ", colortype_name(colorType), alphatype_name(canonicalAlphaType));
             for (SkAlphaType alphaType : kAlphaTypes) {
                 bitmap.setInfo(SkImageInfo::Make(4, 4, colorType, canonicalAlphaType));

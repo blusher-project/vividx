@@ -314,8 +314,8 @@ sk_sp<TextureFormatXferFn::RPOps> TextureFormatXferFn::RPOps::Make(
         (!SkToBool(rpModifiers) && ...)) {
         return nullptr; // Identity conversion
     }
-    sk_sp<RPOps> ops{new RPOps(/*srcBpp=*/SkColorTypeBytesPerPixel(srcColorType),
-                               /*dstBpp=*/SkColorTypeBytesPerPixel(dstColorType))};
+    sk_sp<RPOps> ops{new RPOps(/*srcBpp=*/vx_color_type_bytes_per_pixel(srcColorType),
+                               /*dstBpp=*/vx_color_type_bytes_per_pixel(dstColorType))};
 
     // NOTE: The src and dst memory contexts are not modified here, they just provide stable
     // pointers for the appended ops to reference, and will be patched during run().
