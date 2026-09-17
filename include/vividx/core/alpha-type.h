@@ -1,6 +1,8 @@
 #ifndef VIVIDX_CORE_ALPHA_TYPE_H
 #define VIVIDX_CORE_ALPHA_TYPE_H
 
+#include <stdbool.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus

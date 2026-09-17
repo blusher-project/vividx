@@ -10,6 +10,8 @@
 #ifndef VIVIDX_CORE_COLOR_H
 #define VIVIDX_CORE_COLOR_H
 
+#include <assert.h>
+
 #include <vividx/common.h>
 #include <vividx/core/alpha-type.h>
 
