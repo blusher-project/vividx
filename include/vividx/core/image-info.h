@@ -114,6 +114,56 @@ VX_PUBLIC enum vx_color_type vx_color_info_color_type(
 VX_PUBLIC enum vx_alpha_type vx_color_info_alpha_type(
     const vx_color_info_t *color_info);
 
+VX_PUBLIC bool vx_color_info_is_opaque(const vx_color_info_t *color_info);
+
+VX_PUBLIC bool vx_color_info_gamma_close_to_srgb(const vx_color_info_t *info);
+
+/** Does other represent the same color type, alpha type, and color space? */
+VX_PUBLIC bool vx_color_info_eq(const vx_color_info_t *info,
+                                const vx_color_info_t *other);
+
+/** Does other represent a different color type, alpha type, or color space? */
+VX_PUBLIC bool vx_color_info_ne(const vx_color_info_t *info,
+                                const vx_color_info_t *other);
+
+#if 0
+/** Creates SkColorInfo with same SkColorType, SkColorSpace, with SkAlphaType set
+    to newAlphaType.
+
+    Created SkColorInfo contains newAlphaType even if it is incompatible with
+    SkColorType, in which case SkAlphaType in SkColorInfo is ignored.
+*/
+SkColorInfo makeAlphaType(vx_alpha_type newAlphaType) const;
+
+/** Creates new SkColorInfo with same SkAlphaType, SkColorSpace, with SkColorType
+    set to newColorType.
+*/
+SkColorInfo makeColorType(vx_color_type newColorType) const;
+
+/** Creates SkColorInfo with same SkAlphaType, SkColorType, with SkColorSpace
+    set to cs. cs may be nullptr.
+*/
+SkColorInfo makeColorSpace(sk_sp<SkColorSpace> cs) const;
+#endif
+
+/** Returns number of bytes per pixel required by SkColorType.
+    Returns zero if colorType() is kUnknown_SkColorType.
+
+    @return  bytes in pixel
+
+    example: https://fiddle.skia.org/c/@ImageInfo_bytesPerPixel
+*/
+VX_PUBLIC int vx_color_info_bytes_per_pixel(const vx_color_info_t *ct);
+
+/** Returns bit shift converting row bytes to row pixels.
+    Returns zero for kUnknown_SkColorType.
+
+    @return  one of: 0, 1, 2, 3, 4; left shift to convert pixels to bytes
+
+    example: https://fiddle.skia.org/c/@ImageInfo_shiftPerPixel
+*/
+VX_PUBLIC int vx_color_info_shift_per_pixel(const vx_color_info_t *ct);
+
 VX_PUBLIC void vx_color_info_free(vx_color_info_t *color_info);
 
 //!<==================

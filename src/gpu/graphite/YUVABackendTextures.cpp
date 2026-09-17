@@ -18,13 +18,13 @@ namespace skgpu::graphite {
 namespace {
 int num_channels(uint32_t ChannelMasks) {
     switch (ChannelMasks) {
-        case kRed_SkColorChannelFlag        : return 1;
-        case kAlpha_SkColorChannelFlag      : return 1;
-        case kGray_SkColorChannelFlag       : return 1;
-        case kGrayAlpha_SkColorChannelFlags : return 2;
-        case kRG_SkColorChannelFlags        : return 2;
-        case kRGB_SkColorChannelFlags       : return 3;
-        case kRGBA_SkColorChannelFlags      : return 4;
+        case VX_COLOR_CHANNEL_FLAG_RED        : return 1;
+        case VX_COLOR_CHANNEL_FLAG_ALPHA      : return 1;
+        case VX_COLOR_CHANNEL_FLAG_GRAY       : return 1;
+        case VX_COLOR_CHANNEL_FLAGS_GRAY_ALPHA : return 2;
+        case VX_COLOR_CHANNEL_FLAGS_RG        : return 2;
+        case VX_COLOR_CHANNEL_FLAGS_RGB       : return 3;
+        case VX_COLOR_CHANNEL_FLAGS_RGBA      : return 4;
         default                             : return 0;
     }
     SkUNREACHABLE;

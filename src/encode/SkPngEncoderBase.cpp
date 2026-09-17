@@ -93,8 +93,8 @@ int numChannels = SkColorTypeNumChannels(srcCT);
 
 switch(numChannels) {
   case 1: {
-      uint32_t srcChannelFlags = SkColorTypeChannelFlags(srcCT);
-      if (srcChannelFlags == kGray_SkColorChannelFlag) {
+      uint32_t srcChannelFlags = vx_color_type_channel_flags(srcCT);
+      if (srcChannelFlags == VX_COLOR_CHANNEL_FLAG_GRAY) {
           SkASSERT(srcInfo.isOpaque());
           return makeTargetInfo(makeGray8Info(srcInfo), srcInfo, srcCT, srcAT);
       }

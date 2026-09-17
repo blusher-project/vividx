@@ -671,7 +671,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
     if (auto mode = paint->asBlendMode()) {
         // We have the most fast-paths for SrcOver, so see if we can act like SrcOver.
         if (mode.value() != SkBlendMode::kSrcOver) {
-            switch (CheckFastPath(*paint, SkColorTypeIsAlwaysOpaque(device.colorType()))) {
+            switch (CheckFastPath(*paint, vx_color_type_is_always_opaque(device.colorType()))) {
                 case SkBlendFastPath::kSrcOver:
                     paint.writable()->setBlendMode(SkBlendMode::kSrcOver);
                     break;

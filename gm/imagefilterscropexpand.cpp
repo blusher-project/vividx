@@ -89,7 +89,7 @@ DEF_SIMPLE_GM(imagefilterscropexpand, canvas, 730, 650) {
              SkImageFilters::DropShadow(10, 10, 3, 3, SK_ColorBLUE, noopCropped, &bigRect));
 
         draw(canvas, checkerboard, bigRect,
-             SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR, 12,
+             SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_R, 12,
                                              gradientCircleSource, noopCropped, &bigRect));
 
         draw(canvas, checkerboard, bigRect,

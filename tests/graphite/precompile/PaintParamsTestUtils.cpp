@@ -997,7 +997,7 @@ std::pair<sk_sp<SkImageFilter>, sk_sp<PrecompileImageFilter>> displacement_image
     sk_sp<SkImageFilter> imageIF(
             SkImageFilters::Image(std::move(checkerboard), SkFilterMode::kLinear));
     sk_sp<SkImageFilter> displacementIF = SkImageFilters::DisplacementMap(
-            SkColorChannel::kR, SkColorChannel::kB, 2.0f, std::move(imageIF), nullptr);
+            VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_B, 2.0f, std::move(imageIF), nullptr);
     sk_sp<PrecompileImageFilter> option = PrecompileImageFilters::DisplacementMap(nullptr);
     return {std::move(displacementIF), std::move(option)};
 }

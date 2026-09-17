@@ -180,8 +180,8 @@ public:
      *                          it will use the source.
      *  @param cropRect         Optional rectangle that crops the color input and output.
      */
-    static sk_sp<SkImageFilter> DisplacementMap(SkColorChannel xChannelSelector,
-                                                SkColorChannel yChannelSelector,
+    static sk_sp<SkImageFilter> DisplacementMap(enum vx_color_channel xChannelSelector,
+                                                enum vx_color_channel yChannelSelector,
                                                 SkScalar scale, sk_sp<SkImageFilter> displacement,
                                                 sk_sp<SkImageFilter> color,
                                                 const CropRect& cropRect = {});

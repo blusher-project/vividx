@@ -223,7 +223,7 @@ static bool valid_for_bitmap_device(const SkImageInfo& info,
     }
 
     if (newAlphaType) {
-        *newAlphaType = SkColorTypeIsAlwaysOpaque(info.colorType()) ? VX_ALPHA_TYPE_OPAQUE
+        *newAlphaType = vx_color_type_is_always_opaque(info.colorType()) ? VX_ALPHA_TYPE_OPAQUE
                                                                     : info.alphaType();
     }
 

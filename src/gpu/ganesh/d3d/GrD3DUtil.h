@@ -36,21 +36,21 @@ bool GrDxgiFormatIsCompressed(DXGI_FORMAT);
 
 static constexpr uint32_t GrDxgiFormatChannels(DXGI_FORMAT format) {
     switch (format) {
-        case DXGI_FORMAT_R8G8B8A8_UNORM:           return kRGBA_SkColorChannelFlags;
-        case DXGI_FORMAT_R8_UNORM:                 return kRed_SkColorChannelFlag;
-        case DXGI_FORMAT_B8G8R8A8_UNORM:           return kRGBA_SkColorChannelFlags;
-        case DXGI_FORMAT_B5G6R5_UNORM:             return kRGB_SkColorChannelFlags;
-        case DXGI_FORMAT_R16G16B16A16_FLOAT:       return kRGBA_SkColorChannelFlags;
-        case DXGI_FORMAT_R16_FLOAT:                return kRed_SkColorChannelFlag;
-        case DXGI_FORMAT_R8G8_UNORM:               return kRG_SkColorChannelFlags;
-        case DXGI_FORMAT_R10G10B10A2_UNORM:        return kRGBA_SkColorChannelFlags;
-        case DXGI_FORMAT_B4G4R4A4_UNORM:           return kRGBA_SkColorChannelFlags;
-        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:      return kRGBA_SkColorChannelFlags;
-        case DXGI_FORMAT_BC1_UNORM:                return kRGBA_SkColorChannelFlags;
-        case DXGI_FORMAT_R16_UNORM:                return kRed_SkColorChannelFlag;
-        case DXGI_FORMAT_R16G16_UNORM:             return kRG_SkColorChannelFlags;
-        case DXGI_FORMAT_R16G16B16A16_UNORM:       return kRGBA_SkColorChannelFlags;
-        case DXGI_FORMAT_R16G16_FLOAT:             return kRG_SkColorChannelFlags;
+        case DXGI_FORMAT_R8G8B8A8_UNORM:           return VX_COLOR_CHANNEL_FLAGS_RGBA;
+        case DXGI_FORMAT_R8_UNORM:                 return VX_COLOR_CHANNEL_FLAG_RED;
+        case DXGI_FORMAT_B8G8R8A8_UNORM:           return VX_COLOR_CHANNEL_FLAGS_RGBA;
+        case DXGI_FORMAT_B5G6R5_UNORM:             return VX_COLOR_CHANNEL_FLAGS_RGB;
+        case DXGI_FORMAT_R16G16B16A16_FLOAT:       return VX_COLOR_CHANNEL_FLAGS_RGBA;
+        case DXGI_FORMAT_R16_FLOAT:                return VX_COLOR_CHANNEL_FLAG_RED;
+        case DXGI_FORMAT_R8G8_UNORM:               return VX_COLOR_CHANNEL_FLAGS_RG;
+        case DXGI_FORMAT_R10G10B10A2_UNORM:        return VX_COLOR_CHANNEL_FLAGS_RGBA;
+        case DXGI_FORMAT_B4G4R4A4_UNORM:           return VX_COLOR_CHANNEL_FLAGS_RGBA;
+        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:      return VX_COLOR_CHANNEL_FLAGS_RGBA;
+        case DXGI_FORMAT_BC1_UNORM:                return VX_COLOR_CHANNEL_FLAGS_RGBA;
+        case DXGI_FORMAT_R16_UNORM:                return VX_COLOR_CHANNEL_FLAG_RED;
+        case DXGI_FORMAT_R16G16_UNORM:             return VX_COLOR_CHANNEL_FLAGS_RG;
+        case DXGI_FORMAT_R16G16B16A16_UNORM:       return VX_COLOR_CHANNEL_FLAGS_RGBA;
+        case DXGI_FORMAT_R16G16_FLOAT:             return VX_COLOR_CHANNEL_FLAGS_RG;
         case DXGI_FORMAT_D24_UNORM_S8_UINT:        return 0;
         case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:     return 0;
 

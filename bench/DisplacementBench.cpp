@@ -99,7 +99,7 @@ protected:
         SkPaint paint;
         sk_sp<SkImageFilter> displ(SkImageFilters::Image(fCheckerboard, SkFilterMode::kLinear));
         // No displacement effect
-        paint.setImageFilter(SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kG,
+        paint.setImageFilter(SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_G,
                                                              0.0f, std::move(displ), nullptr));
 
         for (int i = 0; i < loops; i++) {
@@ -124,7 +124,7 @@ protected:
         SkPaint paint;
         sk_sp<SkImageFilter> displ(SkImageFilters::Image(fCheckerboard, SkFilterMode::kLinear));
         // Displacement, with 1 alpha component (which isn't pre-multiplied)
-        paint.setImageFilter(SkImageFilters::DisplacementMap(SkColorChannel::kB, SkColorChannel::kA,
+        paint.setImageFilter(SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_B, VX_COLOR_CHANNEL_A,
                                                              16.0f, std::move(displ), nullptr));
         for (int i = 0; i < loops; i++) {
             this->drawClippedBitmap(canvas, 100, 0, paint);
@@ -148,7 +148,7 @@ protected:
         SkPaint paint;
         sk_sp<SkImageFilter> displ(SkImageFilters::Image(fCheckerboard, SkFilterMode::kLinear));
         // Displacement, with 2 non-alpha components
-        paint.setImageFilter(SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kB,
+        paint.setImageFilter(SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_B,
                                                              32.0f, std::move(displ), nullptr));
         for (int i = 0; i < loops; ++i) {
             this->drawClippedBitmap(canvas, 200, 0, paint);

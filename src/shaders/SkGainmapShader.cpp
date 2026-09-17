@@ -166,15 +166,15 @@ sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
             gainmapInfo.fGainmapGamma.fR == 1.f &&
             gainmapInfo.fGainmapGamma.fG == 1.f &&
             gainmapInfo.fGainmapGamma.fB == 1.f;
-        const uint32_t colorTypeFlags = SkColorTypeChannelFlags(gainmapImage->colorType());
-        const int gainmapIsAlpha = colorTypeFlags == kAlpha_SkColorChannelFlag;
-        const int gainmapIsRed = colorTypeFlags == kRed_SkColorChannelFlag;
+        const uint32_t colorTypeFlags = vx_color_type_channel_flags(gainmapImage->colorType());
+        const int gainmapIsAlpha = colorTypeFlags == VX_COLOR_CHANNEL_FLAG_ALPHA;
+        const int gainmapIsRed = colorTypeFlags == VX_COLOR_CHANNEL_FLAG_RED;
         const int singleChannel = all_channels_equal(gainmapInfo.fGainmapGamma) &&
                                   all_channels_equal(gainmapInfo.fGainmapRatioMin) &&
                                   all_channels_equal(gainmapInfo.fGainmapRatioMax) &&
-                                  (colorTypeFlags == kGray_SkColorChannelFlag ||
-                                   colorTypeFlags == kAlpha_SkColorChannelFlag ||
-                                   colorTypeFlags == kRed_SkColorChannelFlag);
+                                  (colorTypeFlags == VX_COLOR_CHANNEL_FLAG_GRAY ||
+                                   colorTypeFlags == VX_COLOR_CHANNEL_FLAG_ALPHA ||
+                                   colorTypeFlags == VX_COLOR_CHANNEL_FLAG_RED);
         const SkColor4f& epsilonBase =
                 baseImageIsHdr ? gainmapInfo.fEpsilonHdr : gainmapInfo.fEpsilonSdr;
         const SkColor4f& epsilonOther =

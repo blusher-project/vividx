@@ -267,10 +267,10 @@ SkYUVAPixmapInfo SkYUVAPixmaps::pixmapsInfo() const {
 }
 
 SkYUVAInfo::YUVALocations SkYUVAPixmaps::toYUVALocations() const {
-    uint32_t channelFlags[] = {SkColorTypeChannelFlags(fPlanes[0].colorType()),
-                               SkColorTypeChannelFlags(fPlanes[1].colorType()),
-                               SkColorTypeChannelFlags(fPlanes[2].colorType()),
-                               SkColorTypeChannelFlags(fPlanes[3].colorType())};
+    uint32_t channelFlags[] = {vx_color_type_channel_flags(fPlanes[0].colorType()),
+                               vx_color_type_channel_flags(fPlanes[1].colorType()),
+                               vx_color_type_channel_flags(fPlanes[2].colorType()),
+                               vx_color_type_channel_flags(fPlanes[3].colorType())};
     auto result = fYUVAInfo.toYUVALocations(channelFlags);
     SkDEBUGCODE(int numPlanes;)
     SkASSERT(SkYUVAInfo::YUVALocation::AreValidLocations(result, &numPlanes));

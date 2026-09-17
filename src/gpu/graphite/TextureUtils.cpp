@@ -174,8 +174,8 @@ bool valid_client_provided_image(const SkImage* clientProvided,
         return false;
     }
 
-    uint32_t origChannels = SkColorTypeChannelFlags(original->colorType());
-    uint32_t clientChannels = SkColorTypeChannelFlags(clientProvided->colorType());
+    uint32_t origChannels = vx_color_type_channel_flags(original->colorType());
+    uint32_t clientChannels = vx_color_type_channel_flags(clientProvided->colorType());
     if ((origChannels & clientChannels) != origChannels) {
         return false;
     }

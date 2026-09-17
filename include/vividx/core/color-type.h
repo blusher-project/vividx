@@ -1,6 +1,8 @@
 #ifndef VIVIDX_CORE_COLOR_TYPE_H
 #define VIVIDX_CORE_COLOR_TYPE_H
 
+#include <assert.h>
+
 #include <vividx/common.h>
 #include <vividx/core/alpha-type.h>
 
@@ -215,6 +217,8 @@ VX_PUBLIC bool vx_color_type_is_always_opaque(enum vx_color_type ct);
 VX_PUBLIC bool vx_color_type_validate_alpha_type(enum vx_color_type ct,
                                                  enum vx_alpha_type at,
                                                  enum vx_alpha_type *canonical);
+
+VX_PUBLIC uint32_t vx_color_type_channel_flags(enum vx_color_type ct);
 
 #ifdef __cplusplus
 }

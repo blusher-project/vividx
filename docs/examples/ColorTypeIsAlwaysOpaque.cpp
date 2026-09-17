@@ -16,7 +16,7 @@ void draw(SkCanvas* canvas) {
     kBGRA_8888_SkColorType, kRGBA_1010102_SkColorType, kRGB_101010x_SkColorType,
     kGray_8_SkColorType, kRGBA_F16_SkColorType
                                  } ) {
-        bool result = SkColorTypeIsAlwaysOpaque(colorType);
+        bool result = vx_color_type_is_always_opaque(colorType);
         SkString string;
         string.printf("%13s %6s", colors[(int) colorType], result ? "true" : "false");
         canvas->drawString(string, 10, y += 14, font, paint);

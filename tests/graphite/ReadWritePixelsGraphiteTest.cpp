@@ -470,7 +470,7 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
             }
 
             SkPixmap srcPixels{srcInfo, srcStorage.addr(), srcStorage.rowBytes()};
-            if (SkColorTypeIsAlwaysOpaque(srcCT) && srcCTTestedThoroughly[srcCT] &&
+            if (vx_color_type_is_always_opaque(srcCT) && srcCTTestedThoroughly[srcCT] &&
                 (kPremul_SkAlphaType == srcAT || kUnpremul_SkAlphaType == srcAT)) {
                 continue;
             }
@@ -497,7 +497,7 @@ static void graphite_read_pixels_test_driver(skiatest::Reporter* reporter,
                             // This doesn't make sense.
                             continue;
                         }
-                        if (SkColorTypeIsAlwaysOpaque(readCT) && readCTTestedThoroughly[readCT] &&
+                        if (vx_color_type_is_always_opaque(readCT) && readCTTestedThoroughly[readCT] &&
                             (kPremul_SkAlphaType == readAT || kUnpremul_SkAlphaType == readAT)) {
                             continue;
                         }

@@ -3,7 +3,8 @@
     "CommonColor": "mylib_common_color",
     "SkYUVColorSpace": "vx_yuv_color_space",
     "SkAlphaType": "vx_alpha_type",
-    "SkColorType": "vx_color_type"
+    "SkColorType": "vx_color_type",
+    "SkColorChannelFlag": "vx_color_channel_flag"
   },
   "enum_constants": {
     "kColorRed_CommonColor": "COMMON_COLOR_COLOR_RED",
@@ -83,6 +84,16 @@
     "kR8_unorm_SkColorType": "VX_COLOR_TYPE_R8_UNORM",
     "kLastEnum_SkColorType": "VX_COLOR_TYPE_LASTENUM",
     "kN32_SkColorType": "VX_COLOR_TYPE_N32",
+
+    "kRed_SkColorChannelFlag": "VX_COLOR_CHANNEL_FLAG_RED",
+    "kGreen_SkColorChannelFlag": "VX_COLOR_CHANNEL_FLAG_GREEN",
+    "kBlue_SkColorChannelFlag": "VX_COLOR_CHANNEL_FLAG_BLUE",
+    "kAlpha_SkColorChannelFlag": "VX_COLOR_CHANNEL_FLAG_ALPHA",
+    "kGray_SkColorChannelFlag": "VX_COLOR_CHANNEL_FLAG_GRAY",
+    "kGrayAlpha_SkColorChannelFlags": "VX_COLOR_CHANNEL_FLAGS_GRAY_ALPHA",
+    "kRG_SkColorChannelFlags": "VX_COLOR_CHANNEL_FLAGS_RG",
+    "kRGB_SkColorChannelFlags": "VX_COLOR_CHANNEL_FLAGS_RGB",
+    "kRGBA_SkColorChannelFlags": "VX_COLOR_CHANNEL_FLAGS_RGBA",
 
     "_LAST": "_LAST"
   }

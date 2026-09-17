@@ -43,8 +43,8 @@ class SkDisplacementMapImageFilter final : public SkImageFilter_Base {
     static constexpr SkSamplingOptions kDisplacementSampling{SkFilterMode::kNearest};
 
 public:
-    SkDisplacementMapImageFilter(SkColorChannel xChannel,
-                                 SkColorChannel yChannel,
+    SkDisplacementMapImageFilter(enum vx_color_channel xChannel,
+                                 enum vx_color_channel yChannel,
                                  SkScalar scale,
                                  sk_sp<SkImageFilter> inputs[2])
             : SkImageFilter_Base(inputs, 2)
@@ -85,19 +85,19 @@ private:
         return bounds;
     }
 
-    SkColorChannel fXChannel;
-    SkColorChannel fYChannel;
+    enum vx_color_channel fXChannel;
+    enum vx_color_channel fYChannel;
     // Scale is really a ParameterSpace<Vector> where width = height = fScale, but we store just the
     // float here for easier serialization and convert to a size in onFilterImage().
     SkScalar fScale;
 };
 
-bool channel_selector_type_is_valid(SkColorChannel cst) {
+bool channel_selector_type_is_valid(enum vx_color_channel cst) {
     switch (cst) {
-        case SkColorChannel::kR:
-        case SkColorChannel::kG:
-        case SkColorChannel::kB:
-        case SkColorChannel::kA:
+        case VX_COLOR_CHANNEL_R:
+        case VX_COLOR_CHANNEL_G:
+        case VX_COLOR_CHANNEL_B:
+        case VX_COLOR_CHANNEL_A:
             return true;
         default:
             break;
@@ -109,8 +109,8 @@ sk_sp<SkShader> make_displacement_shader(
         sk_sp<SkShader> displacement,
         sk_sp<SkShader> color,
         skif::LayerSpace<skif::Vector> scale,
-        SkColorChannel xChannel,
-        SkColorChannel yChannel) {
+        enum vx_color_channel xChannel,
+        enum vx_color_channel yChannel) {
     if (!color) {
         // Color is fully transparent, so no point in displacing it
         return nullptr;
@@ -125,11 +125,11 @@ sk_sp<SkShader> make_displacement_shader(
     const SkRuntimeEffect* displacementEffect =
             GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kDisplacement);
 
-    auto channelSelector = [](SkColorChannel c) {
-        return SkV4{c == SkColorChannel::kR ? 1.f : 0.f,
-                    c == SkColorChannel::kG ? 1.f : 0.f,
-                    c == SkColorChannel::kB ? 1.f : 0.f,
-                    c == SkColorChannel::kA ? 1.f : 0.f};
+    auto channelSelector = [](enum vx_color_channel c) {
+        return SkV4{c == VX_COLOR_CHANNEL_R ? 1.f : 0.f,
+                    c == VX_COLOR_CHANNEL_G ? 1.f : 0.f,
+                    c == VX_COLOR_CHANNEL_B ? 1.f : 0.f,
+                    c == VX_COLOR_CHANNEL_A ? 1.f : 0.f};
     };
 
     SkRuntimeShaderBuilder builder(sk_ref_sp(displacementEffect));
@@ -147,7 +147,7 @@ sk_sp<SkShader> make_displacement_shader(
 ///////////////////////////////////////////////////////////////////////////////
 
 sk_sp<SkImageFilter> SkImageFilters::DisplacementMap(
-        SkColorChannel xChannelSelector, SkColorChannel yChannelSelector, SkScalar scale,
+        enum vx_color_channel xChannelSelector, enum vx_color_channel yChannelSelector, SkScalar scale,
         sk_sp<SkImageFilter> displacement, sk_sp<SkImageFilter> color, const CropRect& cropRect) {
     if (!channel_selector_type_is_valid(xChannelSelector) ||
         !channel_selector_type_is_valid(yChannelSelector)) {
@@ -177,8 +177,8 @@ void SkRegisterDisplacementMapImageFilterFlattenable() {
 sk_sp<SkFlattenable> SkDisplacementMapImageFilter::CreateProc(SkReadBuffer& buffer) {
     SK_IMAGEFILTER_UNFLATTEN_COMMON(common, 2);
 
-    SkColorChannel xsel = buffer.read32LE(SkColorChannel::kLastEnum);
-    SkColorChannel ysel = buffer.read32LE(SkColorChannel::kLastEnum);
+    enum vx_color_channel xsel = buffer.read32LE(VX_COLOR_CHANNEL_LASTENUM);
+    enum vx_color_channel ysel = buffer.read32LE(VX_COLOR_CHANNEL_LASTENUM);
     SkScalar      scale = buffer.readScalar();
 
     return SkImageFilters::DisplacementMap(xsel, ysel, scale, common.getInput(0),

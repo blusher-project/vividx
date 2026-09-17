@@ -109,7 +109,7 @@ static void raster_tests(skiatest::Reporter* reporter, const TestCase& test) {
     const SkImageInfo f32Unpremul = SkImageInfo::Make(kSize, kSize, kRGBA_F32_SkColorType,
                                                       kUnpremul_SkAlphaType);
 
-    uint32_t actualChannels = SkColorTypeChannelFlags(test.fColorType);
+    uint32_t actualChannels = vx_color_type_channel_flags(test.fColorType);
     REPORTER_ASSERT(reporter, test.fChannels == actualChannels);
 
     // all colorTypes can be drawn to

@@ -269,7 +269,7 @@ DEF_TEST(Bitmap_compute_is_opaque, r) {
     for (int i = 1; i <= kLastEnum_SkColorType; ++i) {
         SkColorType ct = (SkColorType) i;
         SkBitmap bm;
-        SkAlphaType at = SkColorTypeIsAlwaysOpaque(ct) ? kOpaque_SkAlphaType : kPremul_SkAlphaType;
+        SkAlphaType at = vx_color_type_is_always_opaque(ct) ? kOpaque_SkAlphaType : kPremul_SkAlphaType;
         bm.allocPixels(SkImageInfo::Make(13, 17, ct, at));
         bm.eraseColor(SkColorSetARGB(255, 10, 20, 30));
         REPORTER_ASSERT(r, SkBitmap::ComputeIsOpaque(bm));
@@ -346,7 +346,7 @@ DEF_TEST(Bitmap_erase, r) {
         bm.allocPixels(info);
 
         bm.eraseColor(0x00000000);
-        if (SkColorTypeIsAlwaysOpaque(ct)) {
+        if (vx_color_type_is_always_opaque(ct)) {
             REPORTER_ASSERT(r, bm.getColor(0,0) == 0xff000000);
         } else {
             REPORTER_ASSERT(r, bm.getColor(0,0) == 0x00000000);

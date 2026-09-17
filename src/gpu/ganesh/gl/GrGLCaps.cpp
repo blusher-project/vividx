@@ -3766,10 +3766,10 @@ bool GrGLCaps::canCopyTexSubImage(GrGLFormat dstFormat, bool dstHasMSAARenderBuf
         // The dst channels have to be a subset of the srcChannels, except R, RG, or RGB, channels
         // can go to LUM. (See expansion of Table 3.9 in EXT_texture_rg).
         if ((dstChannels & srcChannels) != srcChannels) {
-            if (dstChannels == kGray_SkColorChannelFlag ||
-                dstChannels == kGrayAlpha_SkColorChannelFlags) {
+            if (dstChannels == VX_COLOR_CHANNEL_FLAG_GRAY ||
+                dstChannels == VX_COLOR_CHANNEL_FLAGS_GRAY_ALPHA) {
                 // The dst can't have gray if the src is alpha-only.
-                if (srcChannels == kAlpha_SkColorChannelFlag) {
+                if (srcChannels == VX_COLOR_CHANNEL_FLAG_ALPHA) {
                     return false;
                 }
             } else {

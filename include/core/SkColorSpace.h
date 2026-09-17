@@ -411,7 +411,7 @@ public:
     uint32_t transferFnHash() const { return fTransferFnHash; }
     uint64_t           hash() const { return (uint64_t)fTransferFnHash << 32 | fToXYZD50Hash; }
 
-private:
+public:
     friend class SkColorSpaceSingletonFactory;
 
     SkColorSpace(const skcms_TransferFunction& transferFn, const skcms_Matrix3x3& toXYZ);

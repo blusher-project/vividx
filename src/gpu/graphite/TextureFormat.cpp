@@ -167,17 +167,17 @@ int TextureFormatBytesPerBlock(TextureFormat format) {
 
 uint32_t TextureFormatChannelMask(TextureFormat format) {
     switch (format) {
-        case TF::kA8:             return kAlpha_SkColorChannelFlag;
+        case TF::kA8:             return VX_COLOR_CHANNEL_FLAG_ALPHA;
 
         case TF::kR8:             [[fallthrough]];
         case TF::kR16:
         case TF::kR16F:
-        case TF::kR32F:           return kRed_SkColorChannelFlag;
+        case TF::kR32F:           return VX_COLOR_CHANNEL_FLAG_RED;
 
         case TF::kRG8:            [[fallthrough]];
         case TF::kRG16:
         case TF::kRG16F:
-        case TF::kRG32F:          return kRG_SkColorChannelFlags;
+        case TF::kRG32F:          return VX_COLOR_CHANNEL_FLAGS_RG;
 
         case TF::kRGB8:           [[fallthrough]];
         case TF::kBGR8:
@@ -199,7 +199,7 @@ uint32_t TextureFormatChannelMask(TextureFormat format) {
         case TF::kYUV10x6_P2_422:
         case TF::kYUV8_P2_444:
         case TF::kYUV8_P3_444:
-        case TF::kYUV10x6_P2_444: return kRGB_SkColorChannelFlags;
+        case TF::kYUV10x6_P2_444: return VX_COLOR_CHANNEL_FLAGS_RGB;
 
         case TF::kRGBA8:          [[fallthrough]];
         case TF::kRGBA16:
@@ -216,7 +216,7 @@ uint32_t TextureFormatChannelMask(TextureFormat format) {
         case TF::kBGRA10x6_XR:
         case TF::kRGBA8_BC1:
         case TF::kRGBA8_BC1_sRGB:
-        case TF::kExternal:       return kRGBA_SkColorChannelFlags;
+        case TF::kExternal:       return VX_COLOR_CHANNEL_FLAGS_RGBA;
 
         case TF::kS8:             [[fallthrough]];
         case TF::kD16:
@@ -362,7 +362,7 @@ Swizzle ReadSwizzleForColorType(vx_color_type ct, TextureFormat format) {
         return Swizzle::BGRA();
     }
 
-    uint32_t colorChannels = SkColorTypeChannelFlags(ct);
+    uint32_t colorChannels = vx_color_type_channel_flags(ct);
     uint32_t formatChannels = TextureFormatChannelMask(format);
 
     // Read swizzles only have to handle a few semantics around the sampled values, as any sort of
@@ -370,13 +370,13 @@ Swizzle ReadSwizzleForColorType(vx_color_type ct, TextureFormat format) {
     // "gray", red-vs-alpha, and forcing to opaque.
     if (SkColorTypeIsAlphaOnly(ct)) {
         // If the format isn't just an alpha channel (e.g. TF::kA8), we need to adjust
-        if (formatChannels != kAlpha_SkColorChannelFlag) {
+        if (formatChannels != VX_COLOR_CHANNEL_FLAG_ALPHA) {
             // If the format has an alpha channel, mask every other channel to 0
-            if (formatChannels & kAlpha_SkColorChannelFlag) {
+            if (formatChannels & VX_COLOR_CHANNEL_FLAG_ALPHA) {
                 return Swizzle("000a");
             } else {
                 // Otherwise move the red channel to alpha
-                SkASSERT(formatChannels & kRed_SkColorChannelFlag);
+                SkASSERT(formatChannels & VX_COLOR_CHANNEL_FLAG_RED);
                 return Swizzle("000r");
             }
         } else {
@@ -387,8 +387,8 @@ Swizzle ReadSwizzleForColorType(vx_color_type ct, TextureFormat format) {
         // First map gray to rrra; if this is just gray and not gray+alpha, it will also be forced
         // to opaque below and become rrr1.
         Swizzle swizzle;
-        if (colorChannels & kGray_SkColorChannelFlag) {
-            SkASSERT(formatChannels & kRed_SkColorChannelFlag);
+        if (colorChannels & VX_COLOR_CHANNEL_FLAG_GRAY) {
+            SkASSERT(formatChannels & VX_COLOR_CHANNEL_FLAG_RED);
             swizzle = Swizzle::RRRA();
         } else {
             swizzle = Swizzle::RGBA();
@@ -396,8 +396,8 @@ Swizzle ReadSwizzleForColorType(vx_color_type ct, TextureFormat format) {
 
         // Last, force the alpha to opaque if the color type masks it off but is present in the
         // texture format.
-        if (!(colorChannels & kAlpha_SkColorChannelFlag) &&
-             (formatChannels & kAlpha_SkColorChannelFlag)) {
+        if (!(colorChannels & VX_COLOR_CHANNEL_FLAG_ALPHA) &&
+             (formatChannels & VX_COLOR_CHANNEL_FLAG_ALPHA)) {
             swizzle = Swizzle::Concat(swizzle, Swizzle::RGB1());
         }
 
@@ -422,7 +422,7 @@ std::optional<skgpu::Swizzle> WriteSwizzleForColorType(vx_color_type ct, Texture
         return Swizzle::BGRA();
     }
 
-    uint32_t colorChannels = SkColorTypeChannelFlags(ct);
+    uint32_t colorChannels = vx_color_type_channel_flags(ct);
     uint32_t formatChannels = TextureFormatChannelMask(format);
 
     // Write swizzles only have to handle a few semantics around the sampled values, as any sort of
@@ -435,13 +435,13 @@ std::optional<skgpu::Swizzle> WriteSwizzleForColorType(vx_color_type ct, Texture
     //     draw that forced any alpha channel to 1 (b/489785214).
     if (SkColorTypeIsAlphaOnly(ct)) {
         // If the format isn't just an alpha channel (e.g. TF::kA8), we need to adjust
-        if (formatChannels != kAlpha_SkColorChannelFlag) {
+        if (formatChannels != VX_COLOR_CHANNEL_FLAG_ALPHA) {
             // If the format has an alpha channel, mask every other channel to 0
-            if (formatChannels & kAlpha_SkColorChannelFlag) {
+            if (formatChannels & VX_COLOR_CHANNEL_FLAG_ALPHA) {
                 return Swizzle("000a");
             } else {
                 // Otherwise move the alpha channel to red
-                SkASSERT(formatChannels & kRed_SkColorChannelFlag);
+                SkASSERT(formatChannels & VX_COLOR_CHANNEL_FLAG_RED);
                 return Swizzle("a000");
             }
         } else {
@@ -450,7 +450,7 @@ std::optional<skgpu::Swizzle> WriteSwizzleForColorType(vx_color_type ct, Texture
         }
     } else {
         if (((colorChannels & formatChannels) != formatChannels) ||
-            (colorChannels & kGray_SkColorChannelFlag)) {
+            (colorChannels & VX_COLOR_CHANNEL_FLAG_GRAY)) {
             return std::nullopt;
         }
         return Swizzle::RGBA();

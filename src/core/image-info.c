@@ -86,6 +86,32 @@ enum vx_alpha_type vx_color_info_alpha_type(
     return color_info->alpha_type;
 }
 
+bool vx_color_info_is_opaque(const vx_color_info_t *color_info)
+{
+    return vx_alpha_type_is_opaque(color_info->alpha_type)
+        || vx_color_type_is_always_opaque(color_info->color_type);
+}
+
+bool vx_color_info_gamma_close_to_srgb(const vx_color_info_t *color_info)
+{
+    return color_info->color_space &&
+        vx_color_space_gamma_close_to_srgb(color_info->color_space);
+}
+
+bool vx_color_info_eq(const vx_color_info_t *info,
+                      const vx_color_info_t *other)
+{
+    return info->color_type == other->color_type &&
+        info->alpha_type == other->alpha_type &&
+        vx_color_space_eq(info->color_space, other->color_space);
+}
+
+bool vx_color_info_ne(const vx_color_info_t *info,
+                      const vx_color_info_t *other)
+{
+    return !vx_color_info_eq(info, other);
+}
+
 void vx_color_info_free(vx_color_info_t *color_info)
 {
     vx_color_space_free(color_info->color_space);

@@ -27,6 +27,7 @@ set(VIVIDX_CORE_SOURCES
     src/common.cpp
     src/core/canvas.cpp
     src/core/color-space.cpp
+    src/core/color-type.c
     src/core/converts.h
     src/core/image-info.c
     src/core/point.c
@@ -86,6 +87,7 @@ endif()
 
 target_include_directories(vividx-partial
     PRIVATE ./include
+    PRIVATE ./modules
 )
 
 target_include_directories(vividx-partial

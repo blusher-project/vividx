@@ -136,7 +136,7 @@ protected:
         SkScalar scale = 2;
 
         SkPaint paint;
-        paint.setImageFilter(SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR,
+        paint.setImageFilter(SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_R,
                                                              scale, blur, blur));
 
         SkRect rect = SkRect::Make(SkIRect::MakeWH(400, 400));

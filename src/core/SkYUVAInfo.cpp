@@ -143,43 +143,43 @@ int SkYUVAInfo::PlaneDimensions(SkISize imageDimensions,
 
 static bool channel_index_to_channel(uint32_t channelFlags,
                                      int channelIdx,
-                                     SkColorChannel* channel) {
+                                     enum vx_color_channel* channel) {
     switch (channelFlags) {
-        case kGray_SkColorChannelFlag:  // For gray returning any of R, G, or B for index 0 is ok.
-        case kRed_SkColorChannelFlag:
+        case VX_COLOR_CHANNEL_FLAG_GRAY:  // For gray returning any of R, G, or B for index 0 is ok.
+        case VX_COLOR_CHANNEL_FLAG_RED:
             if (channelIdx == 0) {
-                *channel = SkColorChannel::kR;
+                *channel = VX_COLOR_CHANNEL_R;
                 return true;
             }
             return false;
-        case kGrayAlpha_SkColorChannelFlags:
+        case VX_COLOR_CHANNEL_FLAGS_GRAY_ALPHA:
             switch (channelIdx) {
-                case 0: *channel = SkColorChannel::kR; return true;
-                case 1: *channel = SkColorChannel::kA; return true;
+                case 0: *channel = VX_COLOR_CHANNEL_R; return true;
+                case 1: *channel = VX_COLOR_CHANNEL_A; return true;
 
                 default: return false;
             }
-        case kAlpha_SkColorChannelFlag:
+        case VX_COLOR_CHANNEL_FLAG_ALPHA:
             if (channelIdx == 0) {
-                *channel = SkColorChannel::kA;
+                *channel = VX_COLOR_CHANNEL_A;
                 return true;
             }
             return false;
-        case kRG_SkColorChannelFlags:
+        case VX_COLOR_CHANNEL_FLAGS_RG:
             if (channelIdx == 0 || channelIdx == 1) {
-                *channel = static_cast<SkColorChannel>(channelIdx);
+                *channel = static_cast<enum vx_color_channel>(channelIdx);
                 return true;
             }
             return false;
-        case kRGB_SkColorChannelFlags:
+        case VX_COLOR_CHANNEL_FLAGS_RGB:
             if (channelIdx >= 0 && channelIdx <= 2) {
-                *channel = static_cast<SkColorChannel>(channelIdx);
+                *channel = static_cast<enum vx_color_channel>(channelIdx);
                 return true;
             }
             return false;
-        case kRGBA_SkColorChannelFlags:
+        case VX_COLOR_CHANNEL_FLAGS_RGBA:
             if (channelIdx >= 0 && channelIdx <= 3) {
-                *channel = static_cast<SkColorChannel>(channelIdx);
+                *channel = static_cast<enum vx_color_channel>(channelIdx);
                 return true;
             }
             return false;
@@ -264,7 +264,7 @@ SkYUVAInfo::YUVALocations SkYUVAInfo::GetYUVALocations(PlaneConfig config,
     YUVALocations yuvaLocations;
     for (int i = 0; i < SkYUVAInfo::kYUVAChannelCount; ++i) {
         auto [plane, chanIdx] = planesAndIndices[i];
-        SkColorChannel channel;
+        enum vx_color_channel channel;
         if (plane >= 0) {
             if (!channel_index_to_channel(planeChannelFlags[plane], chanIdx, &channel)) {
                 return {};
@@ -272,7 +272,7 @@ SkYUVAInfo::YUVALocations SkYUVAInfo::GetYUVALocations(PlaneConfig config,
             yuvaLocations[i] = {plane, channel};
         } else {
             SkASSERT(i == 3);
-            yuvaLocations[i] = {-1, SkColorChannel::kR};
+            yuvaLocations[i] = {-1, VX_COLOR_CHANNEL_R};
         }
     }
     return yuvaLocations;

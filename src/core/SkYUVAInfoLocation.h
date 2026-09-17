@@ -21,7 +21,7 @@ struct SkYUVAInfo::YUVALocation {
     /** The index of the plane where the Y, U, V, or A value is to be found. */
     int fPlane = -1;
     /** The channel in the plane that contains the Y, U, V, or A value. */
-    SkColorChannel fChannel = SkColorChannel::kA;
+    enum vx_color_channel fChannel = VX_COLOR_CHANNEL_A;
 
     bool operator==(const YUVALocation& that) const {
         return fPlane == that.fPlane && fChannel == that.fChannel;

@@ -51,6 +51,7 @@
 #include "tools/debugger/DebugCanvas.h"
 #include "tools/flags/CommandLineFlags.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "vividx/core/color.h"
 
 #include <iostream>
 #include <utility>
@@ -610,9 +611,9 @@ sk_sp<SkImageFilter> MakeFuzzImageFilter(Fuzz* fuzz, int depth) {
             return SkImageFilters::Compose(std::move(ifo), std::move(ifi));
         }
         case 6: {
-            SkColorChannel xChannelSelector, yChannelSelector;
-            fuzz->nextEnum(&xChannelSelector, SkColorChannel::kLastEnum);
-            fuzz->nextEnum(&yChannelSelector, SkColorChannel::kLastEnum);
+            enum vx_color_channel xChannelSelector, yChannelSelector;
+            fuzz->nextEnum(&xChannelSelector, VX_COLOR_CHANNEL_LASTENUM);
+            fuzz->nextEnum(&yChannelSelector, VX_COLOR_CHANNEL_LASTENUM);
             SkScalar scale;
             bool useCropRect;
             fuzz->next(&scale, &useCropRect);

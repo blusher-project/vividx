@@ -382,8 +382,8 @@ GrCaps::SupportedRead GrCaps::supportedReadPixelsColorType(GrColorType srcColorT
     // It's very convenient to access 1 byte-per-channel 32 bit color types as uint32_t on the CPU.
     // Make those aligned reads out of the buffer even if the underlying API doesn't require it.
     auto channelFlags = GrColorTypeChannelFlags(read.fColorType);
-    if ((channelFlags == kRGBA_SkColorChannelFlags || channelFlags == kRGB_SkColorChannelFlags ||
-         channelFlags == kAlpha_SkColorChannelFlag || channelFlags == kGray_SkColorChannelFlag) &&
+    if ((channelFlags == VX_COLOR_CHANNEL_FLAGS_RGBA || channelFlags == VX_COLOR_CHANNEL_FLAGS_RGB ||
+         channelFlags == VX_COLOR_CHANNEL_FLAG_ALPHA || channelFlags == VX_COLOR_CHANNEL_FLAG_GRAY) &&
         GrColorTypeBytesPerPixel(read.fColorType) == 4) {
         switch (read.fOffsetAlignmentForTransferBuffer & 0b11) {
             // offset alignment already a multiple of 4

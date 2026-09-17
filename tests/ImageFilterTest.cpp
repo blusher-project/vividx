@@ -190,7 +190,7 @@ public:
                                                                       SkFilterMode::kNearest));
 
             this->addFilter("displacement map",
-                    SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kB, 20.0f,
+                    SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_B, 20.0f,
                                                     std::move(gradientSource), input, cropRect));
         }
         this->addFilter("blur", SkImageFilters::Blur(SK_Scalar1, SK_Scalar1, input, cropRect));
@@ -2254,8 +2254,8 @@ DEF_TEST(DisplacementMapBounds, reporter) {
     sk_sp<SkImageFilter> tiling(SkImageFilters::Tile(SkRect::Make(floodBounds),
                                                      SkRect::Make(tilingBounds),
                                                      flood));
-    sk_sp<SkImageFilter> displace(SkImageFilters::DisplacementMap(SkColorChannel::kR,
-                                                                  SkColorChannel::kB,
+    sk_sp<SkImageFilter> displace(SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R,
+                                                                  VX_COLOR_CHANNEL_B,
                                                                   20.0f, nullptr, tiling));
 
     // The filter graph rooted at 'displace' uses the dynamic source image for the displacement
@@ -2403,15 +2403,15 @@ DEF_TEST(DisplacementImageFilter_InvalidInputs_ReturnsNullptr, reporter) {
 
     REPORTER_ASSERT(
             reporter,
-            nullptr == SkImageFilters::DisplacementMap(SkColorChannel::kR,
-                                                       SkColorChannel::kB,
+            nullptr == SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R,
+                                                       VX_COLOR_CHANNEL_B,
                                                        std::numeric_limits<float>::infinity(),
                                                        valid,
                                                        valid));
 
     REPORTER_ASSERT(reporter,
-                    nullptr == SkImageFilters::DisplacementMap(static_cast<SkColorChannel>(22),
-                                                               SkColorChannel::kB,
+                    nullptr == SkImageFilters::DisplacementMap(static_cast<enum vx_color_channel>(22),
+                                                               VX_COLOR_CHANNEL_B,
                                                                5.f,
                                                                valid,
                                                                valid));

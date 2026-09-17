@@ -538,7 +538,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             if (!src) {
                 continue;
             }
-            if (SkColorTypeIsAlwaysOpaque(srcCT) && srcCTTestedThoroughly[srcCT] &&
+            if (vx_color_type_is_always_opaque(srcCT) && srcCTTestedThoroughly[srcCT] &&
                 (kPremul_SkAlphaType == srcAT || kUnpremul_SkAlphaType == srcAT)) {
                 continue;
             }
@@ -558,7 +558,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                             // This doesn't make sense.
                             continue;
                         }
-                        if (SkColorTypeIsAlwaysOpaque(readCT) && readCTTestedThoroughly[readCT] &&
+                        if (vx_color_type_is_always_opaque(readCT) && readCTTestedThoroughly[readCT] &&
                             (kPremul_SkAlphaType == readAT || kUnpremul_SkAlphaType == readAT)) {
                             continue;
                         }
@@ -1190,7 +1190,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
             if (!dst) {
                 continue;
             }
-            if (SkColorTypeIsAlwaysOpaque(dstCT) && dstCTTestedThoroughly[dstCT] &&
+            if (vx_color_type_is_always_opaque(dstCT) && dstCTTestedThoroughly[dstCT] &&
                 (kPremul_SkAlphaType == dstAT || kUnpremul_SkAlphaType == dstAT)) {
                 continue;
             }
@@ -1210,7 +1210,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
                             // This doesn't make sense.
                             continue;
                         }
-                        if (SkColorTypeIsAlwaysOpaque(writeCT) &&
+                        if (vx_color_type_is_always_opaque(writeCT) &&
                             writeCTTestedThoroughly[writeCT] &&
                             (kPremul_SkAlphaType == writeAT || kUnpremul_SkAlphaType == writeAT)) {
                             continue;

@@ -223,12 +223,12 @@ bool write_should_succeed(const SkImageInfo& dstInfo, const SkImageInfo& srcInfo
         dstInfo.alphaType() == kUnpremul_SkAlphaType) {
         return false;
     }
-    if (!SkColorTypeIsAlwaysOpaque(srcInfo.colorType()) &&
-        SkColorTypeIsAlwaysOpaque(dstInfo.colorType())) {
+    if (!vx_color_type_is_always_opaque(srcInfo.colorType()) &&
+        vx_color_type_is_always_opaque(dstInfo.colorType())) {
         return false;
     }
     // The source has no alpha value and the dst is only alpha
-    if (SkColorTypeIsAlwaysOpaque(srcInfo.colorType()) &&
+    if (vx_color_type_is_always_opaque(srcInfo.colorType()) &&
         SkColorTypeIsAlphaOnly(dstInfo.colorType())) {
         return false;
     }

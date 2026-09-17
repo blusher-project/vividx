@@ -98,7 +98,7 @@ static sk_sp<SkImageFilter> erode_factory(sk_sp<SkImage> auxImage, const SkIRect
 static sk_sp<SkImageFilter> displacement_factory(sk_sp<SkImage> auxImage, const SkIRect* cropRect) {
     sk_sp<SkImageFilter> displacement = SkImageFilters::Image(std::move(auxImage),
                                                               SkFilterMode::kLinear);
-    return SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kG, 40.f,
+    return SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_G, 40.f,
                                            std::move(displacement), nullptr, cropRect);
 }
 

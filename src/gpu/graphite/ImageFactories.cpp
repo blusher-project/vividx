@@ -165,7 +165,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
     // higher-level SkImage's alpha type so Skia's logic can benefit from our swizzling.
     if (at == VX_ALPHA_TYPE_UNKNOWN) {
         at = VX_ALPHA_TYPE_OPAQUE;
-        if (SkToBool(TextureFormatChannelMask(format) & kAlpha_SkColorChannelFlag) &&
+        if (SkToBool(TextureFormatChannelMask(format) & VX_COLOR_CHANNEL_FLAG_ALPHA) &&
             swizzle[3] != '1') {
             swizzle = skgpu::Swizzle::Concat(swizzle, skgpu::Swizzle::RGB1());
             // Patch `ct` if possible:

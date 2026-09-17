@@ -103,7 +103,7 @@ protected:
             SkImageFilters::Blur(SkIntToScalar(12), SkIntToScalar(12), nullptr),
             SkImageFilters::DropShadow(SkIntToScalar(10), SkIntToScalar(10),
                                        SkIntToScalar(3), SkIntToScalar(3), SK_ColorGREEN, nullptr),
-            SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR,
+            SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_R,
                                             SkIntToScalar(12), std::move(gradient), checkerboard),
             SkImageFilters::Dilate(2, 2, checkerboard),
             SkImageFilters::Erode(2, 2, checkerboard),

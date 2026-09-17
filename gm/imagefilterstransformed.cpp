@@ -83,7 +83,7 @@ protected:
         sk_sp<SkImageFilter> filters[] = {
             SkImageFilters::Blur(12, 0, nullptr),
             SkImageFilters::DropShadow(0, 15, 8, 0, SK_ColorGREEN, nullptr),
-            SkImageFilters::DisplacementMap(SkColorChannel::kR, SkColorChannel::kR, 12,
+            SkImageFilters::DisplacementMap(VX_COLOR_CHANNEL_R, VX_COLOR_CHANNEL_R, 12,
                                             std::move(gradient), checkerboard),
             SkImageFilters::Dilate(2, 2, checkerboard),
             SkImageFilters::Erode(2, 2, checkerboard),

@@ -223,7 +223,7 @@ DEF_TEST(NdkEncode_unsupportedColorTypes, r) {
         for (const auto& rec : gRecs) {
             REPORTER_ASSERT(r, !encode_ndk(bm.pixmap(), rec.format, rec.quality));
         }
-        if (!SkColorTypeIsAlwaysOpaque(ct)) {
+        if (!vx_color_type_is_always_opaque(ct)) {
             for (auto at : { kPremul_SkAlphaType, kUnpremul_SkAlphaType}) {
                 info = info.makeAlphaType(at);
                 bm.allocPixels(info);

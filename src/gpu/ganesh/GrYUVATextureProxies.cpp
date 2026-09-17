@@ -21,13 +21,13 @@
 #ifdef SK_DEBUG
 static int num_channels(uint32_t channelFlags) {
     switch (channelFlags) {
-        case kRed_SkColorChannelFlag        : return 1;
-        case kAlpha_SkColorChannelFlag      : return 1;
-        case kGray_SkColorChannelFlag       : return 1;
-        case kGrayAlpha_SkColorChannelFlags : return 2;
-        case kRG_SkColorChannelFlags        : return 2;
-        case kRGB_SkColorChannelFlags       : return 3;
-        case kRGBA_SkColorChannelFlags      : return 4;
+        case VX_COLOR_CHANNEL_FLAG_RED        : return 1;
+        case VX_COLOR_CHANNEL_FLAG_ALPHA      : return 1;
+        case VX_COLOR_CHANNEL_FLAG_GRAY       : return 1;
+        case VX_COLOR_CHANNEL_FLAGS_GRAY_ALPHA : return 2;
+        case VX_COLOR_CHANNEL_FLAGS_RG        : return 2;
+        case VX_COLOR_CHANNEL_FLAGS_RGB       : return 3;
+        case VX_COLOR_CHANNEL_FLAGS_RGBA      : return 4;
 
         default:
             SkDEBUGFAILF("Unexpected channel combination 0x%08x", channelFlags);
@@ -116,10 +116,10 @@ GrYUVATextureProxies::GrYUVATextureProxies(const SkYUVAInfo& yuvaInfo,
         if (plane >= 0) {
             int chanAsIdx = static_cast<int>(fYUVALocations[i].fChannel);
             switch (views[plane].swizzle()[chanAsIdx]) {
-                case 'r': fYUVALocations[i].fChannel = SkColorChannel::kR; break;
-                case 'g': fYUVALocations[i].fChannel = SkColorChannel::kG; break;
-                case 'b': fYUVALocations[i].fChannel = SkColorChannel::kB; break;
-                case 'a': fYUVALocations[i].fChannel = SkColorChannel::kA; break;
+                case 'r': fYUVALocations[i].fChannel = VX_COLOR_CHANNEL_R; break;
+                case 'g': fYUVALocations[i].fChannel = VX_COLOR_CHANNEL_G; break;
+                case 'b': fYUVALocations[i].fChannel = VX_COLOR_CHANNEL_B; break;
+                case 'a': fYUVALocations[i].fChannel = VX_COLOR_CHANNEL_A; break;
 
                 default:
                     SkDEBUGFAILF("Unexpected swizzle value: %c", views[i].swizzle()[chanAsIdx]);

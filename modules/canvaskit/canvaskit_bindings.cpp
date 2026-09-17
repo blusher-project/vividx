@@ -2110,8 +2110,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
                     }))
             .class_function(
                     "MakeDisplacementMap",
-                    optional_override([](SkColorChannel xChannelSelector,
-                                         SkColorChannel yChannelSelector,
+                    optional_override([](enum vx_color_channel xChannelSelector,
+                                         enum vx_color_channel yChannelSelector,
                                          float scale,
                                          sk_sp<SkImageFilter> displacement,
                                          sk_sp<SkImageFilter> color) -> sk_sp<SkImageFilter> {
@@ -3128,10 +3128,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
             .value("Intersect", SkClipOp::kIntersect);
 
     enum_<SkColorChannel>("ColorChannel")
-            .value("Red", SkColorChannel::kR)
-            .value("Green", SkColorChannel::kG)
-            .value("Blue", SkColorChannel::kB)
-            .value("Alpha", SkColorChannel::kA);
+            .value("Red", VX_COLOR_CHANNEL_R)
+            .value("Green", VX_COLOR_CHANNEL_G)
+            .value("Blue", VX_COLOR_CHANNEL_B)
+            .value("Alpha", VX_COLOR_CHANNEL_A);
 
     enum_<SkColorType>("ColorType")
             .value("Alpha_8", SkColorType::kAlpha_8_SkColorType)

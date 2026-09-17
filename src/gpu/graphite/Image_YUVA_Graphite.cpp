@@ -154,7 +154,7 @@ sk_sp<Image_YUVA> Image_YUVA::Make(const Caps* caps,
                 planes[plane].proxy()->format() == TextureFormat::kA8) {
                 // Pull the alpha channel into R, this is equivalent to having concatenated
                 // Swizzle("aaaa") with the plane's read swizzle.
-                channel = SkColorChannel::kA;
+                channel = VX_COLOR_CHANNEL_A;
             }
             Swizzle channelSwizzle = planes[plane].swizzle().selectChannelInR((int) channel);
 

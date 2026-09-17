@@ -50,7 +50,7 @@ static SkPMColor convert_yuva_to_rgba(const float mtx[20], uint8_t yuva[4]) {
     return SkPremultiplyARGBInline(a, r, g, b);
 }
 
-static uint8_t look_up(SkPoint normPt, const SkPixmap& pmap, SkColorChannel channel) {
+static uint8_t look_up(SkPoint normPt, const SkPixmap& pmap, enum vx_color_channel channel) {
     SkASSERT(normPt.x() > 0 && normPt.x() < 1.0f);
     SkASSERT(normPt.y() > 0 && normPt.y() < 1.0f);
     int x = SkScalarFloorToInt(normPt.x() * pmap.width());

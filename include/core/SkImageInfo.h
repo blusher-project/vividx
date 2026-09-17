@@ -27,16 +27,6 @@
 class SkColorSpace;
 
 
-/** Returns true if SkColorType always decodes alpha to 1.0, making the pixel
-    fully opaque. If true, SkColorType does not reserve bits to encode alpha.
-
-    @return    true if alpha is always set to 1.0
-*/
-SK_API bool SkColorTypeIsAlwaysOpaque(vx_color_type ct);
-
-
-
-
 /** \struct SkColorInfo
     Describes pixel and encoding. SkImageInfo can be created from SkColorInfo by
     providing dimensions.
@@ -78,7 +68,7 @@ public:
 
     bool isOpaque() const {
         return vx_alpha_type_is_opaque(fAlphaType)
-            || SkColorTypeIsAlwaysOpaque(fColorType);
+            || vx_color_type_is_always_opaque(fColorType);
     }
 
     bool gammaCloseToSRGB() const;
