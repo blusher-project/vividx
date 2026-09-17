@@ -87,4 +87,4 @@ bool vx_int64_fits_in_int32(int64_t val)
     return SkTFitsIn<int32_t>(val);
 }
 
-}
+} // extern "C"

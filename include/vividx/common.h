@@ -4,6 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 //!<==================
 //!< API Visibility
 //!<==================
@@ -74,6 +78,8 @@ static float vx_float_midpoint(float a, float b)
 //!< Floating Point
 //!<==================
 
+typedef float vx_scalar_t;
+
 // Subtracting a value from itself will result in zero, except for NAN or ±Inf, which make NAN.
 // Multiplying a group of values against zero will result in zero for each product, except for
 // NAN or ±Inf, which will result in NAN and continue resulting in NAN for the rest of the elements.
@@ -122,5 +128,9 @@ static inline bool vx_float_is_finite_4f(float f1, float f2, float f3, float f4)
 
 VX_PUBLIC
 bool vx_int64_fits_in_int32(int64_t val);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif /* VIVIDX_COMMON_H */

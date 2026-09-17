@@ -11,6 +11,7 @@ set(VIVIDX_PUBLIC_HEADERS
     include/vividx/core/color-type.h
     include/vividx/core/color.h
     include/vividx/core/image-info.h
+    include/vividx/core/math.h
     include/vividx/core/point.h
     include/vividx/core/rect.h
     include/vividx/core/size.h
