@@ -86,9 +86,7 @@ typedef float SkScalar;
 #define SkScalarSignAsInt           vx_float_sign_as_int
 
 // Scalar result version of above
-static inline SkScalar SkScalarSignAsScalar(SkScalar x) {
-    return x < 0 ? -SK_Scalar1 : ((x > 0) ? SK_Scalar1 : 0);
-}
+#define SkScalarSignAsScalar        vx_float_sign_as_float
 
 #define SK_ScalarNearlyZero         VX_FLOAT_NEARLY_ZERO
 
