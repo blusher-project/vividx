@@ -13,6 +13,10 @@
 extern "C" {
 #endif // __cplusplus
 
+//!<===========
+//!< Float
+//!<===========
+
 inline float VX_FLOAT_SQRT2 = 1.41421356f;
 inline float VX_FLOAT_PI    = 3.14159265f;
 inline double VX_DOUBLE_PI  = 3.14159265358979323846264338327950288;
@@ -65,11 +69,11 @@ static inline float vx_float_square(float x)
     return x * x;
 }
 
-#define SkScalarInvert(x)           (VX_FLOAT_1 / (x))
-#define SkScalarAve(a, b)           sk_float_midpoint(a, b)
+#define vx_float_invert(x)              (VX_FLOAT_1 / (x))
+#define SkScalarAve(a, b)               sk_float_midpoint(a, b)
 
-#define SkDegreesToRadians(degrees) ((degrees) * (VX_FLOAT_PI / 180))
-#define SkRadiansToDegrees(radians) ((radians) * (180 / VX_FLOAT_PI))
+#define vx_degrees_to_radians(degrees)  ((degrees) * (VX_FLOAT_PI / 180))
+#define vx_radians_to_degrees(radians)  ((radians) * (180 / VX_FLOAT_PI))
 
 static inline bool vx_float_is_int(float x)
 {
@@ -175,6 +179,13 @@ static inline bool vx_float_array_eq(const float a[], const float b[], int n)
     }
     return true;
 }
+
+
+//!<===========
+//!< Integer
+//!<===========
+
+#define vx_int_to_float(x)          (float)(x)
 
 #ifdef __cplusplus
 }

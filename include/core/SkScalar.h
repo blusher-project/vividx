@@ -69,13 +69,13 @@ typedef float SkScalar;
 
 #define SkScalarSquare              vx_float_square
 
-// #define SkScalarInvert(x)           (SK_Scalar1 / (x))
+#define SkScalarInvert(x)           vx_float_invert
 #define SkScalarAve(a, b)           sk_float_midpoint(a, b)
 
-// #define SkDegreesToRadians(degrees) ((degrees) * (SK_ScalarPI / 180))
-// #define SkRadiansToDegrees(radians) ((radians) * (180 / SK_ScalarPI))
+#define SkDegreesToRadians(degrees) vx_degrees_to_radians
+#define SkRadiansToDegrees(radians) vx_radians_to_degrees
 
-#define SkScalarIsInt vx_float_is_int
+#define SkScalarIsInt               vx_float_is_int
 
 /**
  *  Returns -1 || 0 || 1 depending on the sign of value:
