@@ -63,20 +63,20 @@
 //               x - 4;
 //    }
 #if defined(__clang__)
-#define SkASSERT_RELEASE(cond) \
+#define VX_ASSERT_RELEASE(cond) \
     static_cast<void>( __builtin_expect(static_cast<bool>(cond), 1) \
         ? static_cast<void>(0) \
         : []{ VX_ABORT("check(%s)", #cond); }() )
 
-#define SkASSERTF_RELEASE(cond, fmt, ...)                                  \
+#define VX_ASSERTF_RELEASE(cond, fmt, ...)                                  \
     static_cast<void>( __builtin_expect(static_cast<bool>(cond), 1)        \
         ? static_cast<void>(0)                                             \
         : [&]{ VX_ABORT("assertf(%s): " fmt, #cond, ##__VA_ARGS__); }() )
 #else
-#define SkASSERT_RELEASE(cond) \
+#define VX_ASSERT_RELEASE(cond) \
     static_cast<void>( (cond) ? static_cast<void>(0) : []{ VX_ABORT("check(%s)", #cond); }() )
 
-#define SkASSERTF_RELEASE(cond, fmt, ...)                                   \
+#define VX_ASSERTF_RELEASE(cond, fmt, ...)                                   \
     static_cast<void>( (cond)                                               \
         ? static_cast<void>(0)                                              \
         : [&]{ VX_ABORT("assertf(%s): " fmt, #cond, ##__VA_ARGS__); }() )
@@ -84,20 +84,20 @@
 
 #define VX_DEBUG SK_DEBUG
 #if defined(VX_DEBUG)
-    #define SkASSERT(cond)            SkASSERT_RELEASE(cond)
-    #define SkASSERTF(cond, fmt, ...) SkASSERTF_RELEASE(cond, fmt, ##__VA_ARGS__)
-    #define SkDEBUGFAIL(message)      VX_ABORT("%s", message)
-    #define SkDEBUGFAILF(fmt, ...)    VX_ABORT(fmt, ##__VA_ARGS__)
-    #define SkAssertResult(cond)      SkASSERT(cond)
+    #define VX_ASSERT(cond)            VX_ASSERT_RELEASE(cond)
+    #define VX_ASSERTF(cond, fmt, ...) VX_ASSERTF_RELEASE(cond, fmt, ##__VA_ARGS__)
+    #define VX_DEBUGFAIL(message)      VX_ABORT("%s", message)
+    #define VX_DEBUGFAILF(fmt, ...)    VX_ABORT(fmt, ##__VA_ARGS__)
+    #define VXAssertResult(cond)      VX_ASSERT(cond)
 #else
-    #define SkASSERT(cond)            static_cast<void>(0)
-    #define SkASSERTF(cond, fmt, ...) static_cast<void>(0)
-    #define SkDEBUGFAIL(message)
-    #define SkDEBUGFAILF(fmt, ...)
+    #define VX_ASSERT(cond)            static_cast<void>(0)
+    #define VX_ASSERTF(cond, fmt, ...) static_cast<void>(0)
+    #define VX_DEBUGFAIL(message)
+    #define VX_DEBUGFAILF(fmt, ...)
 
     // unlike SkASSERT, this macro executes its condition in the non-debug build.
     // The if is present so that this can be used with functions marked [[nodiscard]].
-    #define SkAssertResult(cond)         if (cond) {} do {} while(false)
+    #define VXAssertResult(cond)         if (cond) {} do {} while(false)
 #endif
 
 #ifdef __cplusplus

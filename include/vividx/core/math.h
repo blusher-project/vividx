@@ -98,7 +98,7 @@ static inline float vx_float_sign_as_float(float x)
 
 static inline bool vx_float_nearly_zero_2(float x, float tolerance)
 {
-    SkASSERT(tolerance >= 0);
+    VX_ASSERT(tolerance >= 0);
     return fabsf(x) <= tolerance;
 }
 
@@ -118,16 +118,15 @@ static inline bool vx_float_nearly_zero_1(float x)
     )(__VA_ARGS__)
 
 
-static inline bool sk_float_nearly_equal_3(float x, float y, float tolerance)
+static inline bool vx_float_nearly_equal_3(float x, float y, float tolerance)
 {
-    // TODO: Assert!
-    // SkASSERT(tolerance >= 0);
+    VX_ASSERT(tolerance >= 0);
     return fabsf(x-y) <= tolerance;
 }
 
-static inline bool sk_float_nearly_equal_2(float x, float y)
+static inline bool vx_float_nearly_equal_2(float x, float y)
 {
-    return sk_float_nearly_equal_3(x, y, VX_FLOAT_NEARLY_ZERO);
+    return vx_float_nearly_equal_3(x, y, VX_FLOAT_NEARLY_ZERO);
 }
 
 #define vx_float_nearly_equal(...) \
@@ -139,13 +138,13 @@ static inline bool sk_float_nearly_equal_2(float x, float y)
 
 #define VX_FLOAT_SIN_COS_NEARLY_ZERO    (VX_FLOAT_1 / (1 << 16))
 
-static inline float SkScalarSinSnapToZero(float radians)
+static inline float vx_float_sin_snap_to_zero(float radians)
 {
     float v = sinf(radians);
     return vx_float_nearly_zero(v, VX_FLOAT_SIN_COS_NEARLY_ZERO) ? 0.0f : v;
 }
 
-static inline float SkScalarCosSnapToZero(float radians)
+static inline float vx_float_cos_snap_to_zero(float radians)
 {
     float v = cosf(radians);
     return vx_float_nearly_zero(v, VX_FLOAT_SIN_COS_NEARLY_ZERO) ? 0.0f : v;
@@ -159,7 +158,7 @@ static inline float SkScalarCosSnapToZero(float radians)
 */
 static inline float vx_float_lerp(float A, float B, float t)
 {
-    SkASSERT(t >= 0 && t <= VX_FLOAT_1);
+    VX_ASSERT(t >= 0 && t <= VX_FLOAT_1);
     return A + (B - A) * t;
 }
 
@@ -168,7 +167,7 @@ static inline float vx_float_lerp(float A, float B, float t)
  */
 static inline bool vx_float_array_eq(const float a[], const float b[], int n)
 {
-    SkASSERT(n >= 0);
+    VX_ASSERT(n >= 0);
     for (int i = 0; i < n; ++i) {
         if (a[i] != b[i]) {
             return false;

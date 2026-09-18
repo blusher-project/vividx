@@ -8,14 +8,15 @@
 #ifndef SkScalar_DEFINED
 #define SkScalar_DEFINED
 
-#include "include/private/SkAssert.h"
 #include "include/private/SkFloatingPoint.h"
 
 #include <cmath>
 
+#include <vividx/core/math.h>
+
 typedef float SkScalar;
 
-#define SK_Scalar1                  1.0f
+#define SK_Scalar1                  VX_FLOAT_1
 #define SK_ScalarHalf               0.5f
 #define SK_ScalarSqrt2              SK_FloatSqrt2
 #define SK_ScalarPI                 SK_FloatPI
@@ -64,21 +65,17 @@ typedef float SkScalar;
 #define SkDoubleToScalar(x)     sk_double_to_float(x)
 
 /** Returns the fractional part of the scalar. */
-static inline SkScalar SkScalarFraction(SkScalar x) {
-    return x - SkScalarTruncToScalar(x);
-}
+#define SkScalarFraction            vx_float_fraction
 
-static inline SkScalar SkScalarSquare(SkScalar x) { return x * x; }
+#define SkScalarSquare              vx_float_square
 
-#define SkScalarInvert(x)           (SK_Scalar1 / (x))
+// #define SkScalarInvert(x)           (SK_Scalar1 / (x))
 #define SkScalarAve(a, b)           sk_float_midpoint(a, b)
 
-#define SkDegreesToRadians(degrees) ((degrees) * (SK_ScalarPI / 180))
-#define SkRadiansToDegrees(radians) ((radians) * (180 / SK_ScalarPI))
+// #define SkDegreesToRadians(degrees) ((degrees) * (SK_ScalarPI / 180))
+// #define SkRadiansToDegrees(radians) ((radians) * (180 / SK_ScalarPI))
 
-static inline bool SkScalarIsInt(SkScalar x) {
-    return x == SkScalarFloorToScalar(x);
-}
+#define SkScalarIsInt vx_float_is_int
 
 /**
  *  Returns -1 || 0 || 1 depending on the sign of value:
@@ -86,40 +83,24 @@ static inline bool SkScalarIsInt(SkScalar x) {
  *   0 if x == 0
  *   1 if x > 0
  */
-static inline int SkScalarSignAsInt(SkScalar x) {
-    return x < 0 ? -1 : (x > 0);
-}
+#define SkScalarSignAsInt           vx_float_sign_as_int
 
 // Scalar result version of above
 static inline SkScalar SkScalarSignAsScalar(SkScalar x) {
     return x < 0 ? -SK_Scalar1 : ((x > 0) ? SK_Scalar1 : 0);
 }
 
-#define SK_ScalarNearlyZero         (SK_Scalar1 / (1 << 12))
+#define SK_ScalarNearlyZero         VX_FLOAT_NEARLY_ZERO
 
-static inline bool SkScalarNearlyZero(SkScalar x,
-                                      SkScalar tolerance = SK_ScalarNearlyZero) {
-    SkASSERT(tolerance >= 0);
-    return SkScalarAbs(x) <= tolerance;
-}
+#define SkScalarNearlyZero          vx_float_nearly_zero
 
-static inline bool SkScalarNearlyEqual(SkScalar x, SkScalar y,
-                                       SkScalar tolerance = SK_ScalarNearlyZero) {
-    SkASSERT(tolerance >= 0);
-    return SkScalarAbs(x-y) <= tolerance;
-}
+#define SkScalarNearlyEqual         vx_float_nearly_equal
 
 #define SK_ScalarSinCosNearlyZero   (SK_Scalar1 / (1 << 16))
 
-static inline float SkScalarSinSnapToZero(SkScalar radians) {
-    float v = SkScalarSin(radians);
-    return SkScalarNearlyZero(v, SK_ScalarSinCosNearlyZero) ? 0.0f : v;
-}
+#define SkScalarSinSnapToZero       vx_float_sin_snap_to_zero
 
-static inline float SkScalarCosSnapToZero(SkScalar radians) {
-    float v = SkScalarCos(radians);
-    return SkScalarNearlyZero(v, SK_ScalarSinCosNearlyZero) ? 0.0f : v;
-}
+#define SkScalarCosSnapToZero       vx_float_cos_snap_to_zero
 
 /** Linearly interpolate between A and B, based on t.
     If t is 0, return A
@@ -127,22 +108,11 @@ static inline float SkScalarCosSnapToZero(SkScalar radians) {
     else interpolate.
     t must be [0..SK_Scalar1]
 */
-static inline SkScalar SkScalarInterp(SkScalar A, SkScalar B, SkScalar t) {
-    SkASSERT(t >= 0 && t <= SK_Scalar1);
-    return A + (B - A) * t;
-}
+#define SkScalarInterp vx_float_lerp
 
 /*
  *  Helper to compare an array of scalars.
  */
-static inline bool SkScalarsEqual(const SkScalar a[], const SkScalar b[], int n) {
-    SkASSERT(n >= 0);
-    for (int i = 0; i < n; ++i) {
-        if (a[i] != b[i]) {
-            return false;
-        }
-    }
-    return true;
-}
+#define SkScalarsEqual vx_float_array_eq
 
 #endif
