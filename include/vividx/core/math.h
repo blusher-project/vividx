@@ -7,6 +7,8 @@
 #include <cmath>
 #endif
 
+#include <vividx/assert.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
@@ -96,8 +98,7 @@ static inline float vx_float_sign_as_float(float x)
 
 static inline bool vx_float_nearly_zero_2(float x, float tolerance)
 {
-    // TODO: Assert!
-    // SkASSERT(tolerance >= 0);
+    SkASSERT(tolerance >= 0);
     return fabsf(x) <= tolerance;
 }
 
@@ -158,8 +159,7 @@ static inline float SkScalarCosSnapToZero(float radians)
 */
 static inline float vx_float_lerp(float A, float B, float t)
 {
-    // TODO: Assert!
-    // SkASSERT(t >= 0 && t <= VX_FLOAT_1);
+    SkASSERT(t >= 0 && t <= VX_FLOAT_1);
     return A + (B - A) * t;
 }
 
@@ -168,8 +168,7 @@ static inline float vx_float_lerp(float A, float B, float t)
  */
 static inline bool vx_float_array_eq(const float a[], const float b[], int n)
 {
-    // TODO: Assert!
-    // SkASSERT(n >= 0);
+    SkASSERT(n >= 0);
     for (int i = 0; i < n; ++i) {
         if (a[i] != b[i]) {
             return false;
