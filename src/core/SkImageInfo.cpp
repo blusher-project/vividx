@@ -60,7 +60,7 @@ bool SkColorInfo::gammaCloseToSRGB() const {
     return fColorSpace && fColorSpace->gammaCloseToSRGB();
 }
 
-int SkColorInfo::shiftPerPixel() const { return SkColorTypeShiftPerPixel(fColorType); }
+int SkColorInfo::shiftPerPixel() const { return vx_color_type_shift_per_pixel(fColorType); }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 

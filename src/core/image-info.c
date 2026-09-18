@@ -49,26 +49,38 @@ bool vx_yuv_color_space_is_limited_range(enum vx_yuv_color_space cs)
     }
 }
 
-struct vx_color_info_t {
-    vx_color_space_t *color_space;
-    enum vx_color_type color_type; // = kUnknown_SkColorType;
-    enum vx_alpha_type alpha_type; // = VX_ALPHA_TYPE_UNKNOWN;
-};
 
-vx_color_info_t* vx_color_info_new(enum vx_color_type ct,
-                                   enum vx_alpha_type at,
-                                   vx_color_space_t *cs)
+vx_color_info_t vx_color_info_copy_with_alpha_type(
+    const vx_color_info_t *color_info, enum vx_alpha_type at)
 {
-    vx_color_info_t *color_info = malloc(sizeof(vx_color_info_t));
-
-    color_info->color_space = cs;
-    color_info->color_type = ct;
-    color_info->alpha_type = at;
-
-    return color_info;
+    vx_color_info_t info;
+    info.color_space = color_info->color_space;
+    info.color_type = color_info->color_type;
+    info.alpha_type = at;
+    return info;
 }
 
-vx_color_space_t* vx_color_info_color_space(
+vx_color_info_t vx_color_info_copy_with_color_type(
+    const vx_color_info_t *color_info, enum vx_color_type ct)
+{
+    vx_color_info_t info;
+    info.color_space = color_info->color_space;
+    info.color_type = ct;
+    info.alpha_type = color_info->alpha_type;
+    return info;
+}
+
+vx_color_info_t vx_color_info_copy_with_color_space(
+    const vx_color_info_t *color_info, const vx_color_space_t *cs)
+{
+    vx_color_info_t info;
+    info.color_space = cs;
+    info.color_type = color_info->color_type;
+    info.alpha_type = color_info->alpha_type;
+    return info;
+}
+
+const vx_color_space_t* vx_color_info_color_space(
     const vx_color_info_t *color_info)
 {
     return color_info->color_space;
@@ -112,11 +124,16 @@ bool vx_color_info_ne(const vx_color_info_t *info,
     return !vx_color_info_eq(info, other);
 }
 
-void vx_color_info_free(vx_color_info_t *color_info)
+int vx_color_info_bytes_per_pixel(const vx_color_info_t *ct)
 {
-    vx_color_space_free(color_info->color_space);
-    free(color_info);
+    return vx_color_type_bytes_per_pixel(ct->color_type);
 }
+
+int vx_color_info_shift_per_pixel(const vx_color_info_t *ct)
+{
+    return vx_color_type_shift_per_pixel(ct->color_type);
+}
+
 
 #ifdef __cplusplus
 }

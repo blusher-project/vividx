@@ -220,6 +220,8 @@ VX_PUBLIC bool vx_color_type_validate_alpha_type(enum vx_color_type ct,
 
 VX_PUBLIC uint32_t vx_color_type_channel_flags(enum vx_color_type ct);
 
+VX_PUBLIC int vx_color_type_shift_per_pixel(enum vx_color_type ct);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

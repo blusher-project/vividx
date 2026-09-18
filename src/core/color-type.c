@@ -138,6 +138,42 @@ uint32_t vx_color_type_channel_flags(enum vx_color_type ct) {
     __builtin_trap();
 }
 
+int vx_color_type_shift_per_pixel(enum vx_color_type ct)
+{
+    switch (ct) {
+    case VX_COLOR_TYPE_UNKNOWN:            return 0;
+    case VX_COLOR_TYPE_ALPHA_8:            return 0;
+    case VX_COLOR_TYPE_RGB_565:            return 1;
+    case VX_COLOR_TYPE_ARGB_4444:          return 1;
+    case VX_COLOR_TYPE_RGBA_8888:          return 2;
+    case VX_COLOR_TYPE_RGB_888X:           return 2;
+    case VX_COLOR_TYPE_BGRA_8888:          return 2;
+    case VX_COLOR_TYPE_RGBA_1010102:       return 2;
+    case VX_COLOR_TYPE_RGB_101010X:        return 2;
+    case VX_COLOR_TYPE_BGRA_1010102:       return 2;
+    case VX_COLOR_TYPE_BGR_101010X:        return 2;
+    case VX_COLOR_TYPE_BGR_101010X_XR:     return 2;
+    case VX_COLOR_TYPE_BGRA_10101010_XR:   return 3;
+    case VX_COLOR_TYPE_RGBA_10X6:          return 3;
+    case VX_COLOR_TYPE_GRAY_8:             return 0;
+    case VX_COLOR_TYPE_RGBA_F16NORM:       return 3;
+    case VX_COLOR_TYPE_RGBA_F16:           return 3;
+    case VX_COLOR_TYPE_RGB_F16F16F16X:     return 3;
+    case VX_COLOR_TYPE_RGBA_F32:           return 4;
+    case VX_COLOR_TYPE_R8G8_UNORM:         return 1;
+    case VX_COLOR_TYPE_A16_UNORM:          return 1;
+    case VX_COLOR_TYPE_R16_UNORM:          return 1;
+    case VX_COLOR_TYPE_R16G16_UNORM:       return 2;
+    case VX_COLOR_TYPE_A16_FLOAT:          return 1;
+    case VX_COLOR_TYPE_R16_FLOAT:          return 1;
+    case VX_COLOR_TYPE_R16G16_FLOAT:       return 2;
+    case VX_COLOR_TYPE_R16G16B16A16_UNORM: return 3;
+    case VX_COLOR_TYPE_SRGBA_8888:         return 2;
+    case VX_COLOR_TYPE_R8_UNORM:           return 0;
+    }
+    __builtin_trap();
+}
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

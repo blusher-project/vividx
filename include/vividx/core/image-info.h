@@ -101,11 +101,44 @@ VX_PUBLIC bool vx_yuv_color_space_is_limited_range(enum vx_yuv_color_space cs);
 //!< Color Info
 //!<==================
 
-VX_PUBLIC vx_color_info_t* vx_color_info_new(enum vx_color_type ct,
-                                             enum vx_alpha_type at,
-                                             vx_color_space_t *cs);
+struct vx_color_info_t {
+    const vx_color_space_t *color_space;
+    enum vx_color_type color_type; // = kUnknown_SkColorType;
+    enum vx_alpha_type alpha_type; // = VX_ALPHA_TYPE_UNKNOWN;
+};
 
-VX_PUBLIC vx_color_space_t* vx_color_info_color_space(
+/// Creates `vx_color_info_t` from `enum vx_color_type` ct, `enum vx_alpha_type`
+/// at, and optionally `const vx_color_space_t*` cs.
+///
+/// If const `vx_color_space_t*` cs is nullptr and `vx_color_info_t` is part of
+/// drawing source: `vx_color_space_t*` defaults
+/// to sRGB, mapping into SkSurface `vx_color_space_t*`.
+///
+/// Parameters are not validated to see if their values are legal, or that the
+/// combination is supported.
+///
+/// \return created `vx_color_info_t`.
+static vx_color_info_t vx_color_info_make(enum vx_color_type ct,
+                                          enum vx_alpha_type at,
+                                          const vx_color_space_t *cs)
+{
+    vx_color_info_t info;
+    info.color_space = cs;
+    info.color_type = ct;
+    info.alpha_type = at;
+    return info;
+}
+
+VX_PUBLIC vx_color_info_t vx_color_info_copy_with_alpha_type(
+    const vx_color_info_t *color_info, enum vx_alpha_type at);
+
+VX_PUBLIC vx_color_info_t vx_color_info_copy_with_color_type(
+    const vx_color_info_t *color_info, enum vx_color_type ct);
+
+VX_PUBLIC vx_color_info_t vx_color_info_copy_with_color_space(
+    const vx_color_info_t *color_info, const vx_color_space_t *cs);
+
+VX_PUBLIC const vx_color_space_t* vx_color_info_color_space(
     const vx_color_info_t *color_info);
 
 VX_PUBLIC enum vx_color_type vx_color_info_color_type(
@@ -126,26 +159,6 @@ VX_PUBLIC bool vx_color_info_eq(const vx_color_info_t *info,
 VX_PUBLIC bool vx_color_info_ne(const vx_color_info_t *info,
                                 const vx_color_info_t *other);
 
-#if 0
-/** Creates SkColorInfo with same SkColorType, SkColorSpace, with SkAlphaType set
-    to newAlphaType.
-
-    Created SkColorInfo contains newAlphaType even if it is incompatible with
-    SkColorType, in which case SkAlphaType in SkColorInfo is ignored.
-*/
-SkColorInfo makeAlphaType(vx_alpha_type newAlphaType) const;
-
-/** Creates new SkColorInfo with same SkAlphaType, SkColorSpace, with SkColorType
-    set to newColorType.
-*/
-SkColorInfo makeColorType(vx_color_type newColorType) const;
-
-/** Creates SkColorInfo with same SkAlphaType, SkColorType, with SkColorSpace
-    set to cs. cs may be nullptr.
-*/
-SkColorInfo makeColorSpace(sk_sp<SkColorSpace> cs) const;
-#endif
-
 /** Returns number of bytes per pixel required by SkColorType.
     Returns zero if colorType() is kUnknown_SkColorType.
 
@@ -163,8 +176,6 @@ VX_PUBLIC int vx_color_info_bytes_per_pixel(const vx_color_info_t *ct);
     example: https://fiddle.skia.org/c/@ImageInfo_shiftPerPixel
 */
 VX_PUBLIC int vx_color_info_shift_per_pixel(const vx_color_info_t *ct);
-
-VX_PUBLIC void vx_color_info_free(vx_color_info_t *color_info);
 
 //!<==================
 //!< Image Info
