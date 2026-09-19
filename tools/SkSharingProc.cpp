@@ -36,8 +36,8 @@ static sk_sp<SkImage> make_raster_image(SkImage* img, GrDirectContext* dctx,
     if (!gctx) {
         return nullptr;
     }
-    SkImageInfo info = img->imageInfo().makeColorType(kRGBA_8888_SkColorType)
-                                       .makeAlphaType(kPremul_SkAlphaType);
+    SkImageInfo info = img->imageInfo().makeColorType(VX_COLOR_TYPE_RGBA_8888)
+                                       .makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bitmap;
     if (!bitmap.tryAllocPixels(info)) {
         return nullptr;
@@ -135,7 +135,7 @@ SkSerialReturnType serializeImage(SkImage* img, void* ctx) {
             // serialize_image which calls this proc will continue to try writing to the mskp file.
             SKIA_LOG_W("SkSharingContext::serializeImage failed. Encoding magenta placeholder.\n");
             SkBitmap bm;
-            bm.allocPixels(SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+            bm.allocPixels(SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
             SkCanvas canvas = SkCanvas(bm);
             canvas.clear(SK_ColorMAGENTA);
             data = SkPngEncoder::Encode(context->fDirectContext, bm.asImage().get(), {});
@@ -148,7 +148,7 @@ SkSerialReturnType serializeImage(SkImage* img, void* ctx) {
 }
 
 sk_sp<SkImage> deserializeImage(sk_sp<SkData> data,
-                                std::optional<SkAlphaType> alphaType,
+                                std::optional<vx_alpha_type> alphaType,
                                 void* ctx) {
     if (!data || data->empty() || !ctx) {
         SKIA_LOG_W("SkSharingContext::deserializeImage arguments invalid %p.\n", ctx);

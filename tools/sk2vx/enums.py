@@ -9,6 +9,7 @@ Uses clang.cindex (libclang) for precise AST-based location finding.
 import clang.cindex
 import json
 import os
+import sys
 from collections import defaultdict
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -120,6 +121,12 @@ def apply_renames_to_file(filepath, spans):
         f.write(content)
 
 def main():
+    src_dirs = []
+    if len(sys.argv) <= 1:
+        src_dirs = SRC_DIRS
+    else:
+        src_dirs = sys.argv[1:]
+
     config = load_config(CONFIG_FILE)
     type_map = config.get("enum_types", {})
     const_map = config.get("enum_constants", {})
@@ -129,7 +136,7 @@ def main():
     # Combine all target names for quick searching
     target_names = set(type_map.keys()).union(set(const_map.keys()))
 
-    source_files = get_source_files(SRC_DIRS)
+    source_files = get_source_files(src_dirs)
     print(f"Found {len(source_files)} files to process.")
 
     index = clang.cindex.Index.create()

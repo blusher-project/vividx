@@ -156,7 +156,7 @@ static bool setup_backend_objects(GrDirectContext* dContext,
     }
 
     // This config must match the SkColorType used in draw.cpp in the SkImage and Surface factories
-    GrBackendFormat renderableFormat = dContext->defaultBackendFormat(kRGBA_8888_SkColorType,
+    GrBackendFormat renderableFormat = dContext->defaultBackendFormat(VX_COLOR_TYPE_RGBA_8888,
                                                                       GrRenderable::kYes);
 
     if (!bm.empty()) {
@@ -168,9 +168,9 @@ static bool setup_backend_objects(GrDirectContext* dContext,
         }
 
         SkAutoPixmapStorage rgbaPixmap;
-        constexpr bool kRGBAIsNative = kN32_SkColorType == kRGBA_8888_SkColorType;
+        constexpr bool kRGBAIsNative = VX_COLOR_TYPE_N32 == VX_COLOR_TYPE_RGBA_8888;
         if ((!kRGBAIsNative)) {
-            if (!rgbaPixmap.tryAlloc(bm.info().makeColorType(kRGBA_8888_SkColorType))) {
+            if (!rgbaPixmap.tryAlloc(bm.info().makeColorType(VX_COLOR_TYPE_RGBA_8888))) {
                 fputs("Unable to alloc rgbaPixmap.\n", stderr);
                 return false;
             }
@@ -302,17 +302,17 @@ int main(int argc, char** argv) {
         SkAssertResult(image->asLegacyBitmap(&source));
     }
     sk_sp<SkData> rasterData, gpuData, pdfData, skpData;
-    SkColorType colorType = kN32_SkColorType;
+    vx_color_type colorType = VX_COLOR_TYPE_N32;
     sk_sp<SkColorSpace> colorSpace = nullptr;
     if (options.f16) {
         SkASSERT(options.srgb);
-        colorType = kRGBA_F16_SkColorType;
+        colorType = VX_COLOR_TYPE_RGBA_F16;
         colorSpace = SkColorSpace::MakeSRGBLinear();
     } else if (options.srgb) {
         colorSpace = SkColorSpace::MakeSRGB();
     }
     SkImageInfo info = SkImageInfo::Make(options.size.width(), options.size.height(), colorType,
-                                         kPremul_SkAlphaType, colorSpace);
+                                         VX_ALPHA_TYPE_PREMULTIPLIED, colorSpace);
     if (options.raster) {
         auto rasterSurface = SkSurfaces::Raster(info);
         srand(0);

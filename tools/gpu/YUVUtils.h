@@ -34,7 +34,7 @@ namespace sk_gpu_test {
 // image. Images are made as textures if GrRecordingContext is not null, otherwise as cpu images.
 std::tuple<std::array<sk_sp<SkImage>, SkYUVAInfo::kMaxPlanes>, SkYUVAInfo>
 MakeYUVAPlanesAsA8(SkImage*,
-                   SkYUVColorSpace,
+                   vx_yuv_color_space,
                    SkYUVAInfo::Subsampling,
                    GrRecordingContext*);
 

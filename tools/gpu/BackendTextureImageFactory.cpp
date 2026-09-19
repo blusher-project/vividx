@@ -58,9 +58,9 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
                                        Renderable renderable,
                                        GrSurfaceOrigin origin,
                                        Protected isProtected) {
-    if (info.alphaType() == kOpaque_SkAlphaType) {
+    if (info.alphaType() == VX_ALPHA_TYPE_OPAQUE) {
         color = color.makeOpaque();
-    } else if (info.alphaType() == kPremul_SkAlphaType) {
+    } else if (info.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED) {
         auto pmColor = color.premul();
         color = {pmColor.fR, pmColor.fG, pmColor.fB, pmColor.fA};
     }
@@ -109,7 +109,7 @@ sk_sp<SkImage> MakeBackendTextureImage(Recorder* recorder,
     // be sufficient and we can remove the old API. Otherwise we will either remove kGray_8 or
     // expand the new API to augment the alpha-type with a semantic (red-as-gray, red-as-alpha,
     // alpha-only, force-opaque, etc.)
-    if (pixmap.colorType() == kGray_8_SkColorType) {
+    if (pixmap.colorType() == VX_COLOR_TYPE_GRAY_8) {
         return SkImages::WrapTexture(recorder,
                                      mbet->texture(),
                                      pixmap.colorType(),
@@ -136,7 +136,7 @@ sk_sp<SkImage> MakeBackendTextureImage(Recorder* recorder,
                                        Renderable isRenderable,
                                        Origin origin,
                                        Protected isProtected) {
-    if (ii.alphaType() == kOpaque_SkAlphaType) {
+    if (ii.alphaType() == VX_ALPHA_TYPE_OPAQUE) {
         color = color.makeOpaque();
     }
 

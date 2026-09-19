@@ -21,7 +21,7 @@ namespace ProtectedUtils {
 sk_sp<SkSurface> CreateProtectedSkSurface(Recorder* recorder,
                                           SkISize size,
                                           Protected isProtected) {
-    SkImageInfo ii = SkImageInfo::Make(size, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(size, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> surface = sk_gpu_test::MakeBackendTextureSurface(recorder,
                                                                       ii,
@@ -45,7 +45,7 @@ sk_sp<SkImage> CreateProtectedSkImage(Recorder* recorder,
                                       SkISize size,
                                       SkColor4f color,
                                       Protected isProtected) {
-    SkImageInfo ii = SkImageInfo::Make(size, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(size, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkImage> image = sk_gpu_test::MakeBackendTextureImage(recorder,
                                                                 ii,

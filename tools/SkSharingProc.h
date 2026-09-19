@@ -79,7 +79,7 @@ SkSerialReturnType serializeImage(SkImage* img, void* ctx);
 
 // A deserial proc that can interpret ids in place of images as references to previous images.
 // Can also deserialize a SKP where all images are inlined (it's backwards compatible)
-sk_sp<SkImage> deserializeImage(sk_sp<SkData>, std::optional<SkAlphaType>, void* ctx);
+sk_sp<SkImage> deserializeImage(sk_sp<SkData>, std::optional<vx_alpha_type>, void* ctx);
 }  // namespace SkSharingContext
 
 #endif

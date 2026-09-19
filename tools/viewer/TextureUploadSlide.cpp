@@ -91,8 +91,8 @@ private:
     public:
         RenderTargetTexture(GrDirectContext* direct, int size) {
             SkSurfaceProps surfaceProps(0, kRGB_H_SkPixelGeometry);
-            SkImageInfo imageInfo = SkImageInfo::Make(size, size, kRGBA_8888_SkColorType,
-                                                      kPremul_SkAlphaType);
+            SkImageInfo imageInfo = SkImageInfo::Make(size, size, VX_COLOR_TYPE_RGBA_8888,
+                                                      VX_ALPHA_TYPE_PREMULTIPLIED);
             fSurface = SkSurfaces::RenderTarget(
                     direct, skgpu::Budgeted::kNo, imageInfo, 0, &surfaceProps);
         }

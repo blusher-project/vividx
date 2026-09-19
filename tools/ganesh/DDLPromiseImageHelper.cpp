@@ -389,8 +389,8 @@ int DDLPromiseImageHelper::addImage(SkImage* image) {
     SkImage_Base* ib = as_IB(image);
 
     SkImageInfo overallII = SkImageInfo::Make(image->width(), image->height(),
-                                              image->colorType() == kBGRA_8888_SkColorType
-                                                        ? kRGBA_8888_SkColorType
+                                              image->colorType() == VX_COLOR_TYPE_BGRA_8888
+                                                        ? VX_COLOR_TYPE_RGBA_8888
                                                         : image->colorType(),
                                               image->alphaType(),
                                               image->refColorSpace());

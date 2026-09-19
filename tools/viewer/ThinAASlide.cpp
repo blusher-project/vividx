@@ -186,7 +186,7 @@ public:
     void prepareBuffer(SkCanvas* canvas, SkPaint* paint, SkScalar tx, SkScalar ty, SkScalar angle) {
         auto info = SkImageInfo::Make(fSupersampleFactor * kTileWidth,
                                       fSupersampleFactor * kTileHeight,
-                                      kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                                      VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
         auto surface = fForceRasterBackend ? SkSurfaces::Raster(info) : canvas->makeSurface(info);
 
         surface->getCanvas()->save();

@@ -100,7 +100,7 @@ struct Sniffer {
 
         if (FLAGS_testDecode) {
             SkBitmap bitmap;
-            SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+            SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
             bitmap.allocPixels(info);
             const SkCodec::Result result = codec->getPixels(
                 info, bitmap.getPixels(),  bitmap.rowBytes());

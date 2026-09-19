@@ -637,7 +637,7 @@ bool DrawCommand::flatten(const SkImage&  image,
     size_t       rowBytes = 4 * image.width();
     SkAutoMalloc buffer(rowBytes * image.height());
     SkImageInfo  dstInfo =
-            SkImageInfo::Make(image.dimensions(), kN32_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(image.dimensions(), VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     // "cheat" for this debug tool and use image's context
     GrDirectContext* dContext = nullptr;
 #if defined(SK_GANESH)
@@ -674,23 +674,23 @@ bool DrawCommand::flatten(const SkImage&  image,
     return true;
 }
 
-static const char* color_type_name(SkColorType colorType) {
+static const char* color_type_name(vx_color_type colorType) {
     switch (colorType) {
-        case kARGB_4444_SkColorType: return DEBUGCANVAS_COLORTYPE_ARGB4444;
-        case kRGBA_8888_SkColorType: return DEBUGCANVAS_COLORTYPE_RGBA8888;
-        case kBGRA_8888_SkColorType: return DEBUGCANVAS_COLORTYPE_BGRA8888;
-        case kRGB_565_SkColorType: return DEBUGCANVAS_COLORTYPE_565;
-        case kGray_8_SkColorType: return DEBUGCANVAS_COLORTYPE_GRAY8;
-        case kAlpha_8_SkColorType: return DEBUGCANVAS_COLORTYPE_ALPHA8;
+        case VX_COLOR_TYPE_ARGB_4444: return DEBUGCANVAS_COLORTYPE_ARGB4444;
+        case VX_COLOR_TYPE_RGBA_8888: return DEBUGCANVAS_COLORTYPE_RGBA8888;
+        case VX_COLOR_TYPE_BGRA_8888: return DEBUGCANVAS_COLORTYPE_BGRA8888;
+        case VX_COLOR_TYPE_RGB_565: return DEBUGCANVAS_COLORTYPE_565;
+        case VX_COLOR_TYPE_GRAY_8: return DEBUGCANVAS_COLORTYPE_GRAY8;
+        case VX_COLOR_TYPE_ALPHA_8: return DEBUGCANVAS_COLORTYPE_ALPHA8;
         default: SkASSERT(false); return DEBUGCANVAS_COLORTYPE_RGBA8888;
     }
 }
 
-static const char* alpha_type_name(SkAlphaType alphaType) {
+static const char* alpha_type_name(vx_alpha_type alphaType) {
     switch (alphaType) {
-        case kOpaque_SkAlphaType: return DEBUGCANVAS_ALPHATYPE_OPAQUE;
-        case kPremul_SkAlphaType: return DEBUGCANVAS_ALPHATYPE_PREMUL;
-        case kUnpremul_SkAlphaType: return DEBUGCANVAS_ALPHATYPE_UNPREMUL;
+        case VX_ALPHA_TYPE_OPAQUE: return DEBUGCANVAS_ALPHATYPE_OPAQUE;
+        case VX_ALPHA_TYPE_PREMULTIPLIED: return DEBUGCANVAS_ALPHATYPE_PREMUL;
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED: return DEBUGCANVAS_ALPHATYPE_UNPREMUL;
         default: SkASSERT(false); return DEBUGCANVAS_ALPHATYPE_OPAQUE;
     }
 }
@@ -1205,13 +1205,13 @@ void DrawImageCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManag
     writer.appendS32(DEBUGCANVAS_ATTRIBUTE_WIDTH, fImage->width());
     writer.appendS32(DEBUGCANVAS_ATTRIBUTE_HEIGHT, fImage->height());
     switch (fImage->alphaType()) {
-        case kOpaque_SkAlphaType:
+        case VX_ALPHA_TYPE_OPAQUE:
             writer.appendNString(DEBUGCANVAS_ATTRIBUTE_ALPHA, DEBUGCANVAS_ALPHATYPE_OPAQUE);
             break;
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             writer.appendNString(DEBUGCANVAS_ATTRIBUTE_ALPHA, DEBUGCANVAS_ALPHATYPE_PREMUL);
             break;
-        case kUnpremul_SkAlphaType:
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
             writer.appendNString(DEBUGCANVAS_ATTRIBUTE_ALPHA, DEBUGCANVAS_ALPHATYPE_UNPREMUL);
             break;
         default:

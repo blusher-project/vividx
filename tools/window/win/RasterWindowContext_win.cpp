@@ -67,7 +67,7 @@ void RasterWindowContext_win::resize(int w, int h) {
     void* pixels = bmpInfo->bmiColors;
 
     SkImageInfo info = SkImageInfo::Make(
-            w, h, fDisplayParams->colorType(), kPremul_SkAlphaType, fDisplayParams->colorSpace());
+            w, h, fDisplayParams->colorType(), VX_ALPHA_TYPE_PREMULTIPLIED, fDisplayParams->colorSpace());
     fBackbufferSurface = SkSurfaces::WrapPixels(info, pixels, sizeof(uint32_t) * w);
 }
 

@@ -39,14 +39,14 @@ static bool save_pixels(GrDirectContext* dContext,
     }
 
     auto ii = SkImageInfo::Make(
-            view.proxy()->dimensions(), kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            view.proxy()->dimensions(), VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bm;
     if (!bm.tryAllocPixels(ii)) {
         return false;
     }
 
     auto sContext =
-            dContext->priv().makeSC(std::move(view), {colorType, kUnknown_SkAlphaType, nullptr});
+            dContext->priv().makeSC(std::move(view), {colorType, VX_ALPHA_TYPE_UNKNOWN, nullptr});
     if (!sContext || !sContext->asTextureProxy()) {
         return false;
     }
@@ -90,7 +90,7 @@ void GrAtlasManagerTools::Dump(const GrAtlasManager* am, GrDirectContext* contex
 #else
                 filename.printf("fontcache_%d%d%u.png", gDumpCount, i, pageIdx);
 #endif
-                SkColorType ct = MaskFormatToColorType(GrAtlasManager::AtlasIndexToMaskFormat(i));
+                vx_color_type ct = MaskFormatToColorType(GrAtlasManager::AtlasIndexToMaskFormat(i));
                 save_pixels(
                         context, views[pageIdx], SkColorTypeToGrColorType(ct), filename.c_str());
             }

@@ -45,17 +45,17 @@ class SkPath;
 class SkShader;
 class SkSurfaceProps;
 class SkTextBlobBuilder;
-enum SkAlphaType : int;
-enum SkColorType : int;
+enum vx_alpha_type : int;
+enum vx_color_type : int;
 enum class SkTextEncoding;
 enum class SkTileMode;
 struct SkImageInfo;
 
 namespace ToolUtils {
 
-const char* alphatype_name (SkAlphaType);
-const char* colortype_name (SkColorType);
-const char* colortype_depth(SkColorType);  // like colortype_name, but channel order agnostic
+const char* alphatype_name (vx_alpha_type);
+const char* colortype_name (vx_color_type);
+const char* colortype_depth(vx_color_type);  // like colortype_name, but channel order agnostic
 const char* tilemode_name(SkTileMode);
 
 /**
@@ -125,8 +125,8 @@ private:
  *  Returns the number of levels (either 1 or 6). The mipmap levels will be colored as
  *  specified in 'colors'
  */
-int make_pixmaps(SkColorType,
-                 SkAlphaType,
+int make_pixmaps(vx_color_type,
+                 vx_alpha_type,
                  bool withMips,
                  const SkColor4f colors[6],
                  SkPixmap pixmaps[6],
@@ -261,7 +261,7 @@ private:
     SkTDArray<uint32_t>      fTargets;
 };
 
-bool copy_to(SkBitmap* dst, SkColorType dstCT, const SkBitmap& src);
+bool copy_to(SkBitmap* dst, vx_color_type dstCT, const SkBitmap& src);
 void copy_to_g8(SkBitmap* dst, const SkBitmap& src);
 
 class PixelIter {

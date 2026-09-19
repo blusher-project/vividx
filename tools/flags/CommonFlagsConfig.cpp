@@ -434,33 +434,33 @@ static bool parse_option_gpu_surf_type(const SkString&                   value,
 #endif  // SK_GANESH
 
 static bool parse_option_gpu_color(const SkString& value,
-                                   SkColorType*    outColorType,
-                                   SkAlphaType*    alphaType) {
+                                   vx_color_type*    outColorType,
+                                   vx_alpha_type*    alphaType) {
     // We always use premul unless the color type is 565.
-    *alphaType = kPremul_SkAlphaType;
+    *alphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
 
     if (value.equals("8888")) {
-        *outColorType  = kRGBA_8888_SkColorType;
+        *outColorType  = VX_COLOR_TYPE_RGBA_8888;
     } else if (value.equals("888x")) {
-        *outColorType  = kRGB_888x_SkColorType;
+        *outColorType  = VX_COLOR_TYPE_RGB_888X;
     } else if (value.equals("bgra8")) {
-        *outColorType  = kBGRA_8888_SkColorType;
+        *outColorType  = VX_COLOR_TYPE_BGRA_8888;
     } else if (value.equals("4444")) {
-        *outColorType  = kARGB_4444_SkColorType;
+        *outColorType  = VX_COLOR_TYPE_ARGB_4444;
     } else if (value.equals("565")) {
-        *outColorType  = kRGB_565_SkColorType;
-        *alphaType     = kOpaque_SkAlphaType;
+        *outColorType  = VX_COLOR_TYPE_RGB_565;
+        *alphaType     = VX_ALPHA_TYPE_OPAQUE;
     } else if (value.equals("1010102")) {
-        *outColorType  = kRGBA_1010102_SkColorType;
+        *outColorType  = VX_COLOR_TYPE_RGBA_1010102;
     } else if (value.equals("f16")) {
-        *outColorType  = kRGBA_F16_SkColorType;
+        *outColorType  = VX_COLOR_TYPE_RGBA_F16;
     } else if (value.equals("f16norm")) {
-        *outColorType  = kRGBA_F16Norm_SkColorType;
+        *outColorType  = VX_COLOR_TYPE_RGBA_F16NORM;
     } else if (value.equals("srgba")) {
-        *outColorType = kSRGBA_8888_SkColorType;
+        *outColorType = VX_COLOR_TYPE_SRGBA_8888;
     } else if (value.equals("r8")) {
-        *outColorType = kR8_unorm_SkColorType;
-        *alphaType = kOpaque_SkAlphaType;
+        *outColorType = VX_COLOR_TYPE_R8_UNORM;
+        *alphaType = VX_ALPHA_TYPE_OPAQUE;
     } else {
         return false;
     }
@@ -495,8 +495,8 @@ public:
     }
 
     bool get_option_gpu_color(const char*  optionKey,
-                              SkColorType* outColorType,
-                              SkAlphaType* alphaType,
+                              vx_color_type* outColorType,
+                              vx_alpha_type* alphaType,
                               bool         optional = true) const {
         SkString* optionValue = fOptionsMap.find(SkString(optionKey));
         if (optionValue == nullptr) {
@@ -611,8 +611,8 @@ SkCommandLineConfigGpu::SkCommandLineConfigGpu(const SkString&         tag,
                                                bool                    fakeGLESVersion2,
                                                uint32_t                surfaceFlags,
                                                int                     samples,
-                                               SkColorType             colorType,
-                                               SkAlphaType             alphaType,
+                                               vx_color_type             colorType,
+                                               vx_alpha_type             alphaType,
                                                bool                    useStencilBuffers,
                                                int                     testPersistentCache,
                                                bool                    testPrecompileGanesh,
@@ -656,8 +656,8 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&         ta
     bool                                useDIText           = false;
     bool                                useDMSAA            = false;
     int                                 samples             = 1;
-    SkColorType                         colorType           = kRGBA_8888_SkColorType;
-    SkAlphaType                         alphaType           = kPremul_SkAlphaType;
+    vx_color_type                         colorType           = VX_COLOR_TYPE_RGBA_8888;
+    vx_alpha_type                         alphaType           = VX_ALPHA_TYPE_PREMULTIPLIED;
     bool                                useStencils         = true;
     int                                 testPersistentCache = 0;
     bool                                testPrecompileGanesh= false;
@@ -731,8 +731,8 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
     using ContextType = skgpu::ContextType;
 
     ContextType contextType            = skgpu::ContextType::kMetal;
-    SkColorType colorType              = kRGBA_8888_SkColorType;
-    SkAlphaType alphaType              = kPremul_SkAlphaType;
+    vx_color_type colorType              = VX_COLOR_TYPE_RGBA_8888;
+    vx_alpha_type alphaType              = VX_ALPHA_TYPE_PREMULTIPLIED;
     bool        testPersistentStorage  = false;
     bool        testPrecompileGraphite = false;
     bool        testPipelineTracking   = false;

@@ -77,7 +77,7 @@ sk_sp<SkSurface> GLWindowContext::getBackbufferSurface() {
             fSurface = SkSurfaces::WrapBackendRenderTarget(fContext.get(),
                                                            backendRT,
                                                            kBottomLeft_GrSurfaceOrigin,
-                                                           kRGBA_8888_SkColorType,
+                                                           VX_COLOR_TYPE_RGBA_8888,
                                                            fDisplayParams->colorSpace(),
                                                            &fDisplayParams->surfaceProps());
         }

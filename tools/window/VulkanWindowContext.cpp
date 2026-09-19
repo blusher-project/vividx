@@ -245,14 +245,14 @@ bool VulkanWindowContext::createSwapchain(int width, int height) {
         return false;
     }
 
-    SkColorType colorType;
+    vx_color_type colorType;
     switch (surfaceFormat) {
         case VK_FORMAT_R8G8B8A8_UNORM: // fall through
         case VK_FORMAT_R8G8B8A8_SRGB:
-            colorType = kRGBA_8888_SkColorType;
+            colorType = VX_COLOR_TYPE_RGBA_8888;
             break;
         case VK_FORMAT_B8G8R8A8_UNORM: // fall through
-            colorType = kBGRA_8888_SkColorType;
+            colorType = VX_COLOR_TYPE_BGRA_8888;
             break;
         default:
             return false;
@@ -335,7 +335,7 @@ bool VulkanWindowContext::createSwapchain(int width, int height) {
 
 bool VulkanWindowContext::populateSwapchainImages(VkFormat format,
                                                   VkImageUsageFlags usageFlags,
-                                                  SkColorType colorType,
+                                                  vx_color_type colorType,
                                                   VkSharingMode sharingMode) {
     // Determine number of swapchain images
     uint32_t swapchainImgCount;

@@ -53,12 +53,12 @@ bool get_bitmap(sk_sp<SkData> fileBits, DiffResource& resource, bool sizeOnly,
     // differently) are transformed to some canonical representation prior to comparison.
     //
     // TODO: Use something wider than sRGB to avoid clipping with out-of-gamut colors.
-    SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     if (!ignoreColorSpace) {
         info = info.makeColorSpace(SkColorSpace::MakeSRGB());
     }
 
-    if (!resource.fBitmap.setInfo(info.makeColorType(kN32_SkColorType))) {
+    if (!resource.fBitmap.setInfo(info.makeColorType(VX_COLOR_TYPE_N32))) {
         SkDebugf("ERROR: could not set bitmap info for <%s>\n", resource.fFullPath.c_str());
         resource.fStatus = DiffResource::kCouldNotDecode_Status;
         return false;
@@ -96,7 +96,7 @@ static void force_all_opaque(const SkBitmap& bitmap) {
 
 bool write_bitmap(const SkString& path, const SkBitmap& bitmap) {
     SkBitmap copy;
-    if (!copy.tryAllocPixels(bitmap.info().makeColorType(kN32_SkColorType))) {
+    if (!copy.tryAllocPixels(bitmap.info().makeColorType(VX_COLOR_TYPE_N32))) {
         return false;
     }
     if (!bitmap.readPixels(copy.pixmap())) {

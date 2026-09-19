@@ -28,7 +28,7 @@ namespace skwindow {
 class DisplayParams {
 public:
     DisplayParams()
-        : fColorType(kN32_SkColorType)
+        : fColorType(VX_COLOR_TYPE_N32)
         , fColorSpace(nullptr)
         , fMSAASampleCount(1)
         , fSurfaceProps(0, kRGB_H_SkPixelGeometry)
@@ -58,7 +58,7 @@ public:
         return std::make_unique<DisplayParams>(*this);
     }
 
-    SkColorType colorType() const { return fColorType; }
+    vx_color_type colorType() const { return fColorType; }
     sk_sp<SkColorSpace> colorSpace() const { return fColorSpace; }
     int msaaSampleCount() const { return fMSAASampleCount; }
 #if defined(SK_GANESH)
@@ -73,7 +73,7 @@ public:
 private:
     friend class DisplayParamsBuilder;
 
-    SkColorType            fColorType;
+    vx_color_type            fColorType;
     sk_sp<SkColorSpace>    fColorSpace;
     int                    fMSAASampleCount;
 #if defined(SK_GANESH)
@@ -92,7 +92,7 @@ public:
     // Call clone() in case other is a subclass of DisplayParams
     DisplayParamsBuilder(const DisplayParams* other) : fDisplayParams(other->clone()) {}
 
-    DisplayParamsBuilder& colorType(SkColorType colorType) {
+    DisplayParamsBuilder& colorType(vx_color_type colorType) {
         SkASSERT_RELEASE(fDisplayParams);
         fDisplayParams->fColorType = colorType;
         return *this;

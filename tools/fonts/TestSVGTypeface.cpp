@@ -227,7 +227,7 @@ protected:
 
         SkBitmap bm;
         // TODO: this should be SkImageInfo::MakeS32 when that passes all the tests.
-        bm.installPixels(SkImageInfo::MakeN32(glyph.width(), glyph.height(), kPremul_SkAlphaType),
+        bm.installPixels(SkImageInfo::MakeN32(glyph.width(), glyph.height(), VX_ALPHA_TYPE_PREMULTIPLIED),
                          imageBuffer, glyph.rowBytes());
         bm.eraseColor(0);
 

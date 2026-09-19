@@ -50,8 +50,8 @@ void draw(SkCanvas* canvas) {
         sk_sp<SkImage> tmp = SkImages::BorrowTextureFrom(dContext,
                                                          backEndTexture,
                                                          kTopLeft_GrSurfaceOrigin,
-                                                         kRGBA_8888_SkColorType,
-                                                         kOpaque_SkAlphaType,
+                                                         VX_COLOR_TYPE_RGBA_8888,
+                                                         VX_ALPHA_TYPE_OPAQUE,
                                                          nullptr);
 
         constexpr int kSampleCnt = 0;
@@ -59,7 +59,7 @@ void draw(SkCanvas* canvas) {
                                                                backEndTextureRenderTarget,
                                                                kTopLeft_GrSurfaceOrigin,
                                                                kSampleCnt,
-                                                               kRGBA_8888_SkColorType,
+                                                               VX_COLOR_TYPE_RGBA_8888,
                                                                nullptr,
                                                                nullptr);
 
@@ -67,7 +67,7 @@ void draw(SkCanvas* canvas) {
         sk_sp<SkSurface> tmp3 = SkSurfaces::WrapBackendRenderTarget(dContext,
                                                                     backEndRenderTarget,
                                                                     kTopLeft_GrSurfaceOrigin,
-                                                                    kRGBA_8888_SkColorType,
+                                                                    VX_COLOR_TYPE_RGBA_8888,
                                                                     nullptr,
                                                                     nullptr);
     }

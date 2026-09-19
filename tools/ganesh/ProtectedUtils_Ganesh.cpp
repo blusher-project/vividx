@@ -26,7 +26,7 @@ sk_sp<SkSurface> CreateProtectedSkSurface(GrDirectContext* dContext,
                                                          size,
                                                          kTopLeft_GrSurfaceOrigin,
                                                          1,
-                                                         kRGBA_8888_SkColorType,
+                                                         VX_COLOR_TYPE_RGBA_8888,
                                                          /* colorSpace= */ nullptr,
                                                          skgpu::Mipmapped::kNo,
                                                          skgpu::Protected(isProtected),
@@ -36,7 +36,7 @@ sk_sp<SkSurface> CreateProtectedSkSurface(GrDirectContext* dContext,
                                                               size,
                                                               kTopLeft_GrSurfaceOrigin,
                                                               1,
-                                                              kRGBA_8888_SkColorType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
                                                               /* colorSpace= */ nullptr,
                                                               skgpu::Protected(isProtected),
                                                               surfaceProps);
@@ -85,7 +85,7 @@ sk_sp<SkImage> CreateProtectedSkImage(GrDirectContext* dContext,
                                       SkISize size,
                                       SkColor4f color,
                                       bool isProtected) {
-    SkImageInfo ii = SkImageInfo::Make(size, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(size, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkImage> image = sk_gpu_test::MakeBackendTextureImage(dContext,
                                                                 ii,

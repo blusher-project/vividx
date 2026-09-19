@@ -143,8 +143,8 @@ private:
         bool isYUV() const { return fYUVAPixmaps.isValid(); }
 
         SkISize overallDimensions() const { return fImageInfo.dimensions(); }
-        SkColorType overallColorType() const { return fImageInfo.colorType(); }
-        SkAlphaType overallAlphaType() const { return fImageInfo.alphaType(); }
+        vx_color_type overallColorType() const { return fImageInfo.colorType(); }
+        vx_alpha_type overallAlphaType() const { return fImageInfo.alphaType(); }
         sk_sp<SkColorSpace> refOverallColorSpace() const { return fImageInfo.refColorSpace(); }
 
         const SkYUVAInfo& yuvaInfo() const { return fYUVAPixmaps.yuvaInfo(); }

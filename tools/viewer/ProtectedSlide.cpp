@@ -150,8 +150,8 @@ sk_sp<SkImage> create_protected_skia_image(GrDirectContext* dContext,
                                            Recorder* recorder,
                                            int width, int height,
                                            SkColor color) {
-    SkImageInfo ii = SkImageInfo::Make(width, height, kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(width, height, VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> tmpSurface = create_protected_render_target(dContext, recorder, ii);
     if (!tmpSurface) {
@@ -211,8 +211,8 @@ public:
         sk_sp<SkImage> indirectImg;
 
         {
-            SkImageInfo ii = SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType,
-                                               kPremul_SkAlphaType);
+            SkImageInfo ii = SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_8888,
+                                               VX_ALPHA_TYPE_PREMULTIPLIED);
             sk_sp<SkSurface> tmpS = create_protected_render_target(dContext, recorder, ii);
 
             tmpS->getCanvas()->clear(SK_ColorMAGENTA);

@@ -56,7 +56,7 @@ static uint8_t look_up(SkPoint normPt, const SkPixmap& pmap, enum vx_color_chann
     int x = SkScalarFloorToInt(normPt.x() * pmap.width());
     int y = SkScalarFloorToInt(normPt.y() * pmap.height());
 
-    auto ii = pmap.info().makeColorType(kRGBA_8888_SkColorType).makeWH(1, 1);
+    auto ii = pmap.info().makeColorType(VX_COLOR_TYPE_RGBA_8888).makeWH(1, 1);
     uint32_t pixel;
     SkAssertResult(pmap.readPixels(ii, &pixel, sizeof(pixel), x, y));
     int shift = static_cast<int>(channel) * 8;
@@ -67,8 +67,8 @@ class Generator : public SkImageGenerator {
 public:
     Generator(SkYUVAPixmaps pixmaps, sk_sp<SkColorSpace> cs)
             : SkImageGenerator(SkImageInfo::Make(pixmaps.yuvaInfo().dimensions(),
-                                                 kN32_SkColorType,
-                                                 kPremul_SkAlphaType,
+                                                 VX_COLOR_TYPE_N32,
+                                                 VX_ALPHA_TYPE_PREMULTIPLIED,
                                                  std::move(cs)))
             , fPixmaps(std::move(pixmaps)) {}
 
@@ -77,7 +77,7 @@ protected:
                      void* pixels,
                      size_t rowBytes,
                      const Options&) override {
-        if (kUnknown_SkColorType == fFlattened.colorType()) {
+        if (VX_COLOR_TYPE_UNKNOWN == fFlattened.colorType()) {
             fFlattened.allocPixels(info);
             SkASSERT(info == this->getInfo());
 
@@ -152,7 +152,7 @@ namespace sk_gpu_test {
 
 std::tuple<std::array<sk_sp<SkImage>, SkYUVAInfo::kMaxPlanes>, SkYUVAInfo>
 MakeYUVAPlanesAsA8(SkImage* src,
-                   SkYUVColorSpace cs,
+                   vx_yuv_color_space cs,
                    SkYUVAInfo::Subsampling ss,
                    GrRecordingContext* rContext) {
     float rgbToYUV[20];
@@ -500,7 +500,7 @@ bool LazyYUVImage::ensureYUVImage(Recorder* recorder, Type type) {
                 // kUnknown would be interpreted as "force-opaque".
                 planeImgs[i] = SkImages::WrapTexture(recorder,
                                                      mbet->texture(),
-                                                     kUnpremul_SkAlphaType,
+                                                     VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                                      fColorSpace,
                                                      skgpu::Origin::kTopLeft,
                                                      genMipmaps,

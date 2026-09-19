@@ -1997,17 +1997,17 @@ void Viewer::drawSlide(SkSurface* surface) {
     checkCaptureAndSerialize();
 
     // Grab some things we'll need to make surfaces (for tiling or general offscreen rendering)
-    SkColorType colorType;
+    vx_color_type colorType;
     switch (fColorMode) {
         case ColorMode::kLegacy:
         case ColorMode::kColorManaged8888:
-            colorType = kN32_SkColorType;
+            colorType = VX_COLOR_TYPE_N32;
             break;
         case ColorMode::kColorManagedF16:
-            colorType = kRGBA_F16_SkColorType;
+            colorType = VX_COLOR_TYPE_RGBA_F16;
             break;
         case ColorMode::kColorManagedF16Norm:
-            colorType = kRGBA_F16Norm_SkColorType;
+            colorType = VX_COLOR_TYPE_RGBA_F16NORM;
             break;
     }
 
@@ -2025,7 +2025,7 @@ void Viewer::drawSlide(SkSurface* surface) {
         }
 
         SkImageInfo info = SkImageInfo::Make(
-                fWindow->width(), fWindow->height(), colorType, kPremul_SkAlphaType, colorSpace);
+                fWindow->width(), fWindow->height(), colorType, VX_ALPHA_TYPE_PREMULTIPLIED, colorSpace);
         offscreenSurface = Window::BackendType::kRaster == this->fBackendType
                                    ? SkSurfaces::Raster(info, &props)
                                    : slideCanvas->makeSurface(info, &props);
@@ -2058,7 +2058,7 @@ void Viewer::drawSlide(SkSurface* surface) {
                 }
 
                 SkImageInfo info = SkImageInfo::Make(
-                        tileW, tileH, colorType, kPremul_SkAlphaType, colorSpace);
+                        tileW, tileH, colorType, VX_ALPHA_TYPE_PREMULTIPLIED, colorSpace);
                 sk_sp<SkSurface> tileSurface = Window::BackendType::kRaster == this->fBackendType
                                                        ? SkSurfaces::Raster(info, &props)
                                                        : slideCanvas->makeSurface(info, &props);
@@ -2540,7 +2540,7 @@ void Viewer::drawImGui() {
                     int sampleCount = fWindow->sampleCount();
                     int maxMSAA =
                             (fBackendType != sk_app::Window::BackendType::kRaster)
-                                    ? ctx->maxSurfaceSampleCountForColorType(kRGBA_8888_SkColorType)
+                                    ? ctx->maxSurfaceSampleCountForColorType(VX_COLOR_TYPE_RGBA_8888)
                                     : 1;
 
                     // Only display the MSAA radio buttons when there are options above 1x MSAA.

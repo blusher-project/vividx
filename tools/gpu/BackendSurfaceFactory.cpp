@@ -37,7 +37,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
                                            skgpu::Mipmapped mipmapped,
                                            GrProtected isProtected,
                                            const SkSurfaceProps* props) {
-    if (ii.alphaType() == kUnpremul_SkAlphaType) {
+    if (ii.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         return nullptr;
     }
     auto mbet = ManagedBackendTexture::MakeWithoutData(dContext,
@@ -65,12 +65,12 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext* dContext,
                                            SkISize dimensions,
                                            GrSurfaceOrigin origin,
                                            int sampleCnt,
-                                           SkColorType colorType,
+                                           vx_color_type colorType,
                                            sk_sp<SkColorSpace> colorSpace,
                                            skgpu::Mipmapped mipmapped,
                                            GrProtected isProtected,
                                            const SkSurfaceProps* props) {
-    auto ii = SkImageInfo::Make(dimensions, colorType, kPremul_SkAlphaType, std::move(colorSpace));
+    auto ii = SkImageInfo::Make(dimensions, colorType, VX_ALPHA_TYPE_PREMULTIPLIED, std::move(colorSpace));
     return MakeBackendTextureSurface(
             dContext, ii, origin, sampleCnt, mipmapped, isProtected, props);
 }
@@ -80,7 +80,7 @@ sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
                                                 int sampleCnt,
                                                 GrProtected isProtected,
                                                 const SkSurfaceProps* props) {
-    if (ii.alphaType() == kUnpremul_SkAlphaType || ii.alphaType() == kUnknown_SkAlphaType) {
+    if (ii.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED || ii.alphaType() == VX_ALPHA_TYPE_UNKNOWN) {
         return nullptr;
     }
     auto ct = SkColorTypeToGrColorType(ii.colorType());
@@ -111,11 +111,11 @@ sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext* dContext,
                                                 SkISize dimensions,
                                                 GrSurfaceOrigin origin,
                                                 int sampleCnt,
-                                                SkColorType colorType,
+                                                vx_color_type colorType,
                                                 sk_sp<SkColorSpace> colorSpace,
                                                 GrProtected isProtected,
                                                 const SkSurfaceProps* props) {
-    auto ii = SkImageInfo::Make(dimensions, colorType, kPremul_SkAlphaType, std::move(colorSpace));
+    auto ii = SkImageInfo::Make(dimensions, colorType, VX_ALPHA_TYPE_PREMULTIPLIED, std::move(colorSpace));
     return MakeBackendRenderTargetSurface(dContext, ii, origin, sampleCnt, isProtected, props);
 }
 #endif  // SK_GANESH
@@ -126,7 +126,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(skgpu::graphite::Recorder* recorder,
                                            skgpu::Mipmapped mipmapped,
                                            skgpu::Protected isProtected,
                                            const SkSurfaceProps* props) {
-    if (ii.alphaType() == kUnpremul_SkAlphaType) {
+    if (ii.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         return nullptr;
     }
     sk_sp<ManagedGraphiteTexture> mbet = ManagedGraphiteTexture::MakeUnInit(recorder,
@@ -155,7 +155,7 @@ sk_sp<SkSurface> MakeBackendTextureViewSurface(skgpu::graphite::Recorder* record
         return nullptr;
     }
 
-    if (ii.alphaType() == kUnpremul_SkAlphaType) {
+    if (ii.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         return nullptr;
     }
 

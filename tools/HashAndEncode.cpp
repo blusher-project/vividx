@@ -18,52 +18,52 @@ static sk_sp<SkColorSpace> rec2020() {
 HashAndEncode::HashAndEncode(const SkBitmap& bitmap) : fSize(bitmap.info().dimensions()) {
     skcms_AlphaFormat srcAlpha;
     switch (bitmap.alphaType()) {
-        case kUnknown_SkAlphaType: return;
+        case VX_ALPHA_TYPE_UNKNOWN: return;
 
-        case kOpaque_SkAlphaType:
-        case kUnpremul_SkAlphaType: srcAlpha = skcms_AlphaFormat_Unpremul;        break;
-        case kPremul_SkAlphaType:   srcAlpha = skcms_AlphaFormat_PremulAsEncoded; break;
+        case VX_ALPHA_TYPE_OPAQUE:
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED: srcAlpha = skcms_AlphaFormat_Unpremul;        break;
+        case VX_ALPHA_TYPE_PREMULTIPLIED:   srcAlpha = skcms_AlphaFormat_PremulAsEncoded; break;
     }
 
     skcms_PixelFormat srcFmt;
     switch (bitmap.colorType()) {
-        case kUnknown_SkColorType:            return;
+        case VX_COLOR_TYPE_UNKNOWN:            return;
 
-        case kAlpha_8_SkColorType:            srcFmt = skcms_PixelFormat_A_8;             break;
-        case kRGB_565_SkColorType:            srcFmt = skcms_PixelFormat_BGR_565;         break;
-        case kARGB_4444_SkColorType:          srcFmt = skcms_PixelFormat_ABGR_4444;       break;
-        case kRGBA_8888_SkColorType:          srcFmt = skcms_PixelFormat_RGBA_8888;       break;
-        case kBGRA_8888_SkColorType:          srcFmt = skcms_PixelFormat_BGRA_8888;       break;
-        case kSRGBA_8888_SkColorType:         srcFmt = skcms_PixelFormat_RGBA_8888_sRGB;  break;
-        case kRGBA_1010102_SkColorType:       srcFmt = skcms_PixelFormat_RGBA_1010102;    break;
-        case kBGRA_1010102_SkColorType:       srcFmt = skcms_PixelFormat_BGRA_1010102;    break;
-        case kBGR_101010x_XR_SkColorType:     srcFmt = skcms_PixelFormat_BGR_101010x_XR;  break;
-        case kGray_8_SkColorType:             srcFmt = skcms_PixelFormat_G_8;             break;
+        case VX_COLOR_TYPE_ALPHA_8:            srcFmt = skcms_PixelFormat_A_8;             break;
+        case VX_COLOR_TYPE_RGB_565:            srcFmt = skcms_PixelFormat_BGR_565;         break;
+        case VX_COLOR_TYPE_ARGB_4444:          srcFmt = skcms_PixelFormat_ABGR_4444;       break;
+        case VX_COLOR_TYPE_RGBA_8888:          srcFmt = skcms_PixelFormat_RGBA_8888;       break;
+        case VX_COLOR_TYPE_BGRA_8888:          srcFmt = skcms_PixelFormat_BGRA_8888;       break;
+        case VX_COLOR_TYPE_SRGBA_8888:         srcFmt = skcms_PixelFormat_RGBA_8888_sRGB;  break;
+        case VX_COLOR_TYPE_RGBA_1010102:       srcFmt = skcms_PixelFormat_RGBA_1010102;    break;
+        case VX_COLOR_TYPE_BGRA_1010102:       srcFmt = skcms_PixelFormat_BGRA_1010102;    break;
+        case VX_COLOR_TYPE_BGR_101010X_XR:     srcFmt = skcms_PixelFormat_BGR_101010x_XR;  break;
+        case VX_COLOR_TYPE_GRAY_8:             srcFmt = skcms_PixelFormat_G_8;             break;
         // skcms doesn't have R_8. Pretend it's G_8, but see below for color space trickery:
-        case kR8_unorm_SkColorType:           srcFmt = skcms_PixelFormat_G_8;             break;
-        case kRGBA_F16Norm_SkColorType:       srcFmt = skcms_PixelFormat_RGBA_hhhh;       break;
-        case kRGBA_F16_SkColorType:           srcFmt = skcms_PixelFormat_RGBA_hhhh;       break;
-        case kRGBA_F32_SkColorType:           srcFmt = skcms_PixelFormat_RGBA_ffff;       break;
-        case kR16G16B16A16_unorm_SkColorType: srcFmt = skcms_PixelFormat_RGBA_16161616LE; break;
+        case VX_COLOR_TYPE_R8_UNORM:           srcFmt = skcms_PixelFormat_G_8;             break;
+        case VX_COLOR_TYPE_RGBA_F16NORM:       srcFmt = skcms_PixelFormat_RGBA_hhhh;       break;
+        case VX_COLOR_TYPE_RGBA_F16:           srcFmt = skcms_PixelFormat_RGBA_hhhh;       break;
+        case VX_COLOR_TYPE_RGBA_F32:           srcFmt = skcms_PixelFormat_RGBA_ffff;       break;
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: srcFmt = skcms_PixelFormat_RGBA_16161616LE; break;
 
-        case kRGB_888x_SkColorType:           srcFmt = skcms_PixelFormat_RGBA_8888;
+        case VX_COLOR_TYPE_RGB_888X:           srcFmt = skcms_PixelFormat_RGBA_8888;
                                               srcAlpha = skcms_AlphaFormat_Opaque;     break;
-        case kRGB_101010x_SkColorType:        srcFmt = skcms_PixelFormat_RGBA_1010102;
+        case VX_COLOR_TYPE_RGB_101010X:        srcFmt = skcms_PixelFormat_RGBA_1010102;
                                               srcAlpha = skcms_AlphaFormat_Opaque;     break;
-        case kBGR_101010x_SkColorType:        srcFmt = skcms_PixelFormat_BGRA_1010102;
+        case VX_COLOR_TYPE_BGR_101010X:        srcFmt = skcms_PixelFormat_BGRA_1010102;
                                               srcAlpha = skcms_AlphaFormat_Opaque;     break;
-        case kRGB_F16F16F16x_SkColorType:     srcFmt = skcms_PixelFormat_RGBA_hhhh;
+        case VX_COLOR_TYPE_RGB_F16F16F16X:     srcFmt = skcms_PixelFormat_RGBA_hhhh;
                                               srcAlpha = skcms_AlphaFormat_Opaque;     break;
 
-        case kR8G8_unorm_SkColorType:         return;
-        case kR16_unorm_SkColorType:          return;
-        case kR16_float_SkColorType:          return;
-        case kR16G16_unorm_SkColorType:       return;
-        case kR16G16_float_SkColorType:       return;
-        case kA16_unorm_SkColorType:          return;
-        case kA16_float_SkColorType:          return;
-        case kRGBA_10x6_SkColorType:          return;
-        case kBGRA_10101010_XR_SkColorType:   return;
+        case VX_COLOR_TYPE_R8G8_UNORM:         return;
+        case VX_COLOR_TYPE_R16_UNORM:          return;
+        case VX_COLOR_TYPE_R16_FLOAT:          return;
+        case VX_COLOR_TYPE_R16G16_UNORM:       return;
+        case VX_COLOR_TYPE_R16G16_FLOAT:       return;
+        case VX_COLOR_TYPE_A16_UNORM:          return;
+        case VX_COLOR_TYPE_A16_FLOAT:          return;
+        case VX_COLOR_TYPE_RGBA_10X6:          return;
+        case VX_COLOR_TYPE_BGRA_10101010_XR:   return;
     }
 
     skcms_ICCProfile srcProfile = *skcms_sRGB_profile();
@@ -73,7 +73,7 @@ HashAndEncode::HashAndEncode(const SkBitmap& bitmap) : fSize(bitmap.info().dimen
 
     // NOTE: If the color type is R8, we told skcms it's actually G8 above. To get red PNGs,
     // we tweak the source color space to throw away any green and blue:
-    if (bitmap.colorType() == kR8_unorm_SkColorType) {
+    if (bitmap.colorType() == VX_COLOR_TYPE_R8_UNORM) {
         srcProfile.toXYZD50.vals[0][1] = srcProfile.toXYZD50.vals[0][2] = 0;
         srcProfile.toXYZD50.vals[1][1] = srcProfile.toXYZD50.vals[1][2] = 0;
         srcProfile.toXYZD50.vals[2][1] = srcProfile.toXYZD50.vals[2][2] = 0;

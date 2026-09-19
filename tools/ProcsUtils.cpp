@@ -30,7 +30,7 @@ namespace ToolUtils {
 SkDeserialProcs default_deserial_procs() {
     SkDeserialProcs procs;
     procs.fImageDataProc =
-            [](sk_sp<SkData> data, std::optional<SkAlphaType> at, void*) -> sk_sp<SkImage> {
+            [](sk_sp<SkData> data, std::optional<vx_alpha_type> at, void*) -> sk_sp<SkImage> {
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
         std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
         auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);

@@ -72,8 +72,8 @@ public:
                            bool                      fakeGLESVer2,
                            uint32_t                  surfaceFlags,
                            int                       samples,
-                           SkColorType               colorType,
-                           SkAlphaType               alphaType,
+                           vx_color_type               colorType,
+                           vx_alpha_type               alphaType,
                            bool                      useStencilBuffers,
                            int                       testPersistentCache,
                            bool                      testPrecompileGanesh,
@@ -89,8 +89,8 @@ public:
     ContextOverrides              getContextOverrides() const { return fContextOverrides; }
     uint32_t      getSurfaceFlags() const { return fSurfaceFlags; }
     int           getSamples() const { return fSamples; }
-    SkColorType   getColorType() const { return fColorType; }
-    SkAlphaType   getAlphaType() const { return fAlphaType; }
+    vx_color_type   getColorType() const { return fColorType; }
+    vx_alpha_type   getAlphaType() const { return fAlphaType; }
     int           getTestPersistentCache() const { return fTestPersistentCache; }
     bool          getTestPrecompileGanesh() const { return fTestPrecompileGanesh; }
     bool          getUseDDLSink() const { return fUseDDLSink; }
@@ -105,8 +105,8 @@ private:
     ContextOverrides    fContextOverrides;
     uint32_t            fSurfaceFlags;
     int                 fSamples;
-    SkColorType         fColorType;
-    SkAlphaType         fAlphaType;
+    vx_color_type         fColorType;
+    vx_alpha_type         fAlphaType;
     int                 fTestPersistentCache;
     bool                fTestPrecompileGanesh;
     bool                fUseDDLSink;
@@ -129,8 +129,8 @@ public:
     SkCommandLineConfigGraphite(const SkString& tag,
                                 const skia_private::TArray<SkString>& viaParts,
                                 ContextType contextType,
-                                SkColorType colorType,
-                                SkAlphaType alphaType,
+                                vx_color_type colorType,
+                                vx_alpha_type alphaType,
                                 bool testPersistentStorage,
                                 bool testPrecompileGraphite,
                                 bool testPipelineTracking)
@@ -146,16 +146,16 @@ public:
     const SkCommandLineConfigGraphite* asConfigGraphite() const override { return this; }
 
     ContextType getContextType() const { return fContextType; }
-    SkColorType getColorType() const { return fColorType; }
-    SkAlphaType getAlphaType() const { return fAlphaType; }
+    vx_color_type getColorType() const { return fColorType; }
+    vx_alpha_type getAlphaType() const { return fAlphaType; }
     bool        getTestPersistentStorage() const { return fTestPersistentStorage; }
     bool        getTestPrecompileGraphite() const { return fTestPrecompileGraphite; }
     bool        getTestPipelineTracking() const { return fTestPipelineTracking; }
 
 private:
     ContextType                     fContextType;
-    SkColorType                     fColorType;
-    SkAlphaType                     fAlphaType;
+    vx_color_type                     fColorType;
+    vx_alpha_type                     fAlphaType;
     bool                            fTestPersistentStorage;
     bool                            fTestPrecompileGraphite;
     bool                            fTestPipelineTracking;

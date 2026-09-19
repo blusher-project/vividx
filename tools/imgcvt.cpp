@@ -110,15 +110,15 @@ int main(int argc, char** argv) {
 
         skcms_PixelFormat fmt;
         switch (pixmap.colorType()) {
-            case kRGBA_8888_SkColorType: fmt = skcms_PixelFormat_RGBA_8888; break;
-            case kBGRA_8888_SkColorType: fmt = skcms_PixelFormat_BGRA_8888; break;
+            case VX_COLOR_TYPE_RGBA_8888: fmt = skcms_PixelFormat_RGBA_8888; break;
+            case VX_COLOR_TYPE_BGRA_8888: fmt = skcms_PixelFormat_BGRA_8888; break;
             default:
                 SkDebugf("color type %d not yet supported, imgcvt.cpp needs an update.\n",
                          pixmap.colorType());
                 return 1;
         }
 
-        if (pixmap.alphaType() == kUnpremul_SkAlphaType) {
+        if (pixmap.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
             SkDebugf("not premul, that's weird.\n");
             return 1;
         }

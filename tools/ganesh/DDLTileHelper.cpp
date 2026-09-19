@@ -185,7 +185,7 @@ sk_sp<SkImage> DDLTileHelper::TileData::makePromiseImageForDst(
                                          skgpu::Mipmapped::kNo,
                                          GrSurfaceOrigin::kBottomLeft_GrSurfaceOrigin,
                                          fPlaybackChar.colorType(),
-                                         kPremul_SkAlphaType,
+                                         VX_ALPHA_TYPE_PREMULTIPLIED,
                                          fPlaybackChar.refColorSpace(),
                                          PromiseImageCallbackContext::PromiseImageFulfillProc,
                                          PromiseImageCallbackContext::PromiseImageReleaseProc,

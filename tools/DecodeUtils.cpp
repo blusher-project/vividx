@@ -27,7 +27,7 @@ bool DecodeDataToBitmap(sk_sp<SkData> data, SkBitmap* dst) {
                    gen->getInfo().makeColorSpace(nullptr), dst->getPixels(), dst->rowBytes());
 }
 
-bool DecodeDataToBitmapWithColorType(sk_sp<SkData> data, SkBitmap* dst, SkColorType dstCT) {
+bool DecodeDataToBitmapWithColorType(sk_sp<SkData> data, SkBitmap* dst, vx_color_type dstCT) {
   std::unique_ptr<SkImageGenerator> gen(SkImageGenerators::MakeFromEncoded(std::move(data)));
   return gen && dst->tryAllocPixels(gen->getInfo().makeColorType(dstCT)) &&
          gen->getPixels(

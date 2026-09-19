@@ -48,7 +48,7 @@ namespace sk_gpu_test {
 // Fill in 'dstPixels' with BC1 blocks derived from the 'pixmap'.
 void TwoColorBC1Compress(const SkPixmap& pixmap, SkColor otherColor, char* dstPixels) {
     BC1Block* dstBlocks = reinterpret_cast<BC1Block*>(dstPixels);
-    SkASSERT(pixmap.colorType() == SkColorType::kRGBA_8888_SkColorType);
+    SkASSERT(pixmap.colorType() == vx_color_type::VX_COLOR_TYPE_RGBA_8888);
 
     BC1Block block;
 

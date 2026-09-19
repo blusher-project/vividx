@@ -30,7 +30,7 @@ static constexpr float kHandleRadius = 3.f;
 static SkBitmap make_panel() {
     SkBitmap panel;
     panel.setInfo(SkImageInfo::Make(kPanelSize, kPanelSize,
-                                    kRGBA_8888_SkColorType, kOpaque_SkAlphaType));
+                                    VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE));
     panel.allocPixels();
     panel.eraseColor(SK_ColorBLACK);
     return panel;
@@ -70,7 +70,7 @@ public:
 
         SkBitmap dst;
         dst.setInfo(SkImageInfo::Make(
-                kPanelSize, kPanelSize, kRGBA_8888_SkColorType, kOpaque_SkAlphaType));
+                kPanelSize, kPanelSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE));
         dst.allocPixels();
         dst.eraseColor(SK_ColorBLACK);
 

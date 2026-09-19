@@ -164,7 +164,7 @@ void D3D12WindowContext::setupSurfaces(int width, int height) {
                                                           backendTexture,
                                                           kTopLeft_GrSurfaceOrigin,
                                                           fSampleCount,
-                                                          kRGBA_8888_SkColorType,
+                                                          VX_COLOR_TYPE_RGBA_8888,
                                                           fDisplayParams->colorSpace(),
                                                           &fDisplayParams->surfaceProps());
         } else {
@@ -172,7 +172,7 @@ void D3D12WindowContext::setupSurfaces(int width, int height) {
             fSurfaces[i] = SkSurfaces::WrapBackendRenderTarget(fContext.get(),
                                                                backendRT,
                                                                kTopLeft_GrSurfaceOrigin,
-                                                               kRGBA_8888_SkColorType,
+                                                               VX_COLOR_TYPE_RGBA_8888,
                                                                fDisplayParams->colorSpace(),
                                                                &fDisplayParams->surfaceProps());
         }

@@ -48,10 +48,10 @@ RasterWindowContext_android::RasterWindowContext_android(
 void RasterWindowContext_android::setBuffersGeometry() {
     int32_t format = 0;
     switch (fDisplayParams->colorType()) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             format = WINDOW_FORMAT_RGBA_8888;
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             format = WINDOW_FORMAT_RGB_565;
             break;
         default:
@@ -78,7 +78,7 @@ sk_sp<SkSurface> RasterWindowContext_android::getBackbufferSurface() {
         SkImageInfo info = SkImageInfo::Make(fWidth,
                                              fHeight,
                                              fDisplayParams->colorType(),
-                                             kPremul_SkAlphaType,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED,
                                              fDisplayParams->colorSpace());
         fBackbufferSurface =
                 SkSurfaces::WrapPixels(info, fBuffer.bits, fBuffer.stride * bytePerPixel, nullptr);

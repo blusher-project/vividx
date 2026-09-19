@@ -20,7 +20,7 @@
 
 class SkSurface;
 class SkSurfaceProps;
-enum SkColorType : int;
+enum vx_color_type : int;
 struct SkImageInfo;
 
 #if defined(SK_GANESH)
@@ -47,7 +47,7 @@ sk_sp<SkSurface> MakeBackendTextureSurface(GrDirectContext*,
                                            SkISize,
                                            GrSurfaceOrigin,
                                            int sampleCnt,
-                                           SkColorType,
+                                           vx_color_type,
                                            sk_sp<SkColorSpace> = nullptr,
                                            skgpu::Mipmapped = skgpu::Mipmapped::kNo,
                                            GrProtected = GrProtected::kNo,
@@ -65,7 +65,7 @@ sk_sp<SkSurface> MakeBackendRenderTargetSurface(GrDirectContext*,
                                                 SkISize,
                                                 GrSurfaceOrigin,
                                                 int sampleCnt,
-                                                SkColorType,
+                                                vx_color_type,
                                                 sk_sp<SkColorSpace> = nullptr,
                                                 GrProtected = GrProtected::kNo,
                                                 const SkSurfaceProps* = nullptr);
