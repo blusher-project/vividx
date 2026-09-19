@@ -63,7 +63,7 @@ struct vx_color_t {
     float a;
 };
 
-static vx_color_t vx_color_make(float r, float g, float b, float a)
+static inline vx_color_t vx_color_make(float r, float g, float b, float a)
 {
     vx_color_t color;
     color.r = r;

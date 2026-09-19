@@ -15,7 +15,7 @@ struct vx_size_i_t {
     int32_t height;
 };
 
-static vx_size_i_t vx_size_i_make(int32_t w, int32_t h)
+static inline vx_size_i_t vx_size_i_make(int32_t w, int32_t h)
 {
     vx_size_i_t s = { .width = w, .height = h };
     return s;
@@ -23,23 +23,23 @@ static vx_size_i_t vx_size_i_make(int32_t w, int32_t h)
 
 /** Returns true iff fWidth == 0 && fHeight == 0
     */
-static bool vx_size_i_is_zero(vx_size_i_t size)
+static inline bool vx_size_i_is_zero(vx_size_i_t size)
 {
     return 0 == size.width && 0 == size.height;
 }
 
 /** Returns true if either width or height are <= 0 */
-static bool vx_size_i_is_empty(vx_size_i_t size)
+static inline bool vx_size_i_is_empty(vx_size_i_t size)
 {
     return size.width <= 0 || size.height <= 0;
 }
 
-static int32_t vx_size_i_width(vx_size_i_t size)
+static inline int32_t vx_size_i_width(vx_size_i_t size)
 {
     return size.width;
 }
 
-static int32_t vx_size_i_height(vx_size_i_t size)
+static inline int32_t vx_size_i_height(vx_size_i_t size)
 {
     return size.height;
 }
@@ -67,7 +67,7 @@ struct vx_size_t {
     float height;
 };
 
-static vx_size_t vx_size_make(float w, float h)
+static inline vx_size_t vx_size_make(float w, float h)
 {
     vx_size_t size = { .width = w, .height = h };
     return size;
@@ -81,22 +81,22 @@ static vx_size_t vx_size_Make(const SkISize& src) {
 
 /** Returns true iff fWidth == 0 && fHeight == 0
     */
-static bool vx_size_is_zero(vx_size_t size)
+static inline bool vx_size_is_zero(vx_size_t size)
 {
     return 0 == size.width && 0 == size.height;
 }
 
 /** Returns true if either width or height are <= 0 */
-static bool vx_size_is_empty(vx_size_t size)
+static inline bool vx_size_is_empty(vx_size_t size)
 {
     return size.width <= 0 || size.height <= 0;
 }
 
-static float vx_size_width(vx_size_t size)
+static inline float vx_size_width(vx_size_t size)
 {
     return size.width;
 }
-static float vx_size_height(vx_size_t size)
+static inline float vx_size_height(vx_size_t size)
 {
     return size.height;
 }

@@ -33,20 +33,20 @@ static int32_t vx_int64_pin_to_int32(int64_t x) {
     return x < VX_INT32_MIN ? VX_INT32_MIN : (x > VX_INT32_MAX ? VX_INT32_MAX : (int32_t)x);
 }
 
-static int32_t vx_int32_sat_add(int32_t a, int32_t b) {
+static inline int32_t vx_int32_sat_add(int32_t a, int32_t b) {
     return vx_int64_pin_to_int32((int64_t)a + (int64_t)b);
 }
 
-static int32_t vx_int32_sat_sub(int32_t a, int32_t b) {
+static inline int32_t vx_int32_sat_sub(int32_t a, int32_t b) {
     return vx_int64_pin_to_int32((int64_t)a - (int64_t)b);
 }
 
 // To avoid UBSAN complaints about 2's compliment overflows
 //
-static int32_t vx_int32_can_overflow_add(int32_t a, int32_t b) {
+static inline int32_t vx_int32_can_overflow_add(int32_t a, int32_t b) {
     return (int32_t)((uint32_t)a + (uint32_t)b);
 }
-static int32_t vx_int32_can_overflow_sub(int32_t a, int32_t b) {
+static inline int32_t vx_int32_can_overflow_sub(int32_t a, int32_t b) {
     return (int32_t)((uint32_t)a - (uint32_t)b);
 }
 
@@ -67,7 +67,7 @@ static inline int32_t vx_int32_abs(int32_t value) {
 }
 
 // Calculate the midpoint between a and b. Similar to std::midpoint in c++20.
-static float vx_float_midpoint(float a, float b)
+static inline float vx_float_midpoint(float a, float b)
 {
     // Use double math to avoid underflow and overflow.
     return (float)(0.5 * ((double)(a) + b));
