@@ -118,9 +118,9 @@ struct vx_color_info_t {
 /// combination is supported.
 ///
 /// \return created `vx_color_info_t`.
-static vx_color_info_t vx_color_info_make(enum vx_color_type ct,
-                                          enum vx_alpha_type at,
-                                          const vx_color_space_t *cs)
+static inline vx_color_info_t vx_color_info_make(enum vx_color_type ct,
+                                                 enum vx_alpha_type at,
+                                                 const vx_color_space_t *cs)
 {
     vx_color_info_t info;
     info.color_space = cs;

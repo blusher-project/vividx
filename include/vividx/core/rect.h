@@ -48,7 +48,7 @@ struct vx_rect_i_t {
 
     @return  bounds (0, 0, 0, 0)
 */
-[[nodiscard]] static vx_rect_i_t vx_rect_i_make()
+[[nodiscard]] static inline vx_rect_i_t vx_rect_i_make()
 {
     vx_rect_i_t rect = { .left = 0, .top = 0, .right = 0, .bottom = 0 };
     return rect;
@@ -63,10 +63,10 @@ struct vx_rect_i_t {
     @param h  added to y and stored in fBottom
     @return   bounds at (x, y) with width w and height h
 */
-[[nodiscard]] static vx_rect_i_t vx_rect_i_make_xywh(int32_t x,
-                                                     int32_t y,
-                                                     int32_t w,
-                                                     int32_t h)
+[[nodiscard]] static inline vx_rect_i_t vx_rect_i_make_xywh(int32_t x,
+                                                            int32_t y,
+                                                            int32_t w,
+                                                            int32_t h)
 {
     vx_rect_i_t rect = {
         .left = x,
@@ -114,7 +114,7 @@ struct vx_rect_i_t {
 
     @return  fLeft
 */
-static int32_t vx_rect_i_left(vx_rect_i_t rect)
+static inline int32_t vx_rect_i_left(vx_rect_i_t rect)
 {
     return rect.left;
 }
@@ -124,7 +124,7 @@ static int32_t vx_rect_i_left(vx_rect_i_t rect)
 
     @return  fTop
 */
-static int32_t vx_rect_i_top(vx_rect_i_t rect)
+static inline int32_t vx_rect_i_top(vx_rect_i_t rect)
 {
     return rect.top;
 }
@@ -134,7 +134,7 @@ static int32_t vx_rect_i_top(vx_rect_i_t rect)
 
     @return  fRight
 */
-static int32_t vx_rect_i_right(vx_rect_i_t rect)
+static inline int32_t vx_rect_i_right(vx_rect_i_t rect)
 {
     return rect.right;
 }
@@ -144,7 +144,7 @@ static int32_t vx_rect_i_right(vx_rect_i_t rect)
 
     @return  fBottom
 */
-static int32_t vx_rect_i_bottom(vx_rect_i_t rect)
+static inline int32_t vx_rect_i_bottom(vx_rect_i_t rect)
 {
     return rect.bottom;
 }
@@ -154,7 +154,7 @@ static int32_t vx_rect_i_bottom(vx_rect_i_t rect)
 
     @return  fLeft
 */
-static int32_t vx_rect_i_x(vx_rect_i_t rect)
+static inline int32_t vx_rect_i_x(vx_rect_i_t rect)
 {
     return rect.left;
 }
@@ -164,13 +164,13 @@ static int32_t vx_rect_i_x(vx_rect_i_t rect)
 
     @return  fTop
 */
-static int32_t vx_rect_i_y(vx_rect_i_t rect)
+static inline int32_t vx_rect_i_y(vx_rect_i_t rect)
 {
     return rect.top;
 }
 
 // Experimental
-static vx_point_i_t vx_rect_i_top_left(vx_rect_i_t rect)
+static inline vx_point_i_t vx_rect_i_top_left(vx_rect_i_t rect)
 {
     return vx_point_i_make(rect.left, rect.top);
 }
@@ -180,7 +180,7 @@ static vx_point_i_t vx_rect_i_top_left(vx_rect_i_t rect)
 
     @return  fRight minus fLeft
 */
-static int32_t vx_rect_i_width(vx_rect_i_t rect)
+static inline int32_t vx_rect_i_width(vx_rect_i_t rect)
 {
     return vx_int32_can_overflow_sub(rect.right, rect.left);
 }
@@ -190,7 +190,7 @@ static int32_t vx_rect_i_width(vx_rect_i_t rect)
 
     @return  fBottom minus fTop
 */
-static int32_t vx_rect_i_height(vx_rect_i_t rect)
+static inline int32_t vx_rect_i_height(vx_rect_i_t rect)
 {
     return vx_int32_can_overflow_sub(rect.bottom, rect.top);
 }
@@ -200,7 +200,7 @@ static int32_t vx_rect_i_height(vx_rect_i_t rect)
 
     @return  SkISize (width, height)
 */
-static vx_size_i_t vx_rect_i_size(vx_rect_i_t rect)
+static inline vx_size_i_t vx_rect_i_size(vx_rect_i_t rect)
 {
     return vx_size_i_make(vx_rect_i_width(rect), vx_rect_i_height(rect));
 }
@@ -211,7 +211,7 @@ static vx_size_i_t vx_rect_i_size(vx_rect_i_t rect)
 
     @return  fRight minus fLeft cast to int64_t
 */
-static int64_t vx_rect_i_width64(vx_rect_i_t rect)
+static inline int64_t vx_rect_i_width64(vx_rect_i_t rect)
 {
     return (int64_t)rect.right - (int64_t)rect.left;
 }
@@ -222,7 +222,7 @@ static int64_t vx_rect_i_width64(vx_rect_i_t rect)
 
     @return  fBottom minus fTop cast to int64_t
 */
-static int64_t vx_rect_i_height64(vx_rect_i_t rect)
+static inline int64_t vx_rect_i_height64(vx_rect_i_t rect)
 {
     return (int64_t)rect.bottom - (int64_t)rect.top;
 }
@@ -250,7 +250,7 @@ bool vx_rect_i_is_empty(vx_rect_i_t rect);
     @param b  SkIRect to compare
     @return   true if members are equal
 */
-static bool vx_rect_i_eq(vx_rect_i_t a, vx_rect_i_t b) {
+static inline bool vx_rect_i_eq(vx_rect_i_t a, vx_rect_i_t b) {
     return a.left == b.left && a.top == b.top &&
             a.right == b.right && a.bottom == b.bottom;
 }
@@ -262,7 +262,7 @@ static bool vx_rect_i_eq(vx_rect_i_t a, vx_rect_i_t b) {
     @param b  SkIRect to compare
     @return   true if members are not equal
 */
-static bool vx_rect_i_ne(vx_rect_i_t a, vx_rect_i_t b) {
+static inline bool vx_rect_i_ne(vx_rect_i_t a, vx_rect_i_t b) {
     return a.left != b.left || a.top != b.top ||
             a.right != b.right || a.bottom != b.bottom;
 }
@@ -421,7 +421,7 @@ VX_PUBLIC vx_rect_i_t vx_rect_i_adjusted(vx_rect_i_t r,
     @param y  test SkIPoint y-coordinate
     @return   true if (x, y) is inside SkIRect
 */
-static bool vx_rect_i_contains_xy(vx_rect_i_t rect, int32_t x, int32_t y)
+static inline bool vx_rect_i_contains_xy(vx_rect_i_t rect, int32_t x, int32_t y)
 {
     return x >= rect.left && x < rect.right && y >= rect.top && y < rect.bottom;
 }
@@ -434,7 +434,7 @@ static bool vx_rect_i_contains_xy(vx_rect_i_t rect, int32_t x, int32_t y)
     @param r  SkIRect contained
     @return   true if all sides of SkIRect are outside r
     */
-static bool vx_rect_i_contains(vx_rect_i_t lhs, vx_rect_i_t rhs)
+static inline bool vx_rect_i_contains(vx_rect_i_t lhs, vx_rect_i_t rhs)
 {
     return !vx_rect_i_is_empty(rhs) && !vx_rect_i_is_empty(lhs) &&     // check for empties
         lhs.left <= rhs.left && lhs.top <= rhs.top &&
@@ -524,7 +524,7 @@ struct vx_rect_t {
 /// is a convenience, but does not designate a special empty rectangle.
 ///
 /// \return  bounds (0, 0, 0, 0)
-[[nodiscard]] static vx_rect_t vx_rect_make()
+[[nodiscard]] static inline vx_rect_t vx_rect_make()
 {
     vx_rect_t rect = { .left = 0, .top = 0, .right = 0, .bottom = 0 };
     return rect;
@@ -539,10 +539,10 @@ struct vx_rect_t {
     @param h  added to y and stored in fBottom
     @return   bounds at (x, y) with width w and height h
 */
-[[nodiscard]] static vx_rect_t vx_rect_make_xywh(float x,
-                                                 float y,
-                                                 float w,
-                                                 float h)
+[[nodiscard]] static inline vx_rect_t vx_rect_make_xywh(float x,
+                                                        float y,
+                                                        float w,
+                                                        float h)
 {
     vx_rect_t rect = { .left = x, .top = y, .right = x + w, .bottom = y + h};
     return rect;
@@ -557,10 +557,10 @@ struct vx_rect_t {
     @param b  float stored in fBottom
     @return   bounds (l, t, r, b)
 */
-[[nodiscard]] static vx_rect_t vx_rect_make_ltrb(float l,
-                                                 float t,
-                                                 float r,
-                                                 float b)
+[[nodiscard]] static inline vx_rect_t vx_rect_make_ltrb(float l,
+                                                        float t,
+                                                        float r,
+                                                        float b)
 {
     vx_rect_t rect = { .left = l, .top = t, .right = r, .bottom = b };
     return rect;
@@ -576,7 +576,7 @@ struct vx_rect_t {
     @param h  float height of constructed SkRect
     @return   bounds (0, 0, w, h)
 */
-[[nodiscard]] static vx_rect_t vx_rect_make_wh(float w, float h) {
+[[nodiscard]] static inline vx_rect_t vx_rect_make_wh(float w, float h) {
     return vx_rect_make_ltrb(0, 0, w, h);
 }
 
@@ -602,7 +602,7 @@ struct vx_rect_t {
     @param size  float values for SkRect width and height
     @return      bounds (0, 0, size.width(), size.height())
 */
-[[nodiscard]] static vx_rect_t vx_rect_make_from_size(vx_size_t size) {
+[[nodiscard]] static inline vx_rect_t vx_rect_make_from_size(vx_size_t size) {
     vx_rect_t rect = {
         .left = 0, .top = 0,
         .right = size.width, .bottom = size.height
@@ -629,7 +629,9 @@ static SkRect Make(const SkISize& size) {
     @param irect  integer unsorted bounds
     @return       irect members converted to float
 */
-[[nodiscard]] static vx_rect_t vx_rect_make_from_rect_i(vx_rect_i_t rect_i) {
+[[nodiscard]] static inline vx_rect_t vx_rect_make_from_rect_i(
+    vx_rect_i_t rect_i)
+{
     vx_rect_t rect = {
         .left = (float)(rect_i.left),
         .top = (float)(rect_i.top),
@@ -654,7 +656,7 @@ bool vx_rect_is_empty(vx_rect_t rect);
 
     @return  true if width() or height() are zero or positive
 */
-static bool vx_rect_is_sorted(vx_rect_t rect)
+static inline bool vx_rect_is_sorted(vx_rect_t rect)
 {
     return rect.left <= rect.right && rect.top <= rect.bottom;
 }
@@ -663,7 +665,7 @@ static bool vx_rect_is_sorted(vx_rect_t rect)
 
     @return  true if no member is infinite or NaN
 */
-static bool vx_rect_is_finite(vx_rect_t r)
+static inline bool vx_rect_is_finite(vx_rect_t r)
 {
     return vx_float_is_finite_4f(r.left, r.top, r.right, r.bottom);
 }
@@ -673,7 +675,7 @@ static bool vx_rect_is_finite(vx_rect_t r)
 
     @return  fLeft
 */
-static float vx_rect_x(vx_rect_t rect)
+static inline float vx_rect_x(vx_rect_t rect)
 {
     return rect.left;
 }
@@ -683,7 +685,7 @@ static float vx_rect_x(vx_rect_t rect)
 
     @return  fTop
 */
-static float vx_rect_y(vx_rect_t rect)
+static inline float vx_rect_y(vx_rect_t rect)
 {
     return rect.top;
 }
@@ -693,7 +695,7 @@ static float vx_rect_y(vx_rect_t rect)
 
     @return  fLeft
 */
-static float vx_rect_left(vx_rect_t rect)
+static inline float vx_rect_left(vx_rect_t rect)
 {
     return rect.left;
 }
@@ -703,7 +705,7 @@ static float vx_rect_left(vx_rect_t rect)
 
     @return  fTop
 */
-static float vx_rect_top(vx_rect_t rect)
+static inline float vx_rect_top(vx_rect_t rect)
 {
     return rect.top;
 }
@@ -713,7 +715,7 @@ static float vx_rect_top(vx_rect_t rect)
 
     @return  fRight
 */
-static float vx_rect_right(vx_rect_t rect)
+static inline float vx_rect_right(vx_rect_t rect)
 {
     return rect.right;
 }
@@ -723,7 +725,7 @@ static float vx_rect_right(vx_rect_t rect)
 
     @return  fBottom
 */
-static float vx_rect_bottom(vx_rect_t rect)
+static inline float vx_rect_bottom(vx_rect_t rect)
 {
     return rect.bottom;
 }
@@ -733,7 +735,7 @@ static float vx_rect_bottom(vx_rect_t rect)
 
     @return  fRight minus fLeft
 */
-static float vx_rect_width(vx_rect_t rect)
+static inline float vx_rect_width(vx_rect_t rect)
 {
     return rect.right - rect.left;
 }
@@ -743,7 +745,7 @@ static float vx_rect_width(vx_rect_t rect)
 
     @return  fBottom minus fTop
 */
-static float vx_rect_height(vx_rect_t rect)
+static inline float vx_rect_height(vx_rect_t rect)
 {
     return rect.bottom - rect.top;
 }
@@ -753,7 +755,7 @@ static float vx_rect_height(vx_rect_t rect)
 
     @return  midpoint on x-axis
 */
-static float vx_rect_center_x(vx_rect_t r)
+static inline float vx_rect_center_x(vx_rect_t r)
 {
     return vx_float_midpoint(r.left, r.right);
 }
@@ -763,7 +765,7 @@ static float vx_rect_center_x(vx_rect_t r)
 
     @return  midpoint on y-axis
 */
-static float vx_rect_center_y(vx_rect_t r)
+static inline float vx_rect_center_y(vx_rect_t r)
 {
     return vx_float_midpoint(r.top, r.bottom);
 }
@@ -771,7 +773,7 @@ static float vx_rect_center_y(vx_rect_t r)
 /** Returns the point this->centerX(), this->centerY().
     @return  rectangle center
     */
-static vx_point_t vx_rect_center(vx_rect_t r)
+static inline vx_point_t vx_rect_center(vx_rect_t r)
 {
     return vx_point_make(vx_rect_center_x(r), vx_rect_center_y(r));
 }
@@ -786,7 +788,7 @@ static vx_point_t vx_rect_center(vx_rect_t r)
     @param b  SkRect to compare
     @return   true if members are equal
 */
-static bool vx_rect_eq(vx_rect_t a, vx_rect_t b) {
+static inline bool vx_rect_eq(vx_rect_t a, vx_rect_t b) {
     return a.left == b.left &&
             a.top == b.top &&
             a.right == b.right &&
@@ -803,7 +805,7 @@ static bool vx_rect_eq(vx_rect_t a, vx_rect_t b) {
     @param b  SkRect to compare
     @return   true if members are not equal
 */
-static bool vx_rect_ne(vx_rect_t a, vx_rect_t b) {
+static inline bool vx_rect_ne(vx_rect_t a, vx_rect_t b) {
     return !vx_rect_eq(a, b);
 }
 
