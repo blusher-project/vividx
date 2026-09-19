@@ -233,17 +233,17 @@ enum vx_log_priority {
 // IWYU pragma: end_exports
 
 // Checks to make sure the SkUserConfig options do not conflict.
-#if !defined(SK_DEBUG) && !defined(SK_RELEASE)
+#if !defined(VX_DEBUG) && !defined(VX_RELEASE)
     #ifdef NDEBUG
-        #define SK_RELEASE
+        #define VX_RELEASE
     #else
-        #define SK_DEBUG
+        #define VX_DEBUG
     #endif
 #endif
 
-#if defined(SK_DEBUG) && defined(SK_RELEASE)
+#if defined(VX_DEBUG) && defined(VX_RELEASE)
 #  error "cannot define both SK_DEBUG and SK_RELEASE"
-#elif !defined(SK_DEBUG) && !defined(SK_RELEASE)
+#elif !defined(VX_DEBUG) && !defined(VX_RELEASE)
 #  error "must define either SK_DEBUG or SK_RELEASE"
 #endif
 
@@ -300,7 +300,7 @@ enum vx_log_priority {
 
 #ifndef SKIA_LOG_E
 /// TODO: Fix no-op.
-#define SKIA_LOG_E(args, ...) void(args)
+#define SKIA_LOG_E(args, ...)
 #endif
 
 #if !defined(VX_ABORT)
@@ -348,7 +348,7 @@ enum vx_log_priority {
         : [&]{ VX_ABORT("assertf(%s): " fmt, #cond, ##__VA_ARGS__); }() )
 #endif
 
-#define VX_DEBUG SK_DEBUG
+#define SK_DEBUG VX_DEBUG
 #if defined(VX_DEBUG)
     #define VX_ASSERT(cond)            VX_ASSERT_RELEASE(cond)
     #define VX_ASSERTF(cond, fmt, ...) VX_ASSERTF_RELEASE(cond, fmt, ##__VA_ARGS__)
@@ -365,6 +365,18 @@ enum vx_log_priority {
     // The if is present so that this can be used with functions marked [[nodiscard]].
     #define VXAssertResult(cond)         if (cond) {} do {} while(false)
 #endif
+
+#define SkASSERT                        VX_ASSERT
+#define SkASSERTF                       VX_ASSERTF
+#define SkASSERT_RELEASE                VX_ASSERT_RELEASE
+#define SkASSERTF_RELEASE               VX_ASSERTF_RELEASE
+#define SK_UNLIKELY                     VX_UNLIKELY
+#define SK_LIKELY                       VX_LIKELY
+#define SkAssertResult                  VXAssertResult
+#define SK_ABORT                        VX_ABORT
+#define SkDEBUGFAIL                     VX_DEBUGFAIL
+#define SkDEBUGFAILF                    VX_DEBUGFAILF
+#define SK_ASSUME                       VX_ASSUME
 
 #ifdef __cplusplus
 extern "C" {

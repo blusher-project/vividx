@@ -13,8 +13,10 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <vividx/assert.h>
+
 template <typename D, typename S> constexpr D SkTo(S s) {
-    return SkASSERT(SkTFitsIn<D>(s)),
+    return VX_ASSERT(SkTFitsIn<D>(s)),
            static_cast<D>(s);
 }
 

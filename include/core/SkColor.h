@@ -17,6 +17,7 @@
 #include <array>
 #include <cstdint>
 
+#include <vividx/assert.h>
 #include <vividx/core/color.h>
 
 /** \file SkColor.h

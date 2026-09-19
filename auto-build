@@ -1,19 +1,21 @@
 #!/bin/sh
 
-mkdir -p build
-cd build ; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -G Ninja .. ; ninja
-cd ..
-
 case "$1" in
     debug)
+        CMAKE_FLAGS=""
         OUT_DIR="out/Debug"
-        ARGS_FILE="gn-args.trace.txt"
+        ARGS_FILE="gn-args.debug.txt"
         ;;
     *)
+        CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release"
         OUT_DIR="out/Shared"
         ARGS_FILE="gn-args.txt"
         ;;
 esac
+
+mkdir -p build
+cd build ; cmake "$CMAKE_FLAGS" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -G Ninja .. ; ninja
+cd ..
 
 bin/gn gen "$OUT_DIR" --args="$(cat "$ARGS_FILE")"
 ninja -C "$OUT_DIR"
