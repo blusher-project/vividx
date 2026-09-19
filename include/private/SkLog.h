@@ -12,8 +12,10 @@
 
 #include "include/private/SkAPI.h"
 #include "include/private/SkAttributes.h"
-#include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
-#include "include/private/SkLogPriority.h"
+// #include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
+// #include "include/private/SkLogPriority.h"
+
+#include <vividx/assert.h>
 
 #if !defined(SkLog)
 // To be implemented per platform.
@@ -29,11 +31,11 @@ void SK_SPI SkLog(SkLogPriority priority, const char format[], ...) SK_PRINTF_LI
 #if defined(SKGPU_GRAPHITE_LOWEST_ACTIVE_LOG_PRIORITY)
     static constexpr SkLogPriority MapGraphitePriority(skgpu::graphite::LogPriority priority) {
         switch (priority) {
-            case skgpu::graphite::LogPriority::kError:   return SkLogPriority::kError;
-            case skgpu::graphite::LogPriority::kWarning: return SkLogPriority::kWarning;
-            case skgpu::graphite::LogPriority::kInfo:    return SkLogPriority::kInfo;
-            case skgpu::graphite::LogPriority::kDebug:   return SkLogPriority::kDebug;
-            default: return SkLogPriority::kDebug;
+            case skgpu::graphite::LogPriority::kError:   return VX_LOG_PRIORITY_ERROR;
+            case skgpu::graphite::LogPriority::kWarning: return VX_LOG_PRIORITY_WARNING;
+            case skgpu::graphite::LogPriority::kInfo:    return VX_LOG_PRIORITY_INFO;
+            case skgpu::graphite::LogPriority::kDebug:   return VX_LOG_PRIORITY_DEBUG;
+            default: return VX_LOG_PRIORITY_DEBUG;
         }
     }
     #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY MapGraphitePriority(SKGPU_GRAPHITE_LOWEST_ACTIVE_LOG_PRIORITY)
@@ -41,9 +43,9 @@ void SK_SPI SkLog(SkLogPriority priority, const char format[], ...) SK_PRINTF_LI
 
 #if !defined(SKIA_LOWEST_ACTIVE_LOG_PRIORITY)
 #ifdef SK_DEBUG
-    #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY SkLogPriority::kDebug
+    #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY VX_LOG_PRIORITY_DEBUG
 #else
-    #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY SkLogPriority::kInfo
+    #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY VX_LOG_PRIORITY_INFO
 #endif
 #endif
 
@@ -54,9 +56,10 @@ void SK_SPI SkLog(SkLogPriority priority, const char format[], ...) SK_PRINTF_LI
         }                                                                      \
     } while (0)
 
-#define SKIA_LOG_E(fmt, ...) SKIA_LOG(SkLogPriority::kError, "** ERROR ** " fmt, ##__VA_ARGS__)
-#define SKIA_LOG_W(fmt, ...) SKIA_LOG(SkLogPriority::kWarning, "WARNING - " fmt, ##__VA_ARGS__)
-#define SKIA_LOG_I(fmt, ...) SKIA_LOG(SkLogPriority::kInfo, fmt, ##__VA_ARGS__)
-#define SKIA_LOG_D(fmt, ...) SKIA_LOG(SkLogPriority::kDebug, fmt, ##__VA_ARGS__)
+// TODO: SKIA_LOG_E defined void. Fix this.
+// #define SKIA_LOG_E(fmt, ...) SKIA_LOG(VX_LOG_PRIORITY_ERROR, "** ERROR ** " fmt, ##__VA_ARGS__)
+#define SKIA_LOG_W(fmt, ...) SKIA_LOG(VX_LOG_PRIORITY_WARNING, "WARNING - " fmt, ##__VA_ARGS__)
+#define SKIA_LOG_I(fmt, ...) SKIA_LOG(VX_LOG_PRIORITY_INFO, fmt, ##__VA_ARGS__)
+#define SKIA_LOG_D(fmt, ...) SKIA_LOG(VX_LOG_PRIORITY_DEBUG, fmt, ##__VA_ARGS__)
 
 #endif // SkLog_DEFINED

@@ -10,8 +10,6 @@
 
 #include "include/private/SkFloatingPoint.h"
 
-#include <cmath>
-
 #include <vividx/core/math.h>
 
 typedef float SkScalar;
@@ -69,11 +67,11 @@ typedef float SkScalar;
 
 #define SkScalarSquare              vx_float_square
 
-#define SkScalarInvert(x)           vx_float_invert
+#define SkScalarInvert(x)           vx_float_invert(x)
 #define SkScalarAve(a, b)           sk_float_midpoint(a, b)
 
-#define SkDegreesToRadians(degrees) vx_degrees_to_radians
-#define SkRadiansToDegrees(radians) vx_radians_to_degrees
+#define SkDegreesToRadians(degrees) vx_degrees_to_radians(degrees)
+#define SkRadiansToDegrees(radians) vx_radians_to_degrees(radians)
 
 #define SkScalarIsInt               vx_float_is_int
 

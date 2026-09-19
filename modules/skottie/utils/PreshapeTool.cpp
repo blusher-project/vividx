@@ -11,7 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkDebug.h"
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "modules/skottie/utils/TextPreshape.h"
 #include "modules/skresources/include/SkResources.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"

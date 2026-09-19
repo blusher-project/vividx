@@ -8,7 +8,8 @@
 #ifndef GrGLConfig_DEFINED
 #define GrGLConfig_DEFINED
 
-#include "include/private/SkLoadUserConfig.h"
+// #include "include/private/SkLoadUserConfig.h"
+#include <vividx/assert.h>
 
 #if !defined(GR_GL_FUNCTION_TYPE)
     #if defined(SK_BUILD_FOR_WIN)

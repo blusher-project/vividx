@@ -7,7 +7,7 @@
 
 #include <cstdarg>
 #include "include/private/SkDebug.h"
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "include/private/SkLog.h"
 
 #if defined(SK_BUILD_FOR_WIN)

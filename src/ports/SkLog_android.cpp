@@ -6,7 +6,7 @@
  */
 
 #include "include/private/SkDebug.h"
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "include/private/SkLog.h"
 
 #if defined(SK_BUILD_FOR_ANDROID)
@@ -37,17 +37,17 @@ void SkLogVAList(SkLogPriority priority, const char format[], va_list args) {
     // Forces all Info and Debug logs to show as warnings in Android's RenderEngine. This hack
     // should be dropped as we update SkDebugf call sites to have more precise priority.
 #if defined(SK_IN_RENDERENGINE)
-    if (priority > SkLogPriority::kWarning) {
-        priority = SkLogPriority::kWarning;
+    if (priority > VX_LOG_PRIORITY_WARNING) {
+        priority = VX_LOG_PRIORITY_WARNING;
     }
 #endif
 
     int android_priority;
     switch (priority) {
-        case SkLogPriority::kError:   android_priority = ANDROID_LOG_ERROR;   break;
-        case SkLogPriority::kWarning: android_priority = ANDROID_LOG_WARN;    break;
-        case SkLogPriority::kInfo:    android_priority = ANDROID_LOG_INFO;    break;
-        case SkLogPriority::kDebug:   android_priority = ANDROID_LOG_DEBUG;   break;
+        case VX_LOG_PRIORITY_ERROR:   android_priority = ANDROID_LOG_ERROR;   break;
+        case VX_LOG_PRIORITY_WARNING: android_priority = ANDROID_LOG_WARN;    break;
+        case VX_LOG_PRIORITY_INFO:    android_priority = ANDROID_LOG_INFO;    break;
+        case VX_LOG_PRIORITY_DEBUG:   android_priority = ANDROID_LOG_DEBUG;   break;
         default:                      android_priority = ANDROID_LOG_DEBUG;   break;
     }
 

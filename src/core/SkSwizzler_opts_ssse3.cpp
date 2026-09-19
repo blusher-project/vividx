@@ -6,7 +6,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "src/core/SkOptsTargets.h"
 #include "src/core/SkSwizzlePriv.h"
 

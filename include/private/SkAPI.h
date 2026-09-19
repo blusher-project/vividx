@@ -8,7 +8,8 @@
 #ifndef SkAPI_DEFINED
 #define SkAPI_DEFINED
 
-#include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
+// #include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
+#include <vividx/assert.h>
 
 // If SKIA_IMPLEMENTATION is defined as 1, that signals we are building Skia and should
 // export our symbols. If it is not set (or set to 0), then Skia is being used by a client

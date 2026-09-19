@@ -11,10 +11,10 @@
 // All of these files should be independent of things users can set via the user config file.
 // They should also be able to be included in any order.
 // IWYU pragma: begin_exports
-#include "include/private/SkFeatures.h"
+// #include <vividx/assert.h>
 
 // Load and verify defines from the user config file.
-#include "include/private/SkLoadUserConfig.h"
+// #include "include/private/SkLoadUserConfig.h"
 
 // Any includes or defines below can be configured by the user config file.
 #include "include/private/SkAPI.h"

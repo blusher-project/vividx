@@ -1614,9 +1614,9 @@ static void print_srcs() {
     std::sort(gSrcs->begin(), gSrcs->end(), customLess);
     // Using kError to make sure we always display this and SkLog (instead of the macro)
     // to avoid having the [skia] prefix, which looks odd. See b/469441457.
-    SkLog(SkLogPriority::kError, "Gathered Sources:\n");
+    SkLog(VX_LOG_PRIORITY_ERROR, "Gathered Sources:\n");
     for (TaggedSrc& src : *gSrcs) {
-        SkLog(SkLogPriority::kError, " - %s %s\n", src.tag.c_str(), src->name().c_str());
+        SkLog(VX_LOG_PRIORITY_ERROR, " - %s %s\n", src.tag.c_str(), src->name().c_str());
     }
 }
 
@@ -1628,9 +1628,9 @@ static void print_sinks() {
     } customLess;
 
     std::sort(gSinks->begin(), gSinks->end(), customLess);
-    SkLog(SkLogPriority::kError, "Gathered Sinks:\n");
+    SkLog(VX_LOG_PRIORITY_ERROR, "Gathered Sinks:\n");
     for (TaggedSink& sink : *gSinks) {
-        SkLog(SkLogPriority::kError, " - %s\n", sink.tag.c_str());
+        SkLog(VX_LOG_PRIORITY_ERROR, " - %s\n", sink.tag.c_str());
     }
 }
 

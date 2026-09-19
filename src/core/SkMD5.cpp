@@ -16,7 +16,7 @@
 #include "src/core/SkMD5.h"
 #include "src/core/SkUtils.h"
 
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 
 /** MD5 basic transformation. Transforms state based on block. */

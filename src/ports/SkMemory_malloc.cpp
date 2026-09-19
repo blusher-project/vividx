@@ -7,7 +7,7 @@
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkDebug.h"
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 
 #include <algorithm>

@@ -10,7 +10,8 @@
 
 #include "include/private/SkAPI.h"
 #include "include/private/SkAttributes.h"
-#include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
+// #include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
+#include <vividx/assert.h>
 
 #if !defined(SkDebugf)
     void SK_SPI SkDebugf(const char format[], ...) SK_PRINTF_LIKE(1, 2);

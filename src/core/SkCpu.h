@@ -8,7 +8,7 @@
 #ifndef SkCpu_DEFINED
 #define SkCpu_DEFINED
 
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 
 #include <cstdint>
 

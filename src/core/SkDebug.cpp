@@ -22,7 +22,7 @@ void SkDebugfForDumpStackTrace(const char* data, void* unused) {
 void SkDebugf(const char format[], ...) {
     va_list args;
     va_start(args, format);
-    SkLogVAList(SkLogPriority::kDebug, format, args);
+    SkLogVAList(VX_LOG_PRIORITY_DEBUG, format, args);
     va_end(args);
 }
 #endif

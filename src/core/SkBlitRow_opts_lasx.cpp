@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkFeatures.h" // IWYU pragma: keep
+#include <vividx/assert.h> // IWYU pragma: keep
 #include "src/core/SkBlitRow.h" // IWYU pragma: keep
 #include "src/core/SkOptsTargets.h" // IWYU pragma: keep
 

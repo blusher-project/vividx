@@ -7,7 +7,7 @@
 
 #include "include/private/SkSemaphore.h"
 
-#include "include/private/SkFeatures.h" // IWYU pragma: keep
+#include <vividx/assert.h> // IWYU pragma: keep
 
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
     #include <dispatch/dispatch.h>

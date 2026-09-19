@@ -7,7 +7,7 @@
 
 #include "src/core/SkSpinlock.h"
 
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "include/private/SkThreadAnnotations.h"
 
 #if 0

@@ -19,8 +19,7 @@
 // and alignment and is safe to use across translation units freely.
 // (Ideally we'd only align to T, but that tanks ARMv7 NEON codegen.)
 
-#include "include/private/SkFeatures.h"
-#include "include/private/SkLoadUserConfig.h"
+#include <vividx/assert.h>
 #include "src/core/SkUtils.h"
 #include <algorithm>         // std::min, std::max
 #include <cassert>           // assert()

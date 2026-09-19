@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "src/core/SkBlitRow.h"
 #include "src/core/SkCpu.h"
 #include "src/core/SkOptsTargets.h"

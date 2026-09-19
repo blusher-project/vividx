@@ -9,7 +9,7 @@
 #define SkEndian_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 
 #include <cstdint>
 

@@ -1942,7 +1942,7 @@ void Viewer::checkCaptureAndSerialize() {
         // TODO(b/334925727) allow user to specify a path
         SkFILEWStream stream("sample_app.capt");
         if (!stream.isValid()) {
-            SkLog(SkLogPriority::kDebug,
+            SkLog(VX_LOG_PRIORITY_DEBUG,
                   "Error: Failed to open SkFILEWStream for 'sample_app.capt'.\n");
             return;
         }

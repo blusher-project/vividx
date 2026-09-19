@@ -1,7 +1,273 @@
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ *
+ * 2026, Aspen Schneider.
+ */
+
 #ifndef VIVIDX_ASSERT_H
 #define VIVIDX_ASSERT_H
 
 #include <vividx/common.h>
+
+//!<=============================
+//!< Features
+//!<-----------------------------
+//!< Copied from SkFeatures.h
+//!<=============================
+
+#if !defined(SK_BUILD_FOR_ANDROID) && !defined(SK_BUILD_FOR_IOS) && !defined(SK_BUILD_FOR_WIN) && \
+    !defined(SK_BUILD_FOR_UNIX) && !defined(SK_BUILD_FOR_MAC)
+
+    #ifdef __APPLE__
+        #include <TargetConditionals.h>
+    #endif
+
+    #if defined(_WIN32) || defined(__SYMBIAN32__)
+        #define SK_BUILD_FOR_WIN
+    #elif defined(ANDROID) || defined(__ANDROID__)
+        #define SK_BUILD_FOR_ANDROID
+    #elif defined(__EMSCRIPTEN__)
+        // WASM toolchains expose a Unix-like compilation environment, but it is
+        // not Unix (e.g. posix signals are not supported).
+        #define SK_BUILD_FOR_WASM
+    #elif defined(linux) || defined(__linux) || defined(__FreeBSD__) || \
+          defined(__OpenBSD__) || defined(__sun) || defined(__NetBSD__) || \
+          defined(__DragonFly__) || defined(__Fuchsia__) || \
+          defined(__GLIBC__) || defined(__GNU__) || defined(__unix__)
+        #define SK_BUILD_FOR_UNIX
+    #elif TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+        #define SK_BUILD_FOR_IOS
+    #else
+        #define SK_BUILD_FOR_MAC
+    #endif
+#endif // end SK_BUILD_FOR_*
+
+
+#if defined(SK_BUILD_FOR_WIN) && !defined(__clang__)
+    #if !defined(SK_RESTRICT)
+        #define SK_RESTRICT __restrict
+    #endif
+#endif
+
+#if !defined(SK_RESTRICT)
+    #define SK_RESTRICT __restrict__
+#endif
+
+#if !defined(SK_CPU_BENDIAN) && !defined(SK_CPU_LENDIAN)
+    #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+        #define SK_CPU_BENDIAN
+    #elif defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+        #define SK_CPU_LENDIAN
+    #elif defined(__sparc) || defined(__sparc__) || \
+      defined(_POWER) || defined(__powerpc__) || \
+      defined(__ppc__) || defined(__hppa) || \
+      defined(__PPC__) || defined(__PPC64__) || \
+      defined(_MIPSEB) || defined(__ARMEB__) || \
+      defined(__s390__) || \
+      (defined(__sh__) && defined(__BIG_ENDIAN__)) || \
+      (defined(__ia64) && defined(__BIG_ENDIAN__))
+         #define SK_CPU_BENDIAN
+    #else
+        #define SK_CPU_LENDIAN
+    #endif
+#endif
+
+#if defined(__i386) || defined(_M_IX86) ||  defined(__x86_64__) || defined(_M_X64)
+  #define SK_CPU_X86 1
+#endif
+
+#if defined(__loongarch__) || defined (__loongarch64)
+  #define SK_CPU_LOONGARCH 1
+#endif
+
+#if defined(__powerpc__) || defined (__powerpc64__)
+  #define SK_CPU_PPC 1
+#endif
+
+/**
+ *  SK_CPU_X64_LEVEL
+ *
+ *  If defined, SK_CPU_X64_LEVEL should be set to the highest supported level.
+ *  On non-Intel, non-AMD CPUs this should be undefined.
+ */
+#define SK_CPU_X64_LEVEL_SSE1     10
+#define SK_CPU_X64_LEVEL_SSE2     20
+#define SK_CPU_X64_LEVEL_SSE3     30
+#define SK_CPU_X64_LEVEL_SSSE3    31
+#define SK_CPU_X64_LEVEL_SSE41    41
+#define SK_CPU_X64_LEVEL_SSE42    42
+#define SK_CPU_X64_LEVEL_AVX      51
+#define SK_CPU_X64_LEVEL_AVX2     52
+#define SK_CPU_X64_LEVEL_ML4      60
+
+/**
+ *  SK_CPU_LSX_LEVEL
+ *
+ *  If defined, SK_CPU_LSX_LEVEL should be set to the highest supported level.
+ *  On non-loongarch CPU this should be undefined.
+ */
+#define SK_CPU_LSX_LEVEL_LSX      10
+#define SK_CPU_LSX_LEVEL_LASX     20
+
+// TODO(kjlubick) clean up these checks
+
+// Are we in GCC/Clang?
+#ifndef SK_CPU_X64_LEVEL
+    // These checks must be done in descending order to ensure we set the highest
+    // available SSE level.
+    #if defined(__AVX512F__) && defined(__AVX512DQ__) && defined(__AVX512CD__) && \
+        defined(__AVX512BW__) && defined(__AVX512VL__)
+        #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_ML4
+    #elif defined(__AVX2__)
+        #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_AVX2
+    #elif defined(__AVX__)
+        #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_AVX
+    #elif defined(__SSE4_2__)
+        #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_SSE42
+    #elif defined(__SSE4_1__)
+        #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_SSE41
+    #elif defined(__SSSE3__)
+        #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_SSSE3
+    #elif defined(__SSE3__)
+        #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_SSE3
+    #elif defined(__SSE2__)
+        #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_SSE2
+    #endif
+#endif
+
+#ifndef SK_CPU_LSX_LEVEL
+    #if defined(__loongarch_asx)
+        #define SK_CPU_LSX_LEVEL    SK_CPU_LSX_LEVEL_LASX
+    #elif defined(__loongarch_sx)
+        #define SK_CPU_LSX_LEVEL    SK_CPU_LSX_LEVEL_LSX
+    #endif
+#endif
+
+// Are we in VisualStudio?
+#ifndef SK_CPU_X64_LEVEL
+    // These checks must be done in descending order to ensure we set the highest
+    // available SSE level. 64-bit intel guarantees at least SSE2 support.
+    #if defined(__AVX512F__) && defined(__AVX512DQ__) && defined(__AVX512CD__) && \
+        defined(__AVX512BW__) && defined(__AVX512VL__)
+        #define SK_CPU_X64_LEVEL        SK_CPU_X64_LEVEL_ML4
+    #elif defined(__AVX2__)
+        #define SK_CPU_X64_LEVEL        SK_CPU_X64_LEVEL_AVX2
+    #elif defined(__AVX__)
+        #define SK_CPU_X64_LEVEL        SK_CPU_X64_LEVEL_AVX
+    #elif defined(_M_X64) || defined(_M_AMD64)
+        #define SK_CPU_X64_LEVEL        SK_CPU_X64_LEVEL_SSE2
+    #elif defined(_M_IX86_FP)
+        #if _M_IX86_FP >= 2
+            #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_SSE2
+        #elif _M_IX86_FP == 1
+            #define SK_CPU_X64_LEVEL    SK_CPU_X64_LEVEL_SSE1
+        #endif
+    #endif
+#endif
+
+// ARM defines
+#if defined(__arm__) && (!defined(__APPLE__) || !TARGET_IPHONE_SIMULATOR)
+    #define SK_CPU_ARM32
+#elif defined(__aarch64__)
+    #define SK_CPU_ARM64
+#endif
+
+// All 64-bit ARM chips have NEON.  Many 32-bit ARM chips do too.
+#if !defined(SK_ARM_HAS_NEON) && defined(__ARM_NEON)
+    #define SK_ARM_HAS_NEON
+#endif
+
+
+//!<===================================
+//!< Load User Config
+//!<-----------------------------------
+//!< Copied from SkLoadUserConfig.h
+//!<===================================
+
+#ifndef SK_USER_CONFIG_WAS_LOADED
+
+/**
+ * SKIA_LOWEST_ACTIVE_LOG_PRIORITY can be defined to one of these values (in
+ * SkUserConfig.h) to control Skia's logging behavior.
+ *
+ * For example:
+ * ```
+ * #define SKIA_LOWEST_ACTIVE_LOG_PRIORITY VX_LOG_PRIORITY_WARNING
+ * ```
+ * Would cause Skia to log warnings, non-fatal errors, and fatal errors.
+ * However, debug logs would be omitted.
+ */
+enum vx_log_priority {
+    VX_LOG_PRIORITY_ERROR = 0,
+    VX_LOG_PRIORITY_WARNING = 1,
+    VX_LOG_PRIORITY_INFO = 2,
+    VX_LOG_PRIORITY_DEBUG = 3,
+};
+
+// Compat.
+#define SkLogPriority       vx_log_priority
+
+// Allows embedders that want to disable macros that take arguments to just
+// define that symbol to be one of these
+#define SK_NOTHING_ARG1(arg1)
+#define SK_NOTHING_ARG2(arg1, arg2)
+#define SK_NOTHING_ARG3(arg1, arg2, arg3)
+
+// IWYU pragma: begin_exports
+// Note: SK_USER_CONFIG_HEADER will not work with Bazel builds and some C++ compilers.
+#if defined(SK_USER_CONFIG_HEADER)
+    #include SK_USER_CONFIG_HEADER
+#elif defined(SK_USE_BAZEL_CONFIG_HEADER)
+    // The Bazel config file is presumed to be in the root directory of its Bazel Workspace.
+    // This is achieved in Skia by having a nested WORKSPACE in include/config and a cc_library
+    // defined in that folder. As a result, we do not try to include SkUserConfig.h from the
+    // top of Skia because Bazel sandboxing will move it to a different location.
+    #include "SkUserConfig.h"  // NO_G3_REWRITE
+#else
+    // All definitions in "include/config/SkUserConfig.h" are commented out.
+    // #include "include/config/SkUserConfig.h"
+#endif
+// IWYU pragma: end_exports
+
+// Checks to make sure the SkUserConfig options do not conflict.
+#if !defined(SK_DEBUG) && !defined(SK_RELEASE)
+    #ifdef NDEBUG
+        #define SK_RELEASE
+    #else
+        #define SK_DEBUG
+    #endif
+#endif
+
+#if defined(SK_DEBUG) && defined(SK_RELEASE)
+#  error "cannot define both SK_DEBUG and SK_RELEASE"
+#elif !defined(SK_DEBUG) && !defined(SK_RELEASE)
+#  error "must define either SK_DEBUG or SK_RELEASE"
+#endif
+
+#if defined(SK_CPU_LENDIAN) && defined(SK_CPU_BENDIAN)
+#  error "cannot define both SK_CPU_LENDIAN and SK_CPU_BENDIAN"
+#elif !defined(SK_CPU_LENDIAN) && !defined(SK_CPU_BENDIAN)
+#  error "must define either SK_CPU_LENDIAN or SK_CPU_BENDIAN"
+#endif
+
+#if defined(SK_CPU_BENDIAN) && !defined(I_ACKNOWLEDGE_SKIA_DOES_NOT_SUPPORT_BIG_ENDIAN)
+    #error "The Skia team is not endian-savvy enough to support big-endian CPUs."
+    #error "If you still want to use Skia,"
+    #error "please define I_ACKNOWLEDGE_SKIA_DOES_NOT_SUPPORT_BIG_ENDIAN."
+#endif
+
+#define SK_USER_CONFIG_WAS_LOADED
+#endif // SK_USER_CONFIG_WAS_LOADED
+
+
+//!<=============================
+//!< Assert
+//!<-----------------------------
+//!< Copied from SkAssert.h
+//!<=============================
 
 #if defined(__clang__) && defined(__has_attribute)
     #if __has_attribute(likely)

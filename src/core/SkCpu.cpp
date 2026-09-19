@@ -21,7 +21,7 @@
 
 #include "src/core/SkCpu.h"
 
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 #include "include/private/SkOnce.h"
 
 #if defined(SK_CPU_X86)

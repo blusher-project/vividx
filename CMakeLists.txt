@@ -5,6 +5,7 @@ project(vividx
 )
 
 set(VIVIDX_PUBLIC_HEADERS
+    include/vividx/assert.h
     include/vividx/common.h
     include/vividx/core/canvas.h
     include/vividx/core/color-space.h
@@ -25,6 +26,7 @@ set(VIVIDX_PUBLIC_HEADERS
 )
 
 set(VIVIDX_CORE_SOURCES
+    src/assert.c
     src/common.cpp
     src/core/canvas.cpp
     src/core/color-space.cpp

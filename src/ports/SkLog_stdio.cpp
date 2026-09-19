@@ -7,8 +7,7 @@
 
 #include <cstdarg>
 #include "include/private/SkDebug.h"
-#include "include/private/SkFeatures.h"
-#include "include/private/SkLoadUserConfig.h"
+#include <vividx/assert.h>
 #include "include/private/SkLog.h"
 
 #if !defined(SK_BUILD_FOR_WIN) && !defined(SK_BUILD_FOR_ANDROID)

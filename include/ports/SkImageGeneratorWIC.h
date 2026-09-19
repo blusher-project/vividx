@@ -8,7 +8,7 @@
 #ifndef SkImageGeneratorWIC_DEFINED
 #define SkImageGeneratorWIC_DEFINED
 
-#include "include/private/SkFeatures.h"
+#include <vividx/assert.h>
 
 #if defined(SK_BUILD_FOR_WIN)
 
