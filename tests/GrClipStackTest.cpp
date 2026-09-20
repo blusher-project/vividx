@@ -2207,8 +2207,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ClipStack_MixedAA, r, ctxInfo,
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(ctxInfo.directContext(),
                                                         skgpu::Budgeted::kYes,
                                                         SkImageInfo::Make({128, 128},
-                                                                          kRGBA_8888_SkColorType,
-                                                                          kPremul_SkAlphaType));
+                                                                          VX_COLOR_TYPE_RGBA_8888,
+                                                                          VX_ALPHA_TYPE_PREMULTIPLIED));
 
     SkCanvas* canvas = surface->getCanvas();
     canvas->clear(SK_ColorWHITE);

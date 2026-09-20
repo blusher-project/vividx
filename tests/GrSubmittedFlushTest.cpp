@@ -43,7 +43,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest,
                                        CtsEnforcement::kApiLevel_T) {
     auto ctx = ctxInfo.directContext();
 
-    SkImageInfo info = SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(8, 8, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kNo, info);
     SkCanvas* canvas = surface->getCanvas();
 

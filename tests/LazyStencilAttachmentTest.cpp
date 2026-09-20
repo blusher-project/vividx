@@ -41,8 +41,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(crbug_1271431,
     dc->freeGpuResources();
 
     SkImageInfo ii = SkImageInfo::Make({100, 100},
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType,
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED,
                                        nullptr);
     sk_sp<SkSurface> surfs[2]{SkSurfaces::RenderTarget(dc, skgpu::Budgeted::kYes, ii, 1, nullptr),
                               SkSurfaces::RenderTarget(dc, skgpu::Budgeted::kYes, ii, 1, nullptr)};

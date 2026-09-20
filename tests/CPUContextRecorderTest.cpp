@@ -27,7 +27,7 @@ DEF_TEST(CPUSurface_UsesCPUContextAndRecorderToDraw_DrawsPixels, reporter) {
     auto ctx = skcpu::Context::Make(opts);
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
     SkImageInfo imageInfo =
-            SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = recorder->makeBitmapSurface(imageInfo, imageInfo.minRowBytes(), {});
     SkPaint paint;
     paint.setColor(SK_ColorRED);
@@ -41,7 +41,7 @@ DEF_TEST(CPUSurface_UsesCPUContextAndRecorderToDraw_DrawsPixels, reporter) {
 
 DEF_TEST(CPUSurface_UsesTODORecorder_DrawsPixels, reporter) {
     SkImageInfo imageInfo =
-            SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = skcpu::Recorder::TODO()->makeBitmapSurface(imageInfo, imageInfo.minRowBytes(), {});
     SkPaint paint;
     paint.setColor(SK_ColorRED);
@@ -58,7 +58,7 @@ DEF_TEST(ImageMakeColorSpace_UsesCPURecorderToMakeImage_Success, reporter) {
     auto ctx = skcpu::Context::Make();
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm.allocPixels();
     auto img = SkImages::RasterFromBitmap(bm);
     SkASSERT(img);
@@ -73,19 +73,19 @@ DEF_TEST(ImageMakeScaled_UsesCPURecorderToMakeImage_Success, reporter) {
     auto ctx = skcpu::Context::Make();
     std::unique_ptr<skcpu::Recorder> recorder = ctx->makeRecorder();
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm.allocPixels();
     auto img = SkImages::RasterFromBitmap(bm);
     SkASSERT(img);
     auto newImg =
             img->makeScaled(recorder.get(),
-                            SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+                            SkImageInfo::Make(70, 70, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                             {SkCubicResampler::Mitchell()});
     REPORTER_ASSERT(reporter, newImg);
     REPORTER_ASSERT(reporter, newImg->width() == 70);
     REPORTER_ASSERT(reporter, !newImg->isTextureBacked());
     auto legacyAPI =
-            img->makeScaled(SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+            img->makeScaled(SkImageInfo::Make(70, 70, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                             {SkCubicResampler::Mitchell()});
     REPORTER_ASSERT(reporter, legacyAPI);
     REPORTER_ASSERT(reporter, legacyAPI->width() == 70);

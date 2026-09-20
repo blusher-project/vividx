@@ -248,16 +248,16 @@ static std::unique_ptr<android::skia::BitmapRegionDecoder> create_brd(Path path)
 static inline void alpha8_to_gray8(SkBitmap* bitmap) {
     // Android requires kGray8 bitmaps to be tagged as kAlpha8.  Here we convert
     // them back to kGray8 so our test framework can draw them correctly.
-    if (kAlpha_8_SkColorType == bitmap->info().colorType()) {
-        SkImageInfo newInfo = bitmap->info().makeColorType(kGray_8_SkColorType)
-                                            .makeAlphaType(kOpaque_SkAlphaType);
+    if (VX_COLOR_TYPE_ALPHA_8 == bitmap->info().colorType()) {
+        SkImageInfo newInfo = bitmap->info().makeColorType(VX_COLOR_TYPE_GRAY_8)
+                                            .makeAlphaType(VX_ALPHA_TYPE_OPAQUE);
         *const_cast<SkImageInfo*>(&bitmap->info()) = newInfo;
     }
 }
 
 Result BRDSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
-    SkColorType colorType = canvas->imageInfo().colorType();
-    if (kRGB_565_SkColorType == colorType &&
+    vx_color_type colorType = canvas->imageInfo().colorType();
+    if (VX_COLOR_TYPE_RGB_565 == colorType &&
         CodecSrc::kGetFromCanvas_DstColorType != fDstColorType)
     {
         return Result::Skip("Testing non-565 to 565 is uninteresting.");
@@ -266,7 +266,7 @@ Result BRDSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
         case CodecSrc::kGetFromCanvas_DstColorType:
             break;
         case CodecSrc::kGrayscale_Always_DstColorType:
-            colorType = kGray_8_SkColorType;
+            colorType = VX_COLOR_TYPE_GRAY_8;
             break;
         default:
             SkASSERT(false);
@@ -279,7 +279,7 @@ Result BRDSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
     }
 
     auto recommendedCT = brd->computeOutputColorType(colorType);
-    if (kRGB_565_SkColorType == colorType && recommendedCT != colorType) {
+    if (VX_COLOR_TYPE_RGB_565 == colorType && recommendedCT != colorType) {
         return Result::Skip("Skip decoding non-opaque to 565.");
     }
     colorType = recommendedCT;
@@ -418,7 +418,7 @@ static bool serial_from_path_name(const SkString& path) {
     return false;
 }
 
-CodecSrc::CodecSrc(Path path, Mode mode, DstColorType dstColorType, SkAlphaType dstAlphaType,
+CodecSrc::CodecSrc(Path path, Mode mode, DstColorType dstColorType, vx_alpha_type dstAlphaType,
                    float scale)
     : fPath(path)
     , fMode(mode)
@@ -445,29 +445,29 @@ static void swap_rb_if_necessary(SkBitmap& bitmap, CodecSrc::DstColorType dstCol
     }
 }
 
-static bool get_decode_info(SkImageInfo* decodeInfo, SkColorType canvasColorType,
-                            CodecSrc::DstColorType dstColorType, SkAlphaType dstAlphaType) {
+static bool get_decode_info(SkImageInfo* decodeInfo, vx_color_type canvasColorType,
+                            CodecSrc::DstColorType dstColorType, vx_alpha_type dstAlphaType) {
     switch (dstColorType) {
         case CodecSrc::kGrayscale_Always_DstColorType:
-            if (kRGB_565_SkColorType == canvasColorType) {
+            if (VX_COLOR_TYPE_RGB_565 == canvasColorType) {
                 return false;
             }
-            *decodeInfo = decodeInfo->makeColorType(kGray_8_SkColorType);
+            *decodeInfo = decodeInfo->makeColorType(VX_COLOR_TYPE_GRAY_8);
             break;
         case CodecSrc::kNonNative8888_Always_DstColorType:
-            if (kRGB_565_SkColorType == canvasColorType
-                    || kRGBA_F16_SkColorType == canvasColorType) {
+            if (VX_COLOR_TYPE_RGB_565 == canvasColorType
+                    || VX_COLOR_TYPE_RGBA_F16 == canvasColorType) {
                 return false;
             }
 #ifdef SK_PMCOLOR_IS_RGBA
-            *decodeInfo = decodeInfo->makeColorType(kBGRA_8888_SkColorType);
+            *decodeInfo = decodeInfo->makeColorType(VX_COLOR_TYPE_BGRA_8888);
 #else
-            *decodeInfo = decodeInfo->makeColorType(kRGBA_8888_SkColorType);
+            *decodeInfo = decodeInfo->makeColorType(VX_COLOR_TYPE_RGBA_8888);
 #endif
             break;
         default:
-            if (kRGB_565_SkColorType == canvasColorType &&
-                    kOpaque_SkAlphaType != decodeInfo->alphaType()) {
+            if (VX_COLOR_TYPE_RGB_565 == canvasColorType &&
+                    VX_ALPHA_TYPE_OPAQUE != decodeInfo->alphaType()) {
                 return false;
             }
 
@@ -547,9 +547,9 @@ Result CodecSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
 
     SkImageInfo bitmapInfo = decodeInfo;
     set_bitmap_color_space(&bitmapInfo);
-    if (kRGBA_8888_SkColorType == decodeInfo.colorType() ||
-            kBGRA_8888_SkColorType == decodeInfo.colorType()) {
-        bitmapInfo = bitmapInfo.makeColorType(kN32_SkColorType);
+    if (VX_COLOR_TYPE_RGBA_8888 == decodeInfo.colorType() ||
+            VX_COLOR_TYPE_BGRA_8888 == decodeInfo.colorType()) {
+        bitmapInfo = bitmapInfo.makeColorType(VX_COLOR_TYPE_N32);
     }
 
     switch (fMode) {
@@ -625,7 +625,7 @@ Result CodecSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
                         break;
                     }
                     case SkCodec::kInvalidConversion:
-                        if (i > 0 && (decodeInfo.colorType() == kRGB_565_SkColorType)) {
+                        if (i > 0 && (decodeInfo.colorType() == VX_COLOR_TYPE_RGB_565)) {
                             return Result::Skip(
                                 "Cannot decode frame %i to 565 (%s).", i, fPath.c_str());
                         }
@@ -889,7 +889,7 @@ Name CodecSrc::name() const {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 AndroidCodecSrc::AndroidCodecSrc(Path path, CodecSrc::DstColorType dstColorType,
-        SkAlphaType dstAlphaType, int sampleSize)
+        vx_alpha_type dstAlphaType, int sampleSize)
     : fPath(path)
     , fDstColorType(dstColorType)
     , fDstAlphaType(dstAlphaType)
@@ -936,9 +936,9 @@ Result AndroidCodecSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
     SkBitmap bitmap;
     SkImageInfo bitmapInfo = decodeInfo;
     set_bitmap_color_space(&bitmapInfo);
-    if (kRGBA_8888_SkColorType == decodeInfo.colorType() ||
-            kBGRA_8888_SkColorType == decodeInfo.colorType()) {
-        bitmapInfo = bitmapInfo.makeColorType(kN32_SkColorType);
+    if (VX_COLOR_TYPE_RGBA_8888 == decodeInfo.colorType() ||
+            VX_COLOR_TYPE_BGRA_8888 == decodeInfo.colorType()) {
+        bitmapInfo = bitmapInfo.makeColorType(VX_COLOR_TYPE_N32);
     }
 
     // Create options for the codec.
@@ -977,7 +977,7 @@ Name AndroidCodecSrc::name() const {
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-ImageGenSrc::ImageGenSrc(Path path, Mode mode, SkAlphaType alphaType, bool isGpu)
+ImageGenSrc::ImageGenSrc(Path path, Mode mode, vx_alpha_type alphaType, bool isGpu)
     : fPath(path)
     , fMode(mode)
     , fDstAlphaType(alphaType)
@@ -996,7 +996,7 @@ bool ImageGenSrc::veto(SinkFlags flags) const {
 }
 
 Result ImageGenSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
-    if (kRGB_565_SkColorType == canvas->imageInfo().colorType()) {
+    if (VX_COLOR_TYPE_RGB_565 == canvas->imageInfo().colorType()) {
         return Result::Skip("Uninteresting to test image generator to 565.");
     }
 
@@ -1179,7 +1179,7 @@ Result SKPSrc::draw(SkCanvas* canvas, GraphiteTestContext*) const {
 
     // We override the default fImageDataProc set above
     procs.fImageDataProc =
-        [](sk_sp<SkData> data, std::optional<SkAlphaType> at, void* ctx) -> sk_sp<SkImage> {
+        [](sk_sp<SkData> data, std::optional<enum vx_alpha_type> at, void* ctx) -> sk_sp<SkImage> {
             sk_sp<SkImage> image = SkImages::DeferredFromEncodedData(std::move(data));
             image = image->makeRasterImage(nullptr); // force decoding
 
@@ -2154,7 +2154,7 @@ Result SVGSink::draw(const Src& src, SkBitmap*, SkWStream* dst, SkString*) const
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-RasterSink::RasterSink(SkColorType colorType)
+RasterSink::RasterSink(vx_color_type colorType)
     : fColorType(colorType) {}
 
 Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) const {

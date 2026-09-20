@@ -50,13 +50,13 @@ static void check_fill(skiatest::Reporter* r,
     for (uint32_t y = startRow; y <= endRow; y++) {
         for (int32_t x = 0; x < imageInfo.width(); x++) {
             switch (imageInfo.colorType()) {
-                case kN32_SkColorType:
+                case VX_COLOR_TYPE_N32:
                     REPORTER_ASSERT(r, 0 == colorPtr[x]);
                     break;
-                case kGray_8_SkColorType:
+                case VX_COLOR_TYPE_GRAY_8:
                     REPORTER_ASSERT(r, 0 == grayPtr[x]);
                     break;
-                case kRGB_565_SkColorType:
+                case VX_COLOR_TYPE_RGB_565:
                     REPORTER_ASSERT(r, 0 == color565Ptr[x]);
                     break;
                 default:
@@ -86,19 +86,19 @@ DEF_TEST(SwizzlerFill, r) {
         for (uint32_t height : heights) {
 
             // Create image info objects
-            const SkImageInfo colorInfo = SkImageInfo::MakeN32(width, height, kUnknown_SkAlphaType);
-            const SkImageInfo grayInfo = colorInfo.makeColorType(kGray_8_SkColorType);
-            const SkImageInfo color565Info = colorInfo.makeColorType(kRGB_565_SkColorType);
+            const SkImageInfo colorInfo = SkImageInfo::MakeN32(width, height, VX_ALPHA_TYPE_UNKNOWN);
+            const SkImageInfo grayInfo = colorInfo.makeColorType(VX_COLOR_TYPE_GRAY_8);
+            const SkImageInfo color565Info = colorInfo.makeColorType(VX_COLOR_TYPE_RGB_565);
 
             for (uint32_t padding : paddings) {
 
                 // Calculate row bytes
-                const size_t colorRowBytes = vx_color_type_bytes_per_pixel(kN32_SkColorType) * width
+                const size_t colorRowBytes = vx_color_type_bytes_per_pixel(VX_COLOR_TYPE_N32) * width
                         + padding;
                 const size_t indexRowBytes = width + padding;
                 const size_t grayRowBytes = indexRowBytes;
                 const size_t color565RowBytes =
-                        vx_color_type_bytes_per_pixel(kRGB_565_SkColorType) * width + padding;
+                        vx_color_type_bytes_per_pixel(VX_COLOR_TYPE_RGB_565) * width + padding;
 
                 // If there is padding, we can invent an offset to change the memory alignment
                 for (uint32_t offset = 0; offset <= padding; offset += 4) {

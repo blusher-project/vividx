@@ -22,18 +22,18 @@ using PrecompileShaders::ImageShaderFlags;
 using PrecompileShaders::YUVImageShaderFlags;
 
 Builder& Builder::hwImg(ImgColorInfo ci, ImgTileModeOptions tmOptions) {
-    static const SkColorInfo kAlphaInfo(kAlpha_8_SkColorType,
-                                        kUnpremul_SkAlphaType,
+    static const SkColorInfo kAlphaInfo(VX_COLOR_TYPE_ALPHA_8,
+                                        VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                         nullptr);
-    static const SkColorInfo kAlphaSRGBInfo(kAlpha_8_SkColorType,
-                                            kUnpremul_SkAlphaType,
+    static const SkColorInfo kAlphaSRGBInfo(VX_COLOR_TYPE_ALPHA_8,
+                                            VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                             SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
                                                                   SkNamedGamut::kAdobeRGB));
-    static const SkColorInfo kPremulInfo(kRGBA_8888_SkColorType,
-                                         kPremul_SkAlphaType,
+    static const SkColorInfo kPremulInfo(VX_COLOR_TYPE_RGBA_8888,
+                                         VX_ALPHA_TYPE_PREMULTIPLIED,
                                          nullptr);
-    static const SkColorInfo kSRGBInfo(kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType,
+    static const SkColorInfo kSRGBInfo(VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED,
                                        SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
                                                              SkNamedGamut::kAdobeRGB));
 
@@ -63,8 +63,8 @@ Builder& Builder::hwImg(ImgColorInfo ci, ImgTileModeOptions tmOptions) {
 }
 
 Builder& Builder::yuv(YUVSamplingOptions options) {
-    static const SkColorInfo kSRGBInfo(kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType,
+    static const SkColorInfo kSRGBInfo(VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED,
                                        SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
                                                              SkNamedGamut::kAdobeRGB));
 
@@ -97,7 +97,7 @@ Builder& Builder::linearGrad(LinearGradientOptions options) {
 }
 
 Builder& Builder::blend() {
-    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    SkColorInfo ci { VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
                                                            { &ci, 1 },
                                                            {});

@@ -18,9 +18,10 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #endif
 
+#include <vividx/core/color-type.h>
+
 class SkSurface;
 class SkSurfaceProps;
-enum vx_color_type : int;
 struct SkImageInfo;
 
 #if defined(SK_GANESH)

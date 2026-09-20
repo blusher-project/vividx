@@ -50,7 +50,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(OpsTaskFlushCount,
     auto context = ctxInfo.directContext();
     GrGpu* gpu = context->priv().getGpu();
 
-    SkImageInfo imageInfo = SkImageInfo::Make(1000, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo imageInfo = SkImageInfo::Make(1000, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> surface1 = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, imageInfo);
     if (!surface1) {

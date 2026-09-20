@@ -48,8 +48,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(DeviceTestVertexTransparency, reporter, conte
     // Draw vertices at x = 0.
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(10, 10),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                       vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
     SkCanvas* canvas = surface->getCanvas();
     canvas->drawVertices(v, SkBlendMode::kDst, SkPaint());

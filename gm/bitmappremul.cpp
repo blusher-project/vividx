@@ -29,15 +29,15 @@
 
 constexpr int SLIDE_SIZE = 256;
 
-static void init_bitmap(SkColorType ct, SkBitmap* bitmap) {
+static void init_bitmap(vx_color_type ct, SkBitmap* bitmap) {
     bitmap->allocPixels(SkImageInfo::Make(SLIDE_SIZE, SLIDE_SIZE, ct,
-                                          kPremul_SkAlphaType));
+                                          VX_ALPHA_TYPE_PREMULTIPLIED));
     bitmap->eraseColor(SK_ColorWHITE);
 }
 
 static sk_sp<SkImage> make_argb8888_gradient() {
     SkBitmap bitmap;
-    init_bitmap(kN32_SkColorType, &bitmap);
+    init_bitmap(VX_COLOR_TYPE_N32, &bitmap);
     for (int y = 0; y < SLIDE_SIZE; y++) {
         uint32_t* dst = bitmap.getAddr32(0, y);
         for (int x = 0; x < SLIDE_SIZE; x++) {
@@ -49,7 +49,7 @@ static sk_sp<SkImage> make_argb8888_gradient() {
 
 static sk_sp<SkImage> make_argb4444_gradient() {
     SkBitmap bitmap;
-    init_bitmap(kARGB_4444_SkColorType, &bitmap);
+    init_bitmap(VX_COLOR_TYPE_ARGB_4444, &bitmap);
     // Using draw rather than readPixels to suppress dither
     SkPaint paint;
     paint.setBlendMode(SkBlendMode::kSrc);
@@ -59,7 +59,7 @@ static sk_sp<SkImage> make_argb4444_gradient() {
 
 static sk_sp<SkImage> make_argb8888_stripes() {
     SkBitmap bitmap;
-    init_bitmap(kN32_SkColorType, &bitmap);
+    init_bitmap(VX_COLOR_TYPE_N32, &bitmap);
     uint8_t rowColor = 0;
     for (int y = 0; y < SLIDE_SIZE; y++) {
         uint32_t* dst = bitmap.getAddr32(0, y);
@@ -78,7 +78,7 @@ static sk_sp<SkImage> make_argb8888_stripes() {
 
 static sk_sp<SkImage> make_argb4444_stripes() {
     SkBitmap bitmap;
-    init_bitmap(kARGB_4444_SkColorType, &bitmap);
+    init_bitmap(VX_COLOR_TYPE_ARGB_4444, &bitmap);
     // Using draw rather than readPixels to suppress dither
     SkPaint paint;
     paint.setBlendMode(SkBlendMode::kSrc);
@@ -117,10 +117,10 @@ DEF_GM( return new BitmapPremulGM; )
 static constexpr int kBoxSize     = 31;
 static constexpr int kPadding     = 5;
 
-static sk_sp<SkImage> make_out_of_gamut_image(SkColorType ct) {
+static sk_sp<SkImage> make_out_of_gamut_image(vx_color_type ct) {
     SkBitmap bmp;
     // Odd dimensions so that we hit the different implementation in the SIMD tail handling
-    bmp.allocPixels(SkImageInfo::Make(kBoxSize, kBoxSize, ct, kPremul_SkAlphaType));
+    bmp.allocPixels(SkImageInfo::Make(kBoxSize, kBoxSize, ct, VX_ALPHA_TYPE_PREMULTIPLIED));
     for (int y = 0; y < kBoxSize; ++y) {
         for (int x = 0; x < kBoxSize; ++x) {
             *bmp.getAddr32(x, y) = (0x40000000 | ((x * 8) << 8) | ((y * 8) << 0));
@@ -137,8 +137,8 @@ DEF_SIMPLE_GM(image_out_of_gamut, canvas, 2 * kBoxSize + 3 * kPadding, kBoxSize 
     // RGBA and BGRA. (This ensures that we always hit the N32 -> N32 case).
     canvas->clear(SK_ColorGRAY);
 
-    auto rgba = make_out_of_gamut_image(kRGBA_8888_SkColorType),
-         bgra = make_out_of_gamut_image(kBGRA_8888_SkColorType);
+    auto rgba = make_out_of_gamut_image(VX_COLOR_TYPE_RGBA_8888),
+         bgra = make_out_of_gamut_image(VX_COLOR_TYPE_BGRA_8888);
 
     canvas->translate(kPadding, kPadding);
     canvas->drawImage(rgba, 0, 0);

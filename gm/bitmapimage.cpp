@@ -48,7 +48,7 @@ protected:
 
         // The GM will be displayed in a 2x2 grid.
         // The top two squares show an sRGB image, then bitmap, drawn to a legacy canvas.
-        SkImageInfo linearInfo = SkImageInfo::MakeN32(2*kSize, kSize, kOpaque_SkAlphaType);
+        SkImageInfo linearInfo = SkImageInfo::MakeN32(2*kSize, kSize, VX_ALPHA_TYPE_OPAQUE);
         SkBitmap legacyBMCanvas;
         legacyBMCanvas.allocPixels(linearInfo);
         SkCanvas legacyCanvas(legacyBMCanvas);
@@ -59,7 +59,7 @@ protected:
         canvas->translate(0.0f, SkScalar(kSize));
 
         // The bottom two squares show an sRGB image, then bitmap, drawn to a srgb canvas.
-        SkImageInfo srgbInfo = SkImageInfo::MakeS32(2*kSize, kSize, kOpaque_SkAlphaType);
+        SkImageInfo srgbInfo = SkImageInfo::MakeS32(2*kSize, kSize, VX_ALPHA_TYPE_OPAQUE);
         SkBitmap srgbBMCanvas;
         srgbBMCanvas.allocPixels(srgbInfo);
         SkCanvas srgbCanvas(srgbBMCanvas);

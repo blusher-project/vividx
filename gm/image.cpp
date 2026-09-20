@@ -404,7 +404,7 @@ DEF_SIMPLE_GM_CAN_FAIL(new_texture_image, canvas, errorMsg, 280, 115) {
 
     static constexpr int kSize = 50;
     SkImageInfo ii = SkImageInfo::Make(kSize, kSize,
-                                       kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+                                       VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED,
                                        SkColorSpace::MakeSRGB());
     SkBitmap bmp;
     bmp.allocPixels(ii);
@@ -516,7 +516,7 @@ static void slam_ff(const SkPixmap& pm) {
 }
 
 DEF_SIMPLE_GM(scalepixels_unpremul, canvas, 1080, 280) {
-    SkImageInfo info = SkImageInfo::MakeN32(16, 16, kUnpremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::MakeN32(16, 16, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     SkAutoPixmapStorage pm;
     pm.alloc(info);
     for (int y = 0; y < 16; ++y) {
@@ -525,7 +525,7 @@ DEF_SIMPLE_GM(scalepixels_unpremul, canvas, 1080, 280) {
         }
     }
     SkAutoPixmapStorage pm2;
-    pm2.alloc(SkImageInfo::MakeN32(256, 256, kUnpremul_SkAlphaType));
+    pm2.alloc(SkImageInfo::MakeN32(256, 256, VX_ALPHA_TYPE_UNPREMULTIPLIED));
 
     for (auto s : gSamplings) {
         pm.scalePixels(pm2, s);
@@ -578,7 +578,7 @@ static sk_sp<SkImage> serial_deserial(SkImage* img) {
 
     SkDeserialProcs dProcs;
     dProcs.fImageDataProc =
-            [](sk_sp<SkData> data, std::optional<SkAlphaType> alphaType, void*) -> sk_sp<SkImage> {
+            [](sk_sp<SkData> data, std::optional<enum vx_alpha_type> alphaType, void*) -> sk_sp<SkImage> {
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
         std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
         auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);

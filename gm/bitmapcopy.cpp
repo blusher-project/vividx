@@ -27,45 +27,45 @@
 
 namespace {
 
-static const char* color_type_name(SkColorType colorType) {
+static const char* color_type_name(vx_color_type colorType) {
     switch (colorType) {
-        case kUnknown_SkColorType:            return "unknown";
-        case kAlpha_8_SkColorType:            return "A8";
-        case kRGB_565_SkColorType:            return "565";
-        case kARGB_4444_SkColorType:          return "4444";
-        case kRGBA_8888_SkColorType:          return "8888";
-        case kRGB_888x_SkColorType:           return "888x";
-        case kBGRA_8888_SkColorType:          return "8888";
-        case kRGBA_1010102_SkColorType:       return "1010102";
-        case kRGB_101010x_SkColorType:        return "101010x";
-        case kBGRA_1010102_SkColorType:       return "bgra1010102";
-        case kBGR_101010x_SkColorType:        return "bgr101010x";
-        case kBGR_101010x_XR_SkColorType:     return "bgr101010x_xr";
-        case kBGRA_10101010_XR_SkColorType:   return "bgra10101010_xr";
-        case kRGBA_10x6_SkColorType:          return "10101010";
-        case kGray_8_SkColorType:             return "G8";
-        case kRGBA_F16Norm_SkColorType:       return "F16Norm";
-        case kRGB_F16F16F16x_SkColorType:     return "F16F16F16x";
-        case kRGBA_F16_SkColorType:           return "F16";
-        case kRGBA_F32_SkColorType:           return "F32";
-        case kR8G8_unorm_SkColorType:         return "R8G8_unorm";
-        case kA16_unorm_SkColorType:          return "A16_unorm";
-        case kR16_unorm_SkColorType:          return "R16_unorm";
-        case kR16G16_unorm_SkColorType:       return "R16G16_unorm";
-        case kA16_float_SkColorType:          return "A16_float";
-        case kR16_float_SkColorType:          return "R16_float";
-        case kR16G16_float_SkColorType:       return "R16G16_float";
-        case kR16G16B16A16_unorm_SkColorType: return "R16G16B16A16_unorm";
-        case kSRGBA_8888_SkColorType:         return "SRGBA_8888";
-        case kR8_unorm_SkColorType:           return "R8_unorm";
+        case VX_COLOR_TYPE_UNKNOWN:            return "unknown";
+        case VX_COLOR_TYPE_ALPHA_8:            return "A8";
+        case VX_COLOR_TYPE_RGB_565:            return "565";
+        case VX_COLOR_TYPE_ARGB_4444:          return "4444";
+        case VX_COLOR_TYPE_RGBA_8888:          return "8888";
+        case VX_COLOR_TYPE_RGB_888X:           return "888x";
+        case VX_COLOR_TYPE_BGRA_8888:          return "8888";
+        case VX_COLOR_TYPE_RGBA_1010102:       return "1010102";
+        case VX_COLOR_TYPE_RGB_101010X:        return "101010x";
+        case VX_COLOR_TYPE_BGRA_1010102:       return "bgra1010102";
+        case VX_COLOR_TYPE_BGR_101010X:        return "bgr101010x";
+        case VX_COLOR_TYPE_BGR_101010X_XR:     return "bgr101010x_xr";
+        case VX_COLOR_TYPE_BGRA_10101010_XR:   return "bgra10101010_xr";
+        case VX_COLOR_TYPE_RGBA_10X6:          return "10101010";
+        case VX_COLOR_TYPE_GRAY_8:             return "G8";
+        case VX_COLOR_TYPE_RGBA_F16NORM:       return "F16Norm";
+        case VX_COLOR_TYPE_RGB_F16F16F16X:     return "F16F16F16x";
+        case VX_COLOR_TYPE_RGBA_F16:           return "F16";
+        case VX_COLOR_TYPE_RGBA_F32:           return "F32";
+        case VX_COLOR_TYPE_R8G8_UNORM:         return "R8G8_unorm";
+        case VX_COLOR_TYPE_A16_UNORM:          return "A16_unorm";
+        case VX_COLOR_TYPE_R16_UNORM:          return "R16_unorm";
+        case VX_COLOR_TYPE_R16G16_UNORM:       return "R16G16_unorm";
+        case VX_COLOR_TYPE_A16_FLOAT:          return "A16_float";
+        case VX_COLOR_TYPE_R16_FLOAT:          return "R16_float";
+        case VX_COLOR_TYPE_R16G16_FLOAT:       return "R16G16_float";
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: return "R16G16B16A16_unorm";
+        case VX_COLOR_TYPE_SRGBA_8888:         return "SRGBA_8888";
+        case VX_COLOR_TYPE_R8_UNORM:           return "R8_unorm";
     }
     return "";
 }
 
-constexpr SkColorType gColorTypes[] = {
-    kRGB_565_SkColorType,
-    kARGB_4444_SkColorType,
-    kN32_SkColorType,
+constexpr vx_color_type gColorTypes[] = {
+    VX_COLOR_TYPE_RGB_565,
+    VX_COLOR_TYPE_ARGB_4444,
+    VX_COLOR_TYPE_N32,
 };
 
 #define NUM_CONFIGS std::size(gColorTypes)
@@ -100,7 +100,7 @@ class BitmapCopyGM : public skiagm::GM {
         SkScalar vertMargin = 10;
 
         SkBitmap src;
-        src.allocN32Pixels(40, 40, kOpaque_SkAlphaType);
+        src.allocN32Pixels(40, 40, VX_ALPHA_TYPE_OPAQUE);
         SkCanvas canvasTmp(src);
 
         draw_checks(&canvasTmp, 40, 40);

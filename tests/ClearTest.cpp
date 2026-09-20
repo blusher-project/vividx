@@ -69,7 +69,7 @@ static bool check_rect(GrDirectContext* dContext,
     int w = sdc->width();
     int h = sdc->height();
 
-    SkImageInfo dstInfo = SkImageInfo::Make(w, h, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo dstInfo = SkImageInfo::Make(w, h, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkAutoPixmapStorage readback;
     readback.alloc(dstInfo);
@@ -101,7 +101,7 @@ static bool check_ring(GrDirectContext* dContext,
     int w = sdc->width();
     int h = sdc->height();
 
-    SkImageInfo dstInfo = SkImageInfo::Make(w, h, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo dstInfo = SkImageInfo::Make(w, h, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkAutoPixmapStorage readback;
     readback.alloc(dstInfo);
@@ -347,7 +347,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ClearOp, reporter, ctxInfo, CtsEnforcemen
 }
 
 void fullscreen_clear_with_layer_test(skiatest::Reporter* reporter, GrRecordingContext* rContext) {
-    const SkImageInfo ii = SkImageInfo::Make(400, 77, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(400, 77, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(rContext, skgpu::Budgeted::kYes, ii);
     SkCanvas* canvas = surf->getCanvas();

@@ -40,7 +40,7 @@ DEF_TEST(ImageIsOpaqueTest, reporter) {
     auto surfaceTransparent(SkSurfaces::Raster(infoTransparent));
     check_isopaque(reporter, surfaceTransparent, false);
 
-    SkImageInfo infoOpaque = SkImageInfo::MakeN32(5, 5, kOpaque_SkAlphaType);
+    SkImageInfo infoOpaque = SkImageInfo::MakeN32(5, 5, VX_ALPHA_TYPE_OPAQUE);
     auto surfaceOpaque(SkSurfaces::Raster(infoOpaque));
     check_isopaque(reporter, surfaceOpaque, true);
 }
@@ -56,7 +56,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageIsOpaqueTest_Gpu,
             SkSurfaces::RenderTarget(context, skgpu::Budgeted::kNo, infoTransparent));
     check_isopaque(reporter, surfaceTransparent, false);
 
-    SkImageInfo infoOpaque = SkImageInfo::MakeN32(5, 5, kOpaque_SkAlphaType);
+    SkImageInfo infoOpaque = SkImageInfo::MakeN32(5, 5, VX_ALPHA_TYPE_OPAQUE);
     auto surfaceOpaque(SkSurfaces::RenderTarget(context, skgpu::Budgeted::kNo, infoOpaque));
 
     check_isopaque(reporter, surfaceOpaque, true);

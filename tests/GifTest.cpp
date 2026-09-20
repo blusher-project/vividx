@@ -485,7 +485,7 @@ DEF_TEST(Codec_AnimatedTransparentGif, r) {
 
     for (bool use565 : { false, true }) {
         SkBitmap bm;
-        bm.allocPixels(use565 ? info.makeColorType(kRGB_565_SkColorType) : info);
+        bm.allocPixels(use565 ? info.makeColorType(VX_COLOR_TYPE_RGB_565) : info);
 
         for (int i = 0; i < 2; i++) {
             SkCodec::Options options;

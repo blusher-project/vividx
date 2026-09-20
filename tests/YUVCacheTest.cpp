@@ -41,7 +41,7 @@ DEF_TEST(YUVPlanesCache, reporter) {
     SkYUVAInfo yuvaInfo({5, 5},
                         SkYUVAInfo::PlaneConfig::kY_U_V,
                         SkYUVAInfo::Subsampling::k420,
-                        kRec601_Limited_SkYUVColorSpace);
+                        VX_YUV_COLOR_SPACE_REC601_LIMITED);
     SkYUVAPixmapInfo yuvaPixmapInfo(yuvaInfo,
                                     SkYUVAPixmapInfo::DataType::kUnorm8,
                                     /*rowBytes[]*/ nullptr);

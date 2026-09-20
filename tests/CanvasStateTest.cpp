@@ -131,8 +131,8 @@ DEF_TEST(CanvasState_test_complex_layers, reporter) {
                                    SkIntToScalar(WIDTH-(2*SPACER)),
                                    SkIntToScalar((HEIGHT-(2*SPACER)) / 7));
 
-    const SkColorType colorTypes[] = {
-        kRGB_565_SkColorType, kN32_SkColorType
+    const vx_color_type colorTypes[] = {
+        VX_COLOR_TYPE_RGB_565, VX_COLOR_TYPE_N32
     };
 
     const int layerAlpha[] = { 255, 255, 0 };
@@ -156,7 +156,7 @@ DEF_TEST(CanvasState_test_complex_layers, reporter) {
         sk_sp<SkImage> images[2];
         for (int j = 0; j < 2; ++j) {
             auto surf = SkSurfaces::Raster(
-                    SkImageInfo::Make(WIDTH, HEIGHT, colorTypes[i], kPremul_SkAlphaType));
+                    SkImageInfo::Make(WIDTH, HEIGHT, colorTypes[i], VX_ALPHA_TYPE_PREMULTIPLIED));
             SkCanvas* canvas = surf->getCanvas();
 
             canvas->drawColor(SK_ColorRED);

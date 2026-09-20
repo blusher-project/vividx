@@ -797,9 +797,9 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTexture,
             )";
         }
 
-        std::tuple<SkISize, SkColorType> calculateTextureParameters(
+        std::tuple<SkISize, vx_color_type> calculateTextureParameters(
                 int index, const ResourceDesc& r) const override {
-            return {{kDim, kDim}, kRGBA_8888_SkColorType};
+            return {{kDim, kDim}, VX_COLOR_TYPE_RGBA_8888};
         }
 
         WorkgroupSize calculateGlobalDispatchSize() const override {
@@ -838,7 +838,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTexture,
 
     SkBitmap bitmap;
     SkImageInfo imgInfo =
-            SkImageInfo::Make(kDim, kDim, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+            SkImageInfo::Make(kDim, kDim, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     bitmap.allocPixels(imgInfo);
 
     SkPixmap pixels;
@@ -910,10 +910,10 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureReadAndWrite
             )";
         }
 
-        std::tuple<SkISize, SkColorType> calculateTextureParameters(
+        std::tuple<SkISize, vx_color_type> calculateTextureParameters(
                 int index, const ResourceDesc& r) const override {
             SkASSERT(index == 1);
-            return {{kDim, kDim}, kRGBA_8888_SkColorType};
+            return {{kDim, kDim}, VX_COLOR_TYPE_RGBA_8888};
         }
 
         WorkgroupSize calculateGlobalDispatchSize() const override {
@@ -924,7 +924,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureReadAndWrite
     // Create and populate an input texture.
     SkBitmap srcBitmap;
     SkImageInfo srcInfo =
-            SkImageInfo::Make(kDim, kDim, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+            SkImageInfo::Make(kDim, kDim, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     srcBitmap.allocPixels(srcInfo);
     SkPixmap srcPixels;
     bool srcPeekPixelsSuccess = srcBitmap.peekPixels(&srcPixels);
@@ -936,7 +936,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureReadAndWrite
         }
     }
 
-    auto texInfo = context->priv().caps()->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+    auto texInfo = context->priv().caps()->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGBA_8888,
                                                                         skgpu::Mipmapped::kNo,
                                                                         skgpu::Protected::kNo,
                                                                         skgpu::Renderable::kNo);
@@ -1004,7 +1004,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureReadAndWrite
 
     SkBitmap bitmap;
     SkImageInfo imgInfo =
-            SkImageInfo::Make(kDim, kDim, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+            SkImageInfo::Make(kDim, kDim, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     bitmap.allocPixels(imgInfo);
 
     SkPixmap pixels;
@@ -1100,10 +1100,10 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_ReadOnlyStorageBuffer,
             }
         }
 
-        std::tuple<SkISize, SkColorType> calculateTextureParameters(
+        std::tuple<SkISize, vx_color_type> calculateTextureParameters(
                 int index, const ResourceDesc& r) const override {
             SkASSERT(index == 1);
-            return {{kDim, kDim}, kRGBA_8888_SkColorType};
+            return {{kDim, kDim}, VX_COLOR_TYPE_RGBA_8888};
         }
 
         WorkgroupSize calculateGlobalDispatchSize() const override {
@@ -1142,7 +1142,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_ReadOnlyStorageBuffer,
 
     SkBitmap bitmap;
     SkImageInfo imgInfo =
-            SkImageInfo::Make(kDim, kDim, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+            SkImageInfo::Make(kDim, kDim, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     bitmap.allocPixels(imgInfo);
 
     SkPixmap pixels;
@@ -1211,10 +1211,10 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureMultipleComp
             )";
         }
 
-        std::tuple<SkISize, SkColorType> calculateTextureParameters(
+        std::tuple<SkISize, vx_color_type> calculateTextureParameters(
                 int index, const ResourceDesc& r) const override {
             SkASSERT(index == 0);
-            return {{kDim, kDim}, kRGBA_8888_SkColorType};
+            return {{kDim, kDim}, VX_COLOR_TYPE_RGBA_8888};
         }
 
         WorkgroupSize calculateGlobalDispatchSize() const override {
@@ -1255,10 +1255,10 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureMultipleComp
             )";
         }
 
-        std::tuple<SkISize, SkColorType> calculateTextureParameters(
+        std::tuple<SkISize, vx_color_type> calculateTextureParameters(
                 int index, const ResourceDesc& r) const override {
             SkASSERT(index == 1);
-            return {{kDim, kDim}, kRGBA_8888_SkColorType};
+            return {{kDim, kDim}, VX_COLOR_TYPE_RGBA_8888};
         }
 
         WorkgroupSize calculateGlobalDispatchSize() const override {
@@ -1295,7 +1295,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_StorageTextureMultipleComp
 
     SkBitmap bitmap;
     SkImageInfo imgInfo =
-            SkImageInfo::Make(kDim, kDim, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+            SkImageInfo::Make(kDim, kDim, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     bitmap.allocPixels(imgInfo);
 
     SkPixmap pixels;
@@ -1365,10 +1365,10 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_SampledTexture,
             )";
         }
 
-        std::tuple<SkISize, SkColorType> calculateTextureParameters(
+        std::tuple<SkISize, vx_color_type> calculateTextureParameters(
                 int index, const ResourceDesc& r) const override {
             SkASSERT(index == 0);
-            return {{kSrcDim, kSrcDim}, kRGBA_8888_SkColorType};
+            return {{kSrcDim, kSrcDim}, VX_COLOR_TYPE_RGBA_8888};
         }
 
         WorkgroupSize calculateGlobalDispatchSize() const override {
@@ -1419,10 +1419,10 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_SampledTexture,
             )";
         }
 
-        std::tuple<SkISize, SkColorType> calculateTextureParameters(
+        std::tuple<SkISize, vx_color_type> calculateTextureParameters(
                 int index, const ResourceDesc& r) const override {
             SkASSERT(index == 0 || index == 1);
-            return {{kDstDim, kDstDim}, kRGBA_8888_SkColorType};
+            return {{kDstDim, kDstDim}, VX_COLOR_TYPE_RGBA_8888};
         }
 
         SamplerDesc calculateSamplerParameters(int index, const ResourceDesc&) const override {
@@ -1465,7 +1465,7 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_METAL_CONTEXTS(Compute_SampledTexture,
 
     SkBitmap bitmap;
     SkImageInfo imgInfo =
-            SkImageInfo::Make(kDstDim, kDstDim, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+            SkImageInfo::Make(kDstDim, kDstDim, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     bitmap.allocPixels(imgInfo);
 
     SkPixmap pixels;

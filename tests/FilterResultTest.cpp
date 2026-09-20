@@ -620,7 +620,7 @@ private:
 };
 
 class TestRunner {
-    static constexpr SkColorType kColorType = kRGBA_8888_SkColorType;
+    static constexpr vx_color_type kColorType = VX_COLOR_TYPE_RGBA_8888;
     using ResolveMethod = FilterResultImageResolver::Method;
 public:
     // Raster-backed TestRunner

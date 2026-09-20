@@ -30,11 +30,11 @@
 #include <string.h>
 #include <initializer_list>
 
-static SkBitmap copy_bitmap(const SkBitmap& src, SkColorType colorType) {
+static SkBitmap copy_bitmap(const SkBitmap& src, vx_color_type colorType) {
     const SkBitmap* srcPtr = &src;
     SkBitmap tmp(src);
-    if (kRGB_565_SkColorType == colorType) {
-        tmp.setAlphaType(kOpaque_SkAlphaType);
+    if (VX_COLOR_TYPE_RGB_565 == colorType) {
+        tmp.setAlphaType(VX_ALPHA_TYPE_OPAQUE);
         srcPtr = &tmp;
     }
 
@@ -47,15 +47,15 @@ static SkBitmap copy_bitmap(const SkBitmap& src, SkColorType colorType) {
 #define SCALE 128
 
 // Make either A8 or gray8 bitmap.
-static SkBitmap make_bitmap(SkColorType ct) {
+static SkBitmap make_bitmap(vx_color_type ct) {
     SkBitmap bm;
     switch (ct) {
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             bm.allocPixels(SkImageInfo::MakeA8(SCALE, SCALE));
             break;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             bm.allocPixels(
-                    SkImageInfo::Make(SCALE, SCALE, ct, kOpaque_SkAlphaType));
+                    SkImageInfo::Make(SCALE, SCALE, ct, VX_ALPHA_TYPE_OPAQUE));
             break;
         default:
             SkASSERT(false);
@@ -120,7 +120,7 @@ static void draw(SkCanvas* canvas,
                  const SkPaint& p,
                  const SkFont& font,
                  const SkBitmap& src,
-                 SkColorType colorType,
+                 vx_color_type colorType,
                  const char text[]) {
     SkASSERT(src.colorType() == colorType);
     canvas->drawImage(src.asImage(), 0.0f, 0.0f);
@@ -139,34 +139,34 @@ DEF_SIMPLE_GM(all_bitmap_configs, canvas, SCALE, 6 * SCALE) {
     SkBitmap bitmap;
     if (ToolUtils::GetResourceAsBitmap("images/color_wheel.png", &bitmap)) {
         bitmap.setImmutable();
-        draw(canvas, p, font, bitmap, kN32_SkColorType, "Native 32");
+        draw(canvas, p, font, bitmap, VX_COLOR_TYPE_N32, "Native 32");
 
         canvas->translate(0.0f, SkIntToScalar(SCALE));
-        SkBitmap copy565 = copy_bitmap(bitmap, kRGB_565_SkColorType);
+        SkBitmap copy565 = copy_bitmap(bitmap, VX_COLOR_TYPE_RGB_565);
         p.setColor(SK_ColorRED);
-        draw(canvas, p, font, copy565, kRGB_565_SkColorType, "RGB 565");
+        draw(canvas, p, font, copy565, VX_COLOR_TYPE_RGB_565, "RGB 565");
         p.setColor(SK_ColorBLACK);
 
         canvas->translate(0.0f, SkIntToScalar(SCALE));
-        SkBitmap copy4444 = copy_bitmap(bitmap, kARGB_4444_SkColorType);
-        draw(canvas, p, font, copy4444, kARGB_4444_SkColorType, "ARGB 4444");
+        SkBitmap copy4444 = copy_bitmap(bitmap, VX_COLOR_TYPE_ARGB_4444);
+        draw(canvas, p, font, copy4444, VX_COLOR_TYPE_ARGB_4444, "ARGB 4444");
 
         canvas->translate(0.0f, SkIntToScalar(SCALE));
-        SkBitmap copyF16 = copy_bitmap(bitmap, kRGBA_F16_SkColorType);
-        draw(canvas, p, font, copyF16, kRGBA_F16_SkColorType, "RGBA F16");
+        SkBitmap copyF16 = copy_bitmap(bitmap, VX_COLOR_TYPE_RGBA_F16);
+        draw(canvas, p, font, copyF16, VX_COLOR_TYPE_RGBA_F16, "RGBA F16");
 
     } else {
         canvas->translate(0.0f, SkIntToScalar(3 * SCALE));
     }
 
     canvas->translate(0.0f, SkIntToScalar(SCALE));
-    SkBitmap bitmapA8 = make_bitmap(kAlpha_8_SkColorType);
-    draw(canvas, p, font, bitmapA8, kAlpha_8_SkColorType, "Alpha 8");
+    SkBitmap bitmapA8 = make_bitmap(VX_COLOR_TYPE_ALPHA_8);
+    draw(canvas, p, font, bitmapA8, VX_COLOR_TYPE_ALPHA_8, "Alpha 8");
 
     p.setColor(SK_ColorRED);
     canvas->translate(0.0f, SkIntToScalar(SCALE));
-    SkBitmap bitmapG8 = make_bitmap(kGray_8_SkColorType);
-    draw(canvas, p, font, bitmapG8, kGray_8_SkColorType, "Gray 8");
+    SkBitmap bitmapG8 = make_bitmap(VX_COLOR_TYPE_GRAY_8);
+    draw(canvas, p, font, bitmapG8, VX_COLOR_TYPE_GRAY_8, "Gray 8");
 }
 
 sk_sp<SkImage> make_not_native32_color_wheel() {
@@ -176,11 +176,11 @@ sk_sp<SkImage> make_not_native32_color_wheel() {
     SkCanvas n32canvas(n32bitmap);
     color_wheel_native(&n32canvas);
     #if SK_PMCOLOR_BYTE_ORDER(B,G,R,A)
-        const SkColorType ct = kRGBA_8888_SkColorType;
+        const vx_color_type ct = VX_COLOR_TYPE_RGBA_8888;
     #elif SK_PMCOLOR_BYTE_ORDER(R,G,B,A)
-        const SkColorType ct = kBGRA_8888_SkColorType;
+        const vx_color_type ct = VX_COLOR_TYPE_BGRA_8888;
     #endif
-    static_assert(ct != kN32_SkColorType, "BRGA!=RGBA");
+    static_assert(ct != VX_COLOR_TYPE_N32, "BRGA!=RGBA");
     SkAssertResult(ToolUtils::copy_to(&notN32bitmap, ct, n32bitmap));
     SkASSERT(notN32bitmap.colorType() == ct);
     return notN32bitmap.asImage();
@@ -193,7 +193,7 @@ DEF_SIMPLE_GM(not_native32_bitmap_config, canvas, SCALE, SCALE) {
     canvas->drawImage(notN32image.get(), 0.0f, 0.0f);
 }
 
-static uint32_t make_pixel(int x, int y, SkAlphaType alphaType) {
+static uint32_t make_pixel(int x, int y, vx_alpha_type alphaType) {
     SkASSERT(x >= 0 && x < SCALE);
     SkASSERT(y >= 0 && y < SCALE);
 
@@ -207,10 +207,10 @@ static uint32_t make_pixel(int x, int y, SkAlphaType alphaType) {
 
     uint32_t component;
     switch (alphaType) {
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             component = alpha;
             break;
-        case kUnpremul_SkAlphaType:
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
             component = 0xFF;
             break;
         default:
@@ -220,13 +220,13 @@ static uint32_t make_pixel(int x, int y, SkAlphaType alphaType) {
 }
 
 static void make_color_test_bitmap_variant(
-    SkColorType colorType,
-    SkAlphaType alphaType,
+    vx_color_type colorType,
+    vx_alpha_type alphaType,
     sk_sp<SkColorSpace> colorSpace,
     SkBitmap* bm)
 {
-    SkASSERT(colorType == kRGBA_8888_SkColorType || colorType == kBGRA_8888_SkColorType);
-    SkASSERT(alphaType == kPremul_SkAlphaType || alphaType == kUnpremul_SkAlphaType);
+    SkASSERT(colorType == VX_COLOR_TYPE_RGBA_8888 || colorType == VX_COLOR_TYPE_BGRA_8888);
+    SkASSERT(alphaType == VX_ALPHA_TYPE_PREMULTIPLIED || alphaType == VX_ALPHA_TYPE_UNPREMULTIPLIED);
     bm->allocPixels(
         SkImageInfo::Make(SCALE, SCALE, colorType, alphaType, colorSpace));
     const SkPixmap& pm = bm->pixmap();
@@ -246,9 +246,9 @@ DEF_SIMPLE_GM(all_variants_8888, canvas, 4 * SCALE + 30, 2 * SCALE + 10) {
     };
     for (const sk_sp<SkColorSpace>& colorSpace : colorSpaces) {
         canvas->save();
-        for (auto alphaType : {kPremul_SkAlphaType, kUnpremul_SkAlphaType}) {
+        for (auto alphaType : {VX_ALPHA_TYPE_PREMULTIPLIED, VX_ALPHA_TYPE_UNPREMULTIPLIED}) {
             canvas->save();
-            for (auto colorType : {kRGBA_8888_SkColorType, kBGRA_8888_SkColorType}) {
+            for (auto colorType : {VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_BGRA_8888}) {
                 SkBitmap bm;
                 make_color_test_bitmap_variant(colorType, alphaType, colorSpace, &bm);
                 canvas->drawImage(bm.asImage(), 0.0f, 0.0f);

@@ -52,14 +52,14 @@ static uint32_t pack_unpremul_bgra(SkColor c) {
 typedef uint32_t (*PackUnpremulProc)(SkColor);
 
 const struct {
-    SkColorType         fColorType;
+    vx_color_type         fColorType;
     PackUnpremulProc    fPackProc;
 } gUnpremul[] = {
-    { kRGBA_8888_SkColorType, pack_unpremul_rgba },
-    { kBGRA_8888_SkColorType, pack_unpremul_bgra },
+    { VX_COLOR_TYPE_RGBA_8888, pack_unpremul_rgba },
+    { VX_COLOR_TYPE_BGRA_8888, pack_unpremul_bgra },
 };
 
-static void fill_surface(SkSurface* surf, SkColorType colorType, PackUnpremulProc proc) {
+static void fill_surface(SkSurface* surf, vx_color_type colorType, PackUnpremulProc proc) {
     // Don't strictly need a bitmap, but its a handy way to allocate the pixels
     SkBitmap bmp;
     bmp.allocN32Pixels(256, 256);
@@ -71,7 +71,7 @@ static void fill_surface(SkSurface* surf, SkColorType colorType, PackUnpremulPro
         }
     }
 
-    const SkImageInfo info = SkImageInfo::Make(bmp.dimensions(), colorType, kUnpremul_SkAlphaType);
+    const SkImageInfo info = SkImageInfo::Make(bmp.dimensions(), colorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     surf->writePixels({info, bmp.getPixels(), bmp.rowBytes()}, 0, 0);
 }
 
@@ -80,7 +80,7 @@ static void test_premul_alpha_roundtrip(skiatest::Reporter* reporter, SkSurface*
         fill_surface(surf, gUnpremul[upmaIdx].fColorType, gUnpremul[upmaIdx].fPackProc);
 
         const SkImageInfo info = SkImageInfo::Make(256, 256, gUnpremul[upmaIdx].fColorType,
-                                                   kUnpremul_SkAlphaType);
+                                                   VX_ALPHA_TYPE_UNPREMULTIPLIED);
         SkBitmap readBmp1;
         readBmp1.allocPixels(info);
         SkBitmap readBmp2;
@@ -133,9 +133,9 @@ DEF_TEST(PremulAlphaRoundTripGrConvertPixels, reporter) {
     // happens if you run the above on a machine with a GPU that doesn't have a valid PM/UPM
     // conversion pair of FPs.
     const SkImageInfo upmInfo =
-            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+            SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     const SkImageInfo pmInfo =
-            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     GrPixmap src = GrPixmap::Allocate(upmInfo);
     uint32_t* srcPixels = (uint32_t*)src.addr();
@@ -190,9 +190,9 @@ DEF_TEST(PremulAlphaRoundTripGrConvertPixels, reporter) {
 DEF_TEST(PremulAlphaRoundTripSkConvertPixels, reporter) {
     // ... and now using SkConvertPixels, just for completeness
     const SkImageInfo upmInfo =
-            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+            SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     const SkImageInfo pmInfo =
-            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap src; src.allocPixels(upmInfo);
     uint32_t* srcPixels = src.getAddr32(0, 0);

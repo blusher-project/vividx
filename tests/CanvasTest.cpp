@@ -233,7 +233,7 @@ DEF_TEST(CanvasNewRasterTest, reporter) {
     REPORTER_ASSERT(reporter, nullptr == SkCanvas::MakeRasterDirect(info, baseAddr, minRowBytes));
 
     // not a valid pixel type
-    info = SkImageInfo::Make(10, 10, kUnknown_SkColorType, info.alphaType());
+    info = SkImageInfo::Make(10, 10, VX_COLOR_TYPE_UNKNOWN, info.alphaType());
     REPORTER_ASSERT(reporter, nullptr == SkCanvas::MakeRasterDirect(info, baseAddr, minRowBytes));
 
     // We should not succeed with a zero-sized valid info
@@ -611,7 +611,7 @@ DEF_TEST(Canvas_LegacyColorBehavior, r) {
 
     // Make a Adobe RGB bitmap.
     SkBitmap bitmap;
-    bitmap.allocPixels(SkImageInfo::MakeN32(1, 1, kOpaque_SkAlphaType, cs));
+    bitmap.allocPixels(SkImageInfo::MakeN32(1, 1, VX_ALPHA_TYPE_OPAQUE, cs));
     bitmap.eraseColor(0xFF000000);
 
     // Wrap it in a legacy canvas.  Test that the canvas behaves like a legacy canvas.
@@ -737,7 +737,7 @@ DEF_TEST(canvas_savelayer_destructor, reporter) {
 
 DEF_TEST(Canvas_saveLayer_colorSpace, reporter) {
     SkColor pixels[1] = { SK_ColorBLACK };
-    const SkImageInfo info = SkImageInfo::MakeN32(1, 1, kOpaque_SkAlphaType);
+    const SkImageInfo info = SkImageInfo::MakeN32(1, 1, VX_ALPHA_TYPE_OPAQUE);
     SkPixmap pm(info, pixels, sizeof(SkColor));
 
     auto surf = SkSurfaces::WrapPixels(pm);
@@ -770,8 +770,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TestManyDrawsGanesh,
                                        contextInfo,
                                        CtsEnforcement::kApiLevel_202404) {
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(1, 1),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                       vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     GrDirectContext* context = contextInfo.directContext();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, ii);
     test_many_draws(reporter, surface.get());
@@ -783,8 +783,8 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(TestManyDrawsGraphite, reporter, contex
                                          CtsEnforcement::kApiLevel_202404) {
     using namespace skgpu::graphite;
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(1, 1),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                       vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
     test_many_draws(reporter, surface.get());

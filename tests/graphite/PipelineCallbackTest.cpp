@@ -41,7 +41,7 @@ bool draw(Context* context) {
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
-    auto ii = SkImageInfo::Make({ 64, 64 }, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto ii = SkImageInfo::Make({ 64, 64 }, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii, skgpu::Mipmapped::kNo);
     if (!surface) {
@@ -155,7 +155,7 @@ void precompile_linear_gradient(PrecompileContext* precompileContext) {
         static_cast<DrawTypeFlags>(DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticRRect);
 
     Precompile(precompileContext, paintOptions, kRectAndRRect,
-               {{ { DepthStencilFlags::kDepth, kRGBA_8888_SkColorType} }});
+               {{ { DepthStencilFlags::kDepth, VX_COLOR_TYPE_RGBA_8888} }});
 }
 
 void run_precompile_test(skiatest::Reporter* reporter,

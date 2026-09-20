@@ -17,14 +17,14 @@
 //
 class WritePixelsBench : public Benchmark {
 public:
-    WritePixelsBench(SkColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs)
+    WritePixelsBench(vx_color_type ct, vx_alpha_type at, sk_sp<SkColorSpace> cs)
         : fColorType(ct)
         , fAlphaType(at)
         , fCS(cs)
     {
         fName.printf("writepix_%s_%s_%s",
-                     at == kPremul_SkAlphaType ? "pm" : "um",
-                     ct == kRGBA_8888_SkColorType ? "rgba" : "bgra",
+                     at == VX_ALPHA_TYPE_PREMULTIPLIED ? "pm" : "um",
+                     ct == VX_COLOR_TYPE_RGBA_8888 ? "rgba" : "bgra",
                      cs ? "srgb" : "null");
     }
 
@@ -47,8 +47,8 @@ protected:
     }
 
 private:
-    SkColorType fColorType;
-    SkAlphaType fAlphaType;
+    vx_color_type fColorType;
+    vx_alpha_type fAlphaType;
     sk_sp<SkColorSpace> fCS;
     SkString    fName;
 
@@ -57,12 +57,12 @@ private:
 
 //////////////////////////////////////////////////////////////////////////////
 
-DEF_BENCH(return new WritePixelsBench(kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);)
-DEF_BENCH(return new WritePixelsBench(kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, nullptr);)
-DEF_BENCH(return new WritePixelsBench(kRGBA_8888_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());)
-DEF_BENCH(return new WritePixelsBench(kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, SkColorSpace::MakeSRGB());)
+DEF_BENCH(return new WritePixelsBench(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);)
+DEF_BENCH(return new WritePixelsBench(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr);)
+DEF_BENCH(return new WritePixelsBench(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB());)
+DEF_BENCH(return new WritePixelsBench(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGB());)
 
-DEF_BENCH(return new WritePixelsBench(kBGRA_8888_SkColorType, kPremul_SkAlphaType, nullptr);)
-DEF_BENCH(return new WritePixelsBench(kBGRA_8888_SkColorType, kUnpremul_SkAlphaType, nullptr);)
-DEF_BENCH(return new WritePixelsBench(kBGRA_8888_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());)
-DEF_BENCH(return new WritePixelsBench(kBGRA_8888_SkColorType, kUnpremul_SkAlphaType, SkColorSpace::MakeSRGB());)
+DEF_BENCH(return new WritePixelsBench(VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);)
+DEF_BENCH(return new WritePixelsBench(VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr);)
+DEF_BENCH(return new WritePixelsBench(VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB());)
+DEF_BENCH(return new WritePixelsBench(VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGB());)

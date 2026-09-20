@@ -61,7 +61,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite,
     Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
     auto makeDirectBackendSurface = [&]() {
-        auto info = SkImageInfo::Make({10, 10}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+        auto info = SkImageInfo::Make({10, 10}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
         return sk_gpu_test::MakeBackendTextureSurface(dContext,
                                                       info,
                                                       kTopLeft_GrSurfaceOrigin,
@@ -125,7 +125,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest,
     GrDirectContext* dContext = ctxInfo.directContext();
 
     GrImageInfo info(GrColorType::kRGBA_8888,
-                     kPremul_SkAlphaType,
+                     VX_ALPHA_TYPE_PREMULTIPLIED,
                      /*color space*/ nullptr,
                      10, 10);
 
@@ -159,7 +159,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest,
     task->makeSkippable();
 
     SkAutoPixmapStorage pixels;
-    pixels.alloc(SkImageInfo::Make({10, 10}, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    pixels.alloc(SkImageInfo::Make({10, 10}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     dstSC->readPixels(dContext, pixels, {0, 0});
     float kTol[4] = {};
     std::function<ComparePixmapsErrorReporter> errorReporter(
@@ -176,7 +176,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipCopyTaskTest,
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipOpsTaskTest, reporter, ctxInfo, CtsEnforcement::kNever) {
     GrDirectContext* dContext = ctxInfo.directContext();
 
-    GrImageInfo ii(GrColorType::kRGBA_8888, kPremul_SkAlphaType, /*color space*/ nullptr, 10, 10);
+    GrImageInfo ii(GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, /*color space*/ nullptr, 10, 10);
 
     auto dst = dContext->priv().makeSFC(ii, /*label=*/{}, SkBackingFit::kExact);
     dst->clear(SkPMColor4f{1, 0, 0, 1});
@@ -194,7 +194,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkipOpsTaskTest, reporter, ctxInfo, CtsEn
     task->makeSkippable();
 
     SkAutoPixmapStorage pixels;
-    pixels.alloc(SkImageInfo::Make({10, 10}, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    pixels.alloc(SkImageInfo::Make({10, 10}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     dst->readPixels(dContext, pixels, {0, 0});
     float kTol[4] = {};
     std::function<ComparePixmapsErrorReporter> errorReporter(

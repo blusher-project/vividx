@@ -95,7 +95,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(ES2BlendWithNoTexture,
                                CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
     static constexpr SkISize kDimensions{10, 10};
-    const SkColorType kColorType = kRGBA_8888_SkColorType;
+    const vx_color_type kColorType = VX_COLOR_TYPE_RGBA_8888;
 
     // Build our test cases:
     struct RectAndSamplePoint {
@@ -164,7 +164,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(ES2BlendWithNoTexture,
         // Read the result into a bitmap.
         SkBitmap bitmap;
         REPORTER_ASSERT(reporter, bitmap.tryAllocPixels(SkImageInfo::Make(kDimensions, kColorType,
-                                                                          kPremul_SkAlphaType)));
+                                                                          VX_ALPHA_TYPE_PREMULTIPLIED)));
         REPORTER_ASSERT(
                 reporter,
                 surface->readPixels(bitmap.info(), bitmap.getPixels(), bitmap.rowBytes(), 0, 0));
@@ -195,11 +195,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BlendRequiringDstReadWithLargeCoordinates
                                        reporter,
                                        contextInfo,
                                        CtsEnforcement::kApiLevel_202404) {
-    static constexpr SkColorType kColorType = kRGBA_8888_SkColorType;
+    static constexpr vx_color_type kColorType = VX_COLOR_TYPE_RGBA_8888;
 
     GrDirectContext* context = contextInfo.directContext();
     SkImageInfo imageInfo =
-            SkImageInfo::Make(SkISize::Make(1200, 1), kColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(SkISize::Make(1200, 1), kColorType, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, imageInfo);
     SkCanvas* canvas = surface->getCanvas();
     canvas->clear(SK_ColorBLACK);
@@ -218,7 +218,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BlendRequiringDstReadWithLargeCoordinates
     SkBitmap bitmap;
     REPORTER_ASSERT(reporter,
                     bitmap.tryAllocPixels(SkImageInfo::Make(
-                            SkISize::Make(2, 1), kColorType, kPremul_SkAlphaType)));
+                            SkISize::Make(2, 1), kColorType, VX_ALPHA_TYPE_PREMULTIPLIED)));
     REPORTER_ASSERT(
             reporter,
             surface->readPixels(bitmap.info(), bitmap.getPixels(), bitmap.rowBytes(), 1099, 0));

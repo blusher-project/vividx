@@ -280,7 +280,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrPipelineDynamicStateTest,
         sdc->clear(SkPMColor4f::FromBytes_RGBA(0xbaaaaaad));
         sdc->addDrawOp(GrPipelineDynamicStateTestOp::Make(dContext, scissorTest, vbuff));
         auto ii = SkImageInfo::Make(kScreenSize, kScreenSize,
-                                    kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                                    VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
         GrPixmap resultPM(ii, resultPx, kScreenSize*sizeof(uint32_t));
         sdc->readPixels(dContext, resultPM, {0, 0});
         for (int y = 0; y < kScreenSize; ++y) {

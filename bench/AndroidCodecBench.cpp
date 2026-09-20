@@ -32,9 +32,9 @@ void AndroidCodecBench::onDelayedSetup() {
     std::unique_ptr<SkAndroidCodec> codec(SkAndroidCodec::MakeFromData(fData));
     SkISize scaledSize = codec->getSampledDimensions(fSampleSize);
 
-    fInfo = codec->getInfo().makeDimensions(scaledSize).makeColorType(kN32_SkColorType);
-    if (kUnpremul_SkAlphaType == fInfo.alphaType()) {
-        fInfo = fInfo.makeAlphaType(kPremul_SkAlphaType);
+    fInfo = codec->getInfo().makeDimensions(scaledSize).makeColorType(VX_COLOR_TYPE_N32);
+    if (VX_ALPHA_TYPE_UNPREMULTIPLIED == fInfo.alphaType()) {
+        fInfo = fInfo.makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     }
 
     fPixelStorage.reset(fInfo.computeMinByteSize());

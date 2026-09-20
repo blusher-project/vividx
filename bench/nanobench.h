@@ -24,8 +24,8 @@ class NanoJSONResultsWriter;
 struct Config {
     SkString name;
     Benchmark::Backend backend;
-    SkColorType color;
-    SkAlphaType alpha;
+    vx_color_type color;
+    vx_alpha_type alpha;
     sk_sp<SkColorSpace> colorSpace;
     int samples;
     sk_gpu_test::GrContextFactory::ContextType ctxType;

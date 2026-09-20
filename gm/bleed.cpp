@@ -53,8 +53,8 @@ std::tuple<sk_sp<SkImage>, SkRect> make_ringed_image(SkCanvas* canvas, int width
     SkASSERT(0 == width % 2 && 0 == height % 2);
     SkASSERT(width >= 6 && height >= 6);
 
-    SkImageInfo info = SkImageInfo::Make(width, height, kRGBA_8888_SkColorType,
-                                         kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(width, height, VX_COLOR_TYPE_RGBA_8888,
+                                         VX_ALPHA_TYPE_PREMULTIPLIED);
     size_t rowBytes = SkAlign4(info.minRowBytes());
     SkBitmap bitmap;
     bitmap.allocPixels(info, rowBytes);

@@ -211,8 +211,8 @@ static void test_codec(skiatest::Reporter* r, const char* path, Codec* codec, Sk
 
     {
         // Test decoding to 565
-        SkImageInfo info565 = info.makeColorType(kRGB_565_SkColorType);
-        if (info.alphaType() == kOpaque_SkAlphaType) {
+        SkImageInfo info565 = info.makeColorType(VX_COLOR_TYPE_RGB_565);
+        if (info.alphaType() == VX_ALPHA_TYPE_OPAQUE) {
             // Decoding to 565 should succeed.
             SkBitmap bm565;
             bm565.allocPixels(info565);
@@ -225,7 +225,7 @@ static void test_codec(skiatest::Reporter* r, const char* path, Codec* codec, Sk
                 SkMD5::Digest digest565 = md5(bm565);
 
                 // A request for non-opaque should also succeed.
-                for (auto alpha : { kPremul_SkAlphaType, kUnpremul_SkAlphaType }) {
+                for (auto alpha : { VX_ALPHA_TYPE_PREMULTIPLIED, VX_ALPHA_TYPE_UNPREMULTIPLIED }) {
                     info565 = info565.makeAlphaType(alpha);
                     test_info(r, codec, info565, expectedResult, &digest565);
                 }
@@ -240,7 +240,7 @@ static void test_codec(skiatest::Reporter* r, const char* path, Codec* codec, Sk
         }
     }
 
-    if (codec->getInfo().colorType() == kGray_8_SkColorType) {
+    if (codec->getInfo().colorType() == VX_COLOR_TYPE_GRAY_8) {
         SkImageInfo grayInfo = codec->getInfo();
         SkBitmap grayBm;
         grayBm.allocPixels(grayInfo);
@@ -252,7 +252,7 @@ static void test_codec(skiatest::Reporter* r, const char* path, Codec* codec, Sk
 
         SkMD5::Digest grayDigest = md5(grayBm);
 
-        for (auto alpha : { kPremul_SkAlphaType, kUnpremul_SkAlphaType }) {
+        for (auto alpha : { VX_ALPHA_TYPE_PREMULTIPLIED, VX_ALPHA_TYPE_UNPREMULTIPLIED }) {
             grayInfo = grayInfo.makeAlphaType(alpha);
             test_info(r, codec, grayInfo, expectedResult, &grayDigest);
         }
@@ -266,20 +266,20 @@ static void test_codec(skiatest::Reporter* r, const char* path, Codec* codec, Sk
 
     {
         // Check alpha type conversions
-        if (info.alphaType() == kOpaque_SkAlphaType) {
-            test_info(r, codec, info.makeAlphaType(kUnpremul_SkAlphaType),
+        if (info.alphaType() == VX_ALPHA_TYPE_OPAQUE) {
+            test_info(r, codec, info.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED),
                       expectedResult, digest);
-            test_info(r, codec, info.makeAlphaType(kPremul_SkAlphaType),
+            test_info(r, codec, info.makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED),
                       expectedResult, digest);
         } else {
             // Decoding to opaque should fail
-            test_info(r, codec, info.makeAlphaType(kOpaque_SkAlphaType),
+            test_info(r, codec, info.makeAlphaType(VX_ALPHA_TYPE_OPAQUE),
                       SkCodec::kInvalidConversion, nullptr);
-            SkAlphaType otherAt = info.alphaType();
-            if (kPremul_SkAlphaType == otherAt) {
-                otherAt = kUnpremul_SkAlphaType;
+            vx_alpha_type otherAt = info.alphaType();
+            if (VX_ALPHA_TYPE_PREMULTIPLIED == otherAt) {
+                otherAt = VX_ALPHA_TYPE_UNPREMULTIPLIED;
             } else {
-                otherAt = kPremul_SkAlphaType;
+                otherAt = VX_ALPHA_TYPE_PREMULTIPLIED;
             }
             // The other non-opaque alpha type should always succeed, but not match.
             test_info(r, codec, info.makeAlphaType(otherAt), expectedResult, nullptr);
@@ -521,7 +521,7 @@ static void check(skiatest::Reporter* r,
         return;
     }
 
-    const SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    const SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
 
     // Run tests with this codec.
     SkMD5::Digest codecDigest;
@@ -539,8 +539,8 @@ static void check(skiatest::Reporter* r,
 
 static sk_sp<SkImage> decodeToSkImage(skiatest::Reporter* r,
                                       const char* resourcePath,
-                                      SkColorType dstColorType,
-                                      SkAlphaType dstAlphaType) {
+                                      vx_color_type dstColorType,
+                                      vx_alpha_type dstAlphaType) {
     std::unique_ptr<SkStream> stream(GetResourceAsStream(resourcePath));
     REPORTER_ASSERT(r, !!stream);
     if (!stream) {
@@ -567,11 +567,11 @@ static sk_sp<SkImage> decodeToSkImage(skiatest::Reporter* r,
 
 static std::optional<uint32_t> decodeSingleRawPixelAsUint32(skiatest::Reporter* r,
                                                             const char* resourcePath,
-                                                            SkColorType dstColorType,
-                                                            SkAlphaType dstAlphaType,
+                                                            vx_color_type dstColorType,
+                                                            vx_alpha_type dstAlphaType,
                                                             int x = 0,
                                                             int y = 0) {
-    SkASSERT(dstColorType == kBGRA_8888_SkColorType || dstColorType == kRGBA_8888_SkColorType);
+    SkASSERT(dstColorType == VX_COLOR_TYPE_BGRA_8888 || dstColorType == VX_COLOR_TYPE_RGBA_8888);
     sk_sp<SkImage> image = decodeToSkImage(r, resourcePath, dstColorType, dstAlphaType);
     if (!image) {
         return std::nullopt;  // REPORTER_ASSERT should already fire in `decodeToSkImage`.
@@ -650,8 +650,8 @@ DEF_TEST(Codec_png, r) {
 
 static void verifyFirstFourDecodedBytes(skiatest::Reporter* r,
                                         const char* fileName,
-                                        SkColorType dstColorType,
-                                        SkAlphaType dstAlphaType,
+                                        vx_color_type dstColorType,
+                                        vx_alpha_type dstAlphaType,
                                         std::array<uint8_t, 4> expected) {
     std::string resourcePath = "images/";
     resourcePath += fileName;
@@ -666,20 +666,20 @@ static void verifyFirstFourDecodedBytes(skiatest::Reporter* r,
 
     std::string testName = "";
     switch (dstColorType) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             testName += "RGBA";
             break;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             testName += "BGRA";
             break;
         default:
             SkUNREACHABLE;
     }
     switch (dstAlphaType) {
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             testName += " (premul)";
             break;
-        case kUnpremul_SkAlphaType:
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
             testName += " (premul)";
             break;
         default:
@@ -704,10 +704,10 @@ DEF_TEST(Codec_png_plte_trns, r) {
     // Alpha in `tRNS` chunk is: 64 (i.e. 25% or 0x40)
     //
     // After alpha premultiplication by 25% we should get: R=25, G=38, B=50.
-    t(r, "plte_trns.png", kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, {100, 150, 200, 64});
-    t(r, "plte_trns.png", kBGRA_8888_SkColorType, kUnpremul_SkAlphaType, {200, 150, 100, 64});
-    t(r, "plte_trns.png", kRGBA_8888_SkColorType, kPremul_SkAlphaType, {25, 38, 50, 64});
-    t(r, "plte_trns.png", kBGRA_8888_SkColorType, kPremul_SkAlphaType, {50, 38, 25, 64});
+    t(r, "plte_trns.png", VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, {100, 150, 200, 64});
+    t(r, "plte_trns.png", VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, {200, 150, 100, 64});
+    t(r, "plte_trns.png", VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, {25, 38, 50, 64});
+    t(r, "plte_trns.png", VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, {50, 38, 25, 64});
 }
 
 DEF_TEST(Codec_png_plte_trns_gama, r) {
@@ -719,10 +719,10 @@ DEF_TEST(Codec_png_plte_trns_gama, r) {
     // After `gAMA` transformation we should get: R=161, G=197, B=227.
     //
     // After alpha premultiplication by 25% we should get: R=40, G=49, B=57.
-    t(r, "plte_trns_gama.png", kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, {161, 197, 227, 64});
-    t(r, "plte_trns_gama.png", kBGRA_8888_SkColorType, kUnpremul_SkAlphaType, {227, 197, 161, 64});
-    t(r, "plte_trns_gama.png", kRGBA_8888_SkColorType, kPremul_SkAlphaType, {40, 49, 57, 64});
-    t(r, "plte_trns_gama.png", kBGRA_8888_SkColorType, kPremul_SkAlphaType, {57, 49, 40, 64});
+    t(r, "plte_trns_gama.png", VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, {161, 197, 227, 64});
+    t(r, "plte_trns_gama.png", VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, {227, 197, 161, 64});
+    t(r, "plte_trns_gama.png", VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, {40, 49, 57, 64});
+    t(r, "plte_trns_gama.png", VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, {57, 49, 40, 64});
 }
 
 // Disable RAW tests for Win32.
@@ -790,7 +790,7 @@ static void test_dimensions(skiatest::Reporter* r, const char path[]) {
         SkISize scaledDims = codec->getSampledDimensions(sampleSize);
         SkImageInfo scaledInfo = codec->getInfo()
                 .makeDimensions(scaledDims)
-                .makeColorType(kN32_SkColorType);
+                .makeColorType(VX_COLOR_TYPE_N32);
 
         // Set up for the decode
         size_t rowBytes = scaledDims.width() * sizeof(SkPMColor);
@@ -896,8 +896,8 @@ DEF_TEST(Codec_pngChunkReader, r) {
     SkBitmap bm;
     const int w = 1;
     const int h = 1;
-    const SkImageInfo bmInfo = SkImageInfo::Make(w, h, kRGBA_8888_SkColorType,
-                                                 kUnpremul_SkAlphaType);
+    const SkImageInfo bmInfo = SkImageInfo::Make(w, h, VX_COLOR_TYPE_RGBA_8888,
+                                                 VX_ALPHA_TYPE_UNPREMULTIPLIED);
     bm.setInfo(bmInfo);
     bm.allocPixels();
     bm.eraseColor(SK_ColorBLUE);
@@ -1226,7 +1226,7 @@ static void check_color_xform(skiatest::Reporter* r, const char* path) {
     const int dstHeight = subsetHeight / opts.fSampleSize;
     auto colorSpace = SkColorSpace::MakeRGB(SkNamedTransferFn::k2Dot2, SkNamedGamut::kAdobeRGB);
     SkImageInfo dstInfo = codec->getInfo().makeWH(dstWidth, dstHeight)
-                                          .makeColorType(kN32_SkColorType)
+                                          .makeColorType(VX_COLOR_TYPE_N32)
                                           .makeColorSpace(colorSpace);
 
     size_t rowBytes = dstInfo.minRowBytes();
@@ -1240,23 +1240,23 @@ DEF_TEST(Codec_ColorXform, r) {
     check_color_xform(r, "images/mandrill_512.png");
 }
 
-static bool color_type_match(SkColorType origColorType, SkColorType codecColorType) {
+static bool color_type_match(vx_color_type origColorType, vx_color_type codecColorType) {
     switch (origColorType) {
-        case kRGBA_8888_SkColorType:
-        case kBGRA_8888_SkColorType:
-            return kRGBA_8888_SkColorType == codecColorType ||
-                   kBGRA_8888_SkColorType == codecColorType;
+        case VX_COLOR_TYPE_RGBA_8888:
+        case VX_COLOR_TYPE_BGRA_8888:
+            return VX_COLOR_TYPE_RGBA_8888 == codecColorType ||
+                   VX_COLOR_TYPE_BGRA_8888 == codecColorType;
         default:
             return origColorType == codecColorType;
     }
 }
 
-static bool alpha_type_match(SkAlphaType origAlphaType, SkAlphaType codecAlphaType) {
+static bool alpha_type_match(vx_alpha_type origAlphaType, vx_alpha_type codecAlphaType) {
     switch (origAlphaType) {
-        case kUnpremul_SkAlphaType:
-        case kPremul_SkAlphaType:
-            return kUnpremul_SkAlphaType == codecAlphaType ||
-                    kPremul_SkAlphaType == codecAlphaType;
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
+            return VX_ALPHA_TYPE_UNPREMULTIPLIED == codecAlphaType ||
+                    VX_ALPHA_TYPE_PREMULTIPLIED == codecAlphaType;
         default:
             return origAlphaType == codecAlphaType;
     }
@@ -1287,10 +1287,10 @@ static void check_round_trip(skiatest::Reporter* r, SkCodec* origCodec, const Sk
 DEF_TEST(Codec_pngRoundTrip, r) {
     auto codec = SkCodec::MakeFromStream(GetResourceAsStream("images/mandrill_512_q075.jpg"));
 
-    SkColorType colorTypesOpaque[] = {
-            kRGB_565_SkColorType, kRGBA_8888_SkColorType, kBGRA_8888_SkColorType
+    vx_color_type colorTypesOpaque[] = {
+            VX_COLOR_TYPE_RGB_565, VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_BGRA_8888
     };
-    for (SkColorType colorType : colorTypesOpaque) {
+    for (vx_color_type colorType : colorTypesOpaque) {
         SkImageInfo newInfo = codec->getInfo().makeColorType(colorType);
         check_round_trip(r, codec.get(), newInfo);
     }
@@ -1300,14 +1300,14 @@ DEF_TEST(Codec_pngRoundTrip, r) {
 
     codec = SkCodec::MakeFromStream(GetResourceAsStream("images/yellow_rose.png"));
 
-    SkColorType colorTypesWithAlpha[] = {
-            kRGBA_8888_SkColorType, kBGRA_8888_SkColorType
+    vx_color_type colorTypesWithAlpha[] = {
+            VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_BGRA_8888
     };
-    SkAlphaType alphaTypes[] = {
-            kUnpremul_SkAlphaType, kPremul_SkAlphaType
+    vx_alpha_type alphaTypes[] = {
+            VX_ALPHA_TYPE_UNPREMULTIPLIED, VX_ALPHA_TYPE_PREMULTIPLIED
     };
-    for (SkColorType colorType : colorTypesWithAlpha) {
-        for (SkAlphaType alphaType : alphaTypes) {
+    for (vx_color_type colorType : colorTypesWithAlpha) {
+        for (vx_alpha_type alphaType : alphaTypes) {
             // Set color space to nullptr because color correct premultiplies do not round trip.
             SkImageInfo newInfo = codec->getInfo().makeColorType(colorType)
                                                   .makeAlphaType(alphaType)
@@ -1318,7 +1318,7 @@ DEF_TEST(Codec_pngRoundTrip, r) {
 
     codec = SkCodec::MakeFromStream(GetResourceAsStream("images/index8.png"));
 
-    for (SkAlphaType alphaType : alphaTypes) {
+    for (vx_alpha_type alphaType : alphaTypes) {
         SkImageInfo newInfo = codec->getInfo().makeAlphaType(alphaType)
                                               .makeColorSpace(nullptr);
         check_round_trip(r, codec.get(), newInfo);
@@ -1339,7 +1339,7 @@ static void test_conversion_possible(skiatest::Reporter* r, const char* path,
         return;
     }
 
-    SkImageInfo infoF16 = codec->getInfo().makeColorType(kRGBA_F16_SkColorType);
+    SkImageInfo infoF16 = codec->getInfo().makeColorType(VX_COLOR_TYPE_RGBA_F16);
 
     SkBitmap bm;
     bm.allocPixels(infoF16);
@@ -1388,7 +1388,7 @@ DEF_TEST(Codec_F16ConversionPossible, r) {
 
 static void decode_frame(skiatest::Reporter* r, SkCodec* codec, size_t frame) {
     SkBitmap bm;
-    auto info = codec->getInfo().makeColorType(kN32_SkColorType);
+    auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     bm.allocPixels(info);
 
     SkCodec::Options opts;
@@ -1503,7 +1503,7 @@ DEF_TEST(Codec_fallBack, r) {
             continue;
         }
 
-        SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+        SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
         SkBitmap bm;
         bm.allocPixels(info);
 
@@ -1538,7 +1538,7 @@ static void seek_and_decode(const char* file, std::unique_ptr<SkStream> stream,
     // require a rewind.
     (void) codec->getFrameCount();
 
-    SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap bm;
     bm.allocPixels(info);
     auto result = codec->getPixels(bm.pixmap());
@@ -1577,13 +1577,13 @@ DEF_TEST(Codec_reusePng, r) {
     SkAndroidCodec::AndroidOptions opts;
     opts.fSampleSize = 5;
     auto size = codec->getSampledDimensions(opts.fSampleSize);
-    auto info = codec->getInfo().makeDimensions(size).makeColorType(kN32_SkColorType);
+    auto info = codec->getInfo().makeDimensions(size).makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap bm;
     bm.allocPixels(info);
     auto result = codec->getAndroidPixels(info, bm.getPixels(), bm.rowBytes(), &opts);
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
 
-    info = codec->getInfo().makeColorType(kN32_SkColorType);
+    info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     bm.allocPixels(info);
     opts.fSampleSize = 1;
     result = codec->getAndroidPixels(info, bm.getPixels(), bm.rowBytes(), &opts);
@@ -1604,7 +1604,7 @@ DEF_TEST(Codec_rowsDecoded, r) {
         return;
     }
 
-    auto info = codec->getInfo().makeColorType(kN32_SkColorType);
+    auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap bm;
     bm.allocPixels(info);
     auto result = codec->startIncrementalDecode(info, bm.getPixels(), bm.rowBytes());
@@ -1628,7 +1628,7 @@ static void test_invalid_images(skiatest::Reporter* r, const char* path,
     std::unique_ptr<SkCodec> codec(SkCodec::MakeFromStream(std::move(stream)));
     REPORTER_ASSERT(r, codec);
 
-    test_info(r, codec.get(), codec->getInfo().makeColorType(kN32_SkColorType), expectedResult,
+    test_info(r, codec.get(), codec->getInfo().makeColorType(VX_COLOR_TYPE_N32), expectedResult,
               nullptr);
 }
 
@@ -1757,7 +1757,7 @@ DEF_TEST(Codec_InvalidAnimated, r) {
         return;
     }
 
-    const auto info = codec->getInfo().makeColorType(kN32_SkColorType);
+    const auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap bm;
     bm.allocPixels(info);
 
@@ -1796,7 +1796,7 @@ static sk_sp<SkData> encode_format(const SkPixmap& pixmap, SkEncodedImageFormat 
 static void test_encode_icc(skiatest::Reporter* r, SkEncodedImageFormat format) {
     // Test with sRGB color space.
     SkBitmap srgbBitmap;
-    SkImageInfo srgbInfo = SkImageInfo::MakeS32(1, 1, kOpaque_SkAlphaType);
+    SkImageInfo srgbInfo = SkImageInfo::MakeS32(1, 1, VX_ALPHA_TYPE_OPAQUE);
     srgbBitmap.allocPixels(srgbInfo);
     *srgbBitmap.getAddr32(0, 0) = 0;
     SkPixmap pixmap;
@@ -1937,7 +1937,7 @@ DEF_TEST(Codec_A8, r) {
     }
 
     auto codec = SkCodec::MakeFromData(std::move(data));
-    auto info = codec->getInfo().makeColorType(kAlpha_8_SkColorType);
+    auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_ALPHA_8);
     SkBitmap bm;
     bm.allocPixels(info);
     REPORTER_ASSERT(r, codec->getPixels(bm.pixmap()) == SkCodec::kInvalidConversion);
@@ -1986,7 +1986,7 @@ DEF_TEST(Codec_F16_noColorSpace, r) {
     }
 
     auto codec = SkCodec::MakeFromData(std::move(data));
-    SkImageInfo info = codec->getInfo().makeColorType(kRGBA_F16_SkColorType)
+    SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_RGBA_F16)
                                        .makeColorSpace(nullptr);
     test_info(r, codec.get(), info, SkCodec::kSuccess, nullptr);
 }
@@ -2040,9 +2040,9 @@ DEF_TEST(Codec_kBGR_101010x_XR_SkColorType_supported, r) {
     SkImageInfo srcInfo = SkImageInfo()
             .makeWH(100, 100)
             .makeColorSpace(SkColorSpace::MakeSRGB())
-            .makeColorType(kBGRA_8888_SkColorType)
-            .makeAlphaType(kOpaque_SkAlphaType);
-    SkImageInfo dstInfo = srcInfo.makeColorType(kBGR_101010x_XR_SkColorType);
+            .makeColorType(VX_COLOR_TYPE_BGRA_8888)
+            .makeAlphaType(VX_ALPHA_TYPE_OPAQUE);
+    SkImageInfo dstInfo = srcInfo.makeColorType(VX_COLOR_TYPE_BGR_101010X_XR);
     srcBm.allocPixels(srcInfo);
     sk_sp<SkData> data = SkPngEncoder::Encode(srcBm.pixmap(), {});
     SkASSERT_RELEASE(data != nullptr);
@@ -2166,12 +2166,12 @@ DEF_TEST(Codec_gif_can_preserve_original_data, r) {
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
     REPORTER_ASSERT(r, codec);
 
-    sk_sp<SkImage> image = SkCodecs::DeferredImage(std::move(codec), kPremul_SkAlphaType);
+    sk_sp<SkImage> image = SkCodecs::DeferredImage(std::move(codec), VX_ALPHA_TYPE_PREMULTIPLIED);
     REPORTER_ASSERT(r, image);
     REPORTER_ASSERT(r, image->width() == 320, "width %d != 320", image->width());
     REPORTER_ASSERT(r, image->height() == 240, "height %d != 240", image->height());
     REPORTER_ASSERT(r,
-                    image->alphaType() == kPremul_SkAlphaType,
+                    image->alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED,
                     "AlphaType is wrong %d",
                     image->alphaType());
 
@@ -2199,12 +2199,12 @@ DEF_TEST(Codec_jpeg_can_return_data_from_original_stream, r) {
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
     REPORTER_ASSERT(r, codec);
 
-    sk_sp<SkImage> image = SkCodecs::DeferredImage(std::move(codec), kUnpremul_SkAlphaType);
+    sk_sp<SkImage> image = SkCodecs::DeferredImage(std::move(codec), VX_ALPHA_TYPE_UNPREMULTIPLIED);
     REPORTER_ASSERT(r, image);
     REPORTER_ASSERT(r, image->width() == 180, "width %d != 180", image->width());
     REPORTER_ASSERT(r, image->height() == 180, "height %d != 180", image->height());
     REPORTER_ASSERT(r,
-                    image->alphaType() == kUnpremul_SkAlphaType,
+                    image->alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED,
                     "AlphaType is wrong %d",
                     image->alphaType());
 
@@ -2264,7 +2264,7 @@ DEF_TEST(Codec_bmp_indexed_colorxform, r) {
     REPORTER_ASSERT(r, codec);
 
     // decode to a < 32bpp buffer with a color transform
-    const SkImageInfo decodeInfo = codec->getInfo().makeColorType(kRGB_565_SkColorType)
+    const SkImageInfo decodeInfo = codec->getInfo().makeColorType(VX_COLOR_TYPE_RGB_565)
                                                    .makeColorSpace(SkColorSpace::MakeSRGBLinear());
     SkAutoPixmapStorage aps;
     aps.alloc(decodeInfo);
@@ -2288,8 +2288,8 @@ static SkBitmap make_gradient_bitmap(sk_sp<SkColorSpace> cs) {
     SkPaint gradientPaint;
     gradientPaint.setShader(rainbowShader);
 
-    SkImageInfo info = SkImageInfo::Make(width, height, kRGBA_8888_SkColorType,
-                                         kPremul_SkAlphaType, cs);
+    SkImageInfo info = SkImageInfo::Make(width, height, VX_COLOR_TYPE_RGBA_8888,
+                                         VX_ALPHA_TYPE_PREMULTIPLIED, cs);
     sk_sp<SkSurface> surface = SkSurfaces::Raster(info);
     surface->getCanvas()->drawRect(SkRect::MakeWH(width, height), gradientPaint);
     SkBitmap bmp;
@@ -2545,7 +2545,7 @@ DEF_TEST(LibpngCodec_f16_trc_tables, r) {
     REPORTER_ASSERT(r, info.colorSpace());
 
     // Decoding to F16 without color space conversion.
-    const SkImageInfo dstInfo = info.makeColorType(kRGBA_F16_SkColorType)
+    const SkImageInfo dstInfo = info.makeColorType(VX_COLOR_TYPE_RGBA_F16)
                                     .makeColorSpace(nullptr);
     // This should not crash.
     auto [image, result] = codec->getImage(dstInfo);
@@ -2668,7 +2668,7 @@ DEF_TEST(Codec_Bmp_b511820841, r) {
     }
 
     // Request kRGBA_F16_SkColorType to trigger colorXform() == true on RGBA_F16 decode path.
-    SkImageInfo info = codec->getInfo().makeColorType(kRGBA_F16_SkColorType);
+    SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_RGBA_F16);
 
     // kYes_ZeroInitialized so SkSampler::Fill doesn't attempt to memset unallocated memory.
     SkCodec::Options opts;

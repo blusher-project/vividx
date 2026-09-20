@@ -31,39 +31,39 @@ constexpr DrawTypeFlags kRRectAndNonAARect =
         static_cast<DrawTypeFlags>(DrawTypeFlags::kAnalyticRRect |
                                    DrawTypeFlags::kNonAAFillRect);
 
-static const SkColorInfo kRGBA8Premul(kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
+static const SkColorInfo kRGBA8Premul(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
 
 static const skgpu::graphite::RenderPassProperties kRGBA_1_D_SRGB {
     skgpu::graphite::DepthStencilFlags::kDepth,
-    kRGBA_8888_SkColorType,
+    VX_COLOR_TYPE_RGBA_8888,
     SkColorSpace::MakeSRGB(),
     /* fRequiresMSAA= */ false
 };
 static const skgpu::graphite::RenderPassProperties kRGBA_4_DS_SRGB {
     skgpu::graphite::DepthStencilFlags::kDepthStencil,
-    kRGBA_8888_SkColorType,
+    VX_COLOR_TYPE_RGBA_8888,
     SkColorSpace::MakeSRGB(),
     /* fRequiresMSAA= */ true
 };
 static const skgpu::graphite::RenderPassProperties kRGBA16F_1_D_SRGB {
     skgpu::graphite::DepthStencilFlags::kDepth,
-    kRGBA_F16_SkColorType,
+    VX_COLOR_TYPE_RGBA_F16,
     SkColorSpace::MakeSRGB(),
     /* fRequiresMSAA= */ false
 };
 
-static const SkColorInfo kRGBA8PremulHLG(kRGBA_8888_SkColorType,
-                                         kPremul_SkAlphaType,
+static const SkColorInfo kRGBA8PremulHLG(VX_COLOR_TYPE_RGBA_8888,
+                                         VX_ALPHA_TYPE_PREMULTIPLIED,
                                          SkColorSpace::MakeRGB(SkNamedTransferFn::kHLG,
                                                                SkNamedGamut::kRec2020));
 
-static const SkColorInfo kRGBA8PremulPQ(kRGBA_8888_SkColorType,
-                                        kPremul_SkAlphaType,
+static const SkColorInfo kRGBA8PremulPQ(VX_COLOR_TYPE_RGBA_8888,
+                                        VX_ALPHA_TYPE_PREMULTIPLIED,
                                         SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ,
                                                               SkNamedGamut::kRec2020));
 
-static const SkColorInfo kRGBA8Premul2020(kRGBA_8888_SkColorType,
-                                          kPremul_SkAlphaType,
+static const SkColorInfo kRGBA8Premul2020(VX_COLOR_TYPE_RGBA_8888,
+                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                           SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020_12bit,
                                                                 SkNamedGamut::kRec2020));
 
@@ -117,8 +117,8 @@ sk_sp<PrecompileShader> wrap_in_linear_effect(RuntimeEffectManager& effectManage
 sk_sp<PrecompileShader> wrap_in_MouriMapToneMap(RuntimeEffectManager& effectManager,
                                                 sk_sp<PrecompileShader> img) {
 
-    SkColorInfo luxCI { kRGBA_F16_SkColorType,
-                        kPremul_SkAlphaType,
+    SkColorInfo luxCI { VX_COLOR_TYPE_RGBA_F16,
+                        VX_ALPHA_TYPE_PREMULTIPLIED,
                         SkColorSpace::MakeSRGBLinear() };
     sk_sp<PrecompileShader> lux = PrecompileShaders::Image(
         PrecompileShaders::ImageShaderFlags::kExcludeCubic,

@@ -30,7 +30,7 @@ class BitmapRegionDecoder;
 class BitmapRegionDecoderBench : public Benchmark {
 public:
     // Calls encoded->ref()
-    BitmapRegionDecoderBench(const char* basename, SkData* encoded, SkColorType colorType,
+    BitmapRegionDecoderBench(const char* basename, SkData* encoded, vx_color_type colorType,
             uint32_t sampleSize, const SkIRect& subset);
 
 protected:
@@ -43,7 +43,7 @@ private:
     SkString                                            fName;
     std::unique_ptr<android::skia::BitmapRegionDecoder> fBRD;
     sk_sp<SkData>                                       fData;
-    const SkColorType                                   fColorType;
+    const vx_color_type                                   fColorType;
     const uint32_t                                      fSampleSize;
     const SkIRect                                       fSubset;
     using INHERITED = Benchmark;

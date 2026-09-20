@@ -189,7 +189,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_blend_color
 
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_matrix_colorfilter() {
     sk_sp<SkColorFilter> cf = SkColorFilters::Matrix(
-            SkColorMatrix::RGBtoYUV(SkYUVColorSpace::kJPEG_Full_SkYUVColorSpace));
+            SkColorMatrix::RGBtoYUV(vx_yuv_color_space::VX_YUV_COLOR_SPACE_JPEG_FULL));
     sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::Matrix();
 
     return { cf, o };
@@ -197,7 +197,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_matrix_colo
 
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_hsla_matrix_colorfilter() {
     sk_sp<SkColorFilter> cf = SkColorFilters::HSLAMatrix(
-            SkColorMatrix::RGBtoYUV(SkYUVColorSpace::kJPEG_Full_SkYUVColorSpace));
+            SkColorMatrix::RGBtoYUV(vx_yuv_color_space::VX_YUV_COLOR_SPACE_JPEG_FULL));
     sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::HSLAMatrix();
 
     return { cf, o };
@@ -271,8 +271,8 @@ void check_draw(Context* context,
     {
         // TODO: vary the colorType of the target surface too
         SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                           kRGBA_8888_SkColorType,
-                                           kPremul_SkAlphaType);
+                                           VX_COLOR_TYPE_RGBA_8888,
+                                           VX_ALPHA_TYPE_PREMULTIPLIED);
 
         sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii);
         SkCanvas* canvas = surf->getCanvas();
@@ -306,8 +306,8 @@ sk_sp<DrawContext> get_precompile_draw_context(
     std::unique_ptr<Recorder> drawRecorder = context->makeRecorder();
     ResourceProvider* resourceProvider = drawRecorder->priv().resourceProvider();
     constexpr SkISize drawSize = {128, 128};
-    const SkColorInfo colorInfo = SkColorInfo(kRGBA_8888_SkColorType,
-                                              kPremul_SkAlphaType,
+    const SkColorInfo colorInfo = SkColorInfo(VX_COLOR_TYPE_RGBA_8888,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                               SkColorSpace::MakeSRGB());
     TextureInfo texInfo = caps->getDefaultSampledTextureInfo(colorInfo.colorType(),
                                                              skgpu::Mipmapped::kNo,
@@ -333,7 +333,7 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    SkColorInfo ci = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+    SkColorInfo ci = SkColorInfo(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED,
                                  SkColorSpace::MakeSRGB());
     Layout layout = context->backend() == skgpu::BackendApi::kMetal ? Layout::kMetal
                                                                     : Layout::kStd140;

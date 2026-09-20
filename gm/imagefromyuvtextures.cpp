@@ -70,8 +70,8 @@ protected:
         if (!ToolUtils::GetResourceAsBitmap(name, &bmp)) {
             return {};
         }
-        if (bmp.colorType() != kRGBA_8888_SkColorType) {
-            auto info = bmp.info().makeColorType(kRGBA_8888_SkColorType);
+        if (bmp.colorType() != VX_COLOR_TYPE_RGBA_8888) {
+            auto info = bmp.info().makeColorType(VX_COLOR_TYPE_RGBA_8888);
             SkBitmap copy;
             copy.allocPixels(info);
             SkAssertResult(bmp.readPixels(copy.pixmap()));
@@ -80,7 +80,7 @@ protected:
         SkYUVAPixmapInfo pixmapInfo({bmp.dimensions(),
                                      SkYUVAInfo::PlaneConfig::kY_U_V_A,
                                      SkYUVAInfo::Subsampling::k420,
-                                     kJPEG_Full_SkYUVColorSpace},
+                                     VX_YUV_COLOR_SPACE_JPEG_FULL},
                                     SkYUVAPixmapInfo::DataType::kUnorm8,
                                     nullptr);
         auto pixmaps = SkYUVAPixmaps::Allocate(pixmapInfo);
@@ -167,8 +167,8 @@ protected:
         }
 
         auto resultInfo = SkImageInfo::Make(fLazyYUVImage->dimensions(),
-                                            kRGBA_8888_SkColorType,
-                                            kPremul_SkAlphaType);
+                                            VX_COLOR_TYPE_RGBA_8888,
+                                            VX_ALPHA_TYPE_PREMULTIPLIED);
         sk_sp<SkSurface> resultSurface;
 #if defined(SK_GANESH)
         if (dContext) {

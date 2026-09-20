@@ -236,7 +236,7 @@ DEF_TEST(AnimatedImage_copyOnWrite, r) {
             continue;
         }
 
-        const auto imageInfo = codec->getInfo().makeAlphaType(kPremul_SkAlphaType);
+        const auto imageInfo = codec->getInfo().makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
         const int frameCount = codec->getFrameCount();
         auto androidCodec = SkAndroidCodec::MakeFromCodec(std::move(codec));
         if (!androidCodec) {
@@ -310,7 +310,7 @@ DEF_TEST(AnimatedImage, r) {
         std::vector<SkCodec::FrameInfo> frameInfos = codec->getFrameInfo();
         std::vector<SkBitmap> frames(frameInfos.size());
         // Used down below for our test image.
-        const auto imageInfo = codec->getInfo().makeAlphaType(kPremul_SkAlphaType);
+        const auto imageInfo = codec->getInfo().makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
 
         // Get the repetition count after the codec->getFrameInfo() call above
         // has walked to the end of the encoded image.

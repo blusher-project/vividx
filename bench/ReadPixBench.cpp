@@ -17,12 +17,12 @@
 //
 class ReadPixBench : public Benchmark {
 public:
-    ReadPixBench(SkColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs)
+    ReadPixBench(vx_color_type ct, vx_alpha_type at, sk_sp<SkColorSpace> cs)
         : fCT(ct), fAT(at), fCS(cs)
     {
         fName.printf("readpix_%s_%s_%s",
-                     at == kPremul_SkAlphaType ? "pm" : "um",
-                     ct == kRGBA_8888_SkColorType ? "rgba" : "bgra",
+                     at == VX_ALPHA_TYPE_PREMULTIPLIED ? "pm" : "um",
+                     ct == VX_COLOR_TYPE_RGBA_8888 ? "rgba" : "bgra",
                      cs ? "srgb" : "null");
     }
 
@@ -46,21 +46,21 @@ protected:
     }
 
 private:
-    SkColorType fCT;
-    SkAlphaType fAT;
+    vx_color_type fCT;
+    vx_alpha_type fAT;
     sk_sp<SkColorSpace> fCS;
     SkString fName;
     using INHERITED = Benchmark;
 };
-DEF_BENCH( return new ReadPixBench(kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr); )
-DEF_BENCH( return new ReadPixBench(kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, nullptr); )
-DEF_BENCH( return new ReadPixBench(kRGBA_8888_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB()); )
-DEF_BENCH( return new ReadPixBench(kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, SkColorSpace::MakeSRGB()); )
+DEF_BENCH( return new ReadPixBench(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr); )
+DEF_BENCH( return new ReadPixBench(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr); )
+DEF_BENCH( return new ReadPixBench(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB()); )
+DEF_BENCH( return new ReadPixBench(VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGB()); )
 
-DEF_BENCH( return new ReadPixBench(kBGRA_8888_SkColorType, kPremul_SkAlphaType, nullptr); )
-DEF_BENCH( return new ReadPixBench(kBGRA_8888_SkColorType, kUnpremul_SkAlphaType, nullptr); )
-DEF_BENCH( return new ReadPixBench(kBGRA_8888_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB()); )
-DEF_BENCH( return new ReadPixBench(kBGRA_8888_SkColorType, kUnpremul_SkAlphaType, SkColorSpace::MakeSRGB()); )
+DEF_BENCH( return new ReadPixBench(VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr); )
+DEF_BENCH( return new ReadPixBench(VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr); )
+DEF_BENCH( return new ReadPixBench(VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB()); )
+DEF_BENCH( return new ReadPixBench(VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGB()); )
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -103,15 +103,15 @@ DEF_BENCH( return new PixmapOrientBench(); )
 
 class GetAlphafBench : public Benchmark {
     SkString fName;
-    SkColorType fCT;
+    vx_color_type fCT;
 public:
-    GetAlphafBench(SkColorType ct, const char label[]) : fCT(ct) {
+    GetAlphafBench(vx_color_type ct, const char label[]) : fCT(ct) {
         fName.printf("getalphaf_%s", label);
     }
 
 protected:
     void onDelayedSetup() override {
-        fBM.allocPixels(SkImageInfo::Make(1024, 1024, fCT, kPremul_SkAlphaType));
+        fBM.allocPixels(SkImageInfo::Make(1024, 1024, fCT, VX_ALPHA_TYPE_PREMULTIPLIED));
         fBM.eraseColor(0x88112233);
     }
 
@@ -138,8 +138,8 @@ private:
 
     using INHERITED = Benchmark;
 };
-DEF_BENCH( return new GetAlphafBench(kN32_SkColorType, "rgba"); )
-DEF_BENCH( return new GetAlphafBench(kRGB_888x_SkColorType, "rgbx"); )
-DEF_BENCH( return new GetAlphafBench(kRGBA_F16_SkColorType, "f16"); )
-DEF_BENCH( return new GetAlphafBench(kRGBA_F32_SkColorType, "f32"); )
+DEF_BENCH( return new GetAlphafBench(VX_COLOR_TYPE_N32, "rgba"); )
+DEF_BENCH( return new GetAlphafBench(VX_COLOR_TYPE_RGB_888X, "rgbx"); )
+DEF_BENCH( return new GetAlphafBench(VX_COLOR_TYPE_RGBA_F16, "f16"); )
+DEF_BENCH( return new GetAlphafBench(VX_COLOR_TYPE_RGBA_F32, "f32"); )
 

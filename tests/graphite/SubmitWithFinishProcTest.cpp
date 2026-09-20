@@ -43,7 +43,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SubmitWithFinishProc_PendingComma
     testCtx->syncedSubmit(context);
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    SkImageInfo ii = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = SkSurfaces::RenderTarget(recorder.get(), ii);
     if (!surface) {
         ERRORF(reporter, "Failed to create surface");

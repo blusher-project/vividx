@@ -102,8 +102,8 @@ static void text_blob_cache_inner(skiatest::Reporter* reporter, GrDirectContext*
         GrTextBlobTestingPeer::SetBudget(dContext->priv().getTextBlobCache(), 0);
     }
 
-    SkImageInfo info = SkImageInfo::Make(kWidth, kHeight, kRGBA_8888_SkColorType,
-                                         kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(kWidth, kHeight, VX_COLOR_TYPE_RGBA_8888,
+                                         VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface(SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info, 0, &props));
     REPORTER_ASSERT(reporter, surface);
     if (!surface) {
@@ -171,7 +171,7 @@ static void text_blob_cache_inner(skiatest::Reporter* reporter, GrDirectContext*
     }
 
     // create surface where LCD is impossible
-    info = SkImageInfo::Make(kWidth, kHeight, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    info = SkImageInfo::Make(kWidth, kHeight, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkSurfaceProps propsNoLCD(0, kUnknown_SkPixelGeometry);
     auto surfaceNoLCD(canvas->makeSurface(info, &propsNoLCD));
     REPORTER_ASSERT(reporter, surface);
@@ -305,7 +305,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextBlobIntegerOverflowTest, reporter, ct
                                    CtsEnforcement::kApiLevel_T) {
     auto dContext = ctxInfo.directContext();
     const SkImageInfo info =
-            SkImageInfo::Make(kScreenDim, kScreenDim, kN32_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(kScreenDim, kScreenDim, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
 
     auto blob = make_large_blob();
@@ -330,7 +330,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextBlobJaggedGlyph,
                                        CtsEnforcement::kApiLevel_T) {
     auto direct = ctxInfo.directContext();
     const SkImageInfo info =
-            SkImageInfo::Make(kScreenDim, kScreenDim, kN32_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(kScreenDim, kScreenDim, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = SkSurfaces::RenderTarget(direct, skgpu::Budgeted::kNo, info);
 
     auto blob = make_blob();
@@ -389,7 +389,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TextBlobSmoothScroll,
                                        CtsEnforcement::kApiLevel_T) {
     auto direct = ctxInfo.directContext();
     const SkImageInfo info =
-            SkImageInfo::Make(kScreenDim, kScreenDim, kN32_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(kScreenDim, kScreenDim, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = SkSurfaces::RenderTarget(direct, skgpu::Budgeted::kNo, info);
 
     auto movingBlob = make_blob();

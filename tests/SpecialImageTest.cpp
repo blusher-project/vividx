@@ -52,8 +52,8 @@ static const int kFullSize = kSmallerSize + 2 * kPad;
 
 // Create a bitmap with red in the center and green around it
 static SkBitmap create_bm() {
-    SkImageInfo ii = SkImageInfo::Make(kFullSize, kFullSize, kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(kFullSize, kFullSize, VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap bm;
     bm.allocPixels(ii);
@@ -111,8 +111,8 @@ static void test_image(const sk_sp<SkSpecialImage>& img, skiatest::Reporter* rep
     //--------------
     // Test that draw restricts itself to the subset
     SkImageInfo imageInfo = SkImageInfo::Make(SkISize::Make(kFullSize, kFullSize),
-                                              kN32_SkColorType,
-                                              kPremul_SkAlphaType,
+                                              VX_COLOR_TYPE_N32,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                               sk_ref_sp(img->getColorSpace()));
     sk_sp<SkSurface> surf;
 #if defined(SK_GANESH)
@@ -209,7 +209,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SpecialImage_Gpu,
                                                  SkIRect::MakeWH(kFullSize, kFullSize),
                                                  kNeedNewImageUniqueID_SpecialImage,
                                                  view,
-                                                 {ct, kPremul_SkAlphaType, nullptr},
+                                                 {ct, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr},
                                                  SkSurfaceProps());
 
     const SkIRect& subset = SkIRect::MakeXYWH(kPad, kPad, kSmallerSize, kSmallerSize);
@@ -220,7 +220,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SpecialImage_Gpu,
                                                      subset,
                                                      kNeedNewImageUniqueID_SpecialImage,
                                                      std::move(view),
-                                                     {ct, kPremul_SkAlphaType, nullptr},
+                                                     {ct, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr},
                                                      SkSurfaceProps());
         test_image(subSImg1, reporter, context, true);
     }

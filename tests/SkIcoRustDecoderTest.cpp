@@ -234,7 +234,7 @@ DEF_TEST(RustIcoCodec_getPixels, r) {
         return;
     }
 
-    SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap bitmap;
     bitmap.allocPixels(info);
 
@@ -365,7 +365,7 @@ DEF_TEST(RustIcoCodec_IncrementalDecode_PartialStreaming, r) {
         // were enough to parse the directory. Try to decode - it should fail
         // or return incomplete.
         SkBitmap bitmap;
-        bitmap.allocPixels(codec->getInfo().makeColorType(kN32_SkColorType));
+        bitmap.allocPixels(codec->getInfo().makeColorType(VX_COLOR_TYPE_N32));
         SkCodec::Result decodeResult = codec->getPixels(bitmap.pixmap());
         // The decode might succeed if the initial bytes contained enough data,
         // or fail with incomplete input
@@ -410,7 +410,7 @@ DEF_TEST(RustIcoCodec_IncrementalDecode_API, r) {
         return;
     }
 
-    SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap bitmap;
     bitmap.allocPixels(info);
 

@@ -82,7 +82,7 @@ static void run_test(skiatest::Reporter* reporter,
 
     auto beTexture = context->createBackendTexture(8,
                                                    8,
-                                                   kRGBA_8888_SkColorType,
+                                                   VX_COLOR_TYPE_RGBA_8888,
                                                    Mipmapped::kNo,
                                                    GrRenderable::kYes,
                                                    isProtected);
@@ -92,7 +92,7 @@ static void run_test(skiatest::Reporter* reporter,
     }
 
     auto surface = SkSurfaces::WrapBackendTexture(
-            context, beTexture, origin, 0, kRGBA_8888_SkColorType, nullptr, nullptr);
+            context, beTexture, origin, 0, VX_COLOR_TYPE_RGBA_8888, nullptr, nullptr);
     REPORTER_ASSERT(reporter, surface);
     if (!surface) {
         return;
@@ -114,7 +114,7 @@ static void run_test(skiatest::Reporter* reporter,
     canvas->restore();
 
     SkBitmap bitmap;
-    bitmap.allocPixels(SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bitmap.allocPixels(SkImageInfo::Make(8, 8, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     surface->readPixels(bitmap, 0, 0);
 
     check_pixels(reporter, bitmap, origin);

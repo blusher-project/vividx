@@ -352,7 +352,7 @@ void PrecompileTest(skiatest::Reporter* reporter,
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     const skgpu::graphite::Caps* caps = precompileContext->priv().caps();
 
-    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kBGRA_8888_SkColorType,
+    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_BGRA_8888,
                                                                  skgpu::Mipmapped::kNo,
                                                                  skgpu::Protected::kNo,
                                                                  skgpu::Renderable::kYes);

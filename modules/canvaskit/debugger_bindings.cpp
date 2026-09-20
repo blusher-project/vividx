@@ -62,8 +62,8 @@ uint32_t MinVersion() { return SkPicturePriv::kMin_Version; }
 struct ImageInfoNoColorspace {
     int width;
     int height;
-    SkColorType colorType;
-    SkAlphaType alphaType;
+    vx_color_type colorType;
+    vx_alpha_type alphaType;
 };
 
 // TODO(kjlubick) Should this handle colorspace
@@ -71,7 +71,7 @@ ImageInfoNoColorspace toImageInfoNoColorspace(const SkImageInfo& ii) {
   return (ImageInfoNoColorspace){ii.width(), ii.height(), ii.colorType(), ii.alphaType()};
 }
 
-static sk_sp<SkImage> deserializeImage(sk_sp<SkData> data, std::optional<SkAlphaType> at, void*) {
+static sk_sp<SkImage> deserializeImage(sk_sp<SkData> data, std::optional<enum vx_alpha_type> at, void*) {
   std::unique_ptr<SkCodec> codec = DecodeImageData(std::move(data));
   if (!codec) {
     SkDebugf("Could not decode an image\n");
@@ -395,7 +395,7 @@ class SkpDebugPlayer {
         drawTo(surface, command);
 
         SkColor c;
-        SkImageInfo info = SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kOpaque_SkAlphaType);
+        SkImageInfo info = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE);
         SkPixmap pixmap(info, &c, 4);
         surface->readPixels(pixmap, x, y);
         return c;

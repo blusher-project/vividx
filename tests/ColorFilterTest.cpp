@@ -127,7 +127,7 @@ DEF_TEST(WorkingFormatFilterFlags, r) {
         REPORTER_ASSERT(r, cf->isAlphaUnchanged());
 
         // No working format change will itself change alpha.
-        SkAlphaType unpremul = kUnpremul_SkAlphaType;
+        vx_alpha_type unpremul = VX_ALPHA_TYPE_UNPREMULTIPLIED;
         cf = SkColorFilterPriv::WithWorkingFormat(std::move(cf),
                                                   &SkNamedTransferFn::kLinear,
                                                   &SkNamedGamut::kDisplayP3,
@@ -143,7 +143,7 @@ DEF_TEST(WorkingFormatFilterFlags, r) {
                                                           0,0,0,0,1});
         REPORTER_ASSERT(r, !cf->isAlphaUnchanged());
 
-        SkAlphaType unpremul = kUnpremul_SkAlphaType;
+        vx_alpha_type unpremul = VX_ALPHA_TYPE_UNPREMULTIPLIED;
         cf = SkColorFilterPriv::WithWorkingFormat(std::move(cf),
                                                   &SkNamedTransferFn::kLinear,
                                                   &SkNamedGamut::kDisplayP3,

@@ -39,13 +39,13 @@ static void test_bitmap(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, !shader->isOpaque());
 
     // test 3: explicitly opaque
-    bmp.setAlphaType(kOpaque_SkAlphaType);
+    bmp.setAlphaType(VX_ALPHA_TYPE_OPAQUE);
     shader = bmp.makeShader(SkSamplingOptions());
     REPORTER_ASSERT(reporter, shader);
     REPORTER_ASSERT(reporter, shader->isOpaque());
 
     // test 4: explicitly not opaque
-    bmp.setAlphaType(kPremul_SkAlphaType);
+    bmp.setAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     shader = bmp.makeShader(SkSamplingOptions());
     REPORTER_ASSERT(reporter, shader);
     REPORTER_ASSERT(reporter, !shader->isOpaque());

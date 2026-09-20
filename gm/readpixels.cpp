@@ -37,7 +37,7 @@
 static const int kWidth = 64;
 static const int kHeight = 64;
 
-static sk_sp<SkImage> make_raster_image(SkColorType colorType) {
+static sk_sp<SkImage> make_raster_image(vx_color_type colorType) {
     std::unique_ptr<SkStream> stream(GetResourceAsStream("images/google_chrome.ico"));
     std::unique_ptr<SkCodec> codec = SkCodec::MakeFromStream(std::move(stream));
     if (!codec) {
@@ -46,7 +46,7 @@ static sk_sp<SkImage> make_raster_image(SkColorType colorType) {
 
     SkImageInfo info = codec->getInfo().makeWH(kWidth, kHeight)
                                        .makeColorType(colorType)
-                                       .makeAlphaType(kPremul_SkAlphaType);
+                                       .makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     return std::get<0>(codec->getImage(info));
 }
 
@@ -113,7 +113,7 @@ static sk_sp<SkColorSpace> make_small_gamut() {
 }
 
 static void draw_image(GrDirectContext* dContext, SkCanvas* canvas, SkImage* image,
-                       SkColorType dstColorType, SkAlphaType dstAlphaType,
+                       vx_color_type dstColorType, vx_alpha_type dstAlphaType,
                        sk_sp<SkColorSpace> dstColorSpace, SkImage::CachingHint hint) {
     size_t rowBytes = image->width() * vx_color_type_bytes_per_pixel(dstColorType);
     sk_sp<SkData> data = SkData::MakeUninitialized(rowBytes * image->height());
@@ -139,14 +139,14 @@ protected:
     SkISize getISize() override { return SkISize::Make(6 * kWidth, 9 * kHeight); }
 
     void onDraw(SkCanvas* canvas) override {
-        const SkAlphaType alphaTypes[] = {
-                kUnpremul_SkAlphaType,
-                kPremul_SkAlphaType,
+        const vx_alpha_type alphaTypes[] = {
+                VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                VX_ALPHA_TYPE_PREMULTIPLIED,
         };
-        const SkColorType colorTypes[] = {
-                kRGBA_8888_SkColorType,
-                kBGRA_8888_SkColorType,
-                kRGBA_F16_SkColorType,
+        const vx_color_type colorTypes[] = {
+                VX_COLOR_TYPE_RGBA_8888,
+                VX_COLOR_TYPE_BGRA_8888,
+                VX_COLOR_TYPE_RGBA_F16,
         };
         const sk_sp<SkColorSpace> colorSpaces[] = {
                 make_wide_gamut(),
@@ -155,7 +155,7 @@ protected:
         };
 
         for (const sk_sp<SkColorSpace>& dstColorSpace : colorSpaces) {
-            for (SkColorType srcColorType : colorTypes) {
+            for (vx_color_type srcColorType : colorTypes) {
                 canvas->save();
                 sk_sp<SkImage> image = make_raster_image(srcColorType);
                 if (!image) {
@@ -169,8 +169,8 @@ protected:
                 }
 #endif
                 if (image) {
-                    for (SkColorType dstColorType : colorTypes) {
-                        for (SkAlphaType dstAlphaType : alphaTypes) {
+                    for (vx_color_type dstColorType : colorTypes) {
+                        for (vx_alpha_type dstAlphaType : alphaTypes) {
                             draw_image(dContext, canvas, image.get(), dstColorType, dstAlphaType,
                                        dstColorSpace, SkImage::kAllow_CachingHint);
                             canvas->translate((float)kWidth, 0.0f);
@@ -205,14 +205,14 @@ protected:
             return DrawResult::kSkip;
         }
 
-        const SkAlphaType alphaTypes[] = {
-                kUnpremul_SkAlphaType,
-                kPremul_SkAlphaType,
+        const vx_alpha_type alphaTypes[] = {
+                VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                VX_ALPHA_TYPE_PREMULTIPLIED,
         };
-        const SkColorType colorTypes[] = {
-                kRGBA_8888_SkColorType,
-                kBGRA_8888_SkColorType,
-                kRGBA_F16_SkColorType,
+        const vx_color_type colorTypes[] = {
+                VX_COLOR_TYPE_RGBA_8888,
+                VX_COLOR_TYPE_BGRA_8888,
+                VX_COLOR_TYPE_RGBA_F16,
         };
         const sk_sp<SkColorSpace> colorSpaces[] = {
                 make_wide_gamut(),
@@ -227,8 +227,8 @@ protected:
         sk_sp<SkImage> image = make_codec_image();
         for (const sk_sp<SkColorSpace>& dstColorSpace : colorSpaces) {
             canvas->save();
-            for (SkColorType dstColorType : colorTypes) {
-                for (SkAlphaType dstAlphaType : alphaTypes) {
+            for (vx_color_type dstColorType : colorTypes) {
+                for (vx_alpha_type dstAlphaType : alphaTypes) {
                     for (SkImage::CachingHint hint : hints) {
                         draw_image(nullptr, canvas, image.get(), dstColorType, dstAlphaType,
                                    dstColorSpace, hint);
@@ -268,14 +268,14 @@ protected:
         const sk_sp<SkImage> images[] = {
                 make_picture_image(),
         };
-        const SkAlphaType alphaTypes[] = {
-                kUnpremul_SkAlphaType,
-                kPremul_SkAlphaType,
+        const vx_alpha_type alphaTypes[] = {
+                VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                VX_ALPHA_TYPE_PREMULTIPLIED,
         };
-        const SkColorType colorTypes[] = {
-                kRGBA_8888_SkColorType,
-                kBGRA_8888_SkColorType,
-                kRGBA_F16_SkColorType,
+        const vx_color_type colorTypes[] = {
+                VX_COLOR_TYPE_RGBA_8888,
+                VX_COLOR_TYPE_BGRA_8888,
+                VX_COLOR_TYPE_RGBA_F16,
         };
         const sk_sp<SkColorSpace> colorSpaces[] = {
                 make_wide_gamut(),
@@ -290,8 +290,8 @@ protected:
         for (const sk_sp<SkImage>& image : images) {
             for (const sk_sp<SkColorSpace>& dstColorSpace : colorSpaces) {
                 canvas->save();
-                for (SkColorType dstColorType : colorTypes) {
-                    for (SkAlphaType dstAlphaType : alphaTypes) {
+                for (vx_color_type dstColorType : colorTypes) {
+                    for (vx_alpha_type dstAlphaType : alphaTypes) {
                         for (SkImage::CachingHint hint : hints) {
                             draw_image(nullptr, canvas, image.get(), dstColorType, dstAlphaType,
                                        dstColorSpace, hint);

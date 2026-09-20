@@ -36,8 +36,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SrcSrcOverBatchTest,
     auto ctx = ctxInfo.directContext();
 
     static const int kSize = 8;
-    const SkImageInfo ii = SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType,
-                                             kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_8888,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> surface(SkSurfaces::RenderTarget(
             ctx, skgpu::Budgeted::kNo, ii, 0, kTopLeft_GrSurfaceOrigin, nullptr));

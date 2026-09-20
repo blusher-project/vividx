@@ -408,8 +408,8 @@ static sk_sp<SkDevice> make_device(GrRecordingContext* rContext, const SkImageIn
 
 static sk_sp<SkDevice> create_empty_device(GrRecordingContext* rContext, int widthHeight) {
     const SkImageInfo ii = SkImageInfo::Make({ widthHeight, widthHeight },
-                                             kRGBA_8888_SkColorType,
-                                             kPremul_SkAlphaType);
+                                             VX_COLOR_TYPE_RGBA_8888,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED);
     return make_device(rContext, ii);
 }
 
@@ -1515,7 +1515,7 @@ static void test_xfermode_cropped_input(SkSurface* surf, skiatest::Reporter* rep
     // xfermodeNoFg is a src-over blend between a green image and a transparent black image,
     // so should just be green.
     uint32_t pixel;
-    SkImageInfo info = SkImageInfo::Make(1, 1, kBGRA_8888_SkColorType, kUnpremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     surf->readPixels(info, &pixel, 4, 0, 0);
     REPORTER_ASSERT(reporter, pixel == SK_ColorGREEN);
 
@@ -1569,7 +1569,7 @@ DEF_TEST(ImageFilterNestedSaveLayer, reporter) {
     strokePaint.setStyle(SkPaint::kStroke_Style);
     strokePaint.setColor(SK_ColorRED);
 
-    SkImageInfo info = SkImageInfo::Make(1, 1, kBGRA_8888_SkColorType, kUnpremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     uint32_t pixel;
     temp.readPixels(info, &pixel, 4, 25, 25);
     REPORTER_ASSERT(reporter, pixel == SK_ColorGREEN);
@@ -1750,7 +1750,7 @@ DEF_TEST(ImageFilterImageSourceSerialization, reporter) {
 
     SkDeserialProcs dProcs;
     dProcs.fImageDataProc =
-            [](sk_sp<SkData> data, std::optional<SkAlphaType> alphaType, void*) -> sk_sp<SkImage> {
+            [](sk_sp<SkData> data, std::optional<enum vx_alpha_type> alphaType, void*) -> sk_sp<SkImage> {
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
         std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
         auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
@@ -1913,7 +1913,7 @@ static void test_make_with_filter(
 
 DEF_TEST(ImageFilterMakeWithFilter, reporter) {
     auto createRasterSurface = [](int width, int height) -> sk_sp<SkSurface> {
-        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
+        const SkImageInfo info = SkImageInfo::MakeN32(width, height, VX_ALPHA_TYPE_OPAQUE);
         return SkSurfaces::Raster(info);
     };
 
@@ -1942,7 +1942,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Ganesh,
     GrRecordingContext* rContext = ctxInfo.directContext();
 
     auto createGaneshSurface = [rContext](int width, int height) -> sk_sp<SkSurface> {
-        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kOpaque_SkAlphaType);
+        const SkImageInfo info = SkImageInfo::MakeN32(width, height, VX_ALPHA_TYPE_OPAQUE);
         return SkSurfaces::RenderTarget(
                 rContext, skgpu::Budgeted::kNo, info, 0, kTestSurfaceOrigin, nullptr);
     };
@@ -1976,7 +1976,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_Graphite,
             context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
 
     auto createGraphiteSurface = [r = recorder.get()](int width, int height) -> sk_sp<SkSurface> {
-        const SkImageInfo info = SkImageInfo::MakeN32(width, height, kPremul_SkAlphaType);
+        const SkImageInfo info = SkImageInfo::MakeN32(width, height, VX_ALPHA_TYPE_PREMULTIPLIED);
         return SkSurfaces::RenderTarget(r, info);
     };
 
@@ -2009,7 +2009,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ImageFilterMakeWithFilter_ScratchReuse_
 
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
             recorder.get(),
-            SkImageInfo::Make({16, 8}, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make({16, 8}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
 
     sk_sp<SkImageFilter> filterCyan = SkImageFilters::Shader(SkShaders::Color(SK_ColorCYAN));
     sk_sp<SkImageFilter> filterMagenta = SkImageFilters::Shader(SkShaders::Color(SK_ColorMAGENTA));
@@ -2167,7 +2167,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(XfermodeImageFilterCroppedInput_Gpu,
     sk_sp<SkSurface> surf(SkSurfaces::RenderTarget(
             ctxInfo.directContext(),
             skgpu::Budgeted::kNo,
-            SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType)));
+            SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED)));
 
     test_xfermode_cropped_input(surf.get(), reporter);
 }
@@ -2179,7 +2179,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageFilterBlurLargeImage_Gpu,
     auto surface(SkSurfaces::RenderTarget(
             ctxInfo.directContext(),
             skgpu::Budgeted::kYes,
-            SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType)));
+            SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED)));
     test_large_blur_input(reporter, surface->getCanvas());
 }
 #endif

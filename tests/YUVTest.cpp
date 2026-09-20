@@ -65,9 +65,9 @@ static void codec_yuv(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, numPlanes <= SkYUVAInfo::kMaxPlanes);
     for (int i = 0; i < numPlanes; ++i) {
         const SkImageInfo& planeInfo = yuvaPixmapInfo.planeInfo(i);
-        SkColorType planeCT = planeInfo.colorType();
+        vx_color_type planeCT = planeInfo.colorType();
         REPORTER_ASSERT(reporter, !planeInfo.isEmpty());
-        REPORTER_ASSERT(reporter, planeCT != kUnknown_SkColorType);
+        REPORTER_ASSERT(reporter, planeCT != VX_COLOR_TYPE_UNKNOWN);
         REPORTER_ASSERT(reporter, planeInfo.validRowBytes(yuvaPixmapInfo.rowBytes(i)));
         // Currently all planes must share a data type, gettable as SkYUVAPixmapInfo::dataType().
         auto [numChannels, planeDataType] = SkYUVAPixmapInfo::NumChannelsAndDataType(planeCT);
@@ -76,7 +76,7 @@ static void codec_yuv(skiatest::Reporter* reporter,
     for (int i = numPlanes; i < SkYUVAInfo::kMaxPlanes; ++i) {
         const SkImageInfo& planeInfo = yuvaPixmapInfo.planeInfo(i);
         REPORTER_ASSERT(reporter, planeInfo.dimensions().isEmpty());
-        REPORTER_ASSERT(reporter, planeInfo.colorType() == kUnknown_SkColorType);
+        REPORTER_ASSERT(reporter, planeInfo.colorType() == VX_COLOR_TYPE_UNKNOWN);
         REPORTER_ASSERT(reporter, yuvaPixmapInfo.rowBytes(i) == 0);
     }
 
@@ -100,7 +100,7 @@ DEF_TEST(Jpeg_YUV_Codec, r) {
         return SkYUVAInfo(dims,
                           SkYUVAInfo::PlaneConfig::kY_U_V,
                           subsampling,
-                          kJPEG_Full_SkYUVColorSpace,
+                          VX_YUV_COLOR_SPACE_JPEG_FULL,
                           kTopLeft_SkEncodedOrigin,
                           SkYUVAInfo::Siting::kCentered,
                           SkYUVAInfo::Siting::kCentered);
@@ -210,12 +210,12 @@ DEF_TEST(Jpeg_YUV_Encode, r) {
 // Be sure that the two matrices are inverses of each other
 // (i.e. rgb2yuv and yuv2rgb
 DEF_TEST(YUVMath, reporter) {
-    const SkYUVColorSpace spaces[] = {
-        kJPEG_SkYUVColorSpace,
-        kRec601_SkYUVColorSpace,
-        kRec709_SkYUVColorSpace,
-        kBT2020_SkYUVColorSpace,
-        kIdentity_SkYUVColorSpace,
+    const vx_yuv_color_space spaces[] = {
+        VX_YUV_COLOR_SPACE_JPEG,
+        VX_YUV_COLOR_SPACE_REC601,
+        VX_YUV_COLOR_SPACE_REC709,
+        VX_YUV_COLOR_SPACE_BT2020,
+        VX_YUV_COLOR_SPACE_IDENTITY,
     };
 
     // Not sure what the theoretical precision we can hope for is, so pick a big value that

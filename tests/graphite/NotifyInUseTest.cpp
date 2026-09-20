@@ -34,7 +34,7 @@ bool colors_are_similar(SkColor c1, SkColor c2, int tolerance) {
 
 bool layer_test(SkBitmap& bitmap, Context* context, SkBlendMode blendMode) {
     auto recorder = context->makeRecorder();
-    SkImageInfo info = SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info);
     SkCanvas* canvas = surface->getCanvas();
 

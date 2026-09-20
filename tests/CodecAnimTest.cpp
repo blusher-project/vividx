@@ -54,7 +54,7 @@ DEF_TEST(Codec_565, r) {
     }
     std::unique_ptr<SkCodec> codec(SkCodec::MakeFromData(std::move(data)));
     REPORTER_ASSERT(r, codec);
-    auto info = codec->getInfo().makeColorType(kRGB_565_SkColorType);
+    auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_RGB_565);
     SkBitmap bm;
     bm.allocPixels(info);
 
@@ -98,8 +98,8 @@ void reporter_assert_equals(skiatest::Reporter* r, const char* name, int i, cons
 
 DEF_TEST(Codec_frames, r) {
     constexpr int kNoFrame = SkCodec::kNoFrame;
-    constexpr SkAlphaType kOpaque = kOpaque_SkAlphaType;
-    constexpr SkAlphaType kUnpremul = kUnpremul_SkAlphaType;
+    constexpr vx_alpha_type kOpaque = VX_ALPHA_TYPE_OPAQUE;
+    constexpr vx_alpha_type kUnpremul = VX_ALPHA_TYPE_UNPREMULTIPLIED;
     constexpr SkCodecAnimation::DisposalMethod kKeep =
             SkCodecAnimation::DisposalMethod::kKeep;
     constexpr SkCodecAnimation::DisposalMethod kRestoreBG =
@@ -116,7 +116,7 @@ DEF_TEST(Codec_frames, r) {
         // independent.
         std::vector<int>                              fRequiredFrames;
         // Same, since the first frame should match getInfo
-        std::vector<SkAlphaType>                      fAlphas;
+        std::vector<vx_alpha_type>                      fAlphas;
         // The size of this one should match fFrameCount for animated, empty
         // otherwise.
         std::vector<int>                              fDurations;
@@ -377,11 +377,11 @@ DEF_TEST(Codec_frames, r) {
                            rec.fName, i, rec.fDurations[i], frameInfo.fDuration);
                 }
 
-                auto to_string = [](SkAlphaType alpha) {
+                auto to_string = [](vx_alpha_type alpha) {
                     switch (alpha) {
-                        case kUnpremul_SkAlphaType:
+                        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                             return "unpremul";
-                        case kOpaque_SkAlphaType:
+                        case VX_ALPHA_TYPE_OPAQUE:
                             return "opaque";
                         default:
                             SkASSERT(false);
@@ -429,7 +429,7 @@ DEF_TEST(Codec_frames, r) {
             //   frame.
             // All should look the same.
             std::vector<SkBitmap> cachedFrames(frameCount);
-            const auto info = codec->getInfo().makeColorType(kN32_SkColorType);
+            const auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
 
             auto decode = [&](SkBitmap* bm, int index, int cachedIndex) {
                 auto decodeInfo = info;
@@ -440,7 +440,7 @@ DEF_TEST(Codec_frames, r) {
                 if (cachedIndex != SkCodec::kNoFrame) {
                     // First copy the pixels from the cached frame
                     const bool success =
-                            ToolUtils::copy_to(bm, kN32_SkColorType, cachedFrames[cachedIndex]);
+                            ToolUtils::copy_to(bm, VX_COLOR_TYPE_N32, cachedFrames[cachedIndex]);
                     REPORTER_ASSERT(r, success);
                 }
                 SkCodec::Options opts;
@@ -528,7 +528,7 @@ static void test_animated_AndroidCodec(skiatest::Reporter* r, const char* file) 
         return;
     }
 
-    auto info = codec->getInfo().makeAlphaType(kPremul_SkAlphaType);
+    auto info = codec->getInfo().makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
 
     for (int sampleSize : { 8, 32, 100 }) {
         auto dimensions = codec->codec()->getScaledDimensions(1.0f / sampleSize);

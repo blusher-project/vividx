@@ -281,7 +281,7 @@ static void invalidation_test(GrDirectContext* dContext,
     sk_sp<SkImage> rasterImg;
 
     {
-        SkImageInfo ii = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kOpaque_SkAlphaType);
+        SkImageInfo ii = SkImageInfo::Make(64, 64, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE);
 
         SkBitmap bm;
         bm.allocPixels(ii);

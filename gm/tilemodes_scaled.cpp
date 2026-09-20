@@ -35,8 +35,8 @@ const SkSamplingOptions gSamplings[] = {
     SkSamplingOptions::Aniso(16),
 };
 
-static void makebm(SkBitmap* bm, SkColorType ct, int w, int h) {
-    bm->allocPixels(SkImageInfo::Make(w, h, ct, kPremul_SkAlphaType));
+static void makebm(SkBitmap* bm, vx_color_type ct, int w, int h) {
+    bm->allocPixels(SkImageInfo::Make(w, h, ct, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm->eraseColor(SK_ColorTRANSPARENT);
 
     SkCanvas    canvas(*bm);
@@ -55,9 +55,9 @@ static void setup(SkPaint* paint, const SkBitmap& bm, const SkSamplingOptions& s
     paint->setShader(bm.makeShader(tmx, tmy, sampling));
 }
 
-constexpr SkColorType gColorTypes[] = {
-    kN32_SkColorType,
-    kRGB_565_SkColorType,
+constexpr vx_color_type gColorTypes[] = {
+    VX_COLOR_TYPE_N32,
+    VX_COLOR_TYPE_RGB_565,
 };
 
 class ScaledTilingGM : public skiagm::GM {
@@ -166,7 +166,7 @@ constexpr int gHeight = 32;
 
 static sk_sp<SkShader> make_bm(SkTileMode tx, SkTileMode ty) {
     SkBitmap bm;
-    makebm(&bm, kN32_SkColorType, gWidth, gHeight);
+    makebm(&bm, VX_COLOR_TYPE_N32, gWidth, gHeight);
     return bm.makeShader(tx, ty, SkSamplingOptions());
 }
 

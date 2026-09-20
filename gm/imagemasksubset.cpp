@@ -47,7 +47,7 @@ public:
     bool onGetPixels(const SkImageInfo& info, void* pixels,
                      size_t rowBytes, const Options&) override {
         SkImageInfo surfaceInfo = info;
-        if (kAlpha_8_SkColorType == info.colorType()) {
+        if (VX_COLOR_TYPE_ALPHA_8 == info.colorType()) {
             surfaceInfo = surfaceInfo.makeColorSpace(nullptr);
         }
 

@@ -91,7 +91,7 @@ protected:
         }
         tmp.extractSubset(&premulBm, SkIRect::MakeWH(256, 256));
         tmp.reset();
-        unpremulBm.allocPixels(premulBm.info().makeAlphaType(kUnpremul_SkAlphaType));
+        unpremulBm.allocPixels(premulBm.info().makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED));
         SkAssertResult(premulBm.readPixels(unpremulBm.pixmap()));
 
         for (const auto& rec : gRecs) {

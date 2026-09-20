@@ -57,7 +57,7 @@ protected:
             return DrawResult::kFail;
         }
         fStorage.reset(srcImg->width() * srcImg->height() *
-                vx_color_type_bytes_per_pixel(kRGBA_F16_SkColorType));
+                vx_color_type_bytes_per_pixel(VX_COLOR_TYPE_RGBA_F16));
 
         SkPixmap src;
         SkImageInfo info = SkImageInfo::MakeN32Premul(srcImg->width(), srcImg->height(),
@@ -71,7 +71,7 @@ protected:
         canvas->drawImage(img1, 0.0f, 100.0f);
 
         // Encode 8888 unpremul
-        info = info.makeAlphaType(kUnpremul_SkAlphaType);
+        info = info.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
         read_into_pixmap(&src, info, fStorage.get(), srcImg);
         img0 = encode_pixmap_and_make_image(src, SkJpegEncoder::AlphaOption::kIgnore);
         img1 = encode_pixmap_and_make_image(src, SkJpegEncoder::AlphaOption::kBlendOnBlack);
@@ -79,8 +79,8 @@ protected:
         canvas->drawImage(img1, 100.0f, 100.0f);
 
         // Encode F16 premul
-        info = SkImageInfo::Make(srcImg->width(), srcImg->height(), kRGBA_F16_SkColorType,
-                kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+        info = SkImageInfo::Make(srcImg->width(), srcImg->height(), VX_COLOR_TYPE_RGBA_F16,
+                VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB());
         read_into_pixmap(&src, info, fStorage.get(), srcImg);
         img0 = encode_pixmap_and_make_image(src, SkJpegEncoder::AlphaOption::kIgnore);
         img1 = encode_pixmap_and_make_image(src, SkJpegEncoder::AlphaOption::kBlendOnBlack);
@@ -88,7 +88,7 @@ protected:
         canvas->drawImage(img1, 200.0f, 100.0f);
 
         // Encode F16 unpremul
-        info = info.makeAlphaType(kUnpremul_SkAlphaType);
+        info = info.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
         read_into_pixmap(&src, info, fStorage.get(), srcImg);
         img0 = encode_pixmap_and_make_image(src, SkJpegEncoder::AlphaOption::kIgnore);
         img1 = encode_pixmap_and_make_image(src, SkJpegEncoder::AlphaOption::kBlendOnBlack);

@@ -218,7 +218,7 @@ void setup_test_context(Context* context,
 
     TextureInfo textureInfo[4];
     for (int i = 0; i < 4; ++i) {
-        textureInfo[i] = caps->getDefaultSampledTextureInfo(kAlpha_8_SkColorType,
+        textureInfo[i] = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_ALPHA_8,
                                                             skgpu::Mipmapped::kNo,
                                                             isProtected,
                                                             skgpu::Renderable::kYes);
@@ -252,7 +252,7 @@ void setup_test_context(Context* context,
     SkYUVAInfo yuvaInfo(dimensions,
                         SkYUVAInfo::PlaneConfig::kY_U_V_A,
                         SkYUVAInfo::Subsampling::k444,
-                        kJPEG_Full_SkYUVColorSpace);
+                        VX_YUV_COLOR_SPACE_JPEG_FULL);
     YUVABackendTextureInfo yuvaBackendInfo(yuvaInfo,
                                            textureInfo,
                                            skgpu::Mipmapped::kNo);
@@ -269,8 +269,8 @@ void setup_test_context(Context* context,
 
     SkImageInfo ii = SkImageInfo::Make(dimensions.fWidth,
                                        dimensions.fHeight,
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
     testCtx->fSurface = SkSurfaces::RenderTarget(testCtx->fRecorder.get(), ii);
 }
 

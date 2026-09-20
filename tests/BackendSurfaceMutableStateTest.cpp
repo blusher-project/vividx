@@ -89,8 +89,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest,
     sk_sp<SkImage> wrappedImage = SkImages::BorrowTextureFrom(dContext,
                                                               backendTex,
                                                               kTopLeft_GrSurfaceOrigin,
-                                                              kRGBA_8888_SkColorType,
-                                                              kPremul_SkAlphaType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
+                                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                                               nullptr);
 
     GrSurfaceProxy* proxy = sk_gpu_test::GetTextureImageProxy(wrappedImage.get(), dContext);

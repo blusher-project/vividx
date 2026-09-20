@@ -72,7 +72,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLTextureParameters,
 
     GrBackendTexture backendTex = dContext->createBackendTexture(1,
                                                                  1,
-                                                                 kRGBA_8888_SkColorType,
+                                                                 VX_COLOR_TYPE_RGBA_8888,
                                                                  skgpu::Mipmapped::kNo,
                                                                  GrRenderable::kNo,
                                                                  GrProtected::kNo);
@@ -87,8 +87,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLTextureParameters,
     sk_sp<SkImage> wrappedImage = SkImages::BorrowTextureFrom(dContext,
                                                               backendTex,
                                                               kTopLeft_GrSurfaceOrigin,
-                                                              kRGBA_8888_SkColorType,
-                                                              kPremul_SkAlphaType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
+                                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                                               nullptr);
     REPORTER_ASSERT(reporter, wrappedImage);
 
@@ -107,7 +107,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLTextureParameters,
     auto surf = SkSurfaces::RenderTarget(
             dContext,
             skgpu::Budgeted::kYes,
-            SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+            SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
             1,
             nullptr);
     REPORTER_ASSERT(reporter, surf);

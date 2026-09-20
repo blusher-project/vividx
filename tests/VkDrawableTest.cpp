@@ -257,8 +257,8 @@ void draw_drawable_test(skiatest::Reporter* reporter,
                         GrDirectContext* childDContext) {
     GrVkGpu* gpu = static_cast<GrVkGpu*>(dContext->priv().getGpu());
 
-    const SkImageInfo ii = SkImageInfo::Make(DEV_W, DEV_H, kRGBA_8888_SkColorType,
-                                             kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(DEV_W, DEV_H, VX_COLOR_TYPE_RGBA_8888,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface(SkSurfaces::RenderTarget(
             dContext, skgpu::Budgeted::kNo, ii, 0, kTopLeft_GrSurfaceOrigin, nullptr));
     SkCanvas* canvas = surface->getCanvas();

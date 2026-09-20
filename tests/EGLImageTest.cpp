@@ -121,7 +121,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(EGLImageTest, reporter, ctxInfo, CtsEnforcement::
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(context1.get(),
                                                                     kSize,
                                                                     kSize,
-                                                                    kRGBA_8888_SkColorType,
+                                                                    VX_COLOR_TYPE_RGBA_8888,
                                                                     skgpu::Mipmapped::kNo,
                                                                     GrRenderable::kNo,
                                                                     GrProtected::kNo);
@@ -191,7 +191,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(EGLImageTest, reporter, ctxInfo, CtsEnforcement::
     GrBackendTexture backendTex =
             GrBackendTextures::MakeGL(kSize, kSize, skgpu::Mipmapped::kNo, externalTexture);
 
-    GrColorInfo colorInfo(GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr);
+    GrColorInfo colorInfo(GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
     // TODO: If I make this TopLeft origin to match resolve_origin calls for kDefault, this test
     // fails on the Nexus5. Why?
     GrSurfaceOrigin origin = kBottomLeft_GrSurfaceOrigin;

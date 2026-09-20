@@ -252,8 +252,8 @@ SkRRect ptrToSkRRect(WASMPointerF32 fPtr) {
 struct SimpleImageInfo {
     int width;
     int height;
-    SkColorType colorType;
-    SkAlphaType alphaType;
+    vx_color_type colorType;
+    vx_alpha_type alphaType;
     sk_sp<SkColorSpace> colorSpace;
 };
 
@@ -272,14 +272,14 @@ SkImageInfo toSkImageInfo(const SimpleImageInfo& sii) {
 struct ColorSettings {
     ColorSettings(sk_sp<SkColorSpace> colorSpace) {
         if (colorSpace == nullptr || colorSpace->isSRGB()) {
-            colorType = kRGBA_8888_SkColorType;
+            colorType = VX_COLOR_TYPE_RGBA_8888;
             pixFormat = GR_GL_RGBA8;
         } else {
-            colorType = kRGBA_F16_SkColorType;
+            colorType = VX_COLOR_TYPE_RGBA_F16;
             pixFormat = GR_GL_RGBA16F;
         }
     }
-    SkColorType colorType;
+    vx_color_type colorType;
     GrGLenum pixFormat;
 };
 
@@ -341,7 +341,7 @@ sk_sp<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext,
 
 sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, int width, int height) {
     SkImageInfo info = SkImageInfo::MakeN32(
-            width, height, SkAlphaType::kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+            width, height, vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB());
 
     sk_sp<SkSurface> surface(SkSurfaces::RenderTarget(dContext.get(),
                                                       skgpu::Budgeted::kYes,
@@ -402,7 +402,7 @@ sk_sp<SkSurface> MakeGPUTextureSurface(sk_sp<GrDirectContext> dContext,
             target,
             kTopLeft_GrSurfaceOrigin,
             sampleCount,
-            colorSpace->isSRGB() ? kRGBA_8888_SkColorType : kRGBA_F16_SkColorType,
+            colorSpace->isSRGB() ? VX_COLOR_TYPE_RGBA_8888 : VX_COLOR_TYPE_RGBA_F16,
             colorSpace,
             nullptr);
 }
@@ -1067,13 +1067,13 @@ static Uint8Array encodeImage(GrDirectContext* dContext,
     return toBytes(data);
 }
 
-static bool supported_for_gradients(SkColorType ct) {
-    return ct == SkColorType::kRGBA_8888_SkColorType || ct == SkColorType::kRGBA_F32_SkColorType;
+static bool supported_for_gradients(vx_color_type ct) {
+    return ct == vx_color_type::VX_COLOR_TYPE_RGBA_8888 || ct == vx_color_type::VX_COLOR_TYPE_RGBA_F32;
 }
 
 struct GradientBuilder {
     GradientBuilder(WASMPointerF32 cPtr,
-                    SkColorType colorType,
+                    vx_color_type colorType,
                     WASMPointerF32 pPtr,
                     size_t count,
                     SkTileMode mode,
@@ -1086,7 +1086,7 @@ struct GradientBuilder {
         const float* positions = reinterpret_cast<const float*>(pPtr);
         const SkColor4f* colors;
 
-        if (colorType == SkColorType::kRGBA_8888_SkColorType) {
+        if (colorType == vx_color_type::VX_COLOR_TYPE_RGBA_8888) {
             const SkColor* c32 = reinterpret_cast<const SkColor*>(cPtr);
             fC4Storage.resize(count);
             std::transform(c32, c32 + count, fC4Storage.begin(), [](SkColor c) {
@@ -1228,7 +1228,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
                  SkDeserialProcs dProcs;
                  dProcs.fImageDataProc = [](sk_sp<SkData> bytes,
-                                            std::optional<SkAlphaType> at,
+                                            std::optional<enum vx_alpha_type> at,
                                             void*) -> sk_sp<SkImage> {
                      auto codec = DecodeImageData(bytes);
                      if (codec == nullptr) {
@@ -2588,7 +2588,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                     "_MakeLinearGradient",
                     optional_override([](WASMPointerF32 fourFloatsPtr,
                                          WASMPointerF32 cPtr,
-                                         SkColorType colorType,
+                                         vx_color_type colorType,
                                          WASMPointerF32 pPtr,
                                          int count,
                                          SkTileMode mode,
@@ -2611,7 +2611,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                          float cy,
                                          float radius,
                                          WASMPointerF32 cPtr,
-                                         SkColorType colorType,
+                                         vx_color_type colorType,
                                          WASMPointerF32 pPtr,
                                          int count,
                                          SkTileMode mode,
@@ -2633,7 +2633,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                     optional_override([](float cx,
                                          float cy,
                                          WASMPointerF32 cPtr,
-                                         SkColorType colorType,
+                                         vx_color_type colorType,
                                          WASMPointerF32 pPtr,
                                          int count,
                                          SkTileMode mode,
@@ -2671,7 +2671,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                          float startRadius,
                                          float endRadius,
                                          WASMPointerF32 cPtr,
-                                         SkColorType colorType,
+                                         vx_color_type colorType,
                                          WASMPointerF32 pPtr,
                                          int count,
                                          SkTileMode mode,
@@ -3081,10 +3081,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
                           return reinterpret_cast<WASMPointerF32>(self.texCoords());
                       }));
 
-    enum_<SkAlphaType>("AlphaType")
-            .value("Opaque", SkAlphaType::kOpaque_SkAlphaType)
-            .value("Premul", SkAlphaType::kPremul_SkAlphaType)
-            .value("Unpremul", SkAlphaType::kUnpremul_SkAlphaType);
+    enum_<vx_alpha_type>("AlphaType")
+            .value("Opaque", vx_alpha_type::VX_ALPHA_TYPE_OPAQUE)
+            .value("Premul", vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED)
+            .value("Unpremul", vx_alpha_type::VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     enum_<SkBlendMode>("BlendMode")
             .value("Clear", SkBlendMode::kClear)
@@ -3133,17 +3133,17 @@ EMSCRIPTEN_BINDINGS(Skia) {
             .value("Blue", VX_COLOR_CHANNEL_B)
             .value("Alpha", VX_COLOR_CHANNEL_A);
 
-    enum_<SkColorType>("ColorType")
-            .value("Alpha_8", SkColorType::kAlpha_8_SkColorType)
-            .value("RGB_565", SkColorType::kRGB_565_SkColorType)
-            .value("RGBA_8888", SkColorType::kRGBA_8888_SkColorType)
-            .value("BGRA_8888", SkColorType::kBGRA_8888_SkColorType)
-            .value("RGBA_1010102", SkColorType::kRGBA_1010102_SkColorType)
-            .value("RGB_101010x", SkColorType::kRGB_101010x_SkColorType)
-            .value("Gray_8", SkColorType::kGray_8_SkColorType)
-            .value("RGBA_F16", SkColorType::kRGBA_F16_SkColorType)
-            .value("RGB_F16F16F16x", SkColorType::kRGB_F16F16F16x_SkColorType)
-            .value("RGBA_F32", SkColorType::kRGBA_F32_SkColorType);
+    enum_<vx_color_type>("ColorType")
+            .value("Alpha_8", vx_color_type::VX_COLOR_TYPE_ALPHA_8)
+            .value("RGB_565", vx_color_type::VX_COLOR_TYPE_RGB_565)
+            .value("RGBA_8888", vx_color_type::VX_COLOR_TYPE_RGBA_8888)
+            .value("BGRA_8888", vx_color_type::VX_COLOR_TYPE_BGRA_8888)
+            .value("RGBA_1010102", vx_color_type::VX_COLOR_TYPE_RGBA_1010102)
+            .value("RGB_101010x", vx_color_type::VX_COLOR_TYPE_RGB_101010X)
+            .value("Gray_8", vx_color_type::VX_COLOR_TYPE_GRAY_8)
+            .value("RGBA_F16", vx_color_type::VX_COLOR_TYPE_RGBA_F16)
+            .value("RGB_F16F16F16x", vx_color_type::VX_COLOR_TYPE_RGB_F16F16F16X)
+            .value("RGBA_F32", vx_color_type::VX_COLOR_TYPE_RGBA_F32);
 
     enum_<SkPathFillType>("FillType")
             .value("Winding", SkPathFillType::kWinding)

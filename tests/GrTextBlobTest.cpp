@@ -57,7 +57,7 @@ SkBitmap rasterize_blob(SkTextBlob* blob,
                         GrRecordingContext* rContext,
                         const SkMatrix& matrix) {
     const SkImageInfo info =
-            SkImageInfo::Make(500, 500, kN32_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(500, 500, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = SkSurfaces::RenderTarget(rContext, skgpu::Budgeted::kNo, info);
     auto canvas = surface->getCanvas();
     canvas->drawColor(SK_ColorWHITE);
@@ -137,7 +137,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrTextBlobMoveAround,
     auto rasterizeBlob = [&](SkTextBlob* blob, SkPoint origin, const SkMatrix& matrix) {
         SkPaint paint;
         const SkImageInfo info =
-                SkImageInfo::Make(350, 80, kN32_SkColorType, kPremul_SkAlphaType);
+                SkImageInfo::Make(350, 80, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
         auto surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
         auto canvas = surface->getCanvas();
         canvas->drawColor(SK_ColorWHITE);

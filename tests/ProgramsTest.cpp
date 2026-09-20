@@ -291,7 +291,7 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
                                                 GrInternalSurfaceFlags::kNone);
         skgpu::Swizzle swizzle = caps->getReadSwizzle(format, GrColorType::kRGBA_8888);
         views[0] = {{std::move(proxy), kBottomLeft_GrSurfaceOrigin, swizzle},
-                    GrColorType::kRGBA_8888, kPremul_SkAlphaType};
+                    GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED};
     }
     {
         static constexpr SkISize kDims = {16, 22};
@@ -309,7 +309,7 @@ bool GrDrawingManager::ProgramUnitTest(GrDirectContext* direct, int maxStages, i
                                                 GrInternalSurfaceFlags::kNone);
         skgpu::Swizzle swizzle = caps->getReadSwizzle(format, GrColorType::kAlpha_8);
         views[1] = {{std::move(proxy), kTopLeft_GrSurfaceOrigin, swizzle},
-                      GrColorType::kAlpha_8, kPremul_SkAlphaType};
+                      GrColorType::kAlpha_8, VX_ALPHA_TYPE_PREMULTIPLIED};
     }
 
     if (!std::get<0>(views[0]) || !std::get<0>(views[1])) {

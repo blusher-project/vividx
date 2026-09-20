@@ -59,7 +59,7 @@ static bool surface_is_expected_color(SkSurface* surf, const SkImageInfo& ii, Sk
 
 static void basic_test(skiatest::Reporter* reporter, GrRecordingContext* rContext) {
     skiatest::ReporterContext subtest(reporter, "basic_test");
-    const SkImageInfo ii = SkImageInfo::Make(64, 64, kN32_SkColorType, kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(64, 64, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap bm;
     bm.allocPixels(ii);
@@ -111,7 +111,7 @@ static void basic_test(skiatest::Reporter* reporter, GrRecordingContext* rContex
 // Deleting the context while there are still pinned images shouldn't result in a crash.
 static void cleanup_test(skiatest::Reporter* reporter) {
     skiatest::ReporterContext subtest(reporter, "cleanup_test");
-    const SkImageInfo ii = SkImageInfo::Make(64, 64, kN32_SkColorType, kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(64, 64, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap bm;
     bm.allocPixels(ii);
@@ -168,7 +168,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PinnedImageTest_AsGaneshView,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
     GrRecordingContext* rContext = ctxInfo.directContext();
-    const SkImageInfo ii = SkImageInfo::Make(64, 64, kN32_SkColorType, kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(64, 64, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap bm;
     bm.allocPixels(ii);
@@ -199,7 +199,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PinnedImageTest_AsFragmentProcessor,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
     GrDirectContext* dContext = ctxInfo.directContext();
-    const SkImageInfo ii = SkImageInfo::Make(64, 64, kN32_SkColorType, kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(64, 64, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap bm;
     bm.allocPixels(ii);

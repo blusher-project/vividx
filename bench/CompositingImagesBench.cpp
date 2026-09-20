@@ -98,8 +98,8 @@ protected:
     void onPerCanvasPreDraw(SkCanvas* canvas) override {
         // Use image size, which may be larger than the tile size (emulating how Chrome specifies
         // their tiles).
-        auto ii = SkImageInfo::Make(fImageSize.fWidth, fImageSize.fHeight, kRGBA_8888_SkColorType,
-                                    kPremul_SkAlphaType, nullptr);
+        auto ii = SkImageInfo::Make(fImageSize.fWidth, fImageSize.fHeight, VX_COLOR_TYPE_RGBA_8888,
+                                    VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
         SkRandom random;
         int numImages = fLayerCnt * fTileGridSize.fWidth * fTileGridSize.fHeight;
         fImages = std::make_unique<sk_sp<SkImage>[]>(numImages);

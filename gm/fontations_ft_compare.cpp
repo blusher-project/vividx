@@ -249,8 +249,8 @@ protected:
                             SkImageInfo canvasImageInfo = drawCanvas->imageInfo();
                             SkImageInfo diffImageInfo =
                                     SkImageInfo::Make(pixelDimensions,
-                                                      SkColorType::kN32_SkColorType,
-                                                      SkAlphaType::kUnpremul_SkAlphaType);
+                                                      vx_color_type::VX_COLOR_TYPE_N32,
+                                                      vx_alpha_type::VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
                             SkBitmap diffBitmap, highlightDiffBitmap;
                             diffBitmap.allocPixels(diffImageInfo, 0);

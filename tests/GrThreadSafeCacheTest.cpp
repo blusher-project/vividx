@@ -95,7 +95,7 @@ static constexpr auto kImageOrigin = kBottomLeft_GrSurfaceOrigin;
 static constexpr int kNoID = -1;
 
 static SkImageInfo default_ii(int wh) {
-    return SkImageInfo::Make(wh, wh, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    return SkImageInfo::Make(wh, wh, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 }
 
 static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> new_SDC(GrRecordingContext* rContext,
@@ -249,7 +249,7 @@ public:
 
         sdc->drawTexture(nullptr,
                          view,
-                         kPremul_SkAlphaType,
+                         VX_ALPHA_TYPE_PREMULTIPLIED,
                          GrSamplerState::Filter::kNearest,
                          GrSamplerState::MipmapMode::kNone,
                          SkBlendMode::kSrcOver,
@@ -443,7 +443,7 @@ public:
     }
 
     size_t gpuSize(int wh) const {
-        GrBackendFormat format = fDContext->defaultBackendFormat(kRGBA_8888_SkColorType,
+        GrBackendFormat format = fDContext->defaultBackendFormat(VX_COLOR_TYPE_RGBA_8888,
                                                                  GrRenderable::kNo);
 
         return GrSurface::ComputeSize(format,

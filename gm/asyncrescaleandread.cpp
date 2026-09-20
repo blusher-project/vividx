@@ -108,8 +108,8 @@ std::variant<sk_sp<SkSurface>, skiagm::DrawResult> convert_image_to_source<ReadS
     // Turn the image into a surface in order to call the read and rescale API
     auto surfInfo = image->imageInfo().makeDimensions(image->dimensions());
     auto surface = canvas->makeSurface(surfInfo);
-    if (!surface && surfInfo.colorType() == kBGRA_8888_SkColorType) {
-        surfInfo = surfInfo.makeColorType(kRGBA_8888_SkColorType);
+    if (!surface && surfInfo.colorType() == VX_COLOR_TYPE_BGRA_8888) {
+        surfInfo = surfInfo.makeColorType(VX_COLOR_TYPE_RGBA_8888);
         surface = canvas->makeSurface(surfInfo);
     }
     if (!surface) {
@@ -214,15 +214,15 @@ protected:
                                     bool readAlpha,
                                     GrDirectContext* direct,
                                     skgpu::graphite::Recorder* recorder,
-                                    SkYUVColorSpace yuvCS,
+                                    vx_yuv_color_space yuvCS,
                                     SkImage::RescaleGamma rescaleGamma,
                                     SkImage::RescaleMode rescaleMode,
                                     SkScopeExit* cleanup) {
         SkASSERT(!(resultSize.width() & 0b1) && !(resultSize.height() & 0b1));
 
         SkISize uvSize = {resultSize.width() / 2, resultSize.height() / 2};
-        SkImageInfo yaII = SkImageInfo::Make(resultSize, kGray_8_SkColorType, kPremul_SkAlphaType);
-        SkImageInfo uvII = SkImageInfo::Make(uvSize,     kGray_8_SkColorType, kPremul_SkAlphaType);
+        SkImageInfo yaII = SkImageInfo::Make(resultSize, VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_PREMULTIPLIED);
+        SkImageInfo uvII = SkImageInfo::Make(uvSize,     VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_PREMULTIPLIED);
 
         AsyncContext asyncContext;
         if (recorder) {
@@ -345,7 +345,7 @@ protected:
                                        Type type,
                                        SkString* errorMsg,
                                        int pad = 0) {
-        SkASSERT(canvas->imageInfo().colorType() != kUnknown_SkColorType);
+        SkASSERT(canvas->imageInfo().colorType() != VX_COLOR_TYPE_UNKNOWN);
 
         GrDirectContext* direct = nullptr;
 #if defined(SK_GANESH)
@@ -355,7 +355,7 @@ protected:
 
         auto recorder = canvas->recorder();
 
-        SkYUVColorSpace yuvColorSpace = kRec601_SkYUVColorSpace;
+        vx_yuv_color_space yuvColorSpace = VX_YUV_COLOR_SPACE_REC601;
         canvas->save();
         for (auto gamma : {SkImage::RescaleGamma::kSrc, SkImage::RescaleGamma::kLinear}) {
             canvas->save();
@@ -397,8 +397,8 @@ protected:
                             return skiagm::DrawResult::kSkip;
                         }
                         int nextCS = static_cast<int>(yuvColorSpace + 1) %
-                                     (kLastEnum_SkYUVColorSpace + 1);
-                        yuvColorSpace = static_cast<SkYUVColorSpace>(nextCS);
+                                     (VX_YUV_COLOR_SPACE_LASTENUM + 1);
+                        yuvColorSpace = static_cast<vx_yuv_color_space>(nextCS);
                         break;
                 }
                 canvas->drawImage(result, 0, 0);
@@ -448,7 +448,7 @@ public:
             errorMsg->printf("Could not load image file %s.", fImageFile.c_str());
             return skiagm::DrawResult::kFail;
         }
-        if (canvas->imageInfo().colorType() == kUnknown_SkColorType) {
+        if (canvas->imageInfo().colorType() == VX_COLOR_TYPE_UNKNOWN) {
             *errorMsg = "Not supported on recording/vector backends.";
             return skiagm::DrawResult::kSkip;
         }
@@ -581,7 +581,7 @@ public:
                                                                /*readAlpha=*/false,
                                                                dContext,
                                                                recorder,
-                                                               kRec601_SkYUVColorSpace,
+                                                               VX_YUV_COLOR_SPACE_REC601,
                                                                SkImage::RescaleGamma::kSrc,
                                                                SkImage::RescaleMode::kNearest,
                                                                &scopeExit);
@@ -605,7 +605,7 @@ public:
     SkISize getISize() override { return {60, 60}; }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
-        if (canvas->imageInfo().colorType() == kUnknown_SkColorType) {
+        if (canvas->imageInfo().colorType() == VX_COLOR_TYPE_UNKNOWN) {
             *errorMsg = "Not supported on recording/vector backends.";
             return skiagm::DrawResult::kSkip;
         }
@@ -623,8 +623,8 @@ public:
         const auto srcRect = SkIRect::MakeXYWH(kBorder, kBorder, kInner, kInner);
         auto surfaceII = SkImageInfo::Make(kInner + 2 * kBorder,
                                            kInner + 2 * kBorder,
-                                           kRGBA_8888_SkColorType,
-                                           kPremul_SkAlphaType,
+                                           VX_COLOR_TYPE_RGBA_8888,
+                                           VX_ALPHA_TYPE_PREMULTIPLIED,
                                            SkColorSpace::MakeSRGB());
         auto surface = canvas->makeSurface(surfaceII);
         if (!surface) {
@@ -697,9 +697,9 @@ public:
             return skiagm::DrawResult::kSkip;
         }
 
-        auto upmII = SkImageInfo::Make(200, 200, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+        auto upmII = SkImageInfo::Make(200, 200, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
-        auto pmII = upmII.makeAlphaType(kPremul_SkAlphaType);
+        auto pmII = upmII.makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
 
         auto upmSurf = SkSurfaces::Raster(upmII);
         auto pmSurf = SkSurfaces::Raster(pmII);
@@ -743,7 +743,7 @@ public:
 
         for (const auto& img : {pmImg, upmImg}) {
             canvas->save();
-            for (auto readAT : {kPremul_SkAlphaType, kUnpremul_SkAlphaType}) {
+            for (auto readAT : {VX_ALPHA_TYPE_PREMULTIPLIED, VX_ALPHA_TYPE_UNPREMULTIPLIED}) {
                 auto readInfo = img->imageInfo().makeAlphaType(readAT).makeWH(size, size);
                 auto result =
                         readAndScaleRGBA<ReadSource::kImage>(img.get(),

@@ -1008,7 +1008,7 @@ static ClipTileRendererArray make_shader_renderers() {
     static constexpr SkColor4f kColors[] = { SkColors::kBlue, SkColors::kWhite };
     auto gradient = SkShaders::LinearGradient(kPts, {{kColors, {}, SkTileMode::kMirror}, {}});
 
-    auto info = SkImageInfo::Make(1, 1, kAlpha_8_SkColorType, kOpaque_SkAlphaType);
+    auto info = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_ALPHA_8, VX_ALPHA_TYPE_OPAQUE);
     SkBitmap bm;
     bm.allocPixels(info);
     bm.eraseColor(SK_ColorWHITE);

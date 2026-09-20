@@ -247,7 +247,7 @@ DEF_TEST(Paint_dither, reporter) {
     SkPaint p;
     p.setDither(true);
 
-    bool shouldDither = SkPaintPriv::ShouldDither(p, kBGRA_8888_SkColorType);
+    bool shouldDither = SkPaintPriv::ShouldDither(p, VX_COLOR_TYPE_BGRA_8888);
 
     REPORTER_ASSERT(reporter, !shouldDither);
 }

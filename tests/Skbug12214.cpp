@@ -20,8 +20,8 @@
 struct GrContextOptions;
 
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(skbug12214, r, contextInfo, CtsEnforcement::kApiLevel_T) {
-    auto imageInfo = SkImageInfo::Make(/*width=*/32, /*height=*/32, kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+    auto imageInfo = SkImageInfo::Make(/*width=*/32, /*height=*/32, VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface1 =
             SkSurfaces::RenderTarget(contextInfo.directContext(), skgpu::Budgeted::kNo, imageInfo);
     sk_sp<SkSurface> surface2 = SkSurfaces::Raster(imageInfo);

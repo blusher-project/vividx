@@ -64,7 +64,7 @@ DEF_SIMPLE_GM(mipmap, canvas, 400, 200) {
 // create a circle image computed raw, so we can wrap it as a linear or srgb image
 static sk_sp<SkImage> make(sk_sp<SkColorSpace> cs) {
     const int N = 100;
-    SkImageInfo info = SkImageInfo::Make(N, N, kN32_SkColorType, kPremul_SkAlphaType, cs);
+    SkImageInfo info = SkImageInfo::Make(N, N, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED, cs);
     SkBitmap bm;
     bm.allocPixels(info);
 
@@ -113,7 +113,7 @@ DEF_SIMPLE_GM(mipmap_srgb, canvas, 260, 230) {
 // create a gradient image computed raw, so we can wrap it as a linear or srgb image
 static sk_sp<SkImage> make_g8_gradient(sk_sp<SkColorSpace> cs) {
     const int N = 100;
-    SkImageInfo info = SkImageInfo::Make(N, N, kGray_8_SkColorType, kOpaque_SkAlphaType, cs);
+    SkImageInfo info = SkImageInfo::Make(N, N, VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_OPAQUE, cs);
     SkBitmap bm;
     bm.allocPixels(info);
 

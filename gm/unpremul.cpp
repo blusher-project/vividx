@@ -23,8 +23,8 @@ DEF_SIMPLE_GM(unpremul, canvas, 200, 200) {
     auto grade = [&](int x, int y){
         SkBitmap bm;
         bm.allocPixels(SkImageInfo::Make(1,1,
-                                         kBGRA_8888_SkColorType,
-                                         kUnpremul_SkAlphaType,
+                                         VX_COLOR_TYPE_BGRA_8888,
+                                         VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                          SkColorSpace::MakeSRGB()));
         if (!canvas->readPixels(bm, x,y)) {
             // Picture-backed canvases, that sort of thing.  Just assume they're good.
@@ -67,7 +67,7 @@ DEF_SIMPLE_GM(unpremul, canvas, 200, 200) {
         paint.setBlendMode(SkBlendMode::kSrc);
 
         SkBitmap bm;
-        bm.allocPixels(SkImageInfo::Make(100,100, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType));
+        bm.allocPixels(SkImageInfo::Make(100,100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED));
         bm.eraseColor(color);
 
         canvas->drawImage(bm.asImage(), 0,0, SkSamplingOptions(), &paint);

@@ -43,7 +43,7 @@ void run_test(skiatest::Reporter* reporter,
               DrawCallback draw,
               const std::vector<Expectation>& expectations) {
     const SkImageInfo surfaceImageInfo = SkImageInfo::Make(
-            surfaceSize, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
+            surfaceSize, vx_color_type::VX_COLOR_TYPE_RGBA_8888, vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
 
     std::unique_ptr<Recorder> surfaceRecorder = context->makeRecorder();
     sk_sp<SkSurface> surface =
@@ -473,8 +473,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecordingSurfacesTestMipmappedWritePixels, re
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecordingSurfacesTestTwoCanvases, reporter, context,
                                    CtsEnforcement::kApiLevel_202504) {
     const SkImageInfo kImageInfo = SkImageInfo::Make(SkISize::Make(1, 1),
-                                                     SkColorType::kRGBA_8888_SkColorType,
-                                                     SkAlphaType::kPremul_SkAlphaType);
+                                                     vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                                     vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     sk_sp<SkSurface> surface =
             SkSurfaces::RenderTarget(recorder.get(), kImageInfo, skgpu::Mipmapped::kNo);
@@ -492,8 +492,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecordingSurfacesTestTwoCanvases, reporter, c
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecordingSurfacesTestUnnecessarySurface, reporter, context,
                                    CtsEnforcement::kApiLevel_202504) {
     const SkImageInfo kImageInfo = SkImageInfo::Make(SkISize::Make(1, 1),
-                                                     SkColorType::kRGBA_8888_SkColorType,
-                                                     SkAlphaType::kPremul_SkAlphaType);
+                                                     vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                                     vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     sk_sp<SkSurface> surface =

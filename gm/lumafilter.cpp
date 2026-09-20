@@ -189,7 +189,7 @@ DEF_SIMPLE_GM(AlternateLuma, canvas, 384,128) {
     sk_sp<SkColorFilter> filter = effect->makeColorFilter(SkData::MakeEmpty());
     SkASSERT(filter);
 
-    SkAlphaType unpremul = kUnpremul_SkAlphaType;
+    vx_alpha_type unpremul = VX_ALPHA_TYPE_UNPREMULTIPLIED;
     paint.setColorFilter(SkColorFilterPriv::WithWorkingFormat(std::move(filter),
                                                               &SkNamedTransferFn::kLinear,
                                                               &SkNamedGamut::kXYZ,

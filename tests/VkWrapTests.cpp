@@ -40,7 +40,7 @@ using sk_gpu_test::GrContextFactory;
 
 const int kW = 1024;
 const int kH = 1024;
-const SkColorType kColorType = SkColorType::kRGBA_8888_SkColorType;
+const vx_color_type kColorType = vx_color_type::VX_COLOR_TYPE_RGBA_8888;
 
 void wrap_tex_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
     using namespace skgpu;
@@ -50,7 +50,7 @@ void wrap_tex_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
     Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
-            dContext, kW, kH, kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo,
+            dContext, kW, kH, VX_COLOR_TYPE_RGBA_8888, skgpu::Mipmapped::kNo, GrRenderable::kNo,
             isProtected);
     if (!mbet) {
         ERRORF(reporter, "Could not create backend texture.");
@@ -166,7 +166,7 @@ void wrap_trt_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
     Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
-            dContext, kW, kH, kRGBA_8888_SkColorType, Mipmapped::kNo, GrRenderable::kYes,
+            dContext, kW, kH, VX_COLOR_TYPE_RGBA_8888, Mipmapped::kNo, GrRenderable::kYes,
             isProtected);
     if (!mbet) {
         ERRORF(reporter, "Could not create renderable backend texture.");

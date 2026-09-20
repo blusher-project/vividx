@@ -58,8 +58,8 @@ sk_sp<DrawContext> get_precompile_draw_context(const skgpu::graphite::Caps* caps
     std::unique_ptr<Recorder> drawRecorder = context->makeRecorder();
     ResourceProvider* resourceProvider = drawRecorder->priv().resourceProvider();
     constexpr SkISize drawSize = {128, 128};
-    const SkColorInfo colorInfo = SkColorInfo(kRGBA_8888_SkColorType,
-                                              kPremul_SkAlphaType,
+    const SkColorInfo colorInfo = SkColorInfo(VX_COLOR_TYPE_RGBA_8888,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                               SkColorSpace::MakeSRGB());
     TextureInfo texInfo = caps->getDefaultSampledTextureInfo(colorInfo.colorType(),
                                                              skgpu::Mipmapped::kNo,
@@ -159,8 +159,8 @@ void check_draw(skiatest::Reporter* reporter,
     {
         // TODO: vary the colorType of the target surface too
         SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                           kBGRA_8888_SkColorType,
-                                           kPremul_SkAlphaType);
+                                           VX_COLOR_TYPE_BGRA_8888,
+                                           VX_ALPHA_TYPE_PREMULTIPLIED);
 
         SkSurfaceProps props;
 
@@ -388,7 +388,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
 
     const skgpu::graphite::Caps* caps = context->priv().caps();
 
-    const SkColorType kColorType = kBGRA_8888_SkColorType;
+    const vx_color_type kColorType = VX_COLOR_TYPE_BGRA_8888;
 
     bool avoidDepthMode = context->priv().caps()->avoidDepthMode();
     static const RenderPassProperties kDepth_Stencil_4{
@@ -435,7 +435,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
         // The skp draws a rect w/ a default SkPaint and RGBA dst color type
         PaintOptions skpPaintOptions;
         Precompile(precompileContext, skpPaintOptions, DrawTypeFlags::kNonAAFillRect,
-                   {{ { kDepth_1.fDSFlags, kRGBA_8888_SkColorType, kDepth_1.fDstCS,
+                   {{ { kDepth_1.fDSFlags, VX_COLOR_TYPE_RGBA_8888, kDepth_1.fDstCS,
                        kDepth_1.fRequiresMSAA } }});
     }
 
@@ -526,8 +526,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                           &gatherer,
                           dict,
                           rtDict,
-                          SkColorInfo(kRGBA_8888_SkColorType,
-                                      kPremul_SkAlphaType,
+                          SkColorInfo(VX_COLOR_TYPE_RGBA_8888,
+                                      VX_ALPHA_TYPE_PREMULTIPLIED,
                                       SkColorSpace::MakeSRGB()));
 
 #if 1
@@ -615,8 +615,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                     &gatherer,
                                     dict,
                                     rtDict,
-                                    SkColorInfo(kRGBA_8888_SkColorType,
-                                                kPremul_SkAlphaType,
+                                    SkColorInfo(VX_COLOR_TYPE_RGBA_8888,
+                                                VX_ALPHA_TYPE_PREMULTIPLIED,
                                                 SkColorSpace::MakeSRGB()));
 
     ShaderType shaders[] = {

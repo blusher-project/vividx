@@ -19,6 +19,7 @@
 #include "include/core/SkPixelRef.h"  // IWYU pragma: keep
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
+#include "vividx/core/alpha-type.h"
 #if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
 #include "include/ports/SkFontScanner_Fontations.h"
 #endif
@@ -259,7 +260,7 @@ SkBitmap CreateStringBitmap(int w, int h, SkColor c, int x, int y, int textSize,
     // Tag data as sRGB (without doing any color space conversion). Color-space aware configs
     // will process this correctly but legacy configs will render as if this returned N32.
     SkBitmap result;
-    result.setInfo(SkImageInfo::MakeS32(w, h, kPremul_SkAlphaType));
+    result.setInfo(SkImageInfo::MakeS32(w, h, VX_ALPHA_TYPE_PREMULTIPLIED));
     result.setPixelRef(sk_ref_sp(bitmap.pixelRef()), 0, 0);
     return result;
 }

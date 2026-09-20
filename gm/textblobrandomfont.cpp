@@ -124,7 +124,7 @@ protected:
         canvas->drawColor(SK_ColorWHITE);
 
         SkImageInfo info = SkImageInfo::Make(kWidth, kHeight, canvas->imageInfo().colorType(),
-                                             kPremul_SkAlphaType,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED,
                                              canvas->imageInfo().refColorSpace());
         SkSurfaceProps props(0, kUnknown_SkPixelGeometry);
         auto           surface(ToolUtils::makeSurface(canvas, info, &props));

@@ -84,12 +84,12 @@ static SkPath make_gear(SkISize dimensions, int numTeeth) {
 }
 
 // Render one level of a mipmap
-SkBitmap render_level(SkISize dimensions, SkColor color, SkColorType colorType, bool opaque) {
+SkBitmap render_level(SkISize dimensions, SkColor color, vx_color_type colorType, bool opaque) {
     SkPath path = make_gear(dimensions, 9);
 
     SkImageInfo ii = SkImageInfo::Make(dimensions.width(), dimensions.height(),
-                                       colorType, opaque ? kOpaque_SkAlphaType
-                                                         : kPremul_SkAlphaType);
+                                       colorType, opaque ? VX_ALPHA_TYPE_OPAQUE
+                                                         : VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bm;
     bm.allocPixels(ii);
 
@@ -122,7 +122,7 @@ struct CompressedImageObjects {
 // Note that ETC1/ETC2_RGB8_UNORM only supports 565 opaque textures.
 static CompressedImageObjects make_compressed_image(SkCanvas* canvas,
                                                     const SkISize dimensions,
-                                                    SkColorType colorType,
+                                                    vx_color_type colorType,
                                                     bool opaque,
                                                     SkTextureCompressionType compression) {
     size_t totalSize = SkCompressedDataSize(compression, dimensions, nullptr, true);
@@ -151,7 +151,7 @@ static CompressedImageObjects make_compressed_image(SkCanvas* canvas,
 
         SkBitmap bm = render_level(levelDims, kColors[i%7], colorType, opaque);
         if (compression == SkTextureCompressionType::kETC2_RGB8_UNORM) {
-            SkASSERT(bm.colorType() == kRGB_565_SkColorType);
+            SkASSERT(bm.colorType() == VX_COLOR_TYPE_RGB_565);
             SkASSERT(opaque);
 
             if (etc1_encode_image((unsigned char*)bm.getAddr16(0, 0),
@@ -180,7 +180,7 @@ static CompressedImageObjects make_compressed_image(SkCanvas* canvas,
         if (texture) {
             image = SkImages::WrapTexture(recorder,
                                           texture->texture(),
-                                          kPremul_SkAlphaType,
+                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                           /*colorSpace=*/nullptr);
             if (image) {
                 return {image, texture};
@@ -289,15 +289,15 @@ protected:
         }
 
         fOpaqueETC2Image = make_compressed_image(canvas, fImgDimensions,
-                                                 kRGB_565_SkColorType, true,
+                                                 VX_COLOR_TYPE_RGB_565, true,
                                                  SkTextureCompressionType::kETC2_RGB8_UNORM);
 
         fOpaqueBC1Image = make_compressed_image(canvas, fImgDimensions,
-                                                kRGBA_8888_SkColorType, true,
+                                                VX_COLOR_TYPE_RGBA_8888, true,
                                                 SkTextureCompressionType::kBC1_RGB8_UNORM);
 
         fTransparentBC1Image = make_compressed_image(canvas, fImgDimensions,
-                                                     kRGBA_8888_SkColorType, false,
+                                                     VX_COLOR_TYPE_RGBA_8888, false,
                                                      SkTextureCompressionType::kBC1_RGBA8_UNORM);
 
         if (!fOpaqueETC2Image.fImage || !fOpaqueBC1Image.fImage || !fTransparentBC1Image.fImage) {

@@ -50,8 +50,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest,
     auto dContext = ctxInfo.directContext();
     GrResourceCache* cache = dContext->priv().getResourceCache();
 
-    const SkImageInfo ii = SkImageInfo::Make(1024, 600, kRGBA_8888_SkColorType,
-                                             kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(1024, 600, VX_COLOR_TYPE_RGBA_8888,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> dst(SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, ii));
     if (!dst) {
@@ -66,8 +66,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest,
     // Create the initial big image (this corresponds to the album artwork - which is larger
     // than the screen)
     {
-        SkImageInfo srcImageII = SkImageInfo::Make(1280, 1280, kRGBA_8888_SkColorType,
-                                                   kPremul_SkAlphaType);
+        SkImageInfo srcImageII = SkImageInfo::Make(1280, 1280, VX_COLOR_TYPE_RGBA_8888,
+                                                   VX_ALPHA_TYPE_PREMULTIPLIED);
 
         // Make a red ring around a field of green. When rendered the blurred red ring
         // should still be visible on all sides of the dest image.
@@ -84,8 +84,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest,
 
     // Shrink the album artwork down to the screen's size
     {
-        SkImageInfo screenII = SkImageInfo::Make(1024, 600, kRGBA_8888_SkColorType,
-                                                 kPremul_SkAlphaType);
+        SkImageInfo screenII = SkImageInfo::Make(1024, 600, VX_COLOR_TYPE_RGBA_8888,
+                                                 VX_ALPHA_TYPE_PREMULTIPLIED);
 
         sk_sp<SkSurface> s = SkSurfaces::RenderTarget(
                 dContext, skgpu::Budgeted::kYes, screenII, 1, kTopLeft_GrSurfaceOrigin, nullptr);

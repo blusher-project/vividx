@@ -26,7 +26,7 @@ namespace skgpu::graphite {
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleRetainTest, reporter, context,
                                    CtsEnforcement::kNever) {
     const SkImageInfo surfaceImageInfo = SkImageInfo::Make(
-            33, 33, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
+            33, 33, vx_color_type::VX_COLOR_TYPE_RGBA_8888, vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
 
     std::unique_ptr<Recorder> surfaceRecorder = context->makeRecorder();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(surfaceRecorder.get(), surfaceImageInfo);
@@ -94,7 +94,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleClearThenLoad,
                                    context,
                                    CtsEnforcement::kApiLevel_202604) {
     const SkImageInfo surfaceImageInfo = SkImageInfo::Make(
-            33, 33, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
+            33, 33, vx_color_type::VX_COLOR_TYPE_RGBA_8888, vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
 
     std::unique_ptr<Recorder> surfaceRecorder = context->makeRecorder();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(surfaceRecorder.get(), surfaceImageInfo);

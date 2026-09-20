@@ -34,8 +34,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(InnerFillTest,
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     sk_sp<Device> device = Device::Make(recorder.get(),
                                         SkImageInfo::Make(512, 512,
-                                                          kRGBA_8888_SkColorType,
-                                                          kPremul_SkAlphaType),
+                                                          VX_COLOR_TYPE_RGBA_8888,
+                                                          VX_ALPHA_TYPE_PREMULTIPLIED),
                                         Budgeted::kYes,
                                         Mipmapped::kNo,
                                         SkBackingFit::kExact,
@@ -133,7 +133,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(OptimizeForOpacity,
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     // We need a DrawContext to participate in uniform extraction and key generation
-    SkColorInfo targetInfo{kRGBA_8888_SkColorType, kPremul_SkAlphaType, /*cs=*/nullptr};
+    SkColorInfo targetInfo{VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, /*cs=*/nullptr};
     sk_sp<TextureProxy> target = TextureProxy::Make(
             caps, recorder->priv().resourceProvider(),
             /*dimensions=*/{16, 16},

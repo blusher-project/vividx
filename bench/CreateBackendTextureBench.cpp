@@ -39,7 +39,7 @@ private:
             fBackendTextures.push_back(
                     context->createBackendTexture(kSize,
                                                   kSize,
-                                                  kRGBA_8888_SkColorType,
+                                                  VX_COLOR_TYPE_RGBA_8888,
                                                   SkColors::kRed,
                                                   fMipmapped,
                                                   GrRenderable::kNo,

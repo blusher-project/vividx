@@ -42,11 +42,11 @@ void test_draw(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, recorder);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
             recorder.get(),
-            SkImageInfo::Make(canvasSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(canvasSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     SkCanvas* canvas = surface->getCanvas();
 
     SkBitmap bitmap;
-    bitmap.allocPixels(SkImageInfo::Make(imageSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+    bitmap.allocPixels(SkImageInfo::Make(imageSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                        0);
     bitmap.eraseColor(kRectColor);
     bitmap.setImmutable();
@@ -62,7 +62,7 @@ void test_draw(skiatest::Reporter* reporter,
     SkPixmap pm;
 
     SkBitmap result;
-    result.allocPixels(SkImageInfo::Make(canvasSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    result.allocPixels(SkImageInfo::Make(canvasSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bool peekPixelsSuccess = result.peekPixels(&pm);
     REPORTER_ASSERT(reporter, peekPixelsSuccess);
 

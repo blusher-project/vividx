@@ -95,8 +95,8 @@ static sk_sp<SkShader> make_shader(sk_sp<SkImage> img, SkISize size) {
 }
 
 static sk_sp<SkShader> make_threshold(SkISize size) {
-    auto info = SkImageInfo::Make(size.width(), size.height(), kAlpha_8_SkColorType,
-                                  kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(size.width(), size.height(), VX_COLOR_TYPE_ALPHA_8,
+                                  VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surf = SkSurfaces::Raster(info);
     auto canvas = surf->getCanvas();
 
@@ -627,7 +627,7 @@ public:
         // gradients (the bottom half of the second bar should be brighter than the top half).
         for (auto cs : {static_cast<SkColorSpace*>(nullptr), sk_srgb_singleton()}) {
             SkImageInfo info = SkImageInfo::Make(
-                    256, 64, kN32_SkColorType, kPremul_SkAlphaType, sk_ref_sp(cs));
+                    256, 64, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED, sk_ref_sp(cs));
             auto surface = canvas->makeSurface(info);
             if (!surface) {
                 surface = SkSurfaces::Raster(info);
@@ -683,7 +683,7 @@ static sk_sp<SkShader> normal_map_shader() {
 
 static sk_sp<SkImage> normal_map_image() {
     // Above, baked into an image:
-    auto info = SkImageInfo::Make(256, 256, kN32_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(256, 256, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = SkSurfaces::Raster(info);
     SkPaint p;
     p.setShader(normal_map_shader());
@@ -704,7 +704,7 @@ static sk_sp<SkImage> normal_map_unpremul_image() {
     SkPixmap pm;
     SkAssertResult(image->peekPixels(&pm));
     SkBitmap bmp;
-    bmp.allocPixels(image->imageInfo().makeAlphaType(kUnpremul_SkAlphaType));
+    bmp.allocPixels(image->imageInfo().makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED));
     // Copy all pixels over, but set alpha to 0
     for (int y = 0; y < pm.height(); y++) {
         for (int x = 0; x < pm.width(); x++) {
@@ -780,8 +780,8 @@ DEF_SIMPLE_GM(raw_image_shader_normals_rt, canvas, 768, 512) {
 
     // First, make an offscreen surface, so we can control the destination color space:
     auto surfInfo = SkImageInfo::Make(512, 512,
-                                      kN32_SkColorType,
-                                      kPremul_SkAlphaType,
+                                      VX_COLOR_TYPE_N32,
+                                      VX_ALPHA_TYPE_PREMULTIPLIED,
                                       SkColorSpace::MakeSRGB()->makeColorSpin());
     auto surface = canvas->makeSurface(surfInfo);
     if (!surface) {
@@ -830,8 +830,8 @@ DEF_SIMPLE_GM(raw_image_shader_normals_rt, canvas, 768, 512) {
 DEF_SIMPLE_GM(lit_shader_linear_rt, canvas, 512, 256) {
     // First, make an offscreen surface, so we can control the destination color space:
     auto surfInfo = SkImageInfo::Make(512, 256,
-                                      kN32_SkColorType,
-                                      kPremul_SkAlphaType,
+                                      VX_COLOR_TYPE_N32,
+                                      VX_ALPHA_TYPE_PREMULTIPLIED,
                                       SkColorSpace::MakeSRGB());
     auto surface = canvas->makeSurface(surfInfo);
     if (!surface) {
@@ -1021,7 +1021,7 @@ DEF_SIMPLE_GM_CAN_FAIL(deferred_shader_rt, canvas, errorMsg, 150, 50) {
     // Skip this GM on recording devices. It actually works okay on serialize-8888, but pic-8888
     // does not. Ultimately, behavior on CPU is potentially strange (especially with SkRP), because
     // SkRP will build the shader more than once per draw.
-    if (canvas->imageInfo().colorType() == kUnknown_SkColorType) {
+    if (canvas->imageInfo().colorType() == VX_COLOR_TYPE_UNKNOWN) {
         return skiagm::DrawResult::kSkip;
     }
 
@@ -1056,7 +1056,7 @@ DEF_SIMPLE_GM_CAN_FAIL(deferred_shader_rt, canvas, errorMsg, 150, 50) {
 
 sk_sp<SkShader> paint_color_shader() {
     SkBitmap bmp;
-    bmp.allocPixels(SkImageInfo::Make(1, 1, kAlpha_8_SkColorType, kPremul_SkAlphaType));
+    bmp.allocPixels(SkImageInfo::Make(1, 1, VX_COLOR_TYPE_ALPHA_8, VX_ALPHA_TYPE_PREMULTIPLIED));
     bmp.eraseColor(SK_ColorWHITE);
     return bmp.makeShader(SkFilterMode::kNearest);
 }

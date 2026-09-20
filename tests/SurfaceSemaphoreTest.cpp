@@ -103,8 +103,8 @@ void draw_child(skiatest::Reporter* reporter,
 
     childInfo.testContext()->makeCurrent();
 
-    const SkImageInfo childII = SkImageInfo::Make(CHILD_W, CHILD_H, kRGBA_8888_SkColorType,
-                                                  kPremul_SkAlphaType);
+    const SkImageInfo childII = SkImageInfo::Make(CHILD_W, CHILD_H, VX_COLOR_TYPE_RGBA_8888,
+                                                  VX_ALPHA_TYPE_PREMULTIPLIED);
 
     auto childDContext = childInfo.directContext();
     sk_sp<SkSurface> childSurface(SkSurfaces::RenderTarget(
@@ -113,8 +113,8 @@ void draw_child(skiatest::Reporter* reporter,
     sk_sp<SkImage> childImage = SkImages::BorrowTextureFrom(childDContext,
                                                             backendTexture,
                                                             kTopLeft_GrSurfaceOrigin,
-                                                            kRGBA_8888_SkColorType,
-                                                            kPremul_SkAlphaType,
+                                                            VX_COLOR_TYPE_RGBA_8888,
+                                                            VX_ALPHA_TYPE_PREMULTIPLIED,
                                                             nullptr,
                                                             nullptr,
                                                             nullptr);
@@ -151,8 +151,8 @@ void surface_semaphore_test(skiatest::Reporter* reporter,
         return;
     }
 
-    const SkImageInfo ii = SkImageInfo::Make(MAIN_W, MAIN_H, kRGBA_8888_SkColorType,
-                                             kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(MAIN_W, MAIN_H, VX_COLOR_TYPE_RGBA_8888,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> mainSurface(SkSurfaces::RenderTarget(
             mainCtx, skgpu::Budgeted::kNo, ii, 0, kTopLeft_GrSurfaceOrigin, nullptr));
@@ -269,8 +269,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(EmptySurfaceSemaphoreTest,
         return;
     }
 
-    const SkImageInfo ii = SkImageInfo::Make(MAIN_W, MAIN_H, kRGBA_8888_SkColorType,
-                                             kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(MAIN_W, MAIN_H, VX_COLOR_TYPE_RGBA_8888,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> mainSurface(SkSurfaces::RenderTarget(
             ctx, skgpu::Budgeted::kNo, ii, 0, kTopLeft_GrSurfaceOrigin, nullptr));

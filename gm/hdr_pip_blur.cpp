@@ -59,7 +59,7 @@ protected:
             // The main surface is RGBA8 but with a wider gamut sRGB colorspace.
             sk_sp<SkSurface> content = canvas->makeSurface(
                     canvas->imageInfo().makeWH(screenBounds.width(), screenBounds.height())
-                                       .makeColorType(kRGBA_8888_SkColorType)
+                                       .makeColorType(VX_COLOR_TYPE_RGBA_8888)
                                        .makeColorSpace(
                                                 SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020,
                                                                       SkNamedGamut::kDisplayP3)));

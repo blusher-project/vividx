@@ -30,15 +30,15 @@ DEF_SIMPLE_GM_CAN_FAIL(mirror_tile, canvas, errorMsg, 140, 370) {
 
     uint32_t colors[] {0xFFFF0000, 0xFF00FF00, 0xFF0000FF};
     SkPixmap pmx(SkImageInfo::Make({std::size(colors), 1},
-                                   kRGBA_8888_SkColorType,
-                                   kPremul_SkAlphaType),
+                                   VX_COLOR_TYPE_RGBA_8888,
+                                   VX_ALPHA_TYPE_PREMULTIPLIED),
                  colors,
                  sizeof(colors));
     auto imgx = SkImages::RasterFromPixmapCopy(pmx);
 
     SkPixmap pmy(SkImageInfo::Make({1, std::size(colors)},
-                                   kRGBA_8888_SkColorType,
-                                   kPremul_SkAlphaType),
+                                   VX_COLOR_TYPE_RGBA_8888,
+                                   VX_ALPHA_TYPE_PREMULTIPLIED),
                  colors,
                  sizeof(colors[0]));
     auto imgy = SkImages::RasterFromPixmapCopy(pmy);

@@ -44,8 +44,8 @@ void run_test(skiatest::Reporter* reporter, bool testMipmaps,
             continue;
         }
 
-        for (auto ct : { kRGBA_8888_SkColorType, kAlpha_8_SkColorType }) {
-            SkImageInfo ii = SkImageInfo::Make(9, 9, ct, kPremul_SkAlphaType);
+        for (auto ct : { VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_ALPHA_8 }) {
+            SkImageInfo ii = SkImageInfo::Make(9, 9, ct, VX_ALPHA_TYPE_PREMULTIPLIED);
 
             SkBitmap src;
             src.allocPixels(ii);

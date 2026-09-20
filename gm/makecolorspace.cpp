@@ -127,7 +127,7 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
             // 565 in a wide color space (should be visibly quantized). Fails with the color_wheel,
             // because of the codec issues mentioned above.
             sk_sp<SkImage> image565 =
-                    image->makeColorTypeAndColorSpace(recorder, kRGB_565_SkColorType, rec2020, {});
+                    image->makeColorTypeAndColorSpace(recorder, VX_COLOR_TYPE_RGB_565, rec2020, {});
             if (image565) {
                 if (!lazy || image565->isTextureBacked() || image565->makeRasterImage(nullptr)) {
                     canvas->drawImage(image565, 128, 0);
@@ -137,7 +137,7 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
             // Grayscale in the original color space. This fails in even more cases, due to the
             // above opaque issue, and because Ganesh doesn't support drawing to gray, at all.
             sk_sp<SkImage> imageGray = image->makeColorTypeAndColorSpace(
-                    recorder, kGray_8_SkColorType, image->refColorSpace(), {});
+                    recorder, VX_COLOR_TYPE_GRAY_8, image->refColorSpace(), {});
             if (imageGray) {
                 if (!lazy || imageGray->isTextureBacked() || imageGray->makeRasterImage(nullptr)) {
                     canvas->drawImage(imageGray, 256, 0);

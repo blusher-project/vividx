@@ -80,7 +80,7 @@ DEF_TEST(Codec_end, r) {
                 continue;
             }
 
-            auto info = codec->getInfo().makeColorType(kN32_SkColorType);
+            auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
             SkBitmap bm;
             bm.allocPixels(info);
 

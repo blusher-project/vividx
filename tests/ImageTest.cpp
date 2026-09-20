@@ -135,13 +135,13 @@ static void draw_image_test_pattern(SkCanvas* canvas) {
     canvas->drawRect(SkRect::MakeXYWH(5, 5, 10, 10), paint);
 }
 static sk_sp<SkImage> create_image() {
-    const SkImageInfo info = SkImageInfo::MakeN32(20, 20, kOpaque_SkAlphaType);
+    const SkImageInfo info = SkImageInfo::MakeN32(20, 20, VX_ALPHA_TYPE_OPAQUE);
     auto surface(SkSurfaces::Raster(info));
     draw_image_test_pattern(surface->getCanvas());
     return surface->makeImageSnapshot();
 }
 static sk_sp<SkData> create_image_data(SkImageInfo* info) {
-    *info = SkImageInfo::MakeN32(20, 20, kOpaque_SkAlphaType);
+    *info = SkImageInfo::MakeN32(20, 20, VX_ALPHA_TYPE_OPAQUE);
     const size_t rowBytes = info->minRowBytes();
     sk_sp<SkData> data(SkData::MakeUninitialized(rowBytes * info->height()));
     {
@@ -215,7 +215,7 @@ DEF_TEST(ImageEncode, reporter) {
 static sk_sp<SkImage> create_gpu_image(GrRecordingContext* rContext,
                                        bool withMips = false,
                                        skgpu::Budgeted budgeted = skgpu::Budgeted::kYes) {
-    const SkImageInfo info = SkImageInfo::MakeN32(20, 20, kOpaque_SkAlphaType);
+    const SkImageInfo info = SkImageInfo::MakeN32(20, 20, VX_ALPHA_TYPE_OPAQUE);
     auto surface = SkSurfaces::RenderTarget(
             rContext, budgeted, info, 0, kBottomLeft_GrSurfaceOrigin, nullptr, withMips);
     draw_image_test_pattern(surface->getCanvas());
@@ -384,7 +384,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkImage_Ganesh2Cpu,
                                        reporter,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_T) {
-    SkImageInfo info = SkImageInfo::MakeN32(20, 20, kOpaque_SkAlphaType);
+    SkImageInfo info = SkImageInfo::MakeN32(20, 20, VX_ALPHA_TYPE_OPAQUE);
     sk_sp<SkImage> image(create_gpu_image(ctxInfo.directContext()));
     const auto desc = SkBitmapCacheDesc::Make(image.get());
 
@@ -564,8 +564,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsImage,
 
     static constexpr int kSize = 10;
 
-    for (int ct = 0; ct < kLastEnum_SkColorType; ++ct) {
-        SkColorType colorType = static_cast<SkColorType>(ct);
+    for (int ct = 0; ct < VX_COLOR_TYPE_LASTENUM; ++ct) {
+        vx_color_type colorType = static_cast<vx_color_type>(ct);
         bool can = dContext->colorTypeSupportedAsImage(colorType);
 
         auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
@@ -577,7 +577,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsImage,
                                               mbet->texture(),
                                               kTopLeft_GrSurfaceOrigin,
                                               colorType,
-                                              kOpaque_SkAlphaType,
+                                              VX_ALPHA_TYPE_OPAQUE,
                                               nullptr);
         }
         REPORTER_ASSERT(reporter, can == SkToBool(img),
@@ -592,7 +592,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(UnpremulTextureImage,
                                        CtsEnforcement::kApiLevel_T) {
     SkBitmap bmp;
     bmp.allocPixels(
-            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, nullptr));
+            SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr));
     for (int y = 0; y < 256; ++y) {
         for (int x = 0; x < 256; ++x) {
             *bmp.getAddr32(x, y) =
@@ -601,13 +601,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(UnpremulTextureImage,
     }
     auto dContext = ctxInfo.directContext();
     auto texImage = SkImages::TextureFromImage(dContext, bmp.asImage());
-    if (!texImage || texImage->alphaType() != kUnpremul_SkAlphaType) {
+    if (!texImage || texImage->alphaType() != VX_ALPHA_TYPE_UNPREMULTIPLIED) {
         ERRORF(reporter, "Failed to make unpremul texture image.");
         return;
     }
     SkBitmap unpremul;
-    unpremul.allocPixels(SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType,
-                                           kUnpremul_SkAlphaType, nullptr));
+    unpremul.allocPixels(SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888,
+                                           VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr));
     if (!texImage->readPixels(dContext, unpremul.info(), unpremul.getPixels(), unpremul.rowBytes(),
                               0, 0)) {
         ERRORF(reporter, "Unpremul readback failed.");
@@ -624,7 +624,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(UnpremulTextureImage,
     }
     SkBitmap premul;
     premul.allocPixels(
-            SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr));
+            SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr));
     if (!texImage->readPixels(dContext, premul.info(), premul.getPixels(), premul.rowBytes(),
                               0, 0)) {
         ERRORF(reporter, "Unpremul readback failed.");
@@ -670,7 +670,7 @@ DEF_GANESH_TEST(AbandonedContextImage, reporter, options, CtsEnforcement::kApiLe
         auto gsurf = SkSurfaces::RenderTarget(
                 factory->get(type),
                 skgpu::Budgeted::kYes,
-                SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+                SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                 1,
                 nullptr);
         if (!gsurf) {
@@ -703,7 +703,7 @@ public:
 };
 
 DEF_TEST(ImageEmpty, reporter) {
-    const SkImageInfo info = SkImageInfo::Make(0, 0, kN32_SkColorType, kPremul_SkAlphaType);
+    const SkImageInfo info = SkImageInfo::Make(0, 0, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkPixmap pmap(info, nullptr, 0);
     REPORTER_ASSERT(reporter, nullptr == SkImages::RasterFromPixmapCopy(pmap));
     REPORTER_ASSERT(reporter, nullptr == SkImages::RasterFromData(info, nullptr, 0));
@@ -887,9 +887,9 @@ static void test_peek(skiatest::Reporter* reporter, SkImage* image, bool expectP
         const SkImageInfo& info = pm.info();
         REPORTER_ASSERT(reporter, 20 == info.width());
         REPORTER_ASSERT(reporter, 20 == info.height());
-        REPORTER_ASSERT(reporter, kN32_SkColorType == info.colorType());
-        REPORTER_ASSERT(reporter, kPremul_SkAlphaType == info.alphaType() ||
-                        kOpaque_SkAlphaType == info.alphaType());
+        REPORTER_ASSERT(reporter, VX_COLOR_TYPE_N32 == info.colorType());
+        REPORTER_ASSERT(reporter, VX_ALPHA_TYPE_PREMULTIPLIED == info.alphaType() ||
+                        VX_ALPHA_TYPE_OPAQUE == info.alphaType());
         REPORTER_ASSERT(reporter, info.minRowBytes() <= pm.rowBytes());
         REPORTER_ASSERT(reporter, SkPreMultiplyColor(SK_ColorWHITE) == *pm.addr32(0, 0));
     }
@@ -939,7 +939,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SkImage_NewFromTextureRelease,
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(dContext,
                                                                     kWidth,
                                                                     kHeight,
-                                                                    kRGBA_8888_SkColorType,
+                                                                    VX_COLOR_TYPE_RGBA_8888,
                                                                     skgpu::Mipmapped::kNo,
                                                                     GrRenderable::kNo,
                                                                     GrProtected::kNo);
@@ -954,8 +954,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SkImage_NewFromTextureRelease,
             dContext,
             mbet->texture(),
             texOrigin,
-            kRGBA_8888_SkColorType,
-            kPremul_SkAlphaType,
+            VX_COLOR_TYPE_RGBA_8888,
+            VX_ALPHA_TYPE_PREMULTIPLIED,
             /*color space*/ nullptr,
             sk_gpu_test::ManagedBackendTexture::ReleaseProc,
             mbet->releaseContext(TextureReleaseChecker::Release, &releaseChecker));
@@ -1174,9 +1174,9 @@ DEF_GANESH_TEST(SkImage_CrossContextGrayAlphaConfigs,
                 reporter,
                 options,
                 CtsEnforcement::kApiLevel_T) {
-    for (SkColorType ct : { kGray_8_SkColorType, kAlpha_8_SkColorType }) {
+    for (vx_color_type ct : { VX_COLOR_TYPE_GRAY_8, VX_COLOR_TYPE_ALPHA_8 }) {
         SkAutoPixmapStorage pixmap;
-        pixmap.alloc(SkImageInfo::Make(4, 4, ct, kPremul_SkAlphaType));
+        pixmap.alloc(SkImageInfo::Make(4, 4, ct, VX_ALPHA_TYPE_PREMULTIPLIED));
 
         for (int i = 0; i < skgpu::kContextTypeCount; ++i) {
             GrContextFactory testFactory(options);
@@ -1195,7 +1195,7 @@ DEF_GANESH_TEST(SkImage_CrossContextGrayAlphaConfigs,
             REPORTER_ASSERT(reporter, view);
             REPORTER_ASSERT(reporter, GrColorTypeToSkColorType(viewCT) == ct);
 
-            bool expectAlpha = kAlpha_8_SkColorType == ct;
+            bool expectAlpha = VX_COLOR_TYPE_ALPHA_8 == ct;
             GrColorType grCT = SkColorTypeToGrColorType(image->colorType());
             REPORTER_ASSERT(reporter, expectAlpha == GrColorTypeIsAlphaOnly(grCT));
         }
@@ -1203,7 +1203,7 @@ DEF_GANESH_TEST(SkImage_CrossContextGrayAlphaConfigs,
 }
 
 static sk_sp<SkImage> create_image_large(int maxTextureSize) {
-    const SkImageInfo info = SkImageInfo::MakeN32(maxTextureSize + 1, 32, kOpaque_SkAlphaType);
+    const SkImageInfo info = SkImageInfo::MakeN32(maxTextureSize + 1, 32, VX_ALPHA_TYPE_OPAQUE);
     auto surface(SkSurfaces::Raster(info));
     surface->getCanvas()->clear(SK_ColorWHITE);
     SkPaint paint;
@@ -1339,7 +1339,7 @@ DEF_TEST(Image_ColorSpace, r) {
     REPORTER_ASSERT(r, SkColorSpace::Equals(rec2020.get(), image->colorSpace()));
 
     SkBitmap bitmap;
-    SkImageInfo info = SkImageInfo::MakeN32(10, 10, kPremul_SkAlphaType, rec2020);
+    SkImageInfo info = SkImageInfo::MakeN32(10, 10, VX_ALPHA_TYPE_PREMULTIPLIED, rec2020);
     bitmap.allocPixels(info);
     image = bitmap.asImage();
     REPORTER_ASSERT(r, SkColorSpace::Equals(rec2020.get(), image->colorSpace()));
@@ -1361,7 +1361,7 @@ DEF_TEST(Image_makeColorSpace, r) {
     sk_sp<SkColorSpace> adobeGamut = SkColorSpace::MakeRGB(fn, SkNamedGamut::kAdobeRGB);
 
     SkBitmap srgbBitmap;
-    srgbBitmap.allocPixels(SkImageInfo::MakeS32(1, 1, kOpaque_SkAlphaType));
+    srgbBitmap.allocPixels(SkImageInfo::MakeS32(1, 1, VX_ALPHA_TYPE_OPAQUE));
     *srgbBitmap.getAddr32(0, 0) = SkSwizzle_RGBA_to_PMColor(0xFF604020);
     srgbBitmap.setImmutable();
     sk_sp<SkImage> srgbImage = srgbBitmap.asImage();
@@ -1396,7 +1396,7 @@ DEF_TEST(Image_makeColorSpace, r) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void make_all_premul(SkBitmap* bm) {
-    bm->allocPixels(SkImageInfo::MakeN32(256, 256, kPremul_SkAlphaType));
+    bm->allocPixels(SkImageInfo::MakeN32(256, 256, VX_ALPHA_TYPE_PREMULTIPLIED));
     for (int a = 0; a < 256; ++a) {
         for (int r = 0; r < 256; ++r) {
             // make all valid premul combinations
@@ -1430,7 +1430,7 @@ DEF_TEST(image_roundtrip_encode, reporter) {
     auto img1 = SkImages::DeferredFromEncodedData(data);
 
     SkBitmap bm1;
-    bm1.allocPixels(SkImageInfo::MakeN32(256, 256, kPremul_SkAlphaType));
+    bm1.allocPixels(SkImageInfo::MakeN32(256, 256, VX_ALPHA_TYPE_PREMULTIPLIED));
     img1->readPixels(nullptr, bm1.info(), bm1.getPixels(), bm1.rowBytes(), 0, 0);
 
     REPORTER_ASSERT(reporter, equal(bm0, bm1));
@@ -1441,11 +1441,11 @@ DEF_TEST(image_roundtrip_premul, reporter) {
     make_all_premul(&bm0);
 
     SkBitmap bm1;
-    bm1.allocPixels(SkImageInfo::MakeN32(256, 256, kUnpremul_SkAlphaType));
+    bm1.allocPixels(SkImageInfo::MakeN32(256, 256, VX_ALPHA_TYPE_UNPREMULTIPLIED));
     bm0.readPixels(bm1.info(), bm1.getPixels(), bm1.rowBytes(), 0, 0);
 
     SkBitmap bm2;
-    bm2.allocPixels(SkImageInfo::MakeN32(256, 256, kPremul_SkAlphaType));
+    bm2.allocPixels(SkImageInfo::MakeN32(256, 256, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm1.readPixels(bm2.info(), bm2.getPixels(), bm2.rowBytes(), 0, 0);
 
     REPORTER_ASSERT(reporter, equal(bm0, bm2));
@@ -1456,14 +1456,14 @@ DEF_TEST(image_from_encoded_alphatype_override, reporter) {
 
     // Ensure that we can decode the image when we specifically request premul or unpremul, but
     // not when we request kOpaque
-    REPORTER_ASSERT(reporter, SkImages::DeferredFromEncodedData(data, kPremul_SkAlphaType));
-    REPORTER_ASSERT(reporter, SkImages::DeferredFromEncodedData(data, kUnpremul_SkAlphaType));
-    REPORTER_ASSERT(reporter, !SkImages::DeferredFromEncodedData(data, kOpaque_SkAlphaType));
+    REPORTER_ASSERT(reporter, SkImages::DeferredFromEncodedData(data, VX_ALPHA_TYPE_PREMULTIPLIED));
+    REPORTER_ASSERT(reporter, SkImages::DeferredFromEncodedData(data, VX_ALPHA_TYPE_UNPREMULTIPLIED));
+    REPORTER_ASSERT(reporter, !SkImages::DeferredFromEncodedData(data, VX_ALPHA_TYPE_OPAQUE));
 
     // Same tests as above, but using SkImageGenerators::MakeFromEncoded
-    REPORTER_ASSERT(reporter, SkImageGenerators::MakeFromEncoded(data, kPremul_SkAlphaType));
-    REPORTER_ASSERT(reporter, SkImageGenerators::MakeFromEncoded(data, kUnpremul_SkAlphaType));
-    REPORTER_ASSERT(reporter, !SkImageGenerators::MakeFromEncoded(data, kOpaque_SkAlphaType));
+    REPORTER_ASSERT(reporter, SkImageGenerators::MakeFromEncoded(data, VX_ALPHA_TYPE_PREMULTIPLIED));
+    REPORTER_ASSERT(reporter, SkImageGenerators::MakeFromEncoded(data, VX_ALPHA_TYPE_UNPREMULTIPLIED));
+    REPORTER_ASSERT(reporter, !SkImageGenerators::MakeFromEncoded(data, VX_ALPHA_TYPE_OPAQUE));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1563,11 +1563,11 @@ DEF_TEST(Image_nonfinite_dst, reporter) {
 #if defined(SK_GANESH)
 static sk_sp<SkImage> make_yuva_image(GrDirectContext* dContext) {
     SkAutoPixmapStorage pm;
-    pm.alloc(SkImageInfo::Make(1, 1, kAlpha_8_SkColorType, kPremul_SkAlphaType));
+    pm.alloc(SkImageInfo::Make(1, 1, VX_COLOR_TYPE_ALPHA_8, VX_ALPHA_TYPE_PREMULTIPLIED));
     SkYUVAInfo yuvaInfo({1, 1},
                         SkYUVAInfo::PlaneConfig::kY_U_V,
                         SkYUVAInfo::Subsampling::k444,
-                        kJPEG_Full_SkYUVColorSpace);
+                        VX_YUV_COLOR_SPACE_JPEG_FULL);
     const SkPixmap pmaps[] = {pm, pm, pm};
     auto yuvaPixmaps = SkYUVAPixmaps::FromExternalPixmaps(yuvaInfo, pmaps);
 
@@ -1576,7 +1576,7 @@ static sk_sp<SkImage> make_yuva_image(GrDirectContext* dContext) {
 
 DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageFlush, reporter, ctxInfo, CtsEnforcement::kApiLevel_T) {
     auto dContext = ctxInfo.directContext();
-    auto ii = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto ii = SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto s = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, ii, 1, nullptr);
 
     s->getCanvas()->clear(SK_ColorRED);

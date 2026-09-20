@@ -17,7 +17,7 @@ DEF_SIMPLE_GM_BG(imagefiltersunpremul, canvas, 64, 64, SK_ColorBLACK) {
     // Draw an kUnpremul_SkAlphaType image using SkImageFilters::Image() and
     // verify alpha channel was blended correctly.
     SkBitmap bitmap;
-    bitmap.allocPixels(SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kUnpremul_SkAlphaType));
+    bitmap.allocPixels(SkImageInfo::Make(64, 64, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED));
     bitmap.eraseColor(SkColorSetARGB(50, 255, 0, 0));
     SkPaint paint;
     paint.setImageFilter(SkImageFilters::Image(SkImages::RasterFromBitmap(bitmap),

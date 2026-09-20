@@ -40,16 +40,16 @@ public:
     static SkPMColor PMColor() { return SkPreMultiplyColor(Color()); }
 
     TestImageGenerator(TestType type, skiatest::Reporter* reporter,
-                       SkColorType colorType = kN32_SkColorType)
+                       vx_color_type colorType = VX_COLOR_TYPE_N32)
     : SkImageGenerator(GetMyInfo(colorType)), fType(type), fReporter(reporter) {
         SkASSERT((fType <= kLast_TestType) && (fType >= 0));
     }
     ~TestImageGenerator() override {}
 
 protected:
-    static SkImageInfo GetMyInfo(SkColorType colorType) {
+    static SkImageInfo GetMyInfo(vx_color_type colorType) {
         return SkImageInfo::Make(TestImageGenerator::Width(), TestImageGenerator::Height(),
-                                 colorType, kOpaque_SkAlphaType);
+                                 colorType, VX_ALPHA_TYPE_OPAQUE);
     }
 
     bool onGetPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
@@ -59,19 +59,19 @@ protected:
         if (fType != kSucceedGetPixels_TestType) {
             return false;
         }
-        if (info.colorType() != kN32_SkColorType && info.colorType() != getInfo().colorType()) {
+        if (info.colorType() != VX_COLOR_TYPE_N32 && info.colorType() != getInfo().colorType()) {
             return false;
         }
         char* bytePtr = static_cast<char*>(pixels);
         switch (info.colorType()) {
-            case kN32_SkColorType:
+            case VX_COLOR_TYPE_N32:
                 for (int y = 0; y < info.height(); ++y) {
                     SkOpts::memset32((uint32_t*)bytePtr,
                                 TestImageGenerator::PMColor(), info.width());
                     bytePtr += rowBytes;
                 }
                 break;
-            case kRGB_565_SkColorType:
+            case VX_COLOR_TYPE_RGB_565:
                 for (int y = 0; y < info.height(); ++y) {
                     SkOpts::memset16((uint16_t*)bytePtr,
                         SkPixel32ToPixel16(TestImageGenerator::PMColor()), info.width());
@@ -96,13 +96,13 @@ DEF_TEST(Image_NewFromGenerator, r) {
         TestImageGenerator::kFailGetPixels_TestType,
         TestImageGenerator::kSucceedGetPixels_TestType,
     };
-    const SkColorType testColorTypes[] = {
-        kN32_SkColorType,
-        kRGB_565_SkColorType
+    const vx_color_type testColorTypes[] = {
+        VX_COLOR_TYPE_N32,
+        VX_COLOR_TYPE_RGB_565
     };
     for (size_t i = 0; i < std::size(testTypes); ++i) {
         TestImageGenerator::TestType test = testTypes[i];
-        for (const SkColorType testColorType : testColorTypes) {
+        for (const vx_color_type testColorType : testColorTypes) {
             auto gen = std::make_unique<TestImageGenerator>(test, r, testColorType);
             sk_sp<SkImage> image(SkImages::DeferredFromGenerator(std::move(gen)));
             if (nullptr == image) {

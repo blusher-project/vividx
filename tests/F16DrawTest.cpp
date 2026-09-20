@@ -50,7 +50,7 @@ void test_f16(skiatest::Reporter* reporter,
 
     // Create an F16 surface, if possible.
     SkImageInfo imageInfo = SkImageInfo::Make(
-            SkISize::Make(1, 1), kRGBA_F16_SkColorType, SkAlphaType::kPremul_SkAlphaType);
+            SkISize::Make(1, 1), VX_COLOR_TYPE_RGBA_F16, vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = createSurface(imageInfo);
     if (!surface) {
         return;

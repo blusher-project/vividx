@@ -87,8 +87,8 @@ sk_sp<SkImage> SkAnimCodecPlayer::getFrameAt(int index) {
     paint.setBlendMode(SkBlendMode::kSrc);
 
     auto imageInfo = fImageInfo;
-    if (fFrameInfos[index].fAlphaType != kOpaque_SkAlphaType && imageInfo.isOpaque()) {
-        imageInfo = imageInfo.makeAlphaType(kPremul_SkAlphaType);
+    if (fFrameInfos[index].fAlphaType != VX_ALPHA_TYPE_OPAQUE && imageInfo.isOpaque()) {
+        imageInfo = imageInfo.makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     }
     const int requiredFrame = fFrameInfos[index].fRequiredFrame;
     if (requiredFrame != SkCodec::kNoFrame && fImages[requiredFrame]) {

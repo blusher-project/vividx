@@ -158,7 +158,7 @@ void precompile_gradients(std::unique_ptr<PrecompileContext> precompileContext,
     bool avoidDepthMode = precompileContext->priv().caps()->avoidDepthMode();
     const RenderPassProperties kProps = {
             avoidDepthMode ? DepthStencilFlags::kNone : DepthStencilFlags::kDepth,
-            kBGRA_8888_SkColorType,
+            VX_COLOR_TYPE_BGRA_8888,
             /* dstColorSpace= */ nullptr,
             /* requiresMSAA= */ false};
 
@@ -279,8 +279,8 @@ void compile_gradients(std::unique_ptr<Recorder> recorder,
     sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromText(text, strlen(text), font);
 
     SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                       kBGRA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_BGRA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder.get(), ii,
                                                      skgpu::Mipmapped::kNo,

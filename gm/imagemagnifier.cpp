@@ -74,7 +74,7 @@ static sk_sp<SkImage> make_img() {
     }
 
     SkBitmap result;
-    result.setInfo(SkImageInfo::MakeS32(WIDTH_HEIGHT, WIDTH_HEIGHT, kPremul_SkAlphaType));
+    result.setInfo(SkImageInfo::MakeS32(WIDTH_HEIGHT, WIDTH_HEIGHT, VX_ALPHA_TYPE_PREMULTIPLIED));
     result.setPixelRef(sk_ref_sp(bitmap.pixelRef()), 0, 0);
 
     return result.asImage();

@@ -17,14 +17,14 @@
 static GrSurfaceCharacterization create_characterization(GrDirectContext* direct) {
     size_t maxResourceBytes = direct->getResourceCacheLimit();
 
-    if (!direct->colorTypeSupportedAsSurface(kRGBA_8888_SkColorType)) {
+    if (!direct->colorTypeSupportedAsSurface(VX_COLOR_TYPE_RGBA_8888)) {
         return GrSurfaceCharacterization();
     }
 
-    SkImageInfo ii = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType, nullptr);
+    SkImageInfo ii = SkImageInfo::Make(32, 32, VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
 
-    GrBackendFormat backendFormat = direct->defaultBackendFormat(kRGBA_8888_SkColorType,
+    GrBackendFormat backendFormat = direct->defaultBackendFormat(VX_COLOR_TYPE_RGBA_8888,
                                                                  GrRenderable::kYes);
     if (!backendFormat.isValid()) {
         return GrSurfaceCharacterization();

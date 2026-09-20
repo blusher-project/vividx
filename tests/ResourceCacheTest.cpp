@@ -251,9 +251,9 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceCacheWrappedResources,
     static const int kH = 100;
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
-            context, kW, kH, kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo);
+            context, kW, kH, VX_COLOR_TYPE_RGBA_8888, skgpu::Mipmapped::kNo, GrRenderable::kNo);
     GrBackendTexture unmbet = context->createBackendTexture(
-            kW, kH, kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo);
+            kW, kH, VX_COLOR_TYPE_RGBA_8888, skgpu::Mipmapped::kNo, GrRenderable::kNo);
     if (!mbet || !unmbet.isValid()) {
         ERRORF(reporter, "Could not create backend texture.");
         return;
@@ -1629,7 +1629,7 @@ static void test_free_texture_messages(skiatest::Reporter* reporter) {
     for (int i = 0; i < 3; ++i) {
         backends[i] = dContext->createBackendTexture(16,
                                                      16,
-                                                     SkColorType::kRGBA_8888_SkColorType,
+                                                     vx_color_type::VX_COLOR_TYPE_RGBA_8888,
                                                      skgpu::Mipmapped::kNo,
                                                      GrRenderable::kNo);
         wrapped[i] = gpu->wrapBackendTexture(backends[i],
@@ -1703,7 +1703,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceMessagesAfterAbandon,
     Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
     GrBackendTexture backend = dContext->createBackendTexture(
-            16, 16, SkColorType::kRGBA_8888_SkColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo,
+            16, 16, vx_color_type::VX_COLOR_TYPE_RGBA_8888, skgpu::Mipmapped::kNo, GrRenderable::kNo,
             isProtected);
     sk_sp<GrTexture> tex = gpu->wrapBackendTexture(backend,
                                                    GrWrapOwnership::kBorrow_GrWrapOwnership,
@@ -1901,7 +1901,7 @@ DEF_GANESH_TEST_FOR_MOCK_CONTEXT(OverbudgetFlush, reporter, ctxInfo) {
         return delta;
     };
 
-    auto info = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surf1 = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, info, 1, nullptr);
     auto surf2 = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, info, 1, nullptr);
 

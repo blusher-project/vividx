@@ -110,7 +110,7 @@ DEF_GANESH_TEST_FOR_MOCK_CONTEXT(GrSurface, reporter, ctxInfo) {
 
     GrBackendTexture backendTex = context->createBackendTexture(256,
                                                                 256,
-                                                                kRGBA_8888_SkColorType,
+                                                                VX_COLOR_TYPE_RGBA_8888,
                                                                 SkColors::kTransparent,
                                                                 skgpu::Mipmapped::kNo,
                                                                 GrRenderable::kNo,
@@ -278,8 +278,8 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
     static constexpr int kSize = 100;
     static constexpr SkColor kClearColor = 0xABABABAB;
 
-    const SkImageInfo imageInfo = SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType,
-                                                    kPremul_SkAlphaType);
+    const SkImageInfo imageInfo = SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_8888,
+                                                    VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkAutoPixmapStorage readback;
     readback.alloc(imageInfo);
@@ -320,7 +320,7 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
                 // require this but the Intel Iris 6100 on Win 10 test bot doesn't put one in the
                 // alpha channel when reading back from GL_RG16 or GL_RG16F. So now we allow either.
                 uint32_t channels = GrColorTypeChannelFlags(combo.fColorType);
-                bool allowAlphaOne = !(channels & kAlpha_SkColorChannelFlag);
+                bool allowAlphaOne = !(channels & VX_COLOR_CHANNEL_FLAG_ALPHA);
                 if (allowAlphaOne) {
                     if (readColor != 0x00000000 && readColor != 0xFF000000) {
                         ERRORF(reporter,
@@ -363,7 +363,7 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
                                                                           combo.fColorType);
                             GrSurfaceProxyView view(std::move(proxy), kTopLeft_GrSurfaceOrigin,
                                                     swizzle);
-                            GrColorInfo info(combo.fColorType, kPremul_SkAlphaType, nullptr);
+                            GrColorInfo info(combo.fColorType, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
                             auto texCtx = dContext->priv().makeSC(std::move(view), info);
 
                             readback.erase(kClearColor);
@@ -384,8 +384,8 @@ DEF_GANESH_TEST(InitialTextureClear, reporter, baseOptions, CtsEnforcement::kApi
                     {
                         GrImageInfo info(combo.fColorType,
                                          GrColorTypeHasAlpha(combo.fColorType)
-                                                                            ? kPremul_SkAlphaType
-                                                                            : kOpaque_SkAlphaType,
+                                                                            ? VX_ALPHA_TYPE_PREMULTIPLIED
+                                                                            : VX_ALPHA_TYPE_OPAQUE,
                                          nullptr,
                                          {desc.fHeight, desc.fHeight});
 
@@ -443,7 +443,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
     };
 
     static constexpr int kSize = 100;
-    SkImageInfo ii = SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkAutoPixmapStorage srcPixmap;
     srcPixmap.alloc(ii);
     fillPixels(&srcPixmap,
@@ -525,7 +525,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture,
             mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(dContext,
                                                                        kSize,
                                                                        kSize,
-                                                                       kRGBA_8888_SkColorType,
+                                                                       VX_COLOR_TYPE_RGBA_8888,
                                                                        Mipmapped::kYes,
                                                                        GrRenderable::kNo,
                                                                        isProtected);

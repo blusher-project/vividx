@@ -38,7 +38,7 @@ sk_sp<SkPicture> create_picture(int width, int height) {
 
 
 SkBitmap create_bitmap(int width, int height) {
-    SkImageInfo ii = SkImageInfo::Make(width, height, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(width, height, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap bm;
     bm.allocPixels(ii);

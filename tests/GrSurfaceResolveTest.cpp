@@ -73,7 +73,7 @@ bool check_pixels(skiatest::Reporter* reporter,
                                                               tex,
                                                               kTopLeft_GrSurfaceOrigin,
                                                               /*sampleCnt=*/4,
-                                                              kRGBA_8888_SkColorType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
                                                               nullptr,
                                                               nullptr);
     SkBitmap actual;
@@ -106,7 +106,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
                                        CtsEnforcement::kApiLevel_T) {
     auto dContext = ctxInfo.directContext();
 
-    SkImageInfo info = SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(8, 8, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     auto managedTex = ManagedBackendTexture::MakeFromInfo(
             dContext, info, skgpu::Mipmapped::kNo, GrRenderable::kYes);
@@ -120,7 +120,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest,
                                                               tex,
                                                               kTopLeft_GrSurfaceOrigin,
                                                               /*sampleCnt=*/4,
-                                                              kRGBA_8888_SkColorType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
                                                               nullptr,
                                                               nullptr);
 
@@ -279,7 +279,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
                                                                GrProtected::kNo,
                                                                "testSrc");
             skgpu::ganesh::SurfaceContext mmSC(
-                    dc, mmProxyView, {GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr});
+                    dc, mmProxyView, {GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr});
             mmSC.testCopy(src);
         }
 
@@ -297,7 +297,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
         {
             auto te = GrTextureEffect::Make(
                     mmProxyView,
-                    kPremul_SkAlphaType,
+                    VX_ALPHA_TYPE_PREMULTIPLIED,
                     SkMatrix::I(),
                     GrSamplerState{SkFilterMode::kLinear, SkMipmapMode::kNone},
                     *dc->priv().caps());
@@ -329,7 +329,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(NonmippedDrawBeforeMippedDraw,
         {
             auto te = GrTextureEffect::Make(
                     mmProxyView,
-                    kPremul_SkAlphaType,
+                    VX_ALPHA_TYPE_PREMULTIPLIED,
                     SkMatrix::I(),
                     GrSamplerState{SkFilterMode::kLinear, SkMipmapMode::kLinear},
                     *dc->priv().caps());
@@ -454,7 +454,7 @@ DEF_GANESH_TEST(SurfaceResolveProxyStateAfterFailedFlush,
                                                                 "ResolveProxyStateTestDst");
                 auto te = GrTextureEffect::Make(
                         proxyView,
-                        kPremul_SkAlphaType,
+                        VX_ALPHA_TYPE_PREMULTIPLIED,
                         SkMatrix::I(),
                         GrSamplerState{SkFilterMode::kLinear, MipmapMode::kLinear},
                         *dContext->priv().caps());
@@ -522,7 +522,7 @@ static bool read_backing_pixel(GrDirectContext* dContext,
                                                              tex,
                                                              kTopLeft_GrSurfaceOrigin,
                                                              /*sampleCnt=*/1,
-                                                             kRGBA_8888_SkColorType,
+                                                             VX_COLOR_TYPE_RGBA_8888,
                                                              nullptr,
                                                              nullptr);
     if (!reader) {
@@ -556,7 +556,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveAfterFailedFlush,
         return;
     }
 
-    SkImageInfo info = SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(8, 8, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     auto managedTex = ManagedBackendTexture::MakeFromInfo(
             dContext, info, skgpu::Mipmapped::kNo, GrRenderable::kYes);
@@ -574,7 +574,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveAfterFailedFlush,
                                                                   tex,
                                                                   kTopLeft_GrSurfaceOrigin,
                                                                   /*sampleCnt=*/4,
-                                                                  kRGBA_8888_SkColorType,
+                                                                  VX_COLOR_TYPE_RGBA_8888,
                                                                   nullptr,
                                                                   nullptr);
         if (!surface) {
@@ -599,7 +599,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceResolveAfterFailedFlush,
                                                               tex,
                                                               kTopLeft_GrSurfaceOrigin,
                                                               /*sampleCnt=*/4,
-                                                              kRGBA_8888_SkColorType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
                                                               nullptr,
                                                               nullptr);
     if (!surface) {

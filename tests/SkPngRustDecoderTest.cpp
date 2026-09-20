@@ -91,7 +91,7 @@ void AssertPixelColor(skiatest::Reporter* r,
     REPORTER_ASSERT(r, x < pixmap.width(), "x=%d >= width=%d", x, pixmap.width());
     REPORTER_ASSERT(r, y < pixmap.height(), "y=%d >= height=%d", y, pixmap.height());
     REPORTER_ASSERT(r,
-                    kN32_SkColorType == pixmap.colorType(),
+                    VX_COLOR_TYPE_N32 == pixmap.colorType(),
                     "kN32_SkColorType != pixmap.ColorType()=%d",
                     pixmap.colorType());
 
@@ -183,10 +183,10 @@ static std::unique_ptr<SkCodec> StartIncrementalDecodeSubset(skiatest::Reporter*
     }
 
     SkImageInfo subsetInfo =
-            codec->getInfo().makeDimensions(subset.size()).makeColorType(kN32_SkColorType);
+            codec->getInfo().makeDimensions(subset.size()).makeColorType(VX_COLOR_TYPE_N32);
     dstBitmap->allocPixels(subsetInfo);
 
-    SkImageInfo fullInfo = codec->getInfo().makeColorType(kN32_SkColorType);
+    SkImageInfo fullInfo = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkCodec::Options options;
     options.fSubset = &subset;
 
@@ -288,7 +288,7 @@ static std::optional<SkBitmap> DecodeAndroidPixels(
 
     SkISize sampledDims = androidCodec->getSampledDimensions(sampleSize);
     SkImageInfo info =
-            androidCodec->getInfo().makeDimensions(sampledDims).makeColorType(kN32_SkColorType);
+            androidCodec->getInfo().makeDimensions(sampledDims).makeColorType(VX_COLOR_TYPE_N32);
     if (opts.fSubset) {
         int subsetWidth = SkCodecPriv::GetSampledDimension(opts.fSubset->width(), sampleSize);
         int subsetHeight = SkCodecPriv::GetSampledDimension(opts.fSubset->height(), sampleSize);
@@ -467,7 +467,7 @@ DEF_TEST(RustPngCodec_apng_dispose_op_none_basic, r) {
     REPORTER_ASSERT(r, !info[2].fFullyReceived);
 
     // Spot-check frame metadata.
-    REPORTER_ASSERT(r, info[1].fAlphaType == kUnpremul_SkAlphaType);
+    REPORTER_ASSERT(r, info[1].fAlphaType == VX_ALPHA_TYPE_UNPREMULTIPLIED);
     REPORTER_ASSERT(r, info[1].fBlend == SkCodecAnimation::Blend::kSrcOver);
     REPORTER_ASSERT(r, info[1].fDisposalMethod == SkCodecAnimation::DisposalMethod::kKeep);
     REPORTER_ASSERT(r, info[1].fDuration == 100, "dur = %d", info[1].fDuration);
@@ -799,7 +799,7 @@ DEF_TEST(RustPngCodec_png_swizzling_target_unimplemented, r) {
     // * Unsupported by `SkSwizzler`.
     // * Supported by `SkCodec::conversionSupported`.
     SkImageInfo dstInfo = SkImageInfo::Make(
-            codec->dimensions(), kBGRA_10101010_XR_SkColorType, kPremul_SkAlphaType);
+            codec->dimensions(), VX_COLOR_TYPE_BGRA_10101010_XR, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     auto [image, result] = codec->getImage(dstInfo);
     REPORTER_ASSERT(r, result == SkCodec::kUnimplemented);
@@ -881,7 +881,7 @@ DEF_TEST(RustPngCodec_f16_trc_tables, r) {
     REPORTER_ASSERT(r, info.colorSpace());
 
     // Decoding to F16 without color space conversion.
-    const SkImageInfo dstInfo = info.makeColorType(kRGBA_F16_SkColorType)
+    const SkImageInfo dstInfo = info.makeColorType(VX_COLOR_TYPE_RGBA_F16)
                                     .makeColorSpace(nullptr);
     // This should not crash.
     auto [image, result] = codec->getImage(dstInfo);
@@ -1264,7 +1264,7 @@ DEF_TEST(RustPngCodec_exactRead, r) {
                 continue;
             }
 
-            auto info = codec->getInfo().makeColorType(kN32_SkColorType);
+            auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
             SkBitmap bm;
             bm.allocPixels(info);
 
@@ -1328,7 +1328,7 @@ DEF_TEST(RustPngCodec_exactRead_overshoot, r) {
                 ERRORF(r, "Failed to create a codec from %s, iteration %i", path, i);
                 return;
             }
-            auto info = codec->getInfo().makeColorType(kN32_SkColorType);
+            auto info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
             SkBitmap bm;
             bm.allocPixels(info);
             result = codec->getPixels(bm.info(), bm.getPixels(), bm.rowBytes());

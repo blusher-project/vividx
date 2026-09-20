@@ -34,6 +34,9 @@
 #include <vector>
 #include <functional>
 
+#include <vividx/core/alpha-type.h>
+#include <vividx/core/color-type.h>
+
 class SkBitmap;
 class SkCanvas;
 class SkFont;
@@ -45,8 +48,6 @@ class SkPath;
 class SkShader;
 class SkSurfaceProps;
 class SkTextBlobBuilder;
-enum vx_alpha_type : int;
-enum vx_color_type : int;
 enum class SkTextEncoding;
 enum class SkTileMode;
 struct SkImageInfo;

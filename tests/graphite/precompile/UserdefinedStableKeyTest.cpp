@@ -67,7 +67,7 @@ std::pair<SkPaint, PaintOptions> create_paint_and_options(bool addBlenders) {
 bool draw_with_normal_api(skgpu::graphite::Context* context,
                           skgpu::graphite::Recorder* recorder,
                           const SkPaint& paint) {
-    auto ii = SkImageInfo::Make({ 256, 256 }, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto ii = SkImageInfo::Make({ 256, 256 }, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder, ii, skgpu::Mipmapped::kNo);
     if (!surface) {

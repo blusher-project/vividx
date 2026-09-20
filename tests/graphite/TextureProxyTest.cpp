@@ -29,8 +29,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
     const Caps* caps = context->priv().caps();
     constexpr SkISize kValidSize = SkISize::Make(1, 1);
     constexpr SkISize kInvalidSize = SkISize::MakeEmpty();
-    constexpr SkColorType kValidColorType = kRGBA_8888_SkColorType;
-    constexpr SkColorType kInvalidColorType = kUnknown_SkColorType;
+    constexpr vx_color_type kValidColorType = VX_COLOR_TYPE_RGBA_8888;
+    constexpr vx_color_type kInvalidColorType = VX_COLOR_TYPE_UNKNOWN;
 
     Protected isProtected = Protected(caps->protectedSupport());
 
@@ -42,7 +42,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureProxyTest, reporter, context,
     sk_sp<Texture> texture = resourceProvider->createWrappedTexture(backendTexture,
                                                                     "TextureProxyTestWrappedTex");
 
-    auto makeProxy = [&](SkISize dimensions, SkColorType colorType, Mipmapped mipmapped,
+    auto makeProxy = [&](SkISize dimensions, vx_color_type colorType, Mipmapped mipmapped,
                          Protected isProtected, Renderable renderable, Budgeted budgeted) {
         auto textureInfo = caps->getDefaultSampledTextureInfo(colorType, mipmapped,
                                                               isProtected, renderable);
@@ -208,7 +208,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteTextureTooLargeTest, reporter, contex
     SkBitmap bitmap;
     SkISize dimensions = SkISize::Make(caps->maxTextureSize() + 1, 1);
     bitmap.allocPixels(SkImageInfo::Make(
-            dimensions, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType));
+            dimensions, vx_color_type::VX_COLOR_TYPE_RGBA_8888, vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED));
     sk_sp<SkImage> rasterImage = SkImages::RasterFromBitmap(bitmap);
     sk_sp<SkImage> graphiteImage =
             SkImages::TextureFromImage(recorder.get(), rasterImage.get(), /*requiredProps=*/{});
@@ -243,7 +243,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteLazyTextureInvalidDimensions, reporte
 
     for (const SkISize& dimensions : {largeDimensions, negativeDimensions}) {
         SkImageInfo imageInfo = SkImageInfo::Make(
-                dimensions, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
+                dimensions, vx_color_type::VX_COLOR_TYPE_RGBA_8888, vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
         TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(
                 imageInfo.colorInfo().colorType(), Mipmapped::kNo, Protected::kNo, Renderable::kNo);
 
@@ -257,7 +257,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteLazyTextureInvalidDimensions, reporte
         // Drawing should still succeed, as no image draw should actually be attempted with this
         // texture.
         SkImageInfo surfaceImageInfo = SkImageInfo::Make(
-                1, 1, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
+                1, 1, vx_color_type::VX_COLOR_TYPE_RGBA_8888, vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
         sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), surfaceImageInfo);
         sk_sp<SkImage> promiseImage = SkImages::PromiseTextureFrom(recorder.get(),
                                                                    imageInfo.dimensions(),

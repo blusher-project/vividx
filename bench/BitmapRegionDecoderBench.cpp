@@ -13,7 +13,7 @@
 #include "src/core/SkOSFile.h"
 
 BitmapRegionDecoderBench::BitmapRegionDecoderBench(const char* baseName, SkData* encoded,
-        SkColorType colorType, uint32_t sampleSize, const SkIRect& subset)
+        vx_color_type colorType, uint32_t sampleSize, const SkIRect& subset)
     : fBRD(nullptr)
     , fData(SkRef(encoded))
     , fColorType(colorType)

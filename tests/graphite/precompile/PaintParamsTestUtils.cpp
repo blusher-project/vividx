@@ -357,11 +357,11 @@ static SkMatrix* random_local_matrix(
 }
 
 static sk_sp<SkImage> make_image(SkRandom* rand, Recorder* recorder) {
-    SkColorType ct = SkColorType::kRGBA_8888_SkColorType;
+    vx_color_type ct = vx_color_type::VX_COLOR_TYPE_RGBA_8888;
     if (rand->nextBool()) {
-        ct = SkColorType::kAlpha_8_SkColorType;
+        ct = vx_color_type::VX_COLOR_TYPE_ALPHA_8;
     }
-    SkImageInfo info = SkImageInfo::Make(32, 32, ct, kPremul_SkAlphaType, random_colorspace(rand));
+    SkImageInfo info = SkImageInfo::Make(32, 32, ct, VX_ALPHA_TYPE_PREMULTIPLIED, random_colorspace(rand));
     SkBitmap bitmap;
     bitmap.allocPixels(info);
     bitmap.eraseColor(SK_ColorBLACK);
@@ -381,7 +381,7 @@ static sk_sp<SkImage> make_yuv_image(SkRandom* rand, Recorder* recorder) {
             },
             planeConfig,
             SkYUVAInfo::Subsampling::k420,
-            kJPEG_Full_SkYUVColorSpace);
+            VX_YUV_COLOR_SPACE_JPEG_FULL);
     SkYUVAPixmapInfo pmInfo(yuvaInfo, SkYUVAPixmapInfo::DataType::kUnorm8, nullptr);
     SkYUVAPixmaps pixmaps = SkYUVAPixmaps::Allocate(pmInfo);
     for (int i = 0; i < pixmaps.numPlanes(); ++i) {
@@ -834,7 +834,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_blendmode_c
 
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_matrix_colorfilter() {
     sk_sp<SkColorFilter> cf = SkColorFilters::Matrix(
-            SkColorMatrix::RGBtoYUV(SkYUVColorSpace::kJPEG_Full_SkYUVColorSpace));
+            SkColorMatrix::RGBtoYUV(vx_yuv_color_space::VX_YUV_COLOR_SPACE_JPEG_FULL));
     sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::Matrix();
     return {std::move(cf), std::move(o)};
 }
@@ -870,7 +870,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_workingform
     if (!childCF) return {nullptr, nullptr};
     const skcms_TransferFunction* tf = rand->nextBool() ? &random_xfer_function(rand) : nullptr;
     const skcms_Matrix3x3* gamut = rand->nextBool() ? &random_gamut(rand) : nullptr;
-    const SkAlphaType unpremul = kUnpremul_SkAlphaType;
+    const vx_alpha_type unpremul = VX_ALPHA_TYPE_UNPREMULTIPLIED;
     sk_sp<SkColorFilter> cf =
             SkColorFilterPriv::WithWorkingFormat(std::move(childCF), tf, gamut, &unpremul);
     sk_sp<PrecompileColorFilter> o = PrecompileColorFiltersPriv::WithWorkingFormat(
@@ -903,7 +903,7 @@ std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_srgb_to_lin
 
 std::pair<sk_sp<SkColorFilter>, sk_sp<PrecompileColorFilter>> create_hsla_matrix_colorfilter() {
     sk_sp<SkColorFilter> cf = SkColorFilters::HSLAMatrix(
-            SkColorMatrix::RGBtoYUV(SkYUVColorSpace::kJPEG_Full_SkYUVColorSpace));
+            SkColorMatrix::RGBtoYUV(vx_yuv_color_space::VX_YUV_COLOR_SPACE_JPEG_FULL));
     sk_sp<PrecompileColorFilter> o = PrecompileColorFilters::HSLAMatrix();
     return {std::move(cf), std::move(o)};
 }

@@ -19,7 +19,7 @@ class PremulAndUnpremulAlphaOpsBench : public Benchmark {
     SkBitmap fBmp1, fBmp2;
 
 public:
-    PremulAndUnpremulAlphaOpsBench(SkColorType ct) {
+    PremulAndUnpremulAlphaOpsBench(vx_color_type ct) {
         fColorType = ct;
         fName.printf("premul_and_unpremul_alpha_%s", ToolUtils::colortype_name(ct));
     }
@@ -30,7 +30,7 @@ protected:
     }
 
     void onDelayedSetup() override {
-        SkImageInfo info = SkImageInfo::Make(W, H, fColorType, kUnpremul_SkAlphaType);
+        SkImageInfo info = SkImageInfo::Make(W, H, fColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED);
         fBmp1.allocPixels(info);   // used in writePixels
 
         for (int h = 0; h < H; ++h) {
@@ -55,12 +55,12 @@ protected:
     }
 
 private:
-    SkColorType fColorType;
+    vx_color_type fColorType;
     SkString fName;
 
     using INHERITED = Benchmark;
 };
 
 
-DEF_BENCH(return new PremulAndUnpremulAlphaOpsBench(kRGBA_8888_SkColorType))
-DEF_BENCH(return new PremulAndUnpremulAlphaOpsBench(kBGRA_8888_SkColorType))
+DEF_BENCH(return new PremulAndUnpremulAlphaOpsBench(VX_COLOR_TYPE_RGBA_8888))
+DEF_BENCH(return new PremulAndUnpremulAlphaOpsBench(VX_COLOR_TYPE_BGRA_8888))

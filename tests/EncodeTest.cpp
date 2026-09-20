@@ -153,7 +153,7 @@ static inline bool almost_equals(const SkBitmap& a, const SkBitmap& b, int toler
         return false;
     }
 
-    SkASSERT(kN32_SkColorType == a.colorType());
+    SkASSERT(VX_COLOR_TYPE_N32 == a.colorType());
     for (int y = 0; y < a.height(); y++) {
         for (int x = 0; x < a.width(); x++) {
             if (!almost_equals(*a.getAddr32(x, y), *b.getAddr32(x, y), tolerance)) {
@@ -166,15 +166,15 @@ static inline bool almost_equals(const SkBitmap& a, const SkBitmap& b, int toler
 }
 
 void test_png_encoding_roundtrip_from_specific_source_format(skiatest::Reporter* r,
-                                                             SkColorType colorType,
-                                                             SkAlphaType alphaType,
+                                                             vx_color_type colorType,
+                                                             vx_alpha_type alphaType,
                                                              int tolerance) {
     ///////////////////////////////////////////////////
     // Decode the test image into `originalBitmapRgba8`
     // (RGBA8, as the name implies).
     SkBitmap originalBitmapRgba8;
     {
-        const char* resource = (kOpaque_SkAlphaType == alphaType) ? "images/color_wheel.jpg"
+        const char* resource = (VX_ALPHA_TYPE_OPAQUE == alphaType) ? "images/color_wheel.jpg"
                                                                   : "images/color_wheel.png";
         sk_sp<SkData> data = GetResourceAsData(resource);
         if (!data) {
@@ -185,7 +185,7 @@ void test_png_encoding_roundtrip_from_specific_source_format(skiatest::Reporter*
         if (!codec) {
             return;
         }
-        SkImageInfo dstInfo = codec->getInfo().makeColorType(kRGBA_8888_SkColorType);
+        SkImageInfo dstInfo = codec->getInfo().makeColorType(VX_COLOR_TYPE_RGBA_8888);
         originalBitmapRgba8.allocPixels(dstInfo);
         SkCodec::Result result = codec->getPixels(
                 dstInfo, originalBitmapRgba8.getPixels(), originalBitmapRgba8.rowBytes());
@@ -251,7 +251,7 @@ void test_png_encoding_roundtrip_from_specific_source_format(skiatest::Reporter*
         if (!codec) {
             return;
         }
-        SkImageInfo dstInfo = codec->getInfo().makeColorType(kRGBA_8888_SkColorType);
+        SkImageInfo dstInfo = codec->getInfo().makeColorType(VX_COLOR_TYPE_RGBA_8888);
         roundtripBitmap.allocPixels(dstInfo);
         SkCodec::Result result =
                 codec->getPixels(dstInfo, roundtripBitmap.getPixels(), roundtripBitmap.rowBytes());
@@ -299,13 +299,13 @@ void test_png_encoding_roundtrip_from_specific_source_format(skiatest::Reporter*
 
 DEF_TEST(Encode_png_roundtrip_for_different_source_formats, r) {
     test_png_encoding_roundtrip_from_specific_source_format(
-            r, kN32_SkColorType, kOpaque_SkAlphaType, 0);
+            r, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_OPAQUE, 0);
     test_png_encoding_roundtrip_from_specific_source_format(
-            r, kN32_SkColorType, kUnpremul_SkAlphaType, 0);
+            r, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_UNPREMULTIPLIED, 0);
     test_png_encoding_roundtrip_from_specific_source_format(
-            r, kN32_SkColorType, kPremul_SkAlphaType, 0);
+            r, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED, 0);
     test_png_encoding_roundtrip_from_specific_source_format(
-            r, kRGB_565_SkColorType, kOpaque_SkAlphaType, 1);
+            r, VX_COLOR_TYPE_RGB_565, VX_ALPHA_TYPE_OPAQUE, 1);
 
     // PNG encoder used to narrow down `kRGBA_F16_SkColorType` from RGBA to RGB
     // (BE16) by skipping the alpha channel via `png_set_filler`.  But this
@@ -313,11 +313,11 @@ DEF_TEST(Encode_png_roundtrip_for_different_source_formats, r) {
     // test.  See the code review comments of http://review.skia.org/922676 for
     // more details.
     test_png_encoding_roundtrip_from_specific_source_format(
-            r, kRGBA_F16_SkColorType, kOpaque_SkAlphaType, 0);
+            r, VX_COLOR_TYPE_RGBA_F16, VX_ALPHA_TYPE_OPAQUE, 0);
     test_png_encoding_roundtrip_from_specific_source_format(
-            r, kRGBA_F16_SkColorType, kPremul_SkAlphaType, 1);
+            r, VX_COLOR_TYPE_RGBA_F16, VX_ALPHA_TYPE_PREMULTIPLIED, 1);
     test_png_encoding_roundtrip_from_specific_source_format(
-            r, kRGBA_F32_SkColorType, kOpaque_SkAlphaType, 0);
+            r, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_OPAQUE, 0);
 }
 
 DEF_TEST(Encode_JPG, r) {
@@ -326,13 +326,13 @@ DEF_TEST(Encode_JPG, r) {
         return;
     }
 
-    for (auto ct : { kRGBA_8888_SkColorType,
-                     kBGRA_8888_SkColorType,
-                     kRGB_565_SkColorType,
-                     kARGB_4444_SkColorType,
-                     kGray_8_SkColorType,
-                     kRGBA_F16_SkColorType }) {
-        for (auto at : { kPremul_SkAlphaType, kUnpremul_SkAlphaType, kOpaque_SkAlphaType }) {
+    for (auto ct : { VX_COLOR_TYPE_RGBA_8888,
+                     VX_COLOR_TYPE_BGRA_8888,
+                     VX_COLOR_TYPE_RGB_565,
+                     VX_COLOR_TYPE_ARGB_4444,
+                     VX_COLOR_TYPE_GRAY_8,
+                     VX_COLOR_TYPE_RGBA_F16 }) {
+        for (auto at : { VX_ALPHA_TYPE_PREMULTIPLIED, VX_ALPHA_TYPE_UNPREMULTIPLIED, VX_ALPHA_TYPE_OPAQUE }) {
             auto info = SkImageInfo::Make(image->width(), image->height(), ct, at);
             auto surface = SkSurfaces::Raster(info);
             auto canvas = surface->getCanvas();
@@ -349,7 +349,7 @@ DEF_TEST(Encode_JPG, r) {
                 SkJpegEncoder::Options opts;
                 opts.fAlphaOption = alphaOption;
                 if (!SkJpegEncoder::Encode(bm.pixmap(), opts)) {
-                    REPORTER_ASSERT(r, ct == kARGB_4444_SkColorType
+                    REPORTER_ASSERT(r, ct == VX_COLOR_TYPE_ARGB_4444
                                     && alphaOption == SkJpegEncoder::AlphaOption::kBlendOnBlack);
                 }
             }
@@ -684,12 +684,12 @@ DEF_TEST(Encode_Alpha, r) {
     for (auto format : { SkEncodedImageFormat::kJPEG,
                          SkEncodedImageFormat::kPNG,
                          SkEncodedImageFormat::kWEBP }) {
-        for (int ctAsInt = kUnknown_SkColorType + 1; ctAsInt <= kLastEnum_SkColorType; ctAsInt++) {
-            auto ct = static_cast<SkColorType>(ctAsInt);
+        for (int ctAsInt = VX_COLOR_TYPE_UNKNOWN + 1; ctAsInt <= VX_COLOR_TYPE_LASTENUM; ctAsInt++) {
+            auto ct = static_cast<vx_color_type>(ctAsInt);
             // Non-alpha-only colortypes are tested elsewhere.
             if (!SkColorTypeIsAlphaOnly(ct)) continue;
             SkBitmap bm;
-            bm.allocPixels(SkImageInfo::Make(10, 10, ct, kPremul_SkAlphaType));
+            bm.allocPixels(SkImageInfo::Make(10, 10, ct, VX_ALPHA_TYPE_PREMULTIPLIED));
             sk_bzero(bm.getPixels(), bm.computeByteSize());
             sk_sp<SkData> encoded;
             if (format == SkEncodedImageFormat::kJPEG) {
@@ -701,7 +701,7 @@ DEF_TEST(Encode_Alpha, r) {
             }
 
             if ((format == SkEncodedImageFormat::kJPEG || format == SkEncodedImageFormat::kPNG) &&
-                ct == kAlpha_8_SkColorType) {
+                ct == VX_COLOR_TYPE_ALPHA_8) {
                 // We support encoding alpha8 to png and jpeg with our own private meaning.
                 REPORTER_ASSERT(r, encoded);
                 REPORTER_ASSERT(r, encoded->size() > 0);
@@ -717,11 +717,11 @@ DEF_TEST(Encode_jpeg_blend_to_black, r) {
     const char* resource = "images/rainbow-gradient.png";
     int jpeg_tolerance = 60;
 
-    for (SkColorType colorType : {kRGBA_8888_SkColorType,
-                                  kBGRA_8888_SkColorType,
-                                  kRGBA_F16_SkColorType}) {
-        for (SkAlphaType alphaType : {kUnpremul_SkAlphaType,
-                                      kPremul_SkAlphaType}) {
+    for (vx_color_type colorType : {VX_COLOR_TYPE_RGBA_8888,
+                                  VX_COLOR_TYPE_BGRA_8888,
+                                  VX_COLOR_TYPE_RGBA_F16}) {
+        for (vx_alpha_type alphaType : {VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                      VX_ALPHA_TYPE_PREMULTIPLIED}) {
             for (bool blendOnBlack : {true, false}) {
                 skiatest::ReporterContext rc(r,
                                              SkStringPrintf(
@@ -779,8 +779,8 @@ DEF_TEST(Encode_jpeg_blend_to_black, r) {
                     SkCanvas blackCanvas(referenceBM);
                     blackCanvas.drawImage(originalBitmap.asImage(), 0, 0);
                 } else {
-                    SkImageInfo opaqueInfo = dstInfo.makeAlphaType(kOpaque_SkAlphaType)
-                                                    .makeColorType(kRGB_888x_SkColorType);
+                    SkImageInfo opaqueInfo = dstInfo.makeAlphaType(VX_ALPHA_TYPE_OPAQUE)
+                                                    .makeColorType(VX_COLOR_TYPE_RGB_888X);
                     referenceBM.allocPixels(opaqueInfo);
                     success = SkConvertPixels(opaqueInfo,
                                               referenceBM.getAddr(0,0),

@@ -95,7 +95,7 @@ static GrOp::Owner create_op(GrDirectContext* dContext, SkRect rect,
 
     return TextureOp::Make(dContext,
                            proxyView,
-                           kPremul_SkAlphaType,
+                           VX_ALPHA_TYPE_PREMULTIPLIED,
                            nullptr,
                            GrSamplerState::Filter::kNearest,
                            GrSamplerState::MipmapMode::kNone,

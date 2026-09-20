@@ -55,7 +55,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
 
     // First make a normal backend texture with DRM
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
-            dContext, 1, 1, kRGBA_8888_SkColorType, Mipmapped::kNo, GrRenderable::kNo, isProtected);
+            dContext, 1, 1, VX_COLOR_TYPE_RGBA_8888, Mipmapped::kNo, GrRenderable::kNo, isProtected);
     if (!mbet) {
         ERRORF(reporter, "Could not create backend texture.");
         return;
@@ -78,8 +78,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo, CtsEnfo
     sk_sp<SkImage> drmImage = SkImages::BorrowTextureFrom(dContext,
                                                           drmBETex,
                                                           kTopLeft_GrSurfaceOrigin,
-                                                          kRGBA_8888_SkColorType,
-                                                          kPremul_SkAlphaType,
+                                                          VX_COLOR_TYPE_RGBA_8888,
+                                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                                           nullptr);
     REPORTER_ASSERT(reporter, drmImage);
 
@@ -111,7 +111,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkImageLayoutTest, reporter, ctxInfo, CtsEnfo
     Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
-            dContext, 1, 1, kRGBA_8888_SkColorType, Mipmapped::kNo, GrRenderable::kNo, isProtected);
+            dContext, 1, 1, VX_COLOR_TYPE_RGBA_8888, Mipmapped::kNo, GrRenderable::kNo, isProtected);
     if (!mbet) {
         ERRORF(reporter, "Could not create backend texture.");
         return;
@@ -143,8 +143,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkImageLayoutTest, reporter, ctxInfo, CtsEnfo
             SkImages::BorrowTextureFrom(dContext,
                                         backendTex1,
                                         kTopLeft_GrSurfaceOrigin,
-                                        kRGBA_8888_SkColorType,
-                                        kPremul_SkAlphaType,
+                                        VX_COLOR_TYPE_RGBA_8888,
+                                        VX_ALPHA_TYPE_PREMULTIPLIED,
                                         /*color space*/ nullptr,
                                         sk_gpu_test::ManagedBackendTexture::ReleaseProc,
                                         mbet->releaseContext());
@@ -219,7 +219,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkTransitionExternalQueueTest, reporter, ctxI
     GrVkGpu* vkGpu = static_cast<GrVkGpu*>(gpu);
 
     GrBackendTexture backendTex = dContext->createBackendTexture(
-            1, 1, kRGBA_8888_SkColorType,
+            1, 1, VX_COLOR_TYPE_RGBA_8888,
             SkColors::kTransparent, skgpu::Mipmapped::kNo, GrRenderable::kNo);
     sk_sp<SkImage> image;
     // Make a backend texture with an external queue family and general layout.
@@ -234,7 +234,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkTransitionExternalQueueTest, reporter, ctxI
     GrBackendTexture vkExtTex(1, 1, vkInfo);
     REPORTER_ASSERT(reporter, vkExtTex.isValid());
     image = SkImages::BorrowTextureFrom(dContext, vkExtTex, kTopLeft_GrSurfaceOrigin,
-                                     kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr, nullptr,
+                                     VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr, nullptr,
                                      nullptr);
 
     if (!image) {

@@ -62,7 +62,7 @@ void runFPTest(skiatest::Reporter* reporter, GrDirectContext* dContext,
     }
 
     for (auto origin : {kTopLeft_GrSurfaceOrigin, kBottomLeft_GrSurfaceOrigin}) {
-        GrImageInfo info(colorType, kPremul_SkAlphaType, nullptr, {DEV_W, DEV_H});
+        GrImageInfo info(colorType, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr, {DEV_W, DEV_H});
         GrCPixmap controlPixmap(info, controlPixelData.begin(), info.minRowBytes());
         auto fpView = sk_gpu_test::MakeTextureProxyViewFromData(dContext,
                                                                 GrRenderable::kYes,

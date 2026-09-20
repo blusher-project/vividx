@@ -194,7 +194,7 @@ public:
                     format, GrRenderable::kYes, 1, GrProtected::kNo, *proxyProvider->caps(),
                     GrSurfaceProxy::UseAllocator::kYes);
             auto atlasEffect = GrTextureEffect::Make({fLazyProxy, kOrigin, readSwizzle},
-                                                     kPremul_SkAlphaType);
+                                                     VX_ALPHA_TYPE_PREMULTIPLIED);
             this->registerChild(std::move(atlasEffect));
         }
 

@@ -136,7 +136,7 @@ protected:
         auto recorder = canvas->recorder();
 
         // must be opaque to have a hope of testing LCD text
-        const SkImageInfo info = SkImageInfo::MakeN32(W, H, kOpaque_SkAlphaType);
+        const SkImageInfo info = SkImageInfo::MakeN32(W, H, VX_ALPHA_TYPE_OPAQUE);
 
         SkScalar x = 0;
         SkScalar y = 0;
@@ -377,12 +377,12 @@ DEF_SURFACE_TESTS(simple_snap_image2, canvas, 256, 256) {
 }
 
 DEF_SIMPLE_GM(snap_with_mips, canvas, 80, 75) {
-    auto ct = canvas->imageInfo().colorType() == kUnknown_SkColorType
-                      ? kRGBA_8888_SkColorType
+    auto ct = canvas->imageInfo().colorType() == VX_COLOR_TYPE_UNKNOWN
+                      ? VX_COLOR_TYPE_RGBA_8888
                       : canvas->imageInfo().colorType();
     auto ii = SkImageInfo::Make({32, 32},
                                 ct,
-                                kPremul_SkAlphaType,
+                                VX_ALPHA_TYPE_PREMULTIPLIED,
                                 canvas->imageInfo().refColorSpace());
     auto surface = SkSurfaces::Raster(ii);
 

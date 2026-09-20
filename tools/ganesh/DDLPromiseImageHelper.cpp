@@ -303,7 +303,7 @@ sk_sp<SkPicture> DDLPromiseImageHelper::reinflateSKP(
 
 // This generates promise images to replace the indices in the compressed picture.
 sk_sp<SkImage> DDLPromiseImageHelper::CreatePromiseImages(sk_sp<SkData> data,
-                                                          std::optional<SkAlphaType>,
+                                                          std::optional<enum vx_alpha_type>,
                                                           void* ctxIn) {
     DeserialImageProcContext* procContext = static_cast<DeserialImageProcContext*>(ctxIn);
     DDLPromiseImageHelper* helper = procContext->fHelper;

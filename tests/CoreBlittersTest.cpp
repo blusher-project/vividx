@@ -45,7 +45,7 @@ static void compare_mask_and_antiH(skiatest::Reporter* reporter,
     SkColor buffer2[kPixelsToBlit * 1];
     auto ii = SkImageInfo::Make(
             {kPixelsToBlit, 1},
-            SkColorInfo(kN32_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB()));
+            SkColorInfo(VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB()));
 
     SkPixmap device1(ii, buffer1, ii.minRowBytes());
     auto surface1 = SkSurfaces::WrapPixels(device1);

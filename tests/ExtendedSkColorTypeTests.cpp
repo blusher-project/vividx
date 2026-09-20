@@ -44,28 +44,28 @@ struct GrContextOptions;
 
 static constexpr int kSize = 32;
 
-static SkColor4f get_trans_black_expected_color(SkColorChannelFlag channels) {
+static SkColor4f get_trans_black_expected_color(vx_color_channel_flag channels) {
     float a = 0;
-    if (!(channels & kAlpha_SkColorChannelFlag)) {
+    if (!(channels & VX_COLOR_CHANNEL_FLAG_ALPHA)) {
         a = 1;
     }
 
     return { 0, 0, 0, a };
 }
 
-static SkColor4f get_opaque_white_expected_color(SkColorChannelFlag channels) {
-    if (channels & kGray_SkColorChannelFlag) {
+static SkColor4f get_opaque_white_expected_color(vx_color_channel_flag channels) {
+    if (channels & VX_COLOR_CHANNEL_FLAG_GRAY) {
         return { 1, 1, 1, 1 };
     }
 
     float r = 1, g = 1, b = 1;
-    if (!(channels & kRed_SkColorChannelFlag)) {
+    if (!(channels & VX_COLOR_CHANNEL_FLAG_RED)) {
         r = 0;
     }
-    if (!(channels & kGreen_SkColorChannelFlag)) {
+    if (!(channels & VX_COLOR_CHANNEL_FLAG_GREEN)) {
         g = 0;
     }
-    if (!(channels & kBlue_SkColorChannelFlag)) {
+    if (!(channels & VX_COLOR_CHANNEL_FLAG_BLUE)) {
         b = 0;
     }
 
@@ -73,41 +73,41 @@ static SkColor4f get_opaque_white_expected_color(SkColorChannelFlag channels) {
 }
 
 struct TestCase {
-    SkColorType        fColorType;
-    SkAlphaType        fAlphaType;
-    SkColorChannelFlag fChannels;
+    vx_color_type        fColorType;
+    vx_alpha_type        fAlphaType;
+    vx_color_channel_flag fChannels;
     bool               fGpuCanMakeSurfaces;
 };
 
 static const TestCase gTests[] = {
-    { kAlpha_8_SkColorType,            kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, true },
-    { kA16_unorm_SkColorType,          kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, false},
-    { kA16_float_SkColorType,          kPremul_SkAlphaType, kAlpha_SkColorChannelFlag, false},
-    { kRGB_565_SkColorType,            kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
-    { kARGB_4444_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGBA_8888_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGB_888x_SkColorType,           kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
-    { kBGRA_8888_SkColorType,          kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGBA_1010102_SkColorType,       kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGB_101010x_SkColorType,        kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
-    { kGray_8_SkColorType,             kOpaque_SkAlphaType, kGray_SkColorChannelFlag,  true },
-    { kRGBA_F16Norm_SkColorType,       kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGBA_F16_SkColorType,           kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kRGB_F16F16F16x_SkColorType,     kOpaque_SkAlphaType, kRGB_SkColorChannelFlags,  true },
-    { kRGBA_F32_SkColorType,           kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, true },
-    { kR8G8_unorm_SkColorType,         kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   true },
-    { kR16_unorm_SkColorType,          kOpaque_SkAlphaType, kRed_SkColorChannelFlag,   false},
-    { kR16G16_unorm_SkColorType,       kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   false},
-    { kR16_float_SkColorType,          kOpaque_SkAlphaType, kRed_SkColorChannelFlag,   false},
-    { kR16G16_float_SkColorType,       kOpaque_SkAlphaType, kRG_SkColorChannelFlags,   false},
-    { kR16G16B16A16_unorm_SkColorType, kPremul_SkAlphaType, kRGBA_SkColorChannelFlags, false},
+    { VX_COLOR_TYPE_ALPHA_8,            VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAG_ALPHA, true },
+    { VX_COLOR_TYPE_A16_UNORM,          VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAG_ALPHA, false},
+    { VX_COLOR_TYPE_A16_FLOAT,          VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAG_ALPHA, false},
+    { VX_COLOR_TYPE_RGB_565,            VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAGS_RGB,  true },
+    { VX_COLOR_TYPE_ARGB_4444,          VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAGS_RGBA, true },
+    { VX_COLOR_TYPE_RGBA_8888,          VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAGS_RGBA, true },
+    { VX_COLOR_TYPE_RGB_888X,           VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAGS_RGB,  true },
+    { VX_COLOR_TYPE_BGRA_8888,          VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAGS_RGBA, true },
+    { VX_COLOR_TYPE_RGBA_1010102,       VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAGS_RGBA, true },
+    { VX_COLOR_TYPE_RGB_101010X,        VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAGS_RGB,  true },
+    { VX_COLOR_TYPE_GRAY_8,             VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAG_GRAY,  true },
+    { VX_COLOR_TYPE_RGBA_F16NORM,       VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAGS_RGBA, true },
+    { VX_COLOR_TYPE_RGBA_F16,           VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAGS_RGBA, true },
+    { VX_COLOR_TYPE_RGB_F16F16F16X,     VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAGS_RGB,  true },
+    { VX_COLOR_TYPE_RGBA_F32,           VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAGS_RGBA, true },
+    { VX_COLOR_TYPE_R8G8_UNORM,         VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAGS_RG,   true },
+    { VX_COLOR_TYPE_R16_UNORM,          VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAG_RED,   false},
+    { VX_COLOR_TYPE_R16G16_UNORM,       VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAGS_RG,   false},
+    { VX_COLOR_TYPE_R16_FLOAT,          VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAG_RED,   false},
+    { VX_COLOR_TYPE_R16G16_FLOAT,       VX_ALPHA_TYPE_OPAQUE, VX_COLOR_CHANNEL_FLAGS_RG,   false},
+    { VX_COLOR_TYPE_R16G16B16A16_UNORM, VX_ALPHA_TYPE_PREMULTIPLIED, VX_COLOR_CHANNEL_FLAGS_RGBA, false},
 };
 
 static void raster_tests(skiatest::Reporter* reporter, const TestCase& test) {
 
     const SkImageInfo nativeII = SkImageInfo::Make(kSize, kSize, test.fColorType, test.fAlphaType);
-    const SkImageInfo f32Unpremul = SkImageInfo::Make(kSize, kSize, kRGBA_F32_SkColorType,
-                                                      kUnpremul_SkAlphaType);
+    const SkImageInfo f32Unpremul = SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_F32,
+                                                      VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     uint32_t actualChannels = vx_color_type_channel_flags(test.fColorType);
     REPORTER_ASSERT(reporter, test.fChannels == actualChannels);
@@ -188,7 +188,7 @@ static void raster_tests(skiatest::Reporter* reporter, const TestCase& test) {
 #if defined(SK_GANESH)
 static void compare_pixmaps(skiatest::Reporter* reporter,
                             const SkPixmap& expected, const SkPixmap& actual,
-                            SkColorType ct, const char* label) {
+                            vx_color_type ct, const char* label) {
     const float tols[4] = {0.0f, 0.0f, 0.0f, 0};
 
     auto error = std::function<ComparePixmapsErrorReporter>(
@@ -208,8 +208,8 @@ static void ganesh_tests(GrDirectContext* dContext,
     using namespace skgpu;
 
     const SkImageInfo nativeII = SkImageInfo::Make(kSize, kSize, test.fColorType, test.fAlphaType);
-    const SkImageInfo f32Unpremul = SkImageInfo::Make(kSize, kSize, kRGBA_F32_SkColorType,
-                                                      kUnpremul_SkAlphaType);
+    const SkImageInfo f32Unpremul = SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_F32,
+                                                      VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     // We had better not be able to render to prohibited colorTypes
     if (!test.fGpuCanMakeSurfaces) {
@@ -312,8 +312,8 @@ static void ganesh_tests(GrDirectContext* dContext,
             // RGBA8 surface to an F32 pixmap)
             {
                 const SkImageInfo rgba8888Premul = SkImageInfo::Make(kSize, kSize,
-                                                                     kRGBA_8888_SkColorType,
-                                                                     kPremul_SkAlphaType);
+                                                                     VX_COLOR_TYPE_RGBA_8888,
+                                                                     VX_ALPHA_TYPE_PREMULTIPLIED);
 
                 auto s = SkSurfaces::RenderTarget(dContext, Budgeted::kNo, rgba8888Premul);
                 REPORTER_ASSERT(reporter, SkToBool(s));

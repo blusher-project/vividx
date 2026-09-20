@@ -62,8 +62,8 @@ void fill_transfer_data(int left, int top, int width, int height, int rowBytes,
             // set b and a channels to be inverse of r and g just to have interesting values to
             // test.
             uint32_t srcPixel = GrColorPackRGBA(r, g, 0xff - r, 0xff - g);
-            GrImageInfo srcInfo(GrColorType::kRGBA_8888, kUnpremul_SkAlphaType, nullptr, 1, 1);
-            GrImageInfo dstInfo(dstType, kUnpremul_SkAlphaType, nullptr, 1, 1);
+            GrImageInfo srcInfo(GrColorType::kRGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, 1, 1);
+            GrImageInfo dstInfo(dstType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, 1, 1);
             GrConvertPixels(GrPixmap(dstInfo, dstLocation(i, j), dstBpp),
                             GrPixmap(srcInfo,         &srcPixel,      4));
         }
@@ -112,8 +112,8 @@ bool read_pixels_from_texture(GrTexture* texture, GrColorType colorType, char* d
                              tmpRowBytes)) {
             return false;
         }
-        GrImageInfo tmpInfo(supportedRead.fColorType, kUnpremul_SkAlphaType, nullptr, w, h);
-        GrImageInfo dstInfo(colorType,                kUnpremul_SkAlphaType, nullptr, w, h);
+        GrImageInfo tmpInfo(supportedRead.fColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, w, h);
+        GrImageInfo dstInfo(colorType,                VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, w, h);
         determine_tolerances(tmpInfo.colorType(), dstInfo.colorType(), tolerances);
         return GrConvertPixels(GrPixmap(dstInfo,             dst,    rowBytes),
                                GrPixmap(tmpInfo, tmpPixels.get(), tmpRowBytes));
@@ -240,8 +240,8 @@ void basic_transfer_to_test(skiatest::Reporter* reporter,
                        x, y, GrColorTypeToStr(colorType),
                        diffs[0], diffs[1], diffs[2], diffs[3]);
             });
-    GrImageInfo srcInfo(allowedSrc.fColorType, kUnpremul_SkAlphaType, nullptr, tex->dimensions());
-    GrImageInfo dstInfo(            colorType, kUnpremul_SkAlphaType, nullptr, tex->dimensions());
+    GrImageInfo srcInfo(allowedSrc.fColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, tex->dimensions());
+    GrImageInfo dstInfo(            colorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, tex->dimensions());
     CompareGaneshPixels(GrCPixmap(srcInfo,   srcData.get(), srcRowBytes),
                         GrCPixmap(dstInfo, dstBuffer.get(), dstRowBytes),
                         compareTolerances,
@@ -376,7 +376,7 @@ void basic_transfer_from_test(skiatest::Reporter* reporter, const sk_gpu_test::C
     if (!allowedRead.fOffsetAlignmentForTransferBuffer) {
         return;
     }
-    GrImageInfo readInfo(allowedRead.fColorType, kUnpremul_SkAlphaType, nullptr, kTexDims);
+    GrImageInfo readInfo(allowedRead.fColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, kTexDims);
 
     size_t bpp = GrColorTypeBytesPerPixel(allowedRead.fColorType);
     size_t rowAlignment = std::lcm(bpp, caps->transferBufferRowBytesAlignment());
@@ -437,7 +437,7 @@ void basic_transfer_from_test(skiatest::Reporter* reporter, const sk_gpu_test::C
     memcpy(transferData.get(), map, fullBufferRowBytes * kTexDims.fHeight);
     buffer->unmap();
 
-    GrImageInfo transferInfo(allowedRead.fColorType, kUnpremul_SkAlphaType, nullptr, kTexDims);
+    GrImageInfo transferInfo(allowedRead.fColorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, kTexDims);
 
     float tol[4];
     determine_tolerances(allowedRead.fColorType, colorType, tol);
@@ -448,7 +448,7 @@ void basic_transfer_from_test(skiatest::Reporter* reporter, const sk_gpu_test::C
                        x, y, GrColorTypeToStr(colorType),
                        diffs[0], diffs[1], diffs[2], diffs[3]);
             });
-    GrImageInfo textureDataInfo(colorType, kUnpremul_SkAlphaType, nullptr, kTexDims);
+    GrImageInfo textureDataInfo(colorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, kTexDims);
     CompareGaneshPixels(GrCPixmap(textureDataInfo,  textureData.get(), textureDataRowBytes),
                         GrCPixmap(   transferInfo, transferData.get(),  fullBufferRowBytes),
                         tol,

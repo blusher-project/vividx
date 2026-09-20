@@ -78,8 +78,8 @@ sk_sp<SkImage> create_image(GrDirectContext* dContext, const GrBackendTexture& b
     SkTextureCompressionType compression =
             GrBackendFormatToCompressionType(backendTex.getBackendFormat());
 
-    SkAlphaType at = SkTextureCompressionTypeIsOpaque(compression) ? kOpaque_SkAlphaType
-                                                            : kPremul_SkAlphaType;
+    vx_alpha_type at = SkTextureCompressionTypeIsOpaque(compression) ? VX_ALPHA_TYPE_OPAQUE
+                                                            : VX_ALPHA_TYPE_PREMULTIPLIED;
 
     return SkImages::TextureFromCompressedTexture(
             dContext, backendTex, kTopLeft_GrSurfaceOrigin, at, nullptr);
@@ -94,8 +94,8 @@ static void check_compressed_mipmaps(GrRecordingContext* rContext,
                                      skgpu::Mipmapped mipmapped,
                                      skiatest::Reporter* reporter,
                                      const char* label) {
-    SkImageInfo readbackSurfaceII = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType,
-                                                      kPremul_SkAlphaType);
+    SkImageInfo readbackSurfaceII = SkImageInfo::Make(32, 32, VX_COLOR_TYPE_RGBA_8888,
+                                                      VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(rContext,
                                                      skgpu::Budgeted::kNo,
@@ -130,8 +130,8 @@ static void check_compressed_mipmaps(GrRecordingContext* rContext,
         canvas->drawImageRect(img, r, sampling, &p);
 
         SkImageInfo readbackII = SkImageInfo::Make(rectSize, rectSize,
-                                                   kRGBA_8888_SkColorType,
-                                                   kUnpremul_SkAlphaType);
+                                                   VX_COLOR_TYPE_RGBA_8888,
+                                                   VX_ALPHA_TYPE_UNPREMULTIPLIED);
         SkAutoPixmapStorage actual2;
         SkAssertResult(actual2.tryAlloc(readbackII));
         actual2.erase(SkColors::kTransparent);
@@ -162,8 +162,8 @@ static void check_readback(GrDirectContext* dContext, sk_sp<SkImage> img,
     SkAutoPixmapStorage actual;
 
     SkImageInfo readBackII = SkImageInfo::Make(img->width(), img->height(),
-                                               kRGBA_8888_SkColorType,
-                                               kUnpremul_SkAlphaType);
+                                               VX_COLOR_TYPE_RGBA_8888,
+                                               VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
     SkAssertResult(actual.tryAlloc(readBackII));
     actual.erase(SkColors::kTransparent);

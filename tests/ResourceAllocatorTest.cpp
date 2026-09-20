@@ -105,8 +105,8 @@ static sk_sp<GrSurfaceProxy> make_deferred(GrProxyProvider* proxyProvider, const
 static sk_sp<GrSurfaceProxy> make_backend(GrDirectContext* dContext, const ProxyParams& p) {
     GrProxyProvider* proxyProvider = dContext->priv().proxyProvider();
 
-    SkColorType skColorType = GrColorTypeToSkColorType(p.fColorType);
-    SkASSERT(SkColorType::kUnknown_SkColorType != skColorType);
+    vx_color_type skColorType = GrColorTypeToSkColorType(p.fColorType);
+    SkASSERT(vx_color_type::VX_COLOR_TYPE_UNKNOWN != skColorType);
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(
             dContext, p.fSize, p.fSize, skColorType, skgpu::Mipmapped::kNo, GrRenderable::kNo);
@@ -374,7 +374,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest,
 }
 
 static void draw(GrRecordingContext* rContext) {
-    SkImageInfo ii = SkImageInfo::Make(1024, 1024, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(1024, 1024, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> s = SkSurfaces::RenderTarget(
             rContext, skgpu::Budgeted::kYes, ii, 1, kTopLeft_GrSurfaceOrigin, nullptr);

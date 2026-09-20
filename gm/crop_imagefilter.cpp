@@ -122,7 +122,7 @@ sk_sp<SkImage> make_image(SkCanvas* canvas, const SkRect* contentBounds) {
     const float h = kExampleBounds.height();
 
     const auto srcII = SkImageInfo::Make(SkISize::Make(SkScalarCeilToInt(w), SkScalarCeilToInt(h)),
-                                         kN32_SkColorType, kPremul_SkAlphaType);
+                                         VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surf = SkSurfaces::Raster(srcII);
 
     surf->getCanvas()->drawColor(SK_ColorDKGRAY);

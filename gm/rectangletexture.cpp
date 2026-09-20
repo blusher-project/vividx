@@ -59,7 +59,7 @@ private:
     SkISize getISize() override { return SkISize::Make(1180, 710); }
 
     SkBitmap makeImagePixels(int size, ImageType type) {
-        auto ii = SkImageInfo::Make(size, size, kRGBA_8888_SkColorType, kOpaque_SkAlphaType);
+        auto ii = SkImageInfo::Make(size, size, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE);
         switch (type) {
             case ImageType::kGradientCircle: {
                 SkBitmap bmp;
@@ -95,7 +95,7 @@ private:
 
     sk_sp<SkImage> createRectangleTextureImg(GrDirectContext* dContext, GrSurfaceOrigin origin,
                                              const SkBitmap content) {
-        SkASSERT(content.colorType() == kRGBA_8888_SkColorType);
+        SkASSERT(content.colorType() == VX_COLOR_TYPE_RGBA_8888);
         auto format = GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_RECTANGLE);
         auto bet = dContext->createBackendTexture(content.width(),
                                                   content.height(),
@@ -110,7 +110,7 @@ private:
         if (!dContext->updateBackendTexture(bet, content.pixmap(), origin, nullptr, nullptr)) {
             dContext->deleteBackendTexture(bet);
         }
-        return SkImages::AdoptTextureFrom(dContext, bet, origin, kRGBA_8888_SkColorType);
+        return SkImages::AdoptTextureFrom(dContext, bet, origin, VX_COLOR_TYPE_RGBA_8888);
     }
 
     DrawResult onGpuSetup(SkCanvas* canvas, SkString* errorMsg, GraphiteTestContext*) override {

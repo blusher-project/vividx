@@ -122,8 +122,8 @@ static JSObject RunGM(sk_sp<GrDirectContext> ctx, std::string name) {
     }
     // TODO(kjlubick) make these configurable somehow. This probably makes sense to do as function
     //   parameters.
-    auto alphaType = SkAlphaType::kPremul_SkAlphaType;
-    auto colorType = SkColorType::kN32_SkColorType;
+    auto alphaType = vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED;
+    auto colorType = vx_color_type::VX_COLOR_TYPE_N32;
     SkISize size = gm->getISize();
     SkImageInfo info = SkImageInfo::Make(size, colorType, alphaType);
     sk_sp<SkSurface> surface(SkSurfaces::RenderTarget(

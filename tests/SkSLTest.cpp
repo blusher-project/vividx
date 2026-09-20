@@ -768,8 +768,8 @@ static void test_graphite(skiatest::Reporter* r,
     std::unique_ptr<skgpu::graphite::Recorder> recorder = ctx->makeRecorder();
 
     const SkImageInfo info = SkImageInfo::Make({kWidth, kHeight},
-                                                kRGBA_8888_SkColorType,
-                                                kPremul_SkAlphaType);
+                                                VX_COLOR_TYPE_RGBA_8888,
+                                                VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), info);
     std::string_view deviceName = ctx->priv().caps()->deviceName();
     std::string_view backendAPI = skgpu::ContextTypeName(testCtx->contextType());

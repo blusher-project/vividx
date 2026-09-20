@@ -261,7 +261,7 @@ protected:
     void onOnceBeforeDraw() override { this->prepareReferenceMasks(); }
 
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
-        if (canvas->imageInfo().colorType() == kUnknown_SkColorType) {
+        if (canvas->imageInfo().colorType() == VX_COLOR_TYPE_UNKNOWN) {
             *errorMsg = "Not supported when recording, relies on canvas->makeSurface()";
             return DrawResult::kSkip;
         }
@@ -433,7 +433,7 @@ private:
                     auto surf = canvas->makeSurface(ii);
                     if (!surf) {
                         // Some GPUs don't have renderable A8 :(
-                        surf = canvas->makeSurface(ii.makeColorType(kRGBA_8888_SkColorType));
+                        surf = canvas->makeSurface(ii.makeColorType(VX_COLOR_TYPE_RGBA_8888));
                         if (!surf) {
                             return;
                         }
@@ -466,7 +466,7 @@ private:
                     SkASSERT(r->width() == a->width());
                     SkASSERT(r->height() == a->height());
                     auto ii = SkImageInfo::Make(r->width(), r->height(),
-                                                kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                                                VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
                     auto surf = canvas->makeSurface(ii);
                     if (!surf) {
                         return;

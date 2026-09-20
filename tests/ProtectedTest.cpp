@@ -84,7 +84,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
         for (bool isProtected : { true, false }) {
             GrBackendTexture beTex = dContext->createBackendTexture(16,
                                                                     16,
-                                                                    kRGBA_8888_SkColorType,
+                                                                    VX_COLOR_TYPE_RGBA_8888,
                                                                     SkColors::kTransparent,
                                                                     skgpu::Mipmapped::kNo,
                                                                     GrRenderable(renderable),
@@ -98,8 +98,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_SmokeTest, reporter, ctxInfo, CtsEnfo
             {
                 sk_sp<SkImage> img = SkImages::BorrowTextureFrom(dContext, beTex,
                                                                  kTopLeft_GrSurfaceOrigin,
-                                                                 kRGBA_8888_SkColorType,
-                                                                 kPremul_SkAlphaType,
+                                                                 VX_COLOR_TYPE_RGBA_8888,
+                                                                 VX_ALPHA_TYPE_PREMULTIPLIED,
                                                                  /* colorSpace= */ nullptr);
 
                 REPORTER_ASSERT(reporter, img->isProtected() == isProtected);
@@ -145,8 +145,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_CopyOnWrite, reporter, ctxInfo, CtsEn
     }
 
     SkImageInfo ii = SkImageInfo::Make({ kSize, kSize },
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
 
     // We can't use ProtectedUtils::CreateProtectedSkSurface here bc that will wrap a backend
     // texture which blocks the copy-on-write-behavior
@@ -264,8 +264,8 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(Protected_pictureShader, reporter,
                                                           SkFilterMode::kNearest));
 
     SkImageInfo ii = SkImageInfo::Make({ kSize, kSize },
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
 
     for (bool isProtected : { true, false }) {
         sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext,

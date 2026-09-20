@@ -767,7 +767,7 @@ create_linear_gradient_processor(skgpu::ganesh::SurfaceDrawContext* sdc, const S
     SkColor4f colors[2] = { SkColors::kGreen, SkColors::kBlue };
     sk_sp<SkShader> shader = SkShaders::LinearGradient(
         pts, {{colors, {}, SkTileMode::kClamp}, {}});
-    GrColorInfo colorInfo(GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr);
+    GrColorInfo colorInfo(GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
     SkSurfaceProps props; // default props for testing
     return GrFragmentProcessors::Make(
             shader.get(), {sdc, &colorInfo, props, GrFPArgs::Scope::kDefault}, ctm);

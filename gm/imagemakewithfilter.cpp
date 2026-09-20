@@ -212,7 +212,7 @@ protected:
     SkISize getISize() override { return SkISize::Make(1840, 860); }
 
     void onOnceBeforeDraw() override {
-        SkImageInfo info = SkImageInfo::MakeN32(100, 100, kUnpremul_SkAlphaType);
+        SkImageInfo info = SkImageInfo::MakeN32(100, 100, VX_ALPHA_TYPE_UNPREMULTIPLIED);
         auto surface = SkSurfaces::Raster(info, nullptr);
 
         sk_sp<SkImage> colorImage = ToolUtils::GetResourceAsImage("images/mandrill_128.png");

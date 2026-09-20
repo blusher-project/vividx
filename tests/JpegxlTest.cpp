@@ -51,7 +51,7 @@ DEF_TEST(Jpegxl_DecodeP3, r) {
 
     // Verify decoding pixels succeeds.
     SkImageInfo decodeInfo =
-            codec->getInfo().makeColorType(kRGBA_8888_SkColorType).makeAlphaType(kPremul_SkAlphaType);
+            codec->getInfo().makeColorType(VX_COLOR_TYPE_RGBA_8888).makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bm;
     bm.allocPixels(decodeInfo);
     result = codec->getPixels(decodeInfo, bm.getPixels(), bm.rowBytes());

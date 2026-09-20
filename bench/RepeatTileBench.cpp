@@ -34,19 +34,19 @@ static void draw_into_bitmap(const SkBitmap& bm) {
 }
 
 class RepeatTileBench : public Benchmark {
-    const SkAlphaType   fAlphaType;
+    const vx_alpha_type   fAlphaType;
     SkPaint             fPaint;
     SkString            fName;
     SkBitmap            fBitmap;
 public:
-    RepeatTileBench(SkColorType ct, SkAlphaType at = kPremul_SkAlphaType) : fAlphaType(at) {
+    RepeatTileBench(vx_color_type ct, vx_alpha_type at = VX_ALPHA_TYPE_PREMULTIPLIED) : fAlphaType(at) {
         const int w = 50;
         const int h = 50;
 
         fBitmap.setInfo(SkImageInfo::Make(w, h, ct, at));
         fName.printf("repeatTile_%s_%c",
                      ToolUtils::colortype_name(ct),
-                     kOpaque_SkAlphaType == at ? 'X' : 'A');
+                     VX_ALPHA_TYPE_OPAQUE == at ? 'X' : 'A');
     }
 
 protected:
@@ -56,7 +56,7 @@ protected:
 
     void onDelayedSetup() override {
         fBitmap.allocPixels();
-        fBitmap.eraseColor(kOpaque_SkAlphaType == fAlphaType ? SK_ColorWHITE : 0);
+        fBitmap.eraseColor(VX_ALPHA_TYPE_OPAQUE == fAlphaType ? SK_ColorWHITE : 0);
 
         draw_into_bitmap(fBitmap);
 
@@ -78,6 +78,6 @@ private:
     using INHERITED = Benchmark;
 };
 
-DEF_BENCH(return new RepeatTileBench(kN32_SkColorType, kOpaque_SkAlphaType))
-DEF_BENCH(return new RepeatTileBench(kN32_SkColorType, kPremul_SkAlphaType))
-DEF_BENCH(return new RepeatTileBench(kRGB_565_SkColorType, kOpaque_SkAlphaType))
+DEF_BENCH(return new RepeatTileBench(VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_OPAQUE))
+DEF_BENCH(return new RepeatTileBench(VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED))
+DEF_BENCH(return new RepeatTileBench(VX_COLOR_TYPE_RGB_565, VX_ALPHA_TYPE_OPAQUE))

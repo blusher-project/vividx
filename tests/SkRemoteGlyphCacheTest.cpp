@@ -216,7 +216,7 @@ static void compare_blobs(const SkBitmap& expected, const SkBitmap& actual,
 
 sk_sp<SkSurface> MakeSurface(int width, int height, GrRecordingContext* rContext) {
     const SkImageInfo info =
-            SkImageInfo::Make(width, height, kN32_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(width, height, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED);
     return SkSurfaces::RenderTarget(rContext, skgpu::Budgeted::kNo, info);
 }
 

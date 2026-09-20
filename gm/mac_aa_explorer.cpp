@@ -51,15 +51,15 @@ static CGContextRef make_cg_ctx(const SkPixmap& pm) {
     CGColorSpaceRef cs;
 
     switch (pm.colorType()) {
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             info = kCGBitmapByteOrder32Host | (CGBitmapInfo)kCGImageAlphaNoneSkipFirst;
             cs = CGColorSpaceCreateDeviceRGB();
             break;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             info = kCGImageAlphaNone;
             cs = CGColorSpaceCreateDeviceGray();
             break;
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             info = kCGImageAlphaOnly;
             cs = nullptr;
             break;
@@ -79,8 +79,8 @@ static void test_mac_fonts(SkCanvas* canvas, SkScalar size, SkScalar xpos) {
     canvas->scale(10, 10);
     SkScalar y = 1;
 
-    for (SkColorType ct : {kRGBA_8888_SkColorType, kGray_8_SkColorType, kAlpha_8_SkColorType}) {
-        SkImageInfo ii = SkImageInfo::Make(w, h, ct, kPremul_SkAlphaType);
+    for (vx_color_type ct : {VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_GRAY_8, VX_COLOR_TYPE_ALPHA_8}) {
+        SkImageInfo ii = SkImageInfo::Make(w, h, ct, VX_ALPHA_TYPE_PREMULTIPLIED);
         auto surf = SkSurfaces::Raster(ii);
         SkPixmap pm;
         surf->peekPixels(&pm);
@@ -92,7 +92,7 @@ static void test_mac_fonts(SkCanvas* canvas, SkScalar size, SkScalar xpos) {
 
         SkScalar x = 1;
         for (bool smooth : {false, true}) {
-            surf->getCanvas()->clear(ct == kAlpha_8_SkColorType ? 0 : 0xFFFFFFFF);
+            surf->getCanvas()->clear(ct == VX_COLOR_TYPE_ALPHA_8 ? 0 : 0xFFFFFFFF);
             CGContextSetShouldSmoothFonts(ctx.get(), smooth);
             CGPoint point = {2 + xpos, 2};
             CTFontDrawGlyphs(ctFont.get(), &glyph, &point, 1, ctx.get());

@@ -158,7 +158,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTest,
 
     GrBackendTexture backendTex = ctx->createBackendTexture(kWidth,
                                                             kHeight,
-                                                            kRGBA_8888_SkColorType,
+                                                            VX_COLOR_TYPE_RGBA_8888,
                                                             SkColors::kTransparent,
                                                             skgpu::Mipmapped::kNo,
                                                             GrRenderable::kYes,
@@ -175,8 +175,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTest,
                                                        {kWidth, kHeight},
                                                        skgpu::Mipmapped::kNo,
                                                        texOrigin,
-                                                       kRGBA_8888_SkColorType,
-                                                       kPremul_SkAlphaType,
+                                                       VX_COLOR_TYPE_RGBA_8888,
+                                                       VX_ALPHA_TYPE_PREMULTIPLIED,
                                                        nullptr,
                                                        PromiseTextureChecker::Fulfill,
                                                        PromiseTextureChecker::Release,
@@ -262,7 +262,7 @@ DEF_GANESH_TEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::
             auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(ctx,
                                                                             kWidth,
                                                                             kHeight,
-                                                                            kAlpha_8_SkColorType,
+                                                                            VX_COLOR_TYPE_ALPHA_8,
                                                                             skgpu::Mipmapped::kNo,
                                                                             GrRenderable::kNo);
             if (!mbet) {
@@ -270,8 +270,8 @@ DEF_GANESH_TEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::
                 continue;
             }
 
-            SkImageInfo info = SkImageInfo::Make(kWidth, kHeight, kRGBA_8888_SkColorType,
-                                                 kPremul_SkAlphaType);
+            SkImageInfo info = SkImageInfo::Make(kWidth, kHeight, VX_COLOR_TYPE_RGBA_8888,
+                                                 VX_ALPHA_TYPE_PREMULTIPLIED);
             sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kNo, info);
             SkCanvas* canvas = surface->getCanvas();
 
@@ -281,8 +281,8 @@ DEF_GANESH_TEST(PromiseImageTextureShutdown, reporter, ctxInfo, CtsEnforcement::
                                                               {kWidth, kHeight},
                                                               skgpu::Mipmapped::kNo,
                                                               kTopLeft_GrSurfaceOrigin,
-                                                              kAlpha_8_SkColorType,
-                                                              kPremul_SkAlphaType,
+                                                              VX_COLOR_TYPE_ALPHA_8,
+                                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                                               /*color space*/ nullptr,
                                                               PromiseTextureChecker::Fulfill,
                                                               PromiseTextureChecker::Release,
@@ -318,7 +318,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
 
     GrBackendTexture backendTex = dContext->createBackendTexture(kWidth,
                                                                  kHeight,
-                                                                 kAlpha_8_SkColorType,
+                                                                 VX_COLOR_TYPE_ALPHA_8,
                                                                  SkColors::kTransparent,
                                                                  skgpu::Mipmapped::kNo,
                                                                  GrRenderable::kNo,
@@ -326,7 +326,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
     REPORTER_ASSERT(reporter, backendTex.isValid());
 
     SkImageInfo info =
-            SkImageInfo::Make(kWidth, kHeight, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(kWidth, kHeight, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
     SkCanvas* canvas = surface->getCanvas();
 
@@ -336,8 +336,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache,
                                                       {kWidth, kHeight},
                                                       skgpu::Mipmapped::kNo,
                                                       kTopLeft_GrSurfaceOrigin,
-                                                      kAlpha_8_SkColorType,
-                                                      kPremul_SkAlphaType,
+                                                      VX_COLOR_TYPE_ALPHA_8,
+                                                      VX_ALPHA_TYPE_PREMULTIPLIED,
                                                       nullptr,
                                                       PromiseTextureChecker::Fulfill,
                                                       PromiseTextureChecker::Release,
@@ -402,7 +402,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageNullFulfill,
     auto dContext = ctxInfo.directContext();
 
     GrBackendFormat backendFormat =
-            dContext->defaultBackendFormat(kRGBA_8888_SkColorType, GrRenderable::kYes);
+            dContext->defaultBackendFormat(VX_COLOR_TYPE_RGBA_8888, GrRenderable::kYes);
     if (!backendFormat.isValid()) {
         ERRORF(reporter, "No valid default kRGBA_8888 texture format.");
         return;
@@ -425,8 +425,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(PromiseImageNullFulfill,
                                                        {kWidth, kHeight},
                                                        skgpu::Mipmapped::kNo,
                                                        texOrigin,
-                                                       kRGBA_8888_SkColorType,
-                                                       kPremul_SkAlphaType,
+                                                       VX_COLOR_TYPE_RGBA_8888,
+                                                       VX_ALPHA_TYPE_PREMULTIPLIED,
                                                        nullptr,
                                                        fulfill,
                                                        release,

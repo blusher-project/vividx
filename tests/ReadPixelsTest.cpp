@@ -84,21 +84,21 @@ static SkPMColor get_dst_bmp_init_color(int x, int y, int w) {
 }
 
 // TODO: Make this consider both ATs
-static SkPMColor convert_to_pmcolor(SkColorType ct, SkAlphaType at, const uint32_t* addr,
+static SkPMColor convert_to_pmcolor(vx_color_type ct, vx_alpha_type at, const uint32_t* addr,
                                     bool* doUnpremul) {
-    *doUnpremul = (kUnpremul_SkAlphaType == at);
+    *doUnpremul = (VX_ALPHA_TYPE_UNPREMULTIPLIED == at);
 
     const uint8_t* c = reinterpret_cast<const uint8_t*>(addr);
     U8CPU a,r,g,b;
     switch (ct) {
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             b = static_cast<U8CPU>(c[0]);
             g = static_cast<U8CPU>(c[1]);
             r = static_cast<U8CPU>(c[2]);
             a = static_cast<U8CPU>(c[3]);
             break;
-        case kRGB_888x_SkColorType:  // fallthrough
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGB_888X:  // fallthrough
+        case VX_COLOR_TYPE_RGBA_8888:
             r = static_cast<U8CPU>(c[0]);
             g = static_cast<U8CPU>(c[1]);
             b = static_cast<U8CPU>(c[2]);
@@ -151,7 +151,7 @@ static void fill_dst_bmp_with_init_data(SkBitmap* bitmap) {
     for (int y = 0; y < h; ++y) {
         for (int x = 0; x < w; ++x) {
             SkPMColor initColor = get_dst_bmp_init_color(x, y, w);
-            if (kAlpha_8_SkColorType == bitmap->colorType()) {
+            if (VX_COLOR_TYPE_ALPHA_8 == bitmap->colorType()) {
                 uint8_t* alpha = reinterpret_cast<uint8_t*>(pixels + y * bitmap->rowBytes() + x);
                 *alpha = SkGetPackedA32(initColor);
             } else {
@@ -188,8 +188,8 @@ static bool check_read_pixel(SkPMColor a, SkPMColor b, bool didPremulConversion)
 static bool check_read(skiatest::Reporter* reporter, const SkBitmap& bitmap, int x, int y,
                        bool checkSurfacePixels, bool checkBitmapPixels,
                        const SkImageInfo& surfaceInfo) {
-    SkAlphaType bmpAT = bitmap.alphaType();
-    SkColorType bmpCT = bitmap.colorType();
+    vx_alpha_type bmpAT = bitmap.alphaType();
+    vx_color_type bmpCT = bitmap.colorType();
     SkASSERT(!bitmap.isNull());
     SkASSERT(checkSurfacePixels || checkBitmapPixels);
 
@@ -201,7 +201,7 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& bitmap, int
     if (!clippedSrcRect.intersect(srcRect)) {
         clippedSrcRect.setEmpty();
     }
-    if (kAlpha_8_SkColorType == bmpCT) {
+    if (VX_COLOR_TYPE_ALPHA_8 == bmpCT) {
         for (int by = 0; by < bh; ++by) {
             for (int bx = 0; bx < bw; ++bx) {
                 int devx = bx + srcRect.fLeft;
@@ -210,7 +210,7 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& bitmap, int
 
                 if (clippedSrcRect.contains(devx, devy)) {
                     if (checkSurfacePixels) {
-                        uint8_t surfaceAlpha = (surfaceInfo.alphaType() == kOpaque_SkAlphaType)
+                        uint8_t surfaceAlpha = (surfaceInfo.alphaType() == VX_ALPHA_TYPE_OPAQUE)
                                                        ? 0xFF
                                                        : SkGetPackedA32(get_src_color(devx, devy));
                         if (surfaceAlpha != *alpha) {
@@ -245,7 +245,7 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& bitmap, int
                     if (SkColorTypeIsAlphaOnly(surfaceInfo.colorType())) {
                         surfacePMColor &= 0xFF000000;
                     }
-                    if (kOpaque_SkAlphaType == surfaceInfo.alphaType() || kOpaque_SkAlphaType == bmpAT) {
+                    if (VX_ALPHA_TYPE_OPAQUE == surfaceInfo.alphaType() || VX_ALPHA_TYPE_OPAQUE == bmpAT) {
                         surfacePMColor |= 0xFF000000;
                     }
                     bool didPremul;
@@ -274,7 +274,7 @@ static bool check_read(skiatest::Reporter* reporter, const SkBitmap& bitmap, int
 enum class TightRowBytes : bool { kNo, kYes };
 
 static void init_bitmap(SkBitmap* bitmap, const SkIRect& rect, TightRowBytes tightRB,
-                        SkColorType ct, SkAlphaType at) {
+                        vx_color_type ct, vx_alpha_type at) {
     SkImageInfo info = SkImageInfo::Make(rect.size(), ct, at);
     size_t rowBytes = 0;
     if (tightRB == TightRowBytes::kNo) {
@@ -284,15 +284,15 @@ static void init_bitmap(SkBitmap* bitmap, const SkIRect& rect, TightRowBytes tig
 }
 
 static const struct {
-    SkColorType fColorType;
-    SkAlphaType fAlphaType;
+    vx_color_type fColorType;
+    vx_alpha_type fAlphaType;
 } gReadPixelsConfigs[] = {
-        {kRGBA_8888_SkColorType, kPremul_SkAlphaType},
-        {kRGBA_8888_SkColorType, kUnpremul_SkAlphaType},
-        {kRGB_888x_SkColorType, kOpaque_SkAlphaType},
-        {kBGRA_8888_SkColorType, kPremul_SkAlphaType},
-        {kBGRA_8888_SkColorType, kUnpremul_SkAlphaType},
-        {kAlpha_8_SkColorType, kPremul_SkAlphaType},
+        {VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED},
+        {VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED},
+        {VX_COLOR_TYPE_RGB_888X, VX_ALPHA_TYPE_OPAQUE},
+        {VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED},
+        {VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED},
+        {VX_COLOR_TYPE_ALPHA_8, VX_ALPHA_TYPE_PREMULTIPLIED},
 };
 const SkIRect gReadPixelsTestRects[] = {
     // entire thing
@@ -428,23 +428,23 @@ static const uint64_t f16[kNumPixels] = {
 static const uint8_t alpha8[kNumPixels] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 static const uint8_t gray8[kNumPixels] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
-static const void* five_reference_pixels(SkColorType colorType) {
+static const void* five_reference_pixels(vx_color_type colorType) {
     switch (colorType) {
-        case kUnknown_SkColorType:
+        case VX_COLOR_TYPE_UNKNOWN:
             return nullptr;
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             return alpha8;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             return rgb565;
-        case kARGB_4444_SkColorType:
+        case VX_COLOR_TYPE_ARGB_4444:
             return rgba4444;
-        case kRGBA_8888_SkColorType:
+        case VX_COLOR_TYPE_RGBA_8888:
             return rgba;
-        case kBGRA_8888_SkColorType:
+        case VX_COLOR_TYPE_BGRA_8888:
             return bgra;
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             return gray8;
-        case kRGBA_F16_SkColorType:
+        case VX_COLOR_TYPE_RGBA_F16:
             return f16;
         default:
             return nullptr;
@@ -472,20 +472,20 @@ static void test_conversion(skiatest::Reporter* r, const SkImageInfo& dstInfo,
     REPORTER_ASSERT(r, success == SkImageInfoValidConversion(dstInfo, srcInfo));
 
     if (success) {
-        if (kGray_8_SkColorType == srcInfo.colorType() &&
-            kGray_8_SkColorType != dstInfo.colorType()) {
+        if (VX_COLOR_TYPE_GRAY_8 == srcInfo.colorType() &&
+            VX_COLOR_TYPE_GRAY_8 != dstInfo.colorType()) {
             // TODO: test (r,g,b) == (gray,gray,gray)?
             return;
         }
 
-        if (kGray_8_SkColorType == dstInfo.colorType() &&
-            kGray_8_SkColorType != srcInfo.colorType()) {
+        if (VX_COLOR_TYPE_GRAY_8 == dstInfo.colorType() &&
+            VX_COLOR_TYPE_GRAY_8 != srcInfo.colorType()) {
             // TODO: test gray = luminance?
             return;
         }
 
-        if (kAlpha_8_SkColorType == srcInfo.colorType() &&
-            kAlpha_8_SkColorType != dstInfo.colorType()) {
+        if (VX_COLOR_TYPE_ALPHA_8 == srcInfo.colorType() &&
+            VX_COLOR_TYPE_ALPHA_8 != dstInfo.colorType()) {
             // TODO: test output = black with this alpha?
             return;
         }
@@ -496,22 +496,22 @@ static void test_conversion(skiatest::Reporter* r, const SkImageInfo& dstInfo,
 }
 
 DEF_TEST(ReadPixels_ValidConversion, reporter) {
-    const SkColorType kColorTypes[] = {
-            kUnknown_SkColorType,
-            kAlpha_8_SkColorType,
-            kRGB_565_SkColorType,
-            kARGB_4444_SkColorType,
-            kRGBA_8888_SkColorType,
-            kBGRA_8888_SkColorType,
-            kGray_8_SkColorType,
-            kRGBA_F16_SkColorType,
+    const vx_color_type kColorTypes[] = {
+            VX_COLOR_TYPE_UNKNOWN,
+            VX_COLOR_TYPE_ALPHA_8,
+            VX_COLOR_TYPE_RGB_565,
+            VX_COLOR_TYPE_ARGB_4444,
+            VX_COLOR_TYPE_RGBA_8888,
+            VX_COLOR_TYPE_BGRA_8888,
+            VX_COLOR_TYPE_GRAY_8,
+            VX_COLOR_TYPE_RGBA_F16,
     };
 
-    const SkAlphaType kAlphaTypes[] = {
-            kUnknown_SkAlphaType,
-            kOpaque_SkAlphaType,
-            kPremul_SkAlphaType,
-            kUnpremul_SkAlphaType,
+    const vx_alpha_type kAlphaTypes[] = {
+            VX_ALPHA_TYPE_UNKNOWN,
+            VX_ALPHA_TYPE_OPAQUE,
+            VX_ALPHA_TYPE_PREMULTIPLIED,
+            VX_ALPHA_TYPE_UNPREMULTIPLIED,
     };
 
     const sk_sp<SkColorSpace> kColorSpaces[] = {
@@ -519,11 +519,11 @@ DEF_TEST(ReadPixels_ValidConversion, reporter) {
             SkColorSpace::MakeSRGB(),
     };
 
-    for (SkColorType dstCT : kColorTypes) {
-        for (SkAlphaType dstAT : kAlphaTypes) {
+    for (vx_color_type dstCT : kColorTypes) {
+        for (vx_alpha_type dstAT : kAlphaTypes) {
             for (const sk_sp<SkColorSpace>& dstCS : kColorSpaces) {
-                for (SkColorType srcCT : kColorTypes) {
-                    for (SkAlphaType srcAT : kAlphaTypes) {
+                for (vx_color_type srcCT : kColorTypes) {
+                    for (vx_alpha_type srcAT : kAlphaTypes) {
                         for (const sk_sp<SkColorSpace>& srcCS : kColorSpaces) {
                             test_conversion(reporter,
                                             SkImageInfo::Make(kNumPixels, 1, dstCT, dstAT, dstCS),
@@ -537,10 +537,10 @@ DEF_TEST(ReadPixels_ValidConversion, reporter) {
 }
 
 DEF_TEST(ReadPixels_InvalidRowBytes, reporter) {
-    auto srcII = SkImageInfo::Make({10, 10}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto srcII = SkImageInfo::Make({10, 10}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surf = SkSurfaces::Raster(srcII);
-    for (int ct = 0; ct < kLastEnum_SkColorType + 1; ++ct) {
-        auto colorType = static_cast<SkColorType>(ct);
+    for (int ct = 0; ct < VX_COLOR_TYPE_LASTENUM + 1; ++ct) {
+        auto colorType = static_cast<vx_color_type>(ct);
         size_t bpp = vx_color_type_bytes_per_pixel(colorType);
         if (bpp <= 1) {
             continue;

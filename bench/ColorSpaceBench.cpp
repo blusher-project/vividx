@@ -56,8 +56,8 @@ protected:
         fSRGBCS = SkColorSpace::MakeSRGB();
         fAdobeCS = SkColorSpace::MakeRGB(SkNamedTransferFn::k2Dot2, SkNamedGamut::kAdobeRGB);
 
-        fXformSteps = SkColorSpaceXformSteps(fSRGBCS.get(),  kPremul_SkAlphaType,
-                                             fAdobeCS.get(), kPremul_SkAlphaType);
+        fXformSteps = SkColorSpaceXformSteps(fSRGBCS.get(),  VX_ALPHA_TYPE_PREMULTIPLIED,
+                                             fAdobeCS.get(), VX_ALPHA_TYPE_PREMULTIPLIED);
 
         // Build up a pipeline.
         fSrcCtx = SkRasterPipelineContexts::MemoryCtx{fSrcPixels, kWidth};

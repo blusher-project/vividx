@@ -132,7 +132,7 @@ static bool get_images_from_file(const SkString& file) {
 
     SkDeserialProcs procs;
     procs.fImageDataProc =
-            [](sk_sp<SkData> data, std::optional<SkAlphaType>, void* ctx) -> sk_sp<SkImage> {
+            [](sk_sp<SkData> data, std::optional<enum vx_alpha_type>, void* ctx) -> sk_sp<SkImage> {
         ((Sniffer*)ctx)->sniff(std::move(data));
         return nullptr;
     };

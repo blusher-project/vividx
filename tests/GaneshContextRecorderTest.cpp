@@ -31,7 +31,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(CPUSurface_UsesGaneshContextAndRasterRecorderTo
     std::unique_ptr<skcpu::Recorder> recorder = ctxInfo.directContext()->makeCPURecorder();
 
     SkImageInfo imageInfo =
-            SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = recorder->makeBitmapSurface(imageInfo, imageInfo.minRowBytes(), {});
 
     SkPaint paint;
@@ -50,7 +50,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageMakeColorSpace_GaneshImageWithContext_Succ
                                  ctxInfo,
                                  CtsEnforcement::kApiLevel_202604) {
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm.allocPixels();
     auto img = SkImages::RasterFromBitmap(bm);
     SkASSERT(img);
@@ -71,7 +71,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageMakeColorSpace_GaneshImageWithRecorder_Suc
                                  ctxInfo,
                                  CtsEnforcement::kApiLevel_202604) {
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm.allocPixels();
     auto rImg = SkImages::RasterFromBitmap(bm);
     SkASSERT(rImg);
@@ -94,7 +94,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageMakeScaled_GaneshImageWithRecorder_Success
                                  ctxInfo,
                                  CtsEnforcement::kApiLevel_202604) {
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm.allocPixels();
     auto rImg = SkImages::RasterFromBitmap(bm);
     SkASSERT(rImg);
@@ -107,7 +107,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageMakeScaled_GaneshImageWithRecorder_Success
 
     auto newImg =
             img->makeScaled(ctxInfo.directContext()->asRecorder(),
-                            SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+                            SkImageInfo::Make(70, 70, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                             {SkCubicResampler::Mitchell()});
 
     REPORTER_ASSERT(reporter, newImg);
@@ -115,7 +115,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ImageMakeScaled_GaneshImageWithRecorder_Success
     REPORTER_ASSERT(reporter, newImg->isTextureBacked());
 
     auto legacyAPI =
-            img->makeScaled(SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+            img->makeScaled(SkImageInfo::Make(70, 70, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                             {SkCubicResampler::Mitchell()});
 
     REPORTER_ASSERT(reporter, legacyAPI);
@@ -129,7 +129,7 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(CanvasBaseRecorder_GaneshBasedCanvas_IsLinkedTo
                                  CtsEnforcement::kApiLevel_202604) {
     auto ctx = ctxInfo.directContext();
 
-    auto ii = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto ii = SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = SkSurfaces::RenderTarget(ctx, skgpu::Budgeted::kYes, ii, 0, nullptr);
     SkASSERT(surface);
 

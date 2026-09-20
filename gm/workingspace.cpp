@@ -25,7 +25,7 @@ static sk_sp<SkShader> color_shader(SkColor4f color) {
     // directly applied to the result. The only way to have the color filter run as part of the
     // full CPU pipeline is to have a shader that returns false for isConstant:
     SkBitmap bmp;
-    bmp.allocPixels(SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bmp.allocPixels(SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bmp.eraseColor(color);
     return bmp.makeShader(SkFilterMode::kNearest);
 }

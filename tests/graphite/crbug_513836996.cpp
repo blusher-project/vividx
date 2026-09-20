@@ -31,14 +31,14 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(crbug_513836996, reporter, context, CtsEnforc
 
     constexpr int kW = 200;
     constexpr int kH = 100;
-    const SkImageInfo ii = SkImageInfo::Make(kW, kH, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    const SkImageInfo ii = SkImageInfo::Make(kW, kH, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
     SkCanvas* canvas = surface->getCanvas();
     canvas->clear(SK_ColorBLACK);
 
-    auto src_ii = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto src_ii = SkImageInfo::Make(32, 32, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap src_bm;
     src_bm.allocPixels(src_ii);
     src_bm.eraseColor(SK_ColorGREEN);

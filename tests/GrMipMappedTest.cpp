@@ -111,7 +111,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest,
             auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithData(dContext,
                                                                          kSize,
                                                                          kSize,
-                                                                         kRGBA_8888_SkColorType,
+                                                                         VX_COLOR_TYPE_RGBA_8888,
                                                                          SkColors::kTransparent,
                                                                          mipmapped,
                                                                          renderable,
@@ -129,7 +129,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest,
                         mbet->texture(),
                         kTopLeft_GrSurfaceOrigin,
                         0,
-                        kRGBA_8888_SkColorType,
+                        VX_COLOR_TYPE_RGBA_8888,
                         /*color space*/ nullptr,
                         /*surface props*/ nullptr,
                         sk_gpu_test::ManagedBackendTexture::ReleaseProc,
@@ -141,8 +141,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest,
                 image = SkImages::BorrowTextureFrom(dContext,
                                                     mbet->texture(),
                                                     kTopLeft_GrSurfaceOrigin,
-                                                    kRGBA_8888_SkColorType,
-                                                    kPremul_SkAlphaType,
+                                                    VX_COLOR_TYPE_RGBA_8888,
+                                                    VX_ALPHA_TYPE_PREMULTIPLIED,
                                                     /* color space */ nullptr,
                                                     sk_gpu_test::ManagedBackendTexture::ReleaseProc,
                                                     mbet->releaseContext());
@@ -194,7 +194,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrBackendTextureImageMipMappedTest,
     for (auto betMipmapped : { Mipmapped::kNo, Mipmapped::kYes }) {
         for (auto requestMipmapped : { Mipmapped::kNo, Mipmapped::kYes }) {
             auto ii =
-                    SkImageInfo::Make({kSize, kSize}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                    SkImageInfo::Make({kSize, kSize}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
             sk_sp<SkImage> image = sk_gpu_test::MakeBackendTextureImage(
                     dContext, ii, SkColors::kTransparent, betMipmapped,
                     Renderable::kNo,
@@ -217,15 +217,15 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrBackendTextureImageMipMappedTest,
             }
 
             std::unique_ptr<GrTextureGenerator> textureGen = GrBackendTextureImageGenerator::Make(
-                    texture, kTopLeft_GrSurfaceOrigin, nullptr, kRGBA_8888_SkColorType,
-                    kPremul_SkAlphaType, nullptr);
+                    texture, kTopLeft_GrSurfaceOrigin, nullptr, VX_COLOR_TYPE_RGBA_8888,
+                    VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
             REPORTER_ASSERT(reporter, textureGen);
             if (!textureGen) {
                 return;
             }
 
-            SkImageInfo imageInfo = SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType,
-                                                      kPremul_SkAlphaType);
+            SkImageInfo imageInfo = SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_8888,
+                                                      VX_ALPHA_TYPE_PREMULTIPLIED);
             GrSurfaceProxyView genView = textureGen->generateTexture(
                     dContext, imageInfo, requestMipmapped, GrImageTexGenPolicy::kDraw);
             GrSurfaceProxy* genProxy = genView.proxy();
@@ -344,7 +344,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrImageSnapshotMipMappedTest,
                     willUseMips ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
             sk_sp<SkSurface> surface;
             SkImageInfo info =
-                    SkImageInfo::Make(kSize, kSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                    SkImageInfo::Make(kSize, kSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
             if (isWrapped) {
                 surface = sk_gpu_test::MakeBackendTextureSurface(dContext,
                                                                  info,
@@ -395,7 +395,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Gr1x1TextureMipMappedTest,
     }
 
     // Make surface to draw into
-    SkImageInfo info = SkImageInfo::MakeN32(16, 16, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::MakeN32(16, 16, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
 
     // Make 1x1 raster bitmap
@@ -424,7 +424,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(Gr1x1TextureMipMappedTest,
 static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> draw_mipmap_into_new_render_target(
         GrRecordingContext* rContext,
         GrColorType colorType,
-        SkAlphaType alphaType,
+        vx_alpha_type alphaType,
         GrSurfaceProxyView mipmapView,
         GrSamplerState::MipmapMode mm) {
     auto proxyProvider = rContext->priv().proxyProvider();
@@ -486,9 +486,9 @@ DEF_GANESH_TEST(GrManyDependentsMipMappedTest,
         SkASSERT(dContext->priv().caps()->mipmapSupport());
 
         GrBackendFormat format = dContext->defaultBackendFormat(
-                kRGBA_8888_SkColorType, GrRenderable::kYes);
+                VX_COLOR_TYPE_RGBA_8888, GrRenderable::kYes);
         GrColorType colorType = GrColorType::kRGBA_8888;
-        SkAlphaType alphaType = kPremul_SkAlphaType;
+        vx_alpha_type alphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
 
         GrProxyProvider* proxyProvider = dContext->priv().proxyProvider();
 

@@ -123,7 +123,7 @@ protected:
             }
             sk_sp<SkColorSpace> colorSpace = inputCanvas->imageInfo().refColorSpace();
             SkImageInfo info = SkImageInfo::MakeN32(size.width(), size.height(),
-                                                    kPremul_SkAlphaType, colorSpace);
+                                                    VX_ALPHA_TYPE_PREMULTIPLIED, colorSpace);
             SkSurfaceProps inputProps;
             inputCanvas->getProps(&inputProps);
             SkSurfaceProps props(

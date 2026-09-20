@@ -30,7 +30,7 @@ DEF_TEST(srgb_roundtrip, r) {
 
     sk_sp<SkColorSpace> sRGB = SkColorSpace::MakeSRGB(),
                         linear = sRGB->makeLinearGamma();
-    const SkAlphaType upm = kUnpremul_SkAlphaType;
+    const vx_alpha_type upm = VX_ALPHA_TYPE_UNPREMULTIPLIED;
 
     SkColorSpaceXformSteps linearize{  sRGB.get(),upm,  linear.get(),upm},
                            reencode {linear.get(),upm,    sRGB.get(),upm};
@@ -59,7 +59,7 @@ DEF_TEST(srgb_edge_cases, r) {
 
     sk_sp<SkColorSpace> sRGB = SkColorSpace::MakeSRGB(),
                         linear = sRGB->makeLinearGamma();
-    const SkAlphaType upm = kUnpremul_SkAlphaType;
+    const vx_alpha_type upm = VX_ALPHA_TYPE_UNPREMULTIPLIED;
 
     SkColorSpaceXformSteps steps {linear.get(),upm,    sRGB.get(),upm};
 
@@ -104,7 +104,7 @@ DEF_TEST(srgb_roundtrip_extended, r) {
 
     sk_sp<SkColorSpace> cs = SkColorSpace::MakeSRGB();
     sk_sp<SkColorSpace> linear = cs->makeLinearGamma();
-    const SkAlphaType upm = kUnpremul_SkAlphaType;
+    const vx_alpha_type upm = VX_ALPHA_TYPE_UNPREMULTIPLIED;
 
     SkColorSpaceXformSteps linearize{    cs.get(),upm,  linear.get(),upm},
                            reencode {linear.get(),upm,      cs.get(),upm};

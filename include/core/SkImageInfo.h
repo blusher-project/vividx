@@ -296,9 +296,9 @@ public:
     */
     int height() const { return fDimensions.height(); }
 
-    vx_color_type colorType() const { return fColorInfo.colorType(); }
+    enum vx_color_type colorType() const { return fColorInfo.colorType(); }
 
-    vx_alpha_type alphaType() const { return fColorInfo.alphaType(); }
+    enum vx_alpha_type alphaType() const { return fColorInfo.alphaType(); }
 
     /** Returns SkColorSpace, the range of colors. The reference count of
         SkColorSpace is unchanged. The returned SkColorSpace is immutable.

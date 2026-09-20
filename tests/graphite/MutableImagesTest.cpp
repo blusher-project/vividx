@@ -98,15 +98,15 @@ public:
             : fReporter(reporter)
             , fRecorder(recorder) {
         SkImageInfo ii = SkImageInfo::Make(kSurfaceSize,
-                                           kRGBA_8888_SkColorType,
-                                           kPremul_SkAlphaType);
+                                           VX_COLOR_TYPE_RGBA_8888,
+                                           VX_ALPHA_TYPE_PREMULTIPLIED);
         fReadbackPM.alloc(ii);
     }
 
     void init(SkImage* imageToDraw) {
         SkImageInfo ii = SkImageInfo::Make(kSurfaceSize,
-                                           kRGBA_8888_SkColorType,
-                                           kPremul_SkAlphaType);
+                                           VX_COLOR_TYPE_RGBA_8888,
+                                           VX_ALPHA_TYPE_PREMULTIPLIED);
         fImgDrawSurface = SkSurfaces::RenderTarget(fRecorder, ii, Mipmapped::kNo);
         REPORTER_ASSERT(fReporter, fImgDrawSurface);
 
@@ -175,7 +175,7 @@ private:
 void update_backend_texture(skiatest::Reporter* reporter,
                             Recorder* recorder,
                             const BackendTexture& backendTex,
-                            SkColorType ct,
+                            vx_color_type ct,
                             bool withMips,
                             SkColor4f color) {
     SkPixmap pixmaps[6];
@@ -183,7 +183,7 @@ void update_backend_texture(skiatest::Reporter* reporter,
 
     const SkColor4f colors[6] = { color, color, color, color, color, color };
 
-    int numMipLevels = ToolUtils::make_pixmaps(ct, kPremul_SkAlphaType, withMips, colors, pixmaps,
+    int numMipLevels = ToolUtils::make_pixmaps(ct, VX_ALPHA_TYPE_PREMULTIPLIED, withMips, colors, pixmaps,
                                                &memForPixmaps);
     SkASSERT(numMipLevels == 1 || numMipLevels == kNumMipLevels);
     SkASSERT(kImageSize == pixmaps[0].dimensions());
@@ -213,7 +213,7 @@ public:
         skgpu::Protected isProtected = skgpu::Protected(caps->protectedSupport());
 
         // Note: not renderable
-        TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+        TextureInfo info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGBA_8888,
                                                               fWithMips ? Mipmapped::kYes
                                                                         : Mipmapped::kNo,
                                                               isProtected,
@@ -223,12 +223,12 @@ public:
         fBETexture = fRecorder->createBackendTexture(kImageSize, info);
         REPORTER_ASSERT(fReporter, fBETexture.isValid());
 
-        update_backend_texture(fReporter, fRecorder, fBETexture, kRGBA_8888_SkColorType,
+        update_backend_texture(fReporter, fRecorder, fBETexture, VX_COLOR_TYPE_RGBA_8888,
                                fWithMips, kInitialColor);
 
         fMutatingImg = SkImages::WrapTexture(fRecorder,
                                              fBETexture,
-                                             kPremul_SkAlphaType,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED,
                                              /* colorSpace= */ nullptr);
         REPORTER_ASSERT(fReporter, fMutatingImg);
 
@@ -236,7 +236,7 @@ public:
     }
 
     std::unique_ptr<Recording> mutate(int mutationIndex) override {
-        update_backend_texture(fReporter, fRecorder, fBETexture, kRGBA_8888_SkColorType,
+        update_backend_texture(fReporter, fRecorder, fBETexture, VX_COLOR_TYPE_RGBA_8888,
                                fWithMips, kMutationColors[mutationIndex]);
         return fRecorder->snap();
     }
@@ -299,7 +299,7 @@ public:
         skgpu::Protected isProtected = skgpu::Protected(caps->protectedSupport());
 
         // Note: not renderable
-        TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+        TextureInfo info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGBA_8888,
                                                               fWithMips ? Mipmapped::kYes
                                                                         : Mipmapped::kNo,
                                                               isProtected,
@@ -309,22 +309,22 @@ public:
         fBETextures[0] = fRecorder->createBackendTexture(kImageSize, info);
         REPORTER_ASSERT(fReporter, fBETextures[0].isValid());
 
-        update_backend_texture(fReporter, fRecorder, fBETextures[0], kRGBA_8888_SkColorType,
+        update_backend_texture(fReporter, fRecorder, fBETextures[0], VX_COLOR_TYPE_RGBA_8888,
                                fWithMips, kInitialColor);
 
         for (int i = 0; i < kNumMutations; ++i) {
             fBETextures[i+1] = fRecorder->createBackendTexture(kImageSize, info);
             REPORTER_ASSERT(fReporter, fBETextures[i+1].isValid());
 
-            update_backend_texture(fReporter, fRecorder, fBETextures[i+1], kRGBA_8888_SkColorType,
+            update_backend_texture(fReporter, fRecorder, fBETextures[i+1], VX_COLOR_TYPE_RGBA_8888,
                                    fWithMips, kMutationColors[i]);
         }
 
         fMutatingImg = SkImages::PromiseTextureFrom(fRecorder,
                                                     kImageSize,
                                                     info,
-                                                    SkColorInfo(kRGBA_8888_SkColorType,
-                                                                kPremul_SkAlphaType,
+                                                    SkColorInfo(VX_COLOR_TYPE_RGBA_8888,
+                                                                VX_ALPHA_TYPE_PREMULTIPLIED,
                                                                 /* cs= */ nullptr),
                                                     Volatile::kYes,
                                                     fulfill,
@@ -423,7 +423,7 @@ public:
     }
 
     std::unique_ptr<Recording> init(const Caps* /* caps */) override {
-        SkImageInfo ii = SkImageInfo::Make(kImageSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+        SkImageInfo ii = SkImageInfo::Make(kImageSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
         fMutatingSurface = SkSurfaces::RenderTarget(
                 fRecorder, ii, fWithMips ? Mipmapped::kYes : Mipmapped::kNo);

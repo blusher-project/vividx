@@ -14,11 +14,11 @@
 // This GM should draw two yellow boxes; the bug drew one in cyan.
 
 DEF_SIMPLE_GM(skbug_9819, c, 256, 256) {
-    auto info = SkImageInfo::Make(1,1, kUnknown_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(1,1, VX_COLOR_TYPE_UNKNOWN, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap rgba,
              bgra;
-    rgba.allocPixels(info.makeColorType(kRGBA_8888_SkColorType));
-    bgra.allocPixels(info.makeColorType(kBGRA_8888_SkColorType));
+    rgba.allocPixels(info.makeColorType(VX_COLOR_TYPE_RGBA_8888));
+    bgra.allocPixels(info.makeColorType(VX_COLOR_TYPE_BGRA_8888));
 
     SkColor yellow = 0xffffff00;
     rgba.eraseColor(yellow);
@@ -33,8 +33,8 @@ DEF_SIMPLE_GM(skbug_9819, c, 256, 256) {
     auto grade = [&](int x, int y){
         SkBitmap bm;
         bm.allocPixels(SkImageInfo::Make(1,1,
-                                         kGray_8_SkColorType,
-                                         kUnpremul_SkAlphaType,
+                                         VX_COLOR_TYPE_GRAY_8,
+                                         VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                          SkColorSpace::MakeSRGB()));
         if (!c->readPixels(bm, x,y)) {
             // Picture-backed canvases, that sort of thing.  Just assume they're good.

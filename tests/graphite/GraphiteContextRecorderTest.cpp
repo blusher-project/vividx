@@ -28,7 +28,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(
     std::unique_ptr<skcpu::Recorder> recorder = context->makeCPURecorder();
 
     SkImageInfo imageInfo =
-            SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = recorder->makeBitmapSurface(imageInfo, imageInfo.minRowBytes(), {});
 
     SkPaint paint;
@@ -51,7 +51,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageMakeColorSpace_GraphiteImageWithRecorder
     std::unique_ptr<skgpu::graphite::Recorder> recorder = context->makeRecorder();
 
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm.allocPixels();
     auto rImg = SkImages::RasterFromBitmap(bm);
     SkASSERT(rImg);
@@ -75,7 +75,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageMakeScaled_GraphiteImageWithRecorder_Suc
     std::unique_ptr<skgpu::graphite::Recorder> recorder = context->makeRecorder();
 
     SkBitmap bm;
-    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.setInfo(SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bm.allocPixels();
     auto rImg = SkImages::RasterFromBitmap(bm);
     SkASSERT(rImg);
@@ -88,7 +88,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageMakeScaled_GraphiteImageWithRecorder_Suc
 
     auto newImg =
             img->makeScaled(recorder.get(),
-                            SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+                            SkImageInfo::Make(70, 70, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                             {SkCubicResampler::Mitchell()});
 
     REPORTER_ASSERT(reporter, newImg);
@@ -97,7 +97,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageMakeScaled_GraphiteImageWithRecorder_Suc
 
     // Unlike Ganesh and Graphite, makeScaled doesn't work for Graphite images w/o a recorder
     auto legacyAPI =
-            img->makeScaled(SkImageInfo::Make(70, 70, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+            img->makeScaled(SkImageInfo::Make(70, 70, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                             {SkCubicResampler::Mitchell()});
 
     REPORTER_ASSERT(reporter, !legacyAPI);
@@ -109,7 +109,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CanvasBaseRecorder_GraphiteBasedCanvas_IsOrig
                                    CtsEnforcement::kApiLevel_202604) {
     std::unique_ptr<skgpu::graphite::Recorder> recorder = context->makeRecorder();
 
-    auto ii = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto ii = SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface = SkSurfaces::RenderTarget(recorder.get(), ii);
     SkASSERT(surface);
 

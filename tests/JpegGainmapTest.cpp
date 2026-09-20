@@ -623,9 +623,9 @@ DEF_TEST(AndroidCodec_gainmapInfoEncode, r) {
     gainmapBitmaps[0].allocPixels(SkImageInfo::MakeN32Premul(16, 16));
     gainmapBitmaps[1].allocPixels(SkImageInfo::MakeN32Premul(8, 8));
     gainmapBitmaps[2].allocPixels(
-            SkImageInfo::Make(4, 4, kAlpha_8_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(4, 4, VX_COLOR_TYPE_ALPHA_8, VX_ALPHA_TYPE_PREMULTIPLIED));
     gainmapBitmaps[3].allocPixels(
-            SkImageInfo::Make(8, 8, kGray_8_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(8, 8, VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_PREMULTIPLIED));
 
     SkGainmapInfo infos[kNumTests] = {
             // Multi-channel, UltraHDR-compatible.
@@ -753,8 +753,8 @@ static SkColor4f render_gainmap_pixel(float renderHdrRatio,
     SkImageInfo testPixelInfo = SkImageInfo::Make(
             /*width=*/1,
             /*height=*/1,
-            kRGBA_F16_SkColorType,
-            kPremul_SkAlphaType,
+            VX_COLOR_TYPE_RGBA_F16,
+            VX_ALPHA_TYPE_PREMULTIPLIED,
             SkColorSpace::MakeSRGB());
     SkBitmap testPixelBitmap = render_gainmap(
             testPixelInfo, renderHdrRatio, baseBitmap, gainmapBitmap, gainmapInfo, x, y);
@@ -801,29 +801,29 @@ DEF_TEST(AndroidCodec_jpegGainmapTranscode, r) {
             int y;
             float hdrRatio;
             SkColor4f expectedColor;
-            SkColorType forcedColorType;
+            vx_color_type forcedColorType;
         } recs[] = {
-                {1446, 1603, 1.05f, {0.984375f, 1.004883f, 1.008789f, 1.f}, kUnknown_SkColorType},
-                {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}, kUnknown_SkColorType},
-                {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}, kGray_8_SkColorType},
-                {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}, kAlpha_8_SkColorType},
-                {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}, kR8_unorm_SkColorType},
+                {1446, 1603, 1.05f, {0.984375f, 1.004883f, 1.008789f, 1.f}, VX_COLOR_TYPE_UNKNOWN},
+                {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}, VX_COLOR_TYPE_UNKNOWN},
+                {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}, VX_COLOR_TYPE_GRAY_8},
+                {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}, VX_COLOR_TYPE_ALPHA_8},
+                {1446, 1603, 100.f, {1.147461f, 1.170898f, 1.174805f, 1.f}, VX_COLOR_TYPE_R8_UNORM},
         };
 
         for (const auto& rec : recs) {
             SkBitmap gainmapBitmap0;
-            SkASSERT(gainmapBitmap[0].colorType() == kGray_8_SkColorType);
+            SkASSERT(gainmapBitmap[0].colorType() == VX_COLOR_TYPE_GRAY_8);
 
             // Force various different single-channel formats, to ensure that they all work. Note
             // that when the color type is forced to kAlpha_8_SkColorType, the shader will always
             // read (0,0,0,1) if the alpha type is kOpaque_SkAlphaType.
-            if (rec.forcedColorType == kUnknown_SkColorType) {
+            if (rec.forcedColorType == VX_COLOR_TYPE_UNKNOWN) {
                 gainmapBitmap0 = gainmapBitmap[0];
             } else {
                 gainmapBitmap0.installPixels(gainmapBitmap[0]
                                                      .info()
                                                      .makeColorType(rec.forcedColorType)
-                                                     .makeAlphaType(kPremul_SkAlphaType),
+                                                     .makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED),
                                              gainmapBitmap[0].getPixels(),
                                              gainmapBitmap[0].rowBytes());
             }

@@ -112,7 +112,7 @@ protected:
     }
 
     static void DrawHairlines(SkCanvas* canvas) {
-        if (canvas->imageInfo().alphaType() == kOpaque_SkAlphaType) {
+        if (canvas->imageInfo().alphaType() == VX_ALPHA_TYPE_OPAQUE) {
             canvas->clear(kBackground);
         } else {
             canvas->clear(SK_ColorTRANSPARENT);
@@ -159,7 +159,7 @@ protected:
         // it is easier to see how they blend.
         SkImageInfo info;
         // Recording canvases don't have a color type.
-        if (SkColorType::kUnknown_SkColorType == canvas->imageInfo().colorType()) {
+        if (vx_color_type::VX_COLOR_TYPE_UNKNOWN == canvas->imageInfo().colorType()) {
             info = SkImageInfo::MakeN32Premul(35, 35);
         } else {
             info = SkImageInfo::Make(35, 35,
@@ -171,11 +171,11 @@ protected:
         if (!surf) {
             // Fall back to raster. Raster supports only one of the 8 bit per-channel RGBA or BGRA
             // formats. This fall back happens when running with --preAbandonGpuContext.
-            if ((info.colorType() == kRGBA_8888_SkColorType ||
-                 info.colorType() == kBGRA_8888_SkColorType) &&
-                info.colorType() != kN32_SkColorType) {
+            if ((info.colorType() == VX_COLOR_TYPE_RGBA_8888 ||
+                 info.colorType() == VX_COLOR_TYPE_BGRA_8888) &&
+                info.colorType() != VX_COLOR_TYPE_N32) {
                 info = SkImageInfo::Make(35, 35,
-                                         kN32_SkColorType,
+                                         VX_COLOR_TYPE_N32,
                                          canvas->imageInfo().alphaType(),
                                          canvas->imageInfo().refColorSpace());
             }

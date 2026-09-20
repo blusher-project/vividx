@@ -238,7 +238,7 @@ public:
     GDIAllocator() {}
 
     bool allocHandle(const SkImageInfo& info, Rec* rec) override {
-        SkASSERT(info.colorType() == kN32_SkColorType);
+        SkASSERT(info.colorType() == VX_COLOR_TYPE_N32);
         return Create(info.width(), info.height(), info.isOpaque(), rec);
     }
 

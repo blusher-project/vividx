@@ -100,7 +100,7 @@ static void check_sdc_color(skiatest::Reporter* reporter,
                             skgpu::ganesh::SurfaceDrawContext* sdc,
                             GrDirectContext* ctx,
                             const SkPMColor4f& color) {
-    auto info = SkImageInfo::Make(kWidth, kHeight, kRGBA_F32_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(kWidth, kHeight, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_PREMULTIPLIED);
     GrPixmap pixmap = GrPixmap::Allocate(info);
     sdc->readPixels(ctx, pixmap, {0, 0});
     auto pix = static_cast<const float*>(pixmap.addr());
@@ -268,7 +268,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
 
     auto sourceTexture = context->createBackendTexture(texDims.width(),
                                                        texDims.height(),
-                                                       kRGBA_8888_SkColorType,
+                                                       VX_COLOR_TYPE_RGBA_8888,
                                                        SkColors::kBlue,
                                                        skgpu::Mipmapped::kNo,
                                                        GrRenderable::kYes,
@@ -277,13 +277,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
     auto sourceImage = SkImages::BorrowTextureFrom(context,
                                                    sourceTexture,
                                                    kTopLeft_GrSurfaceOrigin,
-                                                   kRGBA_8888_SkColorType,
-                                                   kPremul_SkAlphaType,
+                                                   VX_COLOR_TYPE_RGBA_8888,
+                                                   VX_ALPHA_TYPE_PREMULTIPLIED,
                                                    nullptr);
 
     auto texture1 = context->createBackendTexture(surfaceDims.width(),
                                                   surfaceDims.height(),
-                                                  kRGBA_8888_SkColorType,
+                                                  VX_COLOR_TYPE_RGBA_8888,
                                                   SkColors::kRed,
                                                   skgpu::Mipmapped::kNo,
                                                   GrRenderable::kYes,
@@ -291,7 +291,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
 
     auto texture2 = context->createBackendTexture(surfaceDims.width(),
                                                   surfaceDims.height(),
-                                                  kRGBA_8888_SkColorType,
+                                                  VX_COLOR_TYPE_RGBA_8888,
                                                   SkColors::kYellow,
                                                   skgpu::Mipmapped::kNo,
                                                   GrRenderable::kYes,
@@ -314,7 +314,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
                                                       texture1,
                                                       kTopLeft_GrSurfaceOrigin,
                                                       1,
-                                                      kRGBA_8888_SkColorType,
+                                                      VX_COLOR_TYPE_RGBA_8888,
                                                       nullptr,
                                                       &kDMSAAProps);
 
@@ -336,7 +336,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
                                                       texture2,
                                                       kTopLeft_GrSurfaceOrigin,
                                                       1,
-                                                      kRGBA_8888_SkColorType,
+                                                      VX_COLOR_TYPE_RGBA_8888,
                                                       nullptr,
                                                       &kBasicProps);
 
@@ -353,13 +353,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable,
         auto readImage = SkImages::BorrowTextureFrom(context,
                                                      texture2,
                                                      kTopLeft_GrSurfaceOrigin,
-                                                     kRGBA_8888_SkColorType,
-                                                     kPremul_SkAlphaType,
+                                                     VX_COLOR_TYPE_RGBA_8888,
+                                                     VX_ALPHA_TYPE_PREMULTIPLIED,
                                                      nullptr);
         SkImageInfo dstIInfo = SkImageInfo::Make(texDims.width(),
                                                  texDims.height(),
-                                                 kRGBA_8888_SkColorType,
-                                                 kPremul_SkAlphaType,
+                                                 VX_COLOR_TYPE_RGBA_8888,
+                                                 VX_ALPHA_TYPE_PREMULTIPLIED,
                                                  nullptr);
 
         SkBitmap bitmap;

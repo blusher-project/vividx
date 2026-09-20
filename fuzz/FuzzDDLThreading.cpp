@@ -134,7 +134,7 @@ DDLFuzzer::DDLFuzzer(Fuzz* fuzz, ContextType contextType) : fFuzz(fuzz) {
     }
     SkISize canvasSize = kPromiseImageSize;
     canvasSize.fWidth *= kPromiseImagesPerDDL;
-    SkImageInfo ii = SkImageInfo::Make(canvasSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(canvasSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     fSurface = SkSurfaces::RenderTarget(fContext, skgpu::Budgeted::kNo, ii);
     if (!fSurface || !fSurface->characterize(&fSurfaceCharacterization)) {
         return;
@@ -180,7 +180,7 @@ sk_sp<GrPromiseImageTexture> DDLFuzzer::fulfillPromiseImage(PromiseImageInfo& pr
     GrBackendTexture backendTex =
             fContext->createBackendTexture(kPromiseImageSize.width(),
                                            kPromiseImageSize.height(),
-                                           kRGBA_8888_SkColorType,
+                                           VX_COLOR_TYPE_RGBA_8888,
                                            SkColors::kRed,
                                            skgpu::Mipmapped::kNo,
                                            GrRenderable::kYes,
@@ -237,15 +237,15 @@ static void fuzz_promise_image_release(void* ctxIn) {
 void DDLFuzzer::initPromiseImage(int index) {
     PromiseImageInfo& promiseImage = fPromiseImages[index];
     promiseImage.fFuzzer = this;
-    GrBackendFormat backendFmt = fContext->defaultBackendFormat(kRGBA_8888_SkColorType,
+    GrBackendFormat backendFmt = fContext->defaultBackendFormat(VX_COLOR_TYPE_RGBA_8888,
                                                                 GrRenderable::kYes);
     promiseImage.fImage = SkImages::PromiseTextureFrom(fContext->threadSafeProxy(),
                                                        backendFmt,
                                                        kPromiseImageSize,
                                                        skgpu::Mipmapped::kNo,
                                                        kTopLeft_GrSurfaceOrigin,
-                                                       kRGBA_8888_SkColorType,
-                                                       kUnpremul_SkAlphaType,
+                                                       VX_COLOR_TYPE_RGBA_8888,
+                                                       VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                                        SkColorSpace::MakeSRGB(),
                                                        &fuzz_promise_image_fulfill,
                                                        &fuzz_promise_image_release,

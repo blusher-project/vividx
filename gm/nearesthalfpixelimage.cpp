@@ -36,26 +36,26 @@ DEF_SIMPLE_GM_CAN_FAIL(nearest_half_pixel_image, canvas, errorMsg, 264, 235) {
     Images images[2];
     uint32_t colors[] {0xFFFF0000, 0xFF0000FF};
     SkPixmap cpmx(SkImageInfo::Make({2, 1},
-                                    kRGBA_8888_SkColorType,
-                                    kPremul_SkAlphaType),
+                                    VX_COLOR_TYPE_RGBA_8888,
+                                    VX_ALPHA_TYPE_PREMULTIPLIED),
                   colors,
                   sizeof(colors));
     SkPixmap cpmy(SkImageInfo::Make({1, 2},
-                                    kRGBA_8888_SkColorType,
-                                    kPremul_SkAlphaType),
+                                    VX_COLOR_TYPE_RGBA_8888,
+                                    VX_ALPHA_TYPE_PREMULTIPLIED),
                   colors,
                   sizeof(colors[0]));
     images[0] = {SkImages::RasterFromPixmapCopy(cpmx), SkImages::RasterFromPixmapCopy(cpmy)};
 
     uint8_t alphas[] {0xFF, 0xAA};
     SkPixmap apmx(SkImageInfo::Make({2, 1},
-                                    kAlpha_8_SkColorType,
-                                    kPremul_SkAlphaType),
+                                    VX_COLOR_TYPE_ALPHA_8,
+                                    VX_ALPHA_TYPE_PREMULTIPLIED),
                   alphas,
                   sizeof(alphas));
     SkPixmap apmy(SkImageInfo::Make({1, 2},
-                                    kAlpha_8_SkColorType,
-                                    kPremul_SkAlphaType),
+                                    VX_COLOR_TYPE_ALPHA_8,
+                                    VX_ALPHA_TYPE_PREMULTIPLIED),
                   alphas,
                   sizeof(alphas[0]));
     images[1] = {SkImages::RasterFromPixmapCopy(apmx), SkImages::RasterFromPixmapCopy(apmy)};

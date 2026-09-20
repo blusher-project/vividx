@@ -17,7 +17,7 @@
 DEF_TEST(ImageFrom565Bitmap, r) {
     SkBitmap bm;
     bm.allocPixels(SkImageInfo::Make(
-        5, 7, kRGB_565_SkColorType, kOpaque_SkAlphaType));
+        5, 7, VX_COLOR_TYPE_RGB_565, VX_ALPHA_TYPE_OPAQUE));
     bm.eraseColor(SK_ColorBLACK);
     REPORTER_ASSERT(r, bm.asImage() != nullptr);
 }

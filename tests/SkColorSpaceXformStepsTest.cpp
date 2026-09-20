@@ -94,13 +94,13 @@ DEF_TEST(SkColorSpaceXformSteps, r) {
          rec2020_hlg_10b = SkColorSpace::MakeRGB(trfn_hlg_10b(), SkNamedGamut::kRec2020),
          rec2020_hlg_203 = SkColorSpace::MakeRGB(trfn_hlg_203(), SkNamedGamut::kRec2020);
 
-    auto premul =   kPremul_SkAlphaType,
-         opaque =   kOpaque_SkAlphaType,
-       unpremul = kUnpremul_SkAlphaType;
+    auto premul =   VX_ALPHA_TYPE_PREMULTIPLIED,
+         opaque =   VX_ALPHA_TYPE_OPAQUE,
+       unpremul = VX_ALPHA_TYPE_UNPREMULTIPLIED;
 
     struct Test {
         sk_sp<SkColorSpace> src, dst;
-        SkAlphaType         srcAT, dstAT;
+        vx_alpha_type         srcAT, dstAT;
 
         bool unpremul = false;
         bool linearize = false;
@@ -343,8 +343,8 @@ static void run_color_space_xform_test(
 
     for (const auto& rec : recs) {
         if (!make_surface.has_value()) {
-            SkColorSpaceXformSteps steps(rec.src_cs.get(), kUnpremul_SkAlphaType,
-                                         rec.dst_cs.get(), kUnpremul_SkAlphaType);
+            SkColorSpaceXformSteps steps(rec.src_cs.get(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                         rec.dst_cs.get(), VX_ALPHA_TYPE_UNPREMULTIPLIED);
             float xform_rgba[4] = {
                 rec.src_rgba[0], rec.src_rgba[1], rec.src_rgba[2], rec.src_rgba[3]};
             steps.apply(xform_rgba);
@@ -359,8 +359,8 @@ static void run_color_space_xform_test(
         // we are testing the full pipeline.
         sk_sp<SkImage> src_image;
         {
-            auto src_info = SkImageInfo::Make(kWidth, kHeight, kRGBA_F32_SkColorType,
-                                              kPremul_SkAlphaType, rec.src_cs);
+            auto src_info = SkImageInfo::Make(kWidth, kHeight, VX_COLOR_TYPE_RGBA_F32,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED, rec.src_cs);
 
             // Write the pixels as F32.
             SkBitmap src_bm_f32;
@@ -376,7 +376,7 @@ static void run_color_space_xform_test(
                 }
             }
             SkBitmap src_bm;
-            src_bm.allocPixels(src_info.makeColorType(kRGBA_F16_SkColorType));
+            src_bm.allocPixels(src_info.makeColorType(VX_COLOR_TYPE_RGBA_F16));
             bool rp_result = src_bm_f32.readPixels(src_bm.pixmap(), 0, 0);
             REPORTER_ASSERT(reporter, rp_result);
             src_bm.setImmutable();
@@ -389,8 +389,8 @@ static void run_color_space_xform_test(
         }
 
         // Render the image to an F16 target.
-        auto dst_info = SkImageInfo::Make(kWidth, kHeight, kRGBA_F16_SkColorType,
-                                          kPremul_SkAlphaType, rec.dst_cs);
+        auto dst_info = SkImageInfo::Make(kWidth, kHeight, VX_COLOR_TYPE_RGBA_F16,
+                                          VX_ALPHA_TYPE_PREMULTIPLIED, rec.dst_cs);
         auto dst_surface = make_surface.value()(dst_info);
         if (!dst_surface) {
             continue;
@@ -399,7 +399,7 @@ static void run_color_space_xform_test(
         dst_surface->getCanvas()->drawImage(src_image, 0, 0);
 
         // Read back to an F32 target.
-        const SkImageInfo rb_info = dst_info.makeColorType(kRGBA_F32_SkColorType);
+        const SkImageInfo rb_info = dst_info.makeColorType(VX_COLOR_TYPE_RGBA_F32);
         SkBitmap rb_bm;
         rb_bm.allocPixels(rb_info);
         bool rb_result = dst_surface->readPixels(rb_bm.pixmap(), 0, 0);

@@ -531,7 +531,7 @@ static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
 }
 
 static void push_codec_src(Path path, CodecSrc::Mode mode, CodecSrc::DstColorType dstColorType,
-        SkAlphaType dstAlphaType, float scale) {
+        vx_alpha_type dstAlphaType, float scale) {
     if (FLAGS_simpleCodec) {
         const bool simple = CodecSrc::kCodec_Mode == mode || CodecSrc::kAnimated_Mode == mode;
         if (!simple || dstColorType != CodecSrc::kGetFromCanvas_DstColorType || scale != 1.0f) {
@@ -576,10 +576,10 @@ static void push_codec_src(Path path, CodecSrc::Mode mode, CodecSrc::DstColorTyp
     }
 
     switch (dstAlphaType) {
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             folder.append("_premul");
             break;
-        case kUnpremul_SkAlphaType:
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
             folder.append("_unpremul");
             break;
         default:
@@ -595,7 +595,7 @@ static void push_codec_src(Path path, CodecSrc::Mode mode, CodecSrc::DstColorTyp
 }
 
 static void push_android_codec_src(Path path, CodecSrc::DstColorType dstColorType,
-        SkAlphaType dstAlphaType, int sampleSize) {
+        vx_alpha_type dstAlphaType, int sampleSize) {
     SkString folder;
     folder.append("scaled_codec");
 
@@ -611,10 +611,10 @@ static void push_android_codec_src(Path path, CodecSrc::DstColorType dstColorTyp
     }
 
     switch (dstAlphaType) {
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             folder.append("_premul");
             break;
-        case kUnpremul_SkAlphaType:
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
             folder.append("_unpremul");
             break;
         default:
@@ -629,7 +629,7 @@ static void push_android_codec_src(Path path, CodecSrc::DstColorType dstColorTyp
     push_src("image", folder, src);
 }
 
-static void push_image_gen_src(Path path, ImageGenSrc::Mode mode, SkAlphaType alphaType, bool isGpu)
+static void push_image_gen_src(Path path, ImageGenSrc::Mode mode, vx_alpha_type alphaType, bool isGpu)
 {
     SkString folder;
     switch (mode) {
@@ -645,13 +645,13 @@ static void push_image_gen_src(Path path, ImageGenSrc::Mode mode, SkAlphaType al
         folder.append("_gpu");
     } else {
         switch (alphaType) {
-            case kOpaque_SkAlphaType:
+            case VX_ALPHA_TYPE_OPAQUE:
                 folder.append("_opaque");
                 break;
-            case kPremul_SkAlphaType:
+            case VX_ALPHA_TYPE_PREMULTIPLIED:
                 folder.append("_premul");
                 break;
-            case kUnpremul_SkAlphaType:
+            case VX_ALPHA_TYPE_UNPREMULTIPLIED:
                 folder.append("_unpremul");
                 break;
             default:
@@ -764,26 +764,26 @@ static void push_codec_srcs(Path path) {
     colorTypes.push_back(CodecSrc::kGetFromCanvas_DstColorType);
     colorTypes.push_back(CodecSrc::kNonNative8888_Always_DstColorType);
     switch (codec->getInfo().colorType()) {
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             colorTypes.push_back(CodecSrc::kGrayscale_Always_DstColorType);
             break;
         default:
             break;
     }
 
-    TArray<SkAlphaType> alphaModes;
-    alphaModes.push_back(kPremul_SkAlphaType);
-    if (codec->getInfo().alphaType() != kOpaque_SkAlphaType) {
-        alphaModes.push_back(kUnpremul_SkAlphaType);
+    TArray<vx_alpha_type> alphaModes;
+    alphaModes.push_back(VX_ALPHA_TYPE_PREMULTIPLIED);
+    if (codec->getInfo().alphaType() != VX_ALPHA_TYPE_OPAQUE) {
+        alphaModes.push_back(VX_ALPHA_TYPE_UNPREMULTIPLIED);
     }
 
     for (CodecSrc::Mode mode : nativeModes) {
         for (CodecSrc::DstColorType colorType : colorTypes) {
-            for (SkAlphaType alphaType : alphaModes) {
+            for (vx_alpha_type alphaType : alphaModes) {
                 // Only test kCroppedScanline_Mode when the alpha type is premul.  The test is
                 // slow and won't be interestingly different with different alpha types.
                 if (CodecSrc::kCroppedScanline_Mode == mode &&
-                        kPremul_SkAlphaType != alphaType) {
+                        VX_ALPHA_TYPE_PREMULTIPLIED != alphaType) {
                     continue;
                 }
 
@@ -808,13 +808,13 @@ static void push_codec_srcs(Path path) {
         if (frameInfos.size() > 1) {
             for (auto dstCT : { CodecSrc::kNonNative8888_Always_DstColorType,
                     CodecSrc::kGetFromCanvas_DstColorType }) {
-                for (auto at : { kUnpremul_SkAlphaType, kPremul_SkAlphaType }) {
+                for (auto at : { VX_ALPHA_TYPE_UNPREMULTIPLIED, VX_ALPHA_TYPE_PREMULTIPLIED }) {
                     push_codec_src(path, CodecSrc::kAnimated_Mode, dstCT, at, 1.0f);
                 }
             }
             for (float scale : { .5f, .33f }) {
                 push_codec_src(path, CodecSrc::kAnimated_Mode, CodecSrc::kGetFromCanvas_DstColorType,
-                               kPremul_SkAlphaType, scale);
+                               VX_ALPHA_TYPE_PREMULTIPLIED, scale);
             }
         }
 
@@ -828,7 +828,7 @@ static void push_codec_srcs(Path path) {
 
     for (int sampleSize : sampleSizes) {
         for (CodecSrc::DstColorType colorType : colorTypes) {
-            for (SkAlphaType alphaType : alphaModes) {
+            for (vx_alpha_type alphaType : alphaModes) {
                 // We can exercise all of the kNonNative support code in the swizzler with just a
                 // few sample sizes.  Skip the rest.
                 if (CodecSrc::kNonNative8888_Always_DstColorType == colorType && sampleSize > 3) {
@@ -862,7 +862,7 @@ static void push_codec_srcs(Path path) {
         };
         for (const char* brdExt : brdExts) {
             if (0 == strcmp(brdExt, ext)) {
-                bool gray = codec->getInfo().colorType() == kGray_8_SkColorType;
+                bool gray = codec->getInfo().colorType() == VX_COLOR_TYPE_GRAY_8;
                 push_brd_srcs(path, gray);
                 break;
             }
@@ -874,13 +874,13 @@ static void push_codec_srcs(Path path) {
     push_image_gen_src(path, ImageGenSrc::kCodec_Mode, codec->getInfo().alphaType(), true);
 
     // Push image generator CPU tests.
-    for (SkAlphaType alphaType : alphaModes) {
+    for (vx_alpha_type alphaType : alphaModes) {
         push_image_gen_src(path, ImageGenSrc::kCodec_Mode, alphaType, false);
 
 #if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
         if (SkEncodedImageFormat::kWEBP != codec->getEncodedFormat() &&
             SkEncodedImageFormat::kWBMP != codec->getEncodedFormat() &&
-            kUnpremul_SkAlphaType != alphaType)
+            VX_ALPHA_TYPE_UNPREMULTIPLIED != alphaType)
         {
             push_image_gen_src(path, ImageGenSrc::kPlatform_Mode, alphaType, false);
         }
@@ -1049,22 +1049,22 @@ static Sink* create_sink(
 #define SINK(t, sink, ...) if (config->getBackend().equals(t)) return new sink(__VA_ARGS__)
 
     if (FLAGS_cpu) {
-        SINK("r8",          RasterSink, kR8_unorm_SkColorType);
-        SINK("565",         RasterSink, kRGB_565_SkColorType);
-        SINK("4444",        RasterSink, kARGB_4444_SkColorType);
-        SINK("8888",        RasterSink, kN32_SkColorType);
-        SINK("rgba",        RasterSink, kRGBA_8888_SkColorType);
-        SINK("bgra",        RasterSink, kBGRA_8888_SkColorType);
-        SINK("rgbx",        RasterSink, kRGB_888x_SkColorType);
-        SINK("1010102",     RasterSink, kRGBA_1010102_SkColorType);
-        SINK("101010x",     RasterSink, kRGB_101010x_SkColorType);
-        SINK("bgra1010102", RasterSink, kBGRA_1010102_SkColorType);
-        SINK("bgr101010x",  RasterSink, kBGR_101010x_SkColorType);
-        SINK("f16",         RasterSink, kRGBA_F16_SkColorType);
-        SINK("f16norm",     RasterSink, kRGBA_F16Norm_SkColorType);
-        SINK("f16f16f16x",  RasterSink, kRGB_F16F16F16x_SkColorType);
-        SINK("f32",         RasterSink, kRGBA_F32_SkColorType);
-        SINK("srgba",       RasterSink, kSRGBA_8888_SkColorType);
+        SINK("r8",          RasterSink, VX_COLOR_TYPE_R8_UNORM);
+        SINK("565",         RasterSink, VX_COLOR_TYPE_RGB_565);
+        SINK("4444",        RasterSink, VX_COLOR_TYPE_ARGB_4444);
+        SINK("8888",        RasterSink, VX_COLOR_TYPE_N32);
+        SINK("rgba",        RasterSink, VX_COLOR_TYPE_RGBA_8888);
+        SINK("bgra",        RasterSink, VX_COLOR_TYPE_BGRA_8888);
+        SINK("rgbx",        RasterSink, VX_COLOR_TYPE_RGB_888X);
+        SINK("1010102",     RasterSink, VX_COLOR_TYPE_RGBA_1010102);
+        SINK("101010x",     RasterSink, VX_COLOR_TYPE_RGB_101010X);
+        SINK("bgra1010102", RasterSink, VX_COLOR_TYPE_BGRA_1010102);
+        SINK("bgr101010x",  RasterSink, VX_COLOR_TYPE_BGR_101010X);
+        SINK("f16",         RasterSink, VX_COLOR_TYPE_RGBA_F16);
+        SINK("f16norm",     RasterSink, VX_COLOR_TYPE_RGBA_F16NORM);
+        SINK("f16f16f16x",  RasterSink, VX_COLOR_TYPE_RGB_F16F16F16X);
+        SINK("f32",         RasterSink, VX_COLOR_TYPE_RGBA_F32);
+        SINK("srgba",       RasterSink, VX_COLOR_TYPE_SRGBA_8888);
 
         SINK("pdf",         PDFSink, false, SK_ScalarDefaultRasterDPI);
         SINK("skp",         SKPSink);
@@ -1293,7 +1293,7 @@ struct Task {
 
                         SkBitmap rasterized;
                         rasterized.allocPixels(SkImageInfo::Make(
-                            w, h, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+                            w, h, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
                         rasterized.eraseColor(SK_ColorWHITE);
 
                         SkUniqueCFRef<CGColorSpaceRef> cs{CGColorSpaceCreateDeviceRGB()};
@@ -1318,7 +1318,7 @@ struct Task {
                 }
 
                 SkPixmap pm;
-                if (FLAGS_checkF16 && bitmap.colorType() == kRGBA_F16Norm_SkColorType &&
+                if (FLAGS_checkF16 && bitmap.colorType() == VX_COLOR_TYPE_RGBA_F16NORM &&
                         bitmap.peekPixels(&pm)) {
                     bool unclamped = false;
                     for (int y = 0; y < pm.height() && !unclamped; ++y)

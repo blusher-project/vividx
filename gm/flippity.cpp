@@ -120,7 +120,7 @@ static sk_sp<SkImage> make_reference_image(SkCanvas* mainCanvas,
     SkASSERT(kNumLabels == labels.size());
 
     SkImageInfo ii = SkImageInfo::Make(kImageSize, kImageSize,
-                                       kRGBA_8888_SkColorType, kOpaque_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE);
     SkBitmap bm;
     bm.allocPixels(ii);
 

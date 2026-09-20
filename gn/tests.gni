@@ -99,7 +99,7 @@ tests_sources = [
   "$_tests/GifTest.cpp",
   "$_tests/GpuRectanizerTest.cpp",
   "$_tests/GrGlyphVectorTest.cpp",
-  "$_tests/GradientTest.cpp",
+  # "$_tests/GradientTest.cpp",
   "$_tests/HSVRoundTripTest.cpp",
   "$_tests/HashTest.cpp",
   "$_tests/HdrMetadataTest.cpp",

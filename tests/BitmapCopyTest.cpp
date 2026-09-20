@@ -31,7 +31,7 @@ static void init_src(const SkBitmap& bitmap) {
 }
 
 struct Pair {
-    SkColorType fColorType;
+    vx_color_type fColorType;
     const char* fValid;
 };
 
@@ -63,25 +63,25 @@ struct Coordinates {
 };
 
 static const Pair gPairs[] = {
-    { kUnknown_SkColorType,     "0000000"  },
-    { kAlpha_8_SkColorType,     "0100000"  },
-    { kRGB_565_SkColorType,     "0101011"  },
-    { kARGB_4444_SkColorType,   "0101111"  },
-    { kN32_SkColorType,         "0101111"  },
-    { kRGBA_F16_SkColorType,    "0101011"  },
+    { VX_COLOR_TYPE_UNKNOWN,     "0000000"  },
+    { VX_COLOR_TYPE_ALPHA_8,     "0100000"  },
+    { VX_COLOR_TYPE_RGB_565,     "0101011"  },
+    { VX_COLOR_TYPE_ARGB_4444,   "0101111"  },
+    { VX_COLOR_TYPE_N32,         "0101111"  },
+    { VX_COLOR_TYPE_RGBA_F16,    "0101011"  },
 };
 
 static void setup_src_bitmaps(SkBitmap* srcOpaque, SkBitmap* srcPremul,
-                              SkColorType ct) {
+                              vx_color_type ct) {
     const int W = 20;
     const int H = 33;
     sk_sp<SkColorSpace> colorSpace = nullptr;
-    if (kRGBA_F16_SkColorType == ct) {
+    if (VX_COLOR_TYPE_RGBA_F16 == ct) {
         colorSpace = SkColorSpace::MakeSRGB();
     }
 
-    srcOpaque->allocPixels(SkImageInfo::Make(W, H, ct, kOpaque_SkAlphaType, colorSpace));
-    srcPremul->allocPixels(SkImageInfo::Make(W, H, ct, kPremul_SkAlphaType, colorSpace));
+    srcOpaque->allocPixels(SkImageInfo::Make(W, H, ct, VX_ALPHA_TYPE_OPAQUE, colorSpace));
+    srcPremul->allocPixels(SkImageInfo::Make(W, H, ct, VX_ALPHA_TYPE_PREMULTIPLIED, colorSpace));
     init_src(*srcOpaque);
     init_src(*srcPremul);
 }
@@ -99,7 +99,7 @@ DEF_TEST(BitmapCopy_extractSubset, reporter) {
         // catches a bug where we cloned the genID incorrectly.
         r.setLTRB(0, 1, W, 3);
         // Relies on old behavior of extractSubset failing if colortype is unknown
-        if (kUnknown_SkColorType != bitmap.colorType() && bitmap.extractSubset(&subset, r)) {
+        if (VX_COLOR_TYPE_UNKNOWN != bitmap.colorType() && bitmap.extractSubset(&subset, r)) {
             REPORTER_ASSERT(reporter, subset.width() == W);
             REPORTER_ASSERT(reporter, subset.height() == 2);
             REPORTER_ASSERT(reporter, subset.alphaType() == bitmap.alphaType());

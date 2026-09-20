@@ -189,7 +189,7 @@ static void textureop_creation_test(skiatest::Reporter* reporter, GrDirectContex
                                                    skgpu::Swizzle::RGBA());
         }
 
-        set[i].fSrcAlphaType = kPremul_SkAlphaType;
+        set[i].fSrcAlphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
         set[i].fSrcRect = SkRect::MakeWH(100.0f, 100.0f);
         set[i].fDstRect = SkRect::MakeWH(100.5f, 100.5f); // prevent the int non-AA optimization
         set[i].fDstClipQuad = nullptr;

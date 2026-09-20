@@ -210,7 +210,7 @@ class XfermodesGM : public skiagm::GM {
     }
 
     void onOnceBeforeDraw() override {
-        fBG.installPixels(SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kOpaque_SkAlphaType),
+        fBG.installPixels(SkImageInfo::Make(2, 2, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE),
                           gData, 8);
 
         make_bitmaps(W, H, &fSrcB, &fDstB, &fTransparent);

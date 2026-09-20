@@ -42,8 +42,8 @@ void TestReadPixels(skiatest::Reporter* reporter,
                     const char* testName) {
     int pixelCnt = srcContext->width() * srcContext->height();
     SkImageInfo ii = SkImageInfo::Make(srcContext->dimensions(),
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
     SkAutoPixmapStorage pm;
     pm.alloc(ii);
     pm.erase(SK_ColorTRANSPARENT);
@@ -68,8 +68,8 @@ void TestWritePixels(skiatest::Reporter* reporter,
                      bool expectedToWork,
                      const char* testName) {
     SkImageInfo ii = SkImageInfo::Make(dstContext->dimensions(),
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
     SkAutoPixmapStorage pm;
     pm.alloc(ii);
     for (int y = 0; y < dstContext->height(); ++y) {
@@ -112,7 +112,7 @@ void TestCopyFromSurface(skiatest::Reporter* reporter,
     auto swizzle = dContext->priv().caps()->getReadSwizzle(copy->backendFormat(), colorType);
     GrSurfaceProxyView view(std::move(copy), origin, swizzle);
     auto dstContext = dContext->priv().makeSC(std::move(view),
-                                              {colorType, kPremul_SkAlphaType, nullptr});
+                                              {colorType, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr});
     SkASSERT(dstContext);
 
     TestReadPixels(reporter, dContext, dstContext.get(), expectedPixelValues, testName);
@@ -148,11 +148,11 @@ bool CompareGaneshPixels(const GrCPixmap& a,
         return false;
     }
 
-    SkAlphaType floatAlphaType = a.alphaType();
+    vx_alpha_type floatAlphaType = a.alphaType();
     // If one is premul and the other is unpremul we do the comparison in premul space.
-    if ((a.alphaType() == kPremul_SkAlphaType   || b.alphaType() == kPremul_SkAlphaType) &&
-        (a.alphaType() == kUnpremul_SkAlphaType || b.alphaType() == kUnpremul_SkAlphaType)) {
-        floatAlphaType = kPremul_SkAlphaType;
+    if ((a.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED   || b.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED) &&
+        (a.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED || b.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED)) {
+        floatAlphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
     }
     sk_sp<SkColorSpace> floatCS;
     if (SkColorSpace::Equals(a.colorSpace(), b.colorSpace())) {

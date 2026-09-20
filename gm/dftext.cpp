@@ -66,7 +66,7 @@ protected:
         if (!inputCanvas->getBaseLayerSize().isEmpty()) {
             size = inputCanvas->getBaseLayerSize();
         }
-        SkImageInfo info = SkImageInfo::MakeN32(size.width(), size.height(), kPremul_SkAlphaType,
+        SkImageInfo info = SkImageInfo::MakeN32(size.width(), size.height(), VX_ALPHA_TYPE_PREMULTIPLIED,
                                                 inputCanvas->imageInfo().refColorSpace());
         SkSurfaceProps inputProps;
         inputCanvas->getProps(&inputProps);

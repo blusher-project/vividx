@@ -12,9 +12,10 @@
 #include "include/core/SkRefCnt.h"
 #include "tools/Resources.h"
 
+#include <vividx/core/color-type.h>
+
 class SkBitmap;
 class SkData;
-enum vx_color_type : int;
 
 namespace ToolUtils {
 bool DecodeDataToBitmap(sk_sp<SkData> data, SkBitmap* dst);

@@ -41,7 +41,7 @@ struct Channel {
 };
 
 struct ColorTypeExpectation {
-    SkColorType fColorType;
+    vx_color_type fColorType;
     Swizzle fReadSwizzle;
     std::optional<Swizzle> fWriteSwizzle; // not set implies not renderable
 };
@@ -96,16 +96,16 @@ struct FormatExpectation {
     uint32_t channelMask() const {
         uint32_t mask = 0;
         if (this->hasChannel('r') || this->hasChannel('y')) {
-            mask |= kRed_SkColorChannelFlag;
+            mask |= VX_COLOR_CHANNEL_FLAG_RED;
         }
         if (this->hasChannel('g') || this->hasChannel('u')) {
-            mask |= kGreen_SkColorChannelFlag;
+            mask |= VX_COLOR_CHANNEL_FLAG_GREEN;
         }
         if (this->hasChannel('b') || this->hasChannel('v')) {
-            mask |= kBlue_SkColorChannelFlag;
+            mask |= VX_COLOR_CHANNEL_FLAG_BLUE;
         }
         if (this->hasChannel('a')) {
-            mask |= kAlpha_SkColorChannelFlag;
+            mask |= VX_COLOR_CHANNEL_FLAG_ALPHA;
         }
         // Other channels do not contribute to SkColorChannel mask
         return mask;
@@ -295,22 +295,22 @@ int copy_unaligned_bits(int numBits, int bitOffset, const Src& src, Dst& dst) {
     return bitOffset;
 }
 
-bool needs_premul(SkAlphaType srcAlphaType, SkAlphaType dstAlphaType) {
-    return dstAlphaType == kPremul_SkAlphaType && (srcAlphaType == kUnpremul_SkAlphaType ||
-                                                   srcAlphaType == kUnknown_SkAlphaType);
+bool needs_premul(vx_alpha_type srcAlphaType, vx_alpha_type dstAlphaType) {
+    return dstAlphaType == VX_ALPHA_TYPE_PREMULTIPLIED && (srcAlphaType == VX_ALPHA_TYPE_UNPREMULTIPLIED ||
+                                                   srcAlphaType == VX_ALPHA_TYPE_UNKNOWN);
 }
-bool needs_unpremul(SkAlphaType srcAlphaType, SkAlphaType dstAlphaType) {
-    return srcAlphaType == kPremul_SkAlphaType && (dstAlphaType == kUnpremul_SkAlphaType ||
-                                                   dstAlphaType == kUnknown_SkAlphaType);
+bool needs_unpremul(vx_alpha_type srcAlphaType, vx_alpha_type dstAlphaType) {
+    return srcAlphaType == VX_ALPHA_TYPE_PREMULTIPLIED && (dstAlphaType == VX_ALPHA_TYPE_UNPREMULTIPLIED ||
+                                                   dstAlphaType == VX_ALPHA_TYPE_UNKNOWN);
 }
 
 // Returns the number of set *bits* within PixelData.
 std::pair<PixelData, size_t> gen_pixel_data(SkSpan<const Channel> dstChannels,
                                             Swizzle storeDstSwizzle,
-                                            SkAlphaType dstAlphaType,
+                                            vx_alpha_type dstAlphaType,
                                             SkSpan<const Channel> srcChannels,
                                             Swizzle loadSrcSwizzle,
-                                            SkAlphaType srcAlphaType,
+                                            vx_alpha_type srcAlphaType,
                                             bool forInput=false) {
     PixelData pixel{}; // zero-initialize all bytes
     int bitOffset = 0;
@@ -320,12 +320,12 @@ std::pair<PixelData, size_t> gen_pixel_data(SkSpan<const Channel> dstChannels,
         float srcValue = gen_channel_value(channel.fName, loadSrcSwizzle, srcChannels);
 
         // Handle alpha type conversion
-        if (forInput && ((channel.fName == 'a' && srcAlphaType == kUnknown_SkAlphaType) ||
+        if (forInput && ((channel.fName == 'a' && srcAlphaType == VX_ALPHA_TYPE_UNKNOWN) ||
                          (channel.fName == '1' && dstChannels[c].fName == 'a'))) {
             // Fill junk alpha that is masked by a later read swizzle as if it were padding
             channel.fType = Pad;
             channel.fName = 'x';
-        } else if (channel.fName == 'a' && srcAlphaType == kOpaque_SkAlphaType) {
+        } else if (channel.fName == 'a' && srcAlphaType == VX_ALPHA_TYPE_OPAQUE) {
             srcValue = 1.f;
             // NOTE: We don't force alpha = 1 when dstAlphaType = opaque, since that is interpreted
             // as a trust-the-user scenario and we assume input values are already opaque and don't
@@ -355,7 +355,7 @@ std::pair<PixelData, size_t> gen_pixel_data(SkSpan<const Channel> dstChannels,
 // No swizzling or data conversion variant for input data generation
 std::pair<PixelData, size_t> gen_pixel_data(SkSpan<const Channel> channels,
                                             Swizzle readSwizzle,
-                                            SkAlphaType alphaType) {
+                                            vx_alpha_type alphaType) {
     return gen_pixel_data(channels, readSwizzle.invert(), alphaType,
                           channels, readSwizzle, alphaType, /*forInput=*/true);
 }
@@ -478,8 +478,8 @@ void dump_pixel_comparison(const SkString& inputName,
     }
 }
 
-int channel_tolerance(SkSpan<const Channel> srcChannels, SkAlphaType srcAT,
-                      SkSpan<const Channel> dstChannels, SkAlphaType dstAT) {
+int channel_tolerance(SkSpan<const Channel> srcChannels, vx_alpha_type srcAT,
+                      SkSpan<const Channel> dstChannels, vx_alpha_type dstAT) {
     bool srcHasSRGBOrGray = false;
     for (const Channel c : srcChannels) {
         srcHasSRGBOrGray |= c.fType == sRGB || c.fName == 'G';
@@ -589,94 +589,94 @@ PixelData transfer_data(const TextureFormatXferFn& xferFn,
 // Define the channel layout for every SkColorType for use in generating and validating the
 // result of transferring data to or from a texture format.
 [[maybe_unused]] static const struct ColorTypeChannels {
-    SkColorType fColorType;
+    vx_color_type fColorType;
     Swizzle fEffectiveSwizzle; // Derivable from channel mask
     skia_private::TArray<Channel> fChannels;
 } kColorTypeChannels[] {
-    {kAlpha_8_SkColorType,            Swizzle("000a"), {{'a', 8, UNorm}}},
+    {VX_COLOR_TYPE_ALPHA_8,            Swizzle("000a"), {{'a', 8, UNorm}}},
     // NOTE: 565 and 4444 are misnamed and are BGR and ABGR respectively.
-    {kRGB_565_SkColorType,            Swizzle("rgb1"), {{'b', 5, UNorm},
+    {VX_COLOR_TYPE_RGB_565,            Swizzle("rgb1"), {{'b', 5, UNorm},
                                                         {'g', 6, UNorm},
                                                         {'r', 5, UNorm}}},
-    {kARGB_4444_SkColorType,          Swizzle("rgba"), {{'a', 4, UNorm},
+    {VX_COLOR_TYPE_ARGB_4444,          Swizzle("rgba"), {{'a', 4, UNorm},
                                                         {'b', 4, UNorm},
                                                         {'g', 4, UNorm},
                                                         {'r', 4, UNorm}}},
-    {kRGBA_8888_SkColorType,          Swizzle("rgba"), {{'r', 8, UNorm},
+    {VX_COLOR_TYPE_RGBA_8888,          Swizzle("rgba"), {{'r', 8, UNorm},
                                                         {'g', 8, UNorm},
                                                         {'b', 8, UNorm},
                                                         {'a', 8, UNorm}}},
-    {kRGB_888x_SkColorType,           Swizzle("rgb1"), {{'r', 8, UNorm},
+    {VX_COLOR_TYPE_RGB_888X,           Swizzle("rgb1"), {{'r', 8, UNorm},
                                                         {'g', 8, UNorm},
                                                         {'b', 8, UNorm},
                                                         {'x', 8, Pad}}},
-    {kBGRA_8888_SkColorType,          Swizzle("rgba"), {{'b', 8, UNorm},
+    {VX_COLOR_TYPE_BGRA_8888,          Swizzle("rgba"), {{'b', 8, UNorm},
                                                         {'g', 8, UNorm},
                                                         {'r', 8, UNorm},
                                                         {'a', 8, UNorm}}},
-    {kRGBA_1010102_SkColorType,       Swizzle("rgba"), {{'r', 10, UNorm},
+    {VX_COLOR_TYPE_RGBA_1010102,       Swizzle("rgba"), {{'r', 10, UNorm},
                                                         {'g', 10, UNorm},
                                                         {'b', 10, UNorm},
                                                         {'a', 2, UNorm}}},
-    {kBGRA_1010102_SkColorType,       Swizzle("rgba"), {{'b', 10, UNorm},
+    {VX_COLOR_TYPE_BGRA_1010102,       Swizzle("rgba"), {{'b', 10, UNorm},
                                                         {'g', 10, UNorm},
                                                         {'r', 10, UNorm},
                                                         {'a', 2, UNorm}}},
-    {kRGB_101010x_SkColorType,        Swizzle("rgb1"), {{'r', 10, UNorm},
+    {VX_COLOR_TYPE_RGB_101010X,        Swizzle("rgb1"), {{'r', 10, UNorm},
                                                         {'g', 10, UNorm},
                                                         {'b', 10, UNorm},
                                                         {'x', 2, Pad}}},
-    {kBGR_101010x_SkColorType,        Swizzle("rgb1"), {{'b', 10, UNorm},
+    {VX_COLOR_TYPE_BGR_101010X,        Swizzle("rgb1"), {{'b', 10, UNorm},
                                                         {'g', 10, UNorm},
                                                         {'r', 10, UNorm},
                                                         {'x', 2, Pad}}},
-    {kBGR_101010x_XR_SkColorType,     Swizzle("rgb1"), {{'b', 10, XR},
+    {VX_COLOR_TYPE_BGR_101010X_XR,     Swizzle("rgb1"), {{'b', 10, XR},
                                                         {'g', 10, XR},
                                                         {'r', 10, XR},
                                                         {'x', 2, Pad}}},
-    {kBGRA_10101010_XR_SkColorType,   Swizzle("rgba"), {{'x', 6, Pad}, {'b', 10, XR},
+    {VX_COLOR_TYPE_BGRA_10101010_XR,   Swizzle("rgba"), {{'x', 6, Pad}, {'b', 10, XR},
                                                         {'x', 6, Pad}, {'g', 10, XR},
                                                         {'x', 6, Pad}, {'r', 10, XR},
                                                         {'x', 6, Pad}, {'a', 10, XR}}},
-    {kRGBA_10x6_SkColorType,          Swizzle("rgba"), {{'x', 6, Pad}, {'r', 10, UNorm},
+    {VX_COLOR_TYPE_RGBA_10X6,          Swizzle("rgba"), {{'x', 6, Pad}, {'r', 10, UNorm},
                                                         {'x', 6, Pad}, {'g', 10, UNorm},
                                                         {'x', 6, Pad}, {'b', 10, UNorm},
                                                         {'x', 6, Pad}, {'a', 10, UNorm}}},
     // NOTE: The swizzle is rrr1 since we store gray in the red channel of the texture, but we use
     // 'G' as the channel to force generating gray/luminance values in the tests instead of just 'r'
-    {kGray_8_SkColorType,             Swizzle("rrr1"), {{'G', 8, UNorm}}},
-    {kRGBA_F16Norm_SkColorType,       Swizzle("rgba"), {{'r', 16, FNorm},
+    {VX_COLOR_TYPE_GRAY_8,             Swizzle("rrr1"), {{'G', 8, UNorm}}},
+    {VX_COLOR_TYPE_RGBA_F16NORM,       Swizzle("rgba"), {{'r', 16, FNorm},
                                                         {'g', 16, FNorm},
                                                         {'b', 16, FNorm},
                                                         {'a', 16, FNorm}}},
-    {kRGBA_F16_SkColorType,           Swizzle("rgba"), {{'r', 16, Float},
+    {VX_COLOR_TYPE_RGBA_F16,           Swizzle("rgba"), {{'r', 16, Float},
                                                         {'g', 16, Float},
                                                         {'b', 16, Float},
                                                         {'a', 16, Float}}},
-    {kRGB_F16F16F16x_SkColorType,     Swizzle("rgb1"), {{'r', 16, Float},
+    {VX_COLOR_TYPE_RGB_F16F16F16X,     Swizzle("rgb1"), {{'r', 16, Float},
                                                         {'g', 16, Float},
                                                         {'b', 16, Float},
                                                         {'x', 16, Pad}}},
-    {kRGBA_F32_SkColorType,           Swizzle("rgba"), {{'r', 32, Float},
+    {VX_COLOR_TYPE_RGBA_F32,           Swizzle("rgba"), {{'r', 32, Float},
                                                         {'g', 32, Float},
                                                         {'b', 32, Float},
                                                         {'a', 32, Float}}},
-    {kR8G8_unorm_SkColorType,         Swizzle("rg01"), {{'r', 8, UNorm}, {'g', 8, UNorm}}},
-    {kA16_float_SkColorType,          Swizzle("000a"), {{'a', 16, Float}}},
-    {kR16_float_SkColorType,          Swizzle("r001"), {{'r', 16, Float}}},
-    {kR16G16_float_SkColorType,       Swizzle("rg01"), {{'r', 16, Float}, {'g', 16, Float}}},
-    {kA16_unorm_SkColorType,          Swizzle("000a"), {{'a', 16, UNorm}}},
-    {kR16_unorm_SkColorType,          Swizzle("r001"), {{'r', 16, UNorm}}},
-    {kR16G16_unorm_SkColorType,       Swizzle("rg01"), {{'r', 16, UNorm}, {'g', 16, UNorm}}},
-    {kR16G16B16A16_unorm_SkColorType, Swizzle("rgba"), {{'r', 16, UNorm},
+    {VX_COLOR_TYPE_R8G8_UNORM,         Swizzle("rg01"), {{'r', 8, UNorm}, {'g', 8, UNorm}}},
+    {VX_COLOR_TYPE_A16_FLOAT,          Swizzle("000a"), {{'a', 16, Float}}},
+    {VX_COLOR_TYPE_R16_FLOAT,          Swizzle("r001"), {{'r', 16, Float}}},
+    {VX_COLOR_TYPE_R16G16_FLOAT,       Swizzle("rg01"), {{'r', 16, Float}, {'g', 16, Float}}},
+    {VX_COLOR_TYPE_A16_UNORM,          Swizzle("000a"), {{'a', 16, UNorm}}},
+    {VX_COLOR_TYPE_R16_UNORM,          Swizzle("r001"), {{'r', 16, UNorm}}},
+    {VX_COLOR_TYPE_R16G16_UNORM,       Swizzle("rg01"), {{'r', 16, UNorm}, {'g', 16, UNorm}}},
+    {VX_COLOR_TYPE_R16G16B16A16_UNORM, Swizzle("rgba"), {{'r', 16, UNorm},
                                                         {'g', 16, UNorm},
                                                         {'b', 16, UNorm},
                                                         {'a', 16, UNorm}}},
-    {kSRGBA_8888_SkColorType,         Swizzle("rgba"), {{'r', 8, sRGB},
+    {VX_COLOR_TYPE_SRGBA_8888,         Swizzle("rgba"), {{'r', 8, sRGB},
                                                         {'g', 8, sRGB},
                                                         {'b', 8, sRGB},
                                                         {'a', 8, UNorm}}},
-    {kR8_unorm_SkColorType,           Swizzle("r001"), {{'r', 8, UNorm}}},
+    {VX_COLOR_TYPE_R8_UNORM,           Swizzle("r001"), {{'r', 8, UNorm}}},
 };
 // Must include one per SkColorType except for kUnknown
 static_assert(std::size(kColorTypeChannels) == kSkColorTypeCnt - 1,
@@ -692,175 +692,175 @@ static const FormatExpectation kExpectations[] {
     {.fFormat=TextureFormat::kR8,
      .fChannels={{'r', 8, UNorm}},
      .fXferSwizzle=Swizzle("r001"),
-     .fCompatibleColorTypes={{kR8_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kAlpha_8_SkColorType,  Swizzle("000r"), Swizzle("a000")},
-                             {kGray_8_SkColorType,   Swizzle("rrra"), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R8_UNORM, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_ALPHA_8,  Swizzle("000r"), Swizzle("a000")},
+                             {VX_COLOR_TYPE_GRAY_8,   Swizzle("rrra"), std::nullopt}}},
 
     {.fFormat=TextureFormat::kR16,
      .fChannels={{'r', 16, UNorm}},
      .fXferSwizzle=Swizzle("r001"),
-     .fCompatibleColorTypes={{kR16_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kA16_unorm_SkColorType, Swizzle("000r"), Swizzle("a000")}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R16_UNORM, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_A16_UNORM, Swizzle("000r"), Swizzle("a000")}}},
 
     {.fFormat=TextureFormat::kR16F,
      .fChannels={{'r', 16, Float}},
      .fXferSwizzle=Swizzle("r001"),
-     .fCompatibleColorTypes={{kR16_float_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kA16_float_SkColorType, Swizzle("000r"), Swizzle("a000")}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R16_FLOAT, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_A16_FLOAT, Swizzle("000r"), Swizzle("a000")}}},
 
     {.fFormat=TextureFormat::kR32F,
      .fChannels={{'r', 32, Float}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kR16_float_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R16_FLOAT, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kA8,
      .fChannels={{'a', 8, UNorm}},
      .fXferSwizzle=Swizzle("000a"),
-     .fCompatibleColorTypes={{kAlpha_8_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_ALPHA_8, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRG8,
      .fChannels={{'r', 8, UNorm}, {'g', 8, UNorm}},
      .fXferSwizzle=Swizzle("rg01"),
-     .fCompatibleColorTypes={{kR8G8_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R8G8_UNORM, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRG16,
      .fChannels={{'r', 16, UNorm}, {'g', 16, UNorm}},
      .fXferSwizzle=Swizzle("rg01"),
-     .fCompatibleColorTypes={{kR16G16_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R16G16_UNORM, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRG16F,
      .fChannels={{'r', 16, Float}, {'g', 16, Float}},
      .fXferSwizzle=Swizzle("rg01"),
-     .fCompatibleColorTypes={{kR16G16_float_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R16G16_FLOAT, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRG32F,
      .fChannels={{'r', 32, Float}, {'g', 32, Float}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kR16G16_float_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R16G16_FLOAT, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGB8,
      .fChannels={{'r', 8, UNorm}, {'g', 8, UNorm}, {'b', 8, UNorm}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kBGR8,
      .fChannels={{'b', 8, UNorm}, {'g', 8, UNorm}, {'r', 8, UNorm}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kB5_G6_R5,
      .fChannels={{'b', 5, UNorm}, {'g', 6, UNorm}, {'r', 5, UNorm}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kRGB_565_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_565, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kR5_G6_B5,
      .fChannels={{'r', 5, UNorm}, {'g', 6, UNorm}, {'b', 5, UNorm}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kRGB_565_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_565, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGB16,
      .fChannels={{'r', 16, UNorm}, {'g', 16, UNorm}, {'b', 16, UNorm}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kR16G16B16A16_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R16G16B16A16_UNORM, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGB16F,
      .fChannels={{'r', 16, Float}, {'g', 16, Float}, {'b', 16, Float}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kRGB_F16F16F16x_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_F16F16F16X, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGB32F,
      .fChannels={{'r', 32, Float}, {'g', 32, Float}, {'b', 32, Float}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kRGBA_F32_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_F32, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGB8_sRGB,
      .fChannels={{'r', 8, sRGB}, {'g', 8, sRGB}, {'b', 8, sRGB}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kSRGBA_8888_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_SRGBA_8888, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kBGR10_XR,
      .fChannels={{'b', 10, XR}, {'g', 10, XR}, {'r', 10, XR}, {'x', 2, Pad}},
      .fXferSwizzle=Swizzle("rgb1"),
-     .fCompatibleColorTypes={{kBGR_101010x_XR_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_BGR_101010X_XR, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGBA8,
      .fChannels={{'r', 8, UNorm}, {'g', 8, UNorm}, {'b', 8, UNorm}, {'a', 8, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kRGBA_8888_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kBGRA_8888_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kRGB_888x_SkColorType,  Swizzle::RGB1(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_8888, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_BGRA_8888, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_RGB_888X,  Swizzle::RGB1(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kRGBA16,
      .fChannels={{'r', 16, UNorm}, {'g', 16, UNorm}, {'b', 16, UNorm}, {'a', 16, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kR16G16B16A16_unorm_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_R16G16B16A16_UNORM, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGBA16F,
      .fChannels={{'r', 16, Float}, {'g', 16, Float}, {'b', 16, Float}, {'a', 16, Float}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kRGBA_F16_SkColorType,       Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kRGBA_F16Norm_SkColorType,   Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kRGB_F16F16F16x_SkColorType, Swizzle::RGB1(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_F16,       Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_RGBA_F16NORM,   Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_RGB_F16F16F16X, Swizzle::RGB1(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kRGBA32F,
      .fChannels={{'r', 32, Float}, {'g', 32, Float}, {'b', 32, Float}, {'a', 32, Float}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kRGBA_F32_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_F32, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGB10_A2,
      .fChannels={{'r', 10, UNorm}, {'g', 10, UNorm}, {'b', 10, UNorm}, {'a', 2, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kRGBA_1010102_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kRGB_101010x_SkColorType,  Swizzle::RGB1(), std::nullopt},
-                             {kBGRA_1010102_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kBGR_101010x_SkColorType,  Swizzle::RGB1(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_1010102, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_RGB_101010X,  Swizzle::RGB1(), std::nullopt},
+                             {VX_COLOR_TYPE_BGRA_1010102, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_BGR_101010X,  Swizzle::RGB1(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kRGBA10x6,
      .fChannels={{'x', 6, Pad}, {'r', 10, UNorm}, {'x', 6, Pad}, {'g', 10, UNorm},
                  {'x', 6, Pad}, {'b', 10, UNorm}, {'x', 6, Pad}, {'a', 10, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kRGBA_10x6_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_10X6, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kRGBA8_sRGB,
      .fChannels={{'r', 8, sRGB}, {'g', 8, sRGB}, {'b', 8, sRGB}, {'a', 8, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kSRGBA_8888_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_SRGBA_8888, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kBGRA8,
      .fChannels={{'b', 8, UNorm}, {'g', 8, UNorm}, {'r', 8, UNorm}, {'a', 8, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kBGRA_8888_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kRGBA_8888_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kRGB_888x_SkColorType,  Swizzle::RGB1(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_BGRA_8888, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_RGBA_8888, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_RGB_888X,  Swizzle::RGB1(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kBGR10_A2,
      .fChannels={{'b', 10, UNorm}, {'g', 10, UNorm}, {'r', 10, UNorm}, {'a', 2, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kBGRA_1010102_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kBGR_101010x_SkColorType,  Swizzle::RGB1(), std::nullopt},
-                             {kRGBA_1010102_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()},
-                             {kRGB_101010x_SkColorType,  Swizzle::RGB1(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_BGRA_1010102, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_BGR_101010X,  Swizzle::RGB1(), std::nullopt},
+                             {VX_COLOR_TYPE_RGBA_1010102, Swizzle::RGBA(), Swizzle::RGBA()},
+                             {VX_COLOR_TYPE_RGB_101010X,  Swizzle::RGB1(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kBGRA8_sRGB,
      .fChannels={{'b', 8, sRGB}, {'g', 8, sRGB}, {'r', 8, sRGB}, {'a', 8, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kSRGBA_8888_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_SRGBA_8888, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kABGR4,
      .fChannels={{'a', 4, UNorm}, {'b', 4, UNorm}, {'g', 4, UNorm}, {'r', 4, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kARGB_4444_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_ARGB_4444, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kARGB4,
      .fChannels={{'a', 4, UNorm}, {'r', 4, UNorm}, {'g', 4, UNorm}, {'b', 4, UNorm}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kARGB_4444_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_ARGB_4444, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     {.fFormat=TextureFormat::kBGRA10x6_XR,
      .fChannels={{'x', 6, Pad}, {'b', 10, XR}, {'x', 6, Pad}, {'g', 10, XR},
                  {'x', 6, Pad}, {'r', 10, XR}, {'x', 6, Pad}, {'a', 10, XR}},
      .fXferSwizzle=Swizzle("rgba"),
-     .fCompatibleColorTypes={{kBGRA_10101010_XR_SkColorType, Swizzle::RGBA(), Swizzle::RGBA()}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_BGRA_10101010_XR, Swizzle::RGBA(), Swizzle::RGBA()}}},
 
     // For compressed formats, the bytes per block represents actual compressed block size, not
     // just the size of a pixel.
@@ -868,89 +868,89 @@ static const FormatExpectation kExpectations[] {
      .fChannels={{'r', 10, UNorm}, {'g', 8, UNorm}, {'b', 8, UNorm}},
      .fCompressionType=SkTextureCompressionType::kETC2_RGB8_UNORM,
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kRGB8_ETC2_sRGB,
      .fChannels={{'r', 10, sRGB}, {'g', 8, sRGB}, {'b', 8, sRGB}},
      .fCompressionType=SkTextureCompressionType::kETC2_RGB8_UNORM,
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kSRGBA_8888_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_SRGBA_8888, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kRGB8_BC1,
      .fChannels={{'r', 10, UNorm}, {'g', 8, UNorm}, {'b', 8, UNorm}},
      .fCompressionType=SkTextureCompressionType::kBC1_RGB8_UNORM,
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kRGBA8_BC1,
      .fChannels={{'r', 10, UNorm}, {'g', 8, UNorm}, {'b', 8, UNorm}, {'a', 8, UNorm}},
      .fCompressionType=SkTextureCompressionType::kBC1_RGBA8_UNORM,
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGBA_8888_SkColorType, Swizzle::RGBA(), std::nullopt},
-                             {kRGB_888x_SkColorType,  Swizzle::RGB1(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_8888, Swizzle::RGBA(), std::nullopt},
+                             {VX_COLOR_TYPE_RGB_888X,  Swizzle::RGB1(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kRGBA8_BC1_sRGB,
      .fChannels={{'r', 10, sRGB}, {'g', 8, sRGB}, {'b', 8, sRGB}, {'a', 8, UNorm}},
      .fCompressionType=SkTextureCompressionType::kBC1_RGBA8_UNORM,
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kSRGBA_8888_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_SRGBA_8888, Swizzle::RGBA(), std::nullopt}}},
 
     // For these multiplanar formats, we set the bytes per block assuming the UV planes are the
     // same size as the Y plane, which is an overestimate of the total texture memory.
     {.fFormat=TextureFormat::kYUV8_P2_420,
      .fChannels={{'y', 8, UNorm}, {'u', 8, UNorm}, {'v', 8, UNorm}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kYUV8_P3_420,
      .fChannels={{'y', 8, UNorm}, {'u', 8, UNorm}, {'v', 8, UNorm}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kYUV10x6_P2_420,
      .fChannels={{'y', 10, UNorm}, {'x', 6, Pad}, {'u', 10, UNorm}, {'x', 6, Pad},
                  {'v', 10, UNorm}, {'x', 6, Pad}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGBA_10x6_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_10X6, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kYUV8_P2_422,
      .fChannels={{'y', 8, UNorm}, {'u', 8, UNorm}, {'v', 8, UNorm}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kYUV8_P3_422,
      .fChannels={{'y', 8, UNorm}, {'u', 8, UNorm}, {'v', 8, UNorm}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kYUV10x6_P2_422,
      .fChannels={{'y', 10, UNorm}, {'x', 6, Pad}, {'u', 10, UNorm}, {'x', 6, Pad},
                  {'v', 10, UNorm}, {'x', 6, Pad}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGBA_10x6_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_10X6, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kYUV8_P2_444,
      .fChannels={{'y', 8, UNorm}, {'u', 8, UNorm}, {'v', 8, UNorm}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kYUV8_P3_444,
      .fChannels={{'y', 8, UNorm}, {'u', 8, UNorm}, {'v', 8, UNorm}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGB_888x_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGB_888X, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kYUV10x6_P2_444,
      .fChannels={{'y', 10, UNorm}, {'x', 6, Pad}, {'u', 10, UNorm}, {'x', 6, Pad},
                  {'v', 10, UNorm}, {'x', 6, Pad}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGBA_10x6_SkColorType, Swizzle::RGBA(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_10X6, Swizzle::RGBA(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kExternal,
      // We don't really know this, but most Skia behavior defaults to assuming 8-bit color
      .fChannels={{'r', 8, UNorm}, {'g', 8, UNorm}, {'b', 8, UNorm}, {'a', 8, UNorm}},
      .fXferSwizzle=std::nullopt,
-     .fCompatibleColorTypes={{kRGBA_8888_SkColorType, Swizzle::RGBA(), std::nullopt},
-                             {kRGB_888x_SkColorType,  Swizzle::RGB1(), std::nullopt}}},
+     .fCompatibleColorTypes={{VX_COLOR_TYPE_RGBA_8888, Swizzle::RGBA(), std::nullopt},
+                             {VX_COLOR_TYPE_RGB_888X,  Swizzle::RGB1(), std::nullopt}}},
 
     {.fFormat=TextureFormat::kS8,
      .fChannels={{'s', 8, Signed}},
@@ -979,8 +979,8 @@ static const FormatExpectation kExpectations[] {
 };
 
 // Match convention used with WrapTexture, where unknown alpha is forced to opaque via swizzle
-Swizzle adjust_swizzle_for_alphatype(Swizzle readSwizzle, SkAlphaType at) {
-    if (at == kUnknown_SkAlphaType) {
+Swizzle adjust_swizzle_for_alphatype(Swizzle readSwizzle, vx_alpha_type at) {
+    if (at == VX_ALPHA_TYPE_UNKNOWN) {
         return Swizzle::Concat(readSwizzle, Swizzle::RGB1());
     } else {
         return readSwizzle;
@@ -1089,8 +1089,8 @@ void validate_optimal_xfer_fn(skiatest::Reporter* r,
 void test_format_transfers(skiatest::Reporter* r,
                            const FormatExpectation& textureFormat,
                            const ColorTypeExpectation& textureCT,
-                           SkAlphaType srcAT,
-                           SkAlphaType dstAT,
+                           vx_alpha_type srcAT,
+                           vx_alpha_type dstAT,
                            bool applyCS) {
     // When transferring to CPU->GPU, we want to apply the textureCT's write swizzle, but if that
     // is undefined because rendering is disabled, just use RGBA.
@@ -1101,7 +1101,7 @@ void test_format_transfers(skiatest::Reporter* r,
     const bool isRedOnly = textureFormat.fChannels.size() == 1 &&
                            textureFormat.fChannels[0].fName == 'r';
     skia_private::TArray<Channel> expectedTextureChannels = textureFormat.fChannels;
-    if (textureCT.fColorType == kGray_8_SkColorType) {
+    if (textureCT.fColorType == VX_COLOR_TYPE_GRAY_8) {
         SkASSERT(isRedOnly);
         expectedTextureChannels[0].fName = 'G';
     }
@@ -1121,7 +1121,7 @@ void test_format_transfers(skiatest::Reporter* r,
     for (const ColorTypeChannels& src : kColorTypeChannels) {
         // Adjust srcAT as if they had created a valid SkBitmap, which may mean skipping. Since we
         // test every srcAT possibility, if the srcAT changes, we skip to avoid running extra work.
-        SkAlphaType validSrcAT;
+        vx_alpha_type validSrcAT;
         if (!SkColorTypeValidateAlphaType(src.fColorType, srcAT, &validSrcAT) ||
             validSrcAT != srcAT) {
             continue;
@@ -1197,7 +1197,7 @@ void test_format_transfers(skiatest::Reporter* r,
     for (const ColorTypeChannels& dst : kColorTypeChannels) {
         // Adjust dstAT as if they had created a valid SkBitmap, which may mean skipping. Since we
         // test every dstAT possibility, if the dstAT changes, we skip to avoid running extra work.
-        SkAlphaType validDstAT;
+        vx_alpha_type validDstAT;
         if (!SkColorTypeValidateAlphaType(dst.fColorType, dstAT, &validDstAT) ||
             validDstAT != dstAT) {
             continue;
@@ -1285,7 +1285,7 @@ void run_texture_format_test(skiatest::Reporter* r, const Caps* caps, TextureFor
 
         // Verify compatible color types
         auto [baseColorType, _] = TextureFormatColorTypeInfo(format);
-        if (baseColorType == kUnknown_SkColorType) {
+        if (baseColorType == VX_COLOR_TYPE_UNKNOWN) {
             REPORTER_ASSERT(r, e.fCompatibleColorTypes.empty());
         } else {
             // Should be the first listed compatible color type
@@ -1293,8 +1293,8 @@ void run_texture_format_test(skiatest::Reporter* r, const Caps* caps, TextureFor
             REPORTER_ASSERT(r, e.fCompatibleColorTypes[0].fColorType == baseColorType);
         }
 
-        for (int c = 0; c <= kLastEnum_SkColorType; ++c) {
-            SkColorType ct = static_cast<SkColorType>(c);
+        for (int c = 0; c <= VX_COLOR_TYPE_LASTENUM; ++c) {
+            vx_color_type ct = static_cast<vx_color_type>(c);
 
             skiatest::ReporterContext ctScope{
                     r, SkStringPrintf("color type %s\n", ToolUtils::colortype_name(ct))};
@@ -1364,13 +1364,13 @@ void run_texture_format_test(skiatest::Reporter* r, const Caps* caps, TextureFor
 
                     // Test all combinations of alpha type x 2 (texture vs cpu) and whether or not
                     // colorspace conversions are handled in the transfer.
-                    static constexpr int kAlphaTypeCount = (int) kLastEnum_SkAlphaType + 1;
+                    static constexpr int kAlphaTypeCount = (int) VX_ALPHA_TYPE_LASTENUM + 1;
                     for (bool applyCS : {false, true}) {
                         for (int srcAT = 0; srcAT < kAlphaTypeCount; ++srcAT) {
                             for (int dstAT = 0; dstAT < kAlphaTypeCount; ++dstAT) {
                                 test_format_transfers(r, e, ec,
-                                                      static_cast<SkAlphaType>(srcAT),
-                                                      static_cast<SkAlphaType>(dstAT),
+                                                      static_cast<vx_alpha_type>(srcAT),
+                                                      static_cast<vx_alpha_type>(dstAT),
                                                       applyCS);
                             }
                         }

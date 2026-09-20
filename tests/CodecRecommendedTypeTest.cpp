@@ -25,8 +25,8 @@ DEF_TEST(Codec_recommendedF16, r) {
     // with a bit depth of 16. SkAndroidCodec should always recommend F16 for
     // such a PNG.
     SkBitmap bm;
-    bm.allocPixels(SkImageInfo::Make(10, 10, kRGBA_F16_SkColorType,
-            kPremul_SkAlphaType, SkColorSpace::MakeSRGB()));
+    bm.allocPixels(SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_F16,
+            VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB()));
     // What is drawn is not important.
     bm.eraseColor(SK_ColorBLUE);
 
@@ -38,6 +38,6 @@ DEF_TEST(Codec_recommendedF16, r) {
         return;
     }
 
-    REPORTER_ASSERT(r, androidCodec->computeOutputColorType(kN32_SkColorType)
-            == kRGBA_F16_SkColorType);
+    REPORTER_ASSERT(r, androidCodec->computeOutputColorType(VX_COLOR_TYPE_N32)
+            == VX_COLOR_TYPE_RGBA_F16);
 }

@@ -35,7 +35,7 @@ static sk_sp<SkImage> make_image(GrRecordingContext* rContext,
                                  skgpu::graphite::Recorder* recorder) {
     // Generate a small jpeg with odd dimensions.
     SkBitmap bmp;
-    bmp.allocPixels(SkImageInfo::Make(kImageDim, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bmp.allocPixels(SkImageInfo::Make(kImageDim, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     SkRandom random;
     // These random values won't compress well, but it doesn't matter. This test exists to
     // compare the GPU YUV code path to the SW.
@@ -98,11 +98,11 @@ DEF_SIMPLE_GM_CAN_FAIL(yuv420_odd_dim, canvas, errMsg,
         surface = origSurface->makeSurface(image->width(), image->height());
     } else {
         auto ct = canvas->imageInfo().colorType();
-        if (ct == kUnknown_SkColorType) {
+        if (ct == VX_COLOR_TYPE_UNKNOWN) {
             ct = image->colorType();
         }
         auto info = canvas->imageInfo().makeColorType(ct);
-        info = info.makeAlphaType(kPremul_SkAlphaType);
+        info = info.makeAlphaType(VX_ALPHA_TYPE_PREMULTIPLIED);
         surface = SkSurfaces::Raster(info);
     }
     surface->getCanvas()->drawImage(image, 0, 0);
@@ -139,7 +139,7 @@ DEF_SIMPLE_GM_CAN_FAIL(yuv420_odd_dim_repeat, canvas, errMsg,
     image = image->makeSubset(nullptr, SkIRect::MakeWH(w, h), {});
 
     auto [planes, yuvaInfo] = sk_gpu_test::MakeYUVAPlanesAsA8(image.get(),
-                                                              kJPEG_SkYUVColorSpace,
+                                                              VX_YUV_COLOR_SPACE_JPEG,
                                                               SkYUVAInfo::Subsampling::k420,
                                                               nullptr);
     SkPixmap pixmaps[4];

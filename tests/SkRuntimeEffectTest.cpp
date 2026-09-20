@@ -432,7 +432,7 @@ static void verify_2x2_surface_results(skiatest::Reporter* r,
 static sk_sp<SkSurface> make_surface(GrRecordingContext* grContext,
                                      const GraphiteInfo* graphite,
                                      SkISize size) {
-    const SkImageInfo info = SkImageInfo::Make(size, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    const SkImageInfo info = SkImageInfo::Make(size, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface;
     if (graphite) {
 #if defined(SK_GRAPHITE)
@@ -851,7 +851,7 @@ static void test_RuntimeEffectObeysCapabilities(skiatest::Reporter* r, SkSurface
 }
 
 DEF_TEST(SkRuntimeEffectObeysCapabilities_CPU, r) {
-    SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(2, 2, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::Raster(info);
     REPORTER_ASSERT(r, surface);
     test_RuntimeEffectObeysCapabilities(r, surface.get());
@@ -862,7 +862,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRuntimeEffectObeysCapabilities_GPU,
                                        r,
                                        ctxInfo,
                                        CtsEnforcement::kApiLevel_U) {
-    SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(2, 2, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface =
             SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kNo, info);
     REPORTER_ASSERT(r, surface);
@@ -873,7 +873,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkRuntimeColorFilterReturningInvalidAlpha
                                        r,
                                        ctxInfo,
                                        CtsEnforcement::kNever) {
-    SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(2, 2, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface =
             SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kNo, info);
     REPORTER_ASSERT(r, surface);
@@ -1617,8 +1617,8 @@ void test_using_transformed_coords(skiatest::Reporter* reporter,
                                    GrDirectContext* ganeshContext,
                                    GraphiteInfo* graphiteInfo) {
     const SkImageInfo surfaceImageInfo = SkImageInfo::Make(SkISize::Make(12, 1),
-                                                           SkColorType::kRGBA_8888_SkColorType,
-                                                           SkAlphaType::kPremul_SkAlphaType);
+                                                           vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                                           vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface;
     if (ganeshContext) {
 #if defined(SK_GANESH)
@@ -1754,7 +1754,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(GrSkSLFP_UniformArray,
                                        CtsEnforcement::kApiLevel_T) {
     // Make a fill-context to draw into.
     GrDirectContext* directContext = ctxInfo.directContext();
-    SkImageInfo info = SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     std::unique_ptr<skgpu::ganesh::SurfaceFillContext> testCtx =
             directContext->priv().makeSFC(info, /*label=*/{}, SkBackingFit::kExact);
 

@@ -6,11 +6,11 @@
  */
 
 #include <vividx/core/alpha-type.h>
+#include <vividx/core/color-type.h>
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorSpace.h"
-#include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
@@ -366,7 +366,7 @@ static void test_unsorted_degenerate(skiatest::Reporter* r) {
     REPORTER_ASSERT(r, SkToBool(gradient));
     // And it shouldn't crash when creating a fragment processor
 
-    GrColorInfo dstColorInfo(GrColorType::kRGBA_8888, kPremul_SkAlphaType,
+    GrColorInfo dstColorInfo(GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED,
                              SkColorSpace::MakeSRGB());
     SkSurfaceProps props;
     GrMockOptions options;
@@ -490,7 +490,7 @@ static void test_linear_fuzzer(skiatest::Reporter*) {
 
     for (const SkColorSpace* colorSpace : colorSpaces) {
         sk_sp<SkSurface> surface = SkSurfaces::Raster(SkImageInfo::Make(
-                100, 100, kN32_SkColorType, kPremul_SkAlphaType, sk_ref_sp(colorSpace)));
+                100, 100, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED, sk_ref_sp(colorSpace)));
         SkCanvas* canvas = surface->getCanvas();
 
         for (const auto& config : gConfigs) {
@@ -658,8 +658,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TestSweepGradientZeroXGanesh,
                                        contextInfo,
                                        CtsEnforcement::kApiLevel_202404) {
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(5, 5),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
     GrDirectContext* context = contextInfo.directContext();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, ii);
     test_sweep_gradient_zero_x(reporter, surface.get());
@@ -685,7 +685,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(TestManyStopLinearHardstopsGanesh,
 
     constexpr int kNumSegments = 256;
     SkImageInfo ii = SkImageInfo::Make(
-            kNumSegments, 1, SkColorType::kRGBA_8888_SkColorType, SkAlphaType::kPremul_SkAlphaType);
+            kNumSegments, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, ii);
     test_many_stop_linear_hardstops(reporter, surface.get());
 }

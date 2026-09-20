@@ -170,7 +170,7 @@ private:
     TestFP(const TArray<GrSurfaceProxyView>& views)
             : INHERITED(kTestFP_ClassID, kNone_OptimizationFlags) {
         for (const GrSurfaceProxyView& view : views) {
-            this->registerChild(GrTextureEffect::Make(view, kUnknown_SkAlphaType));
+            this->registerChild(GrTextureEffect::Make(view, VX_ALPHA_TYPE_UNKNOWN));
         }
     }
 
@@ -301,7 +301,7 @@ static void render_fp(GrDirectContext* dContext,
                       GrColor* outBuffer) {
     sdc->fillWithFP(std::move(fp));
     std::fill_n(outBuffer, sdc->width() * sdc->height(), 0);
-    auto ii = SkImageInfo::Make(sdc->dimensions(), kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto ii = SkImageInfo::Make(sdc->dimensions(), VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     GrPixmap resultPM(ii, outBuffer, sdc->width()*sizeof(uint32_t));
     sdc->readPixels(dContext, resultPM, {0, 0});
 }
@@ -337,7 +337,7 @@ class TestFPGenerator {
                 }
 
                 SkImageInfo ii = SkImageInfo::Make(kTestTextureSize, kTestTextureSize,
-                                                   kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                                                   VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
                 std::optional<GrMippedBitmap> bm = GrMippedBitmap::Make(
                         ii,
                         rgbaData,
@@ -351,7 +351,7 @@ class TestFPGenerator {
                     return false;
                 }
                 fTestViews[0] = GrProcessorTestData::ViewInfo{view, GrColorType::kRGBA_8888,
-                                                              kPremul_SkAlphaType};
+                                                              VX_ALPHA_TYPE_PREMULTIPLIED};
             }
 
             {
@@ -364,7 +364,7 @@ class TestFPGenerator {
                 }
 
                 SkImageInfo ii = SkImageInfo::Make(kTestTextureSize, kTestTextureSize,
-                                                   kAlpha_8_SkColorType, kPremul_SkAlphaType);
+                                                   VX_COLOR_TYPE_ALPHA_8, VX_ALPHA_TYPE_PREMULTIPLIED);
                 std::optional<GrMippedBitmap> bitmap = GrMippedBitmap::Make(
                         ii,
                         alphaData,
@@ -379,7 +379,7 @@ class TestFPGenerator {
                     return false;
                 }
                 fTestViews[1] = GrProcessorTestData::ViewInfo{view, GrColorType::kAlpha_8,
-                                                              kPremul_SkAlphaType};
+                                                              VX_ALPHA_TYPE_PREMULTIPLIED};
             }
 
             return true;
@@ -403,7 +403,7 @@ class TestFPGenerator {
 
         std::unique_ptr<GrFragmentProcessor> make(int type, int randomTreeDepth,
                                                   GrSurfaceProxyView view,
-                                                  SkAlphaType alpha = kPremul_SkAlphaType) {
+                                                  vx_alpha_type alpha = VX_ALPHA_TYPE_PREMULTIPLIED) {
             return make(type, randomTreeDepth, GrTextureEffect::Make(std::move(view), alpha));
         }
 
@@ -443,7 +443,7 @@ static GrSurfaceProxyView make_input_texture(GrRecordingContext* context,
                                              int width,
                                              int height,
                                              const GrColor* pixel) {
-    SkImageInfo ii = SkImageInfo::Make(width, height, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(width, height, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     std::optional<GrMippedBitmap> bitmap = GrMippedBitmap::Make(ii, pixel, ii.minRowBytes());
     SkASSERT_RELEASE(bitmap);
     return std::get<0>(GrMakeUncachedBitmapProxyView(context, bitmap.value()));
@@ -454,18 +454,18 @@ static GrSurfaceProxyView make_input_texture(GrRecordingContext* context,
 // a "unpremul" SurfaceDrawContext, our input texture is unpremul and outside of the random
 // effect configuration, we didn't do anything to ensure the output is actually premul. We just
 // don't currently allow kUnpremul GrSurfaceDrawContexts.
-static constexpr auto kLogAlphaType = kUnpremul_SkAlphaType;
+static constexpr auto kLogAlphaType = VX_ALPHA_TYPE_UNPREMULTIPLIED;
 
 static bool log_pixels(GrColor* pixels, int widthHeight, SkString* dst) {
     SkImageInfo info =
-            SkImageInfo::Make(widthHeight, widthHeight, kRGBA_8888_SkColorType, kLogAlphaType);
+            SkImageInfo::Make(widthHeight, widthHeight, VX_COLOR_TYPE_RGBA_8888, kLogAlphaType);
     SkBitmap bmp;
     bmp.installPixels(info, pixels, widthHeight * sizeof(GrColor));
     return ToolUtils::BitmapToBase64DataURI(bmp, dst);
 }
 
 static bool log_texture_view(GrDirectContext* dContext, GrSurfaceProxyView src, SkString* dst) {
-    SkImageInfo ii = SkImageInfo::Make(src.proxy()->dimensions(), kRGBA_8888_SkColorType,
+    SkImageInfo ii = SkImageInfo::Make(src.proxy()->dimensions(), VX_COLOR_TYPE_RGBA_8888,
                                        kLogAlphaType);
 
     auto sContext = dContext->priv().makeSC(std::move(src), ii.colorInfo());

@@ -36,7 +36,7 @@ static GrSurfaceProxyView blur(GrRecordingContext* ctx,
     auto resultSDC = GrBlurUtils::GaussianBlur(ctx,
                                                   src,
                                                   GrColorType::kRGBA_8888,
-                                                  kPremul_SkAlphaType,
+                                                  VX_ALPHA_TYPE_PREMULTIPLIED,
                                                   nullptr,
                                                   dstB,
                                                   srcB,
@@ -63,14 +63,14 @@ static GrSurfaceProxyView slow_blur(GrRecordingContext* rContext,
                                SkISize resultSize,
                                SkIPoint offset,
                                SkTileMode mode) {
-        GrImageInfo info(GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr, resultSize);
+        GrImageInfo info(GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr, resultSize);
         auto sfc = rContext->priv().makeSFC(info, /*label=*/{});
         if (!sfc) {
             return GrSurfaceProxyView{};
         }
         GrSamplerState sampler(SkTileModeToWrapMode(mode), SkFilterMode::kNearest);
         auto fp = GrTextureEffect::MakeSubset(src,
-                                              kPremul_SkAlphaType,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                               SkMatrix::Translate(-offset.x(), -offset.y()),
                                               sampler,
                                               SkRect::Make(srcTileRect),
@@ -108,7 +108,7 @@ static GrSurfaceProxyView slow_blur(GrRecordingContext* rContext,
         auto sdc = GrBlurUtils::GaussianBlur(rContext,
                                                 std::move(src),
                                                 GrColorType::kRGBA_8888,
-                                                kPremul_SkAlphaType,
+                                                VX_ALPHA_TYPE_PREMULTIPLIED,
                                                 nullptr,
                                                 bounds,
                                                 bounds,
@@ -132,7 +132,7 @@ static GrSurfaceProxyView slow_blur(GrRecordingContext* rContext,
 GrSurfaceProxyView make_src_image(GrRecordingContext* rContext,
                                   SkISize dimensions,
                                   const SkIRect* contentArea = nullptr) {
-    auto srcII = SkImageInfo::Make(dimensions, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto srcII = SkImageInfo::Make(dimensions, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surf = SkSurfaces::RenderTarget(rContext, skgpu::Budgeted::kYes, srcII);
     if (!surf) {
         return {};
@@ -278,7 +278,7 @@ static GM::DrawResult run(GrRecordingContext* rContext, SkCanvas* canvas,  SkStr
             // on top.
             {
                 static constexpr float kAlpha = 0.2f;
-                auto fp = GrTextureEffect::MakeSubset(src, kPremul_SkAlphaType, SkMatrix::I(),
+                auto fp = GrTextureEffect::MakeSubset(src, VX_ALPHA_TYPE_PREMULTIPLIED, SkMatrix::I(),
                                                       sampler, SkRect::Make(srcRect), caps);
                 fp = GrFragmentProcessor::ModulateRGBA(std::move(fp),
                                                        {kAlpha, kAlpha, kAlpha, kAlpha});
@@ -300,7 +300,7 @@ static GM::DrawResult run(GrRecordingContext* rContext, SkCanvas* canvas,  SkStr
                                            sigmaY,
                                            mode)) {
                     auto fp = GrTextureEffect::Make(blurView,
-                                                    kPremul_SkAlphaType,
+                                                    VX_ALPHA_TYPE_PREMULTIPLIED,
                                                     SkMatrix::I(),
                                                     sampler,
                                                     caps);
@@ -420,7 +420,7 @@ static DrawResult do_very_large_blur_gm(GrRecordingContext* rContext,
                                   &GrStyle::SimpleHairline());
                     if (result) {
                         std::unique_ptr<GrFragmentProcessor> fp =
-                                GrTextureEffect::Make(std::move(result), kPremul_SkAlphaType);
+                                GrTextureEffect::Make(std::move(result), VX_ALPHA_TYPE_PREMULTIPLIED);
                         fp = GrBlendFragmentProcessor::Make<SkBlendMode::kSrcOver>(std::move(fp),
                                                                                    /*dst=*/nullptr);
                         sdc->fillRectToRectWithFP(SkIRect::MakeSize(dstB.size()),

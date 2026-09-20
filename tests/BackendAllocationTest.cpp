@@ -121,10 +121,10 @@ void test_wrapping(GrDirectContext* dContext,
     // Skia proper should know nothing about the new backend object
     REPORTER_ASSERT(reporter, initialCount == cache->getResourceCount());
 
-    SkColorType skColorType = GrColorTypeToSkColorType(grColorType);
+    vx_color_type skColorType = GrColorTypeToSkColorType(grColorType);
 
     // Wrapping a backendTexture in an SkImage/SkSurface requires an SkColorType
-    if (skColorType == kUnknown_SkColorType) {
+    if (skColorType == VX_COLOR_TYPE_UNKNOWN) {
         return;
     }
 
@@ -161,7 +161,7 @@ void test_wrapping(GrDirectContext* dContext,
                                                          mbet->texture(),
                                                          kTopLeft_GrSurfaceOrigin,
                                                          skColorType,
-                                                         kUnpremul_SkAlphaType,
+                                                         VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                                          nullptr);
         if (!img) {
             ERRORF(reporter, "Couldn't make SkImage from backendTexture for %s\n",
@@ -282,13 +282,13 @@ static void check_solid_pixmap(skiatest::Reporter* reporter,
 
 // Determine what color we expect if we store 'orig' in 'ct' converted back to SkColor4f.
 static SkColor4f get_expected_color(SkColor4f orig, GrColorType ct) {
-    GrImageInfo ii(ct, kUnpremul_SkAlphaType, nullptr, {1, 1});
+    GrImageInfo ii(ct, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, {1, 1});
     std::unique_ptr<char[]> data(new char[ii.minRowBytes()]);
     GrClearImage(ii, data.get(), ii.minRowBytes(), orig.array());
 
     // Read back to SkColor4f.
     SkColor4f result;
-    GrImageInfo resultII(GrColorType::kRGBA_F32, kUnpremul_SkAlphaType, nullptr, {1, 1});
+    GrImageInfo resultII(GrColorType::kRGBA_F32, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, {1, 1});
     GrConvertPixels(GrPixmap(resultII,  &result.fR,   sizeof(result)),
                     GrPixmap(      ii,  data.get(), ii.minRowBytes()));
     return result;
@@ -320,8 +320,8 @@ static void check_base_readbacks(GrDirectContext* dContext,
 
     {
         SkImageInfo readBackII = SkImageInfo::Make(32, 32,
-                                                   kRGBA_8888_SkColorType,
-                                                   kUnpremul_SkAlphaType);
+                                                   VX_COLOR_TYPE_RGBA_8888,
+                                                   VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
         SkAssertResult(actual.tryAlloc(readBackII));
     }
@@ -344,7 +344,7 @@ static void check_base_readbacks(GrDirectContext* dContext,
         auto swizzle = dContext->priv().caps()->getReadSwizzle(backendTex.getBackendFormat(),
                                                                colorType);
         GrSurfaceProxyView readView(proxy, kTopLeft_GrSurfaceOrigin, swizzle);
-        GrColorInfo info(colorType, kUnpremul_SkAlphaType, nullptr);
+        GrColorInfo info(colorType, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr);
         auto surfaceContext = dContext->priv().makeSC(readView, info);
         if (!surfaceContext) {
             ERRORF(reporter, "Could not create surface context for colorType: %d\n",
@@ -401,9 +401,9 @@ void test_color_init(
 
     SkColor4f newColor = {color.fB , color.fR, color.fG, color.fA };
 
-    SkColorType skColorType = GrColorTypeToSkColorType(colorType);
+    vx_color_type skColorType = GrColorTypeToSkColorType(colorType);
     // Our update method only works with SkColorTypes.
-    if (skColorType != kUnknown_SkColorType) {
+    if (skColorType != VX_COLOR_TYPE_UNKNOWN) {
         dContext->updateBackendTexture(mbet->texture(),
                                        skColorType,
                                        newColor,
@@ -439,7 +439,7 @@ static void check_mipmaps(GrDirectContext* dContext,
         return;
     }
 
-    GrImageInfo info(GrColorType::kRGBA_8888, kUnpremul_SkAlphaType, nullptr, {32, 32});
+    GrImageInfo info(GrColorType::kRGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, nullptr, {32, 32});
     auto dstFillContext = dContext->priv().makeSFC(info, /*label=*/{});
     if (!dstFillContext) {
         ERRORF(reporter, "Could not make dst fill context.");
@@ -469,15 +469,15 @@ static void check_mipmaps(GrDirectContext* dContext,
         static constexpr GrSamplerState kNearestNearest(GrSamplerState::Filter::kNearest,
                                                         GrSamplerState::MipmapMode::kNearest);
         auto fp = GrTextureEffect::Make(readView,
-                                        kUnpremul_SkAlphaType,
+                                        VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                         texMatrix,
                                         kNearestNearest,
                                         *dstFillContext->caps());
         dstFillContext->fillRectWithFP(SkIRect::MakeWH(rectSize, rectSize), std::move(fp));
 
         SkImageInfo readbackII = SkImageInfo::Make(rectSize, rectSize,
-                                                   kRGBA_8888_SkColorType,
-                                                   kUnpremul_SkAlphaType);
+                                                   VX_COLOR_TYPE_RGBA_8888,
+                                                   VX_ALPHA_TYPE_UNPREMULTIPLIED);
         SkAutoPixmapStorage actual;
         SkAssertResult(actual.tryAlloc(readbackII));
         actual.erase(SkColors::kTransparent);
@@ -500,7 +500,7 @@ void test_pixmap_init(GrDirectContext* dContext,
                                                                        int numLevels,
                                                                        GrSurfaceOrigin,
                                                                        GrRenderable)>& create,
-                      SkColorType skColorType,
+                      vx_color_type skColorType,
                       GrSurfaceOrigin origin,
                       skgpu::Mipmapped mipmapped,
                       GrRenderable renderable) {
@@ -516,7 +516,7 @@ void test_pixmap_init(GrDirectContext* dContext,
     };
 
     int numMipLevels = ToolUtils::make_pixmaps(skColorType,
-                                               kUnpremul_SkAlphaType,
+                                               VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                                mipmapped == skgpu::Mipmapped::kYes,
                                                kColors,
                                                pixmaps,
@@ -529,7 +529,7 @@ void test_pixmap_init(GrDirectContext* dContext,
         return;
     }
 
-    if (skColorType == kBGRA_8888_SkColorType && !isBGRA8(mbet->texture().getBackendFormat())) {
+    if (skColorType == VX_COLOR_TYPE_BGRA_8888 && !isBGRA8(mbet->texture().getBackendFormat())) {
         // When kBGRA is backed by an RGBA something goes wrong in the swizzling
         return;
     }
@@ -566,7 +566,7 @@ void test_pixmap_init(GrDirectContext* dContext,
         {1.0f, 0.0f, 1.0f, 0.3f},  // M
     };
     ToolUtils::make_pixmaps(skColorType,
-                            kUnpremul_SkAlphaType,
+                            VX_ALPHA_TYPE_UNPREMULTIPLIED,
                             mipmapped == skgpu::Mipmapped::kYes,
                             kColorsNew,
                             pixmaps,
@@ -611,55 +611,55 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
     constexpr SkColor4f kGrayCol { 0.75f, 0.75f, 0.75f, 0.75f };
 
     struct {
-        SkColorType   fColorType;
+        vx_color_type   fColorType;
         SkColor4f     fColor;
     } combinations[] = {
-        { kAlpha_8_SkColorType,           kTransCol                },
-        { kRGB_565_SkColorType,           SkColors::kRed           },
-        { kARGB_4444_SkColorType,         SkColors::kGreen         },
-        { kRGBA_8888_SkColorType,         SkColors::kBlue          },
-        { kSRGBA_8888_SkColorType,        { 0.25f, 0.5f, 0.75f, 1.0f}},
-        { kRGB_888x_SkColorType,          SkColors::kCyan          },
+        { VX_COLOR_TYPE_ALPHA_8,           kTransCol                },
+        { VX_COLOR_TYPE_RGB_565,           SkColors::kRed           },
+        { VX_COLOR_TYPE_ARGB_4444,         SkColors::kGreen         },
+        { VX_COLOR_TYPE_RGBA_8888,         SkColors::kBlue          },
+        { VX_COLOR_TYPE_SRGBA_8888,        { 0.25f, 0.5f, 0.75f, 1.0f}},
+        { VX_COLOR_TYPE_RGB_888X,          SkColors::kCyan          },
         // TODO: readback is busted when alpha = 0.5f (perhaps premul vs. unpremul)
-        { kBGRA_8888_SkColorType,         { 1, 0, 0, 1.0f }        },
+        { VX_COLOR_TYPE_BGRA_8888,         { 1, 0, 0, 1.0f }        },
         // TODO: readback is busted for *10A2 when alpha = 0.5f (perhaps premul vs. unpremul)
-        { kRGBA_1010102_SkColorType,      { 0.25f, 0.5f, 0.75f, 1.0f }},
-        { kBGRA_1010102_SkColorType,      { 0.25f, 0.5f, 0.75f, 1.0f }},
-        { kRGB_101010x_SkColorType,       { 0.25f, 0.5f, 0.75f, 0.5f }},
+        { VX_COLOR_TYPE_RGBA_1010102,      { 0.25f, 0.5f, 0.75f, 1.0f }},
+        { VX_COLOR_TYPE_BGRA_1010102,      { 0.25f, 0.5f, 0.75f, 1.0f }},
+        { VX_COLOR_TYPE_RGB_101010X,       { 0.25f, 0.5f, 0.75f, 0.5f }},
         // BGR 101010x has no Ganesh correlate
-        { kBGR_101010x_SkColorType,       { 0, 0.5f, 0, 0.5f }     },
-        { kBGR_101010x_XR_SkColorType,    { 0, 0.5f, 0, 0.5f }     },
-        { kRGBA_10x6_SkColorType,         { 0.25f, 0.5f, 0.75f, 1.0f }},
-        { kBGRA_10101010_XR_SkColorType,  { 0.25f, 0.5f, 0.75f, 1.0f }},
-        { kGray_8_SkColorType,            kGrayCol                 },
-        { kRGBA_F16Norm_SkColorType,      SkColors::kLtGray        },
-        { kRGBA_F16_SkColorType,          SkColors::kYellow        },
-        { kRGB_F16F16F16x_SkColorType,    { 0, 0.5f, 0, 0.5f }     },
-        { kRGBA_F32_SkColorType,          SkColors::kGray          },
-        { kR8G8_unorm_SkColorType,        { .25f, .75f, 0, 1 }     },
-        { kR16_unorm_SkColorType,         SkColors::kRed           },
-        { kR16G16_unorm_SkColorType,      SkColors::kGreen         },
-        { kA16_unorm_SkColorType,         kTransCol                },
-        { kA16_float_SkColorType,         kTransCol                },
-        { kR16_float_SkColorType,         { .25f, 0, 0, 1 }        },
-        { kR16G16_float_SkColorType,      { .25f, .75f, 0, 1 }     },
-        { kR16G16B16A16_unorm_SkColorType,{ .25f, .5f, .75f, 1 }   },
-        { kR8_unorm_SkColorType,          { .25f, 0, 0, 1 }        },
+        { VX_COLOR_TYPE_BGR_101010X,       { 0, 0.5f, 0, 0.5f }     },
+        { VX_COLOR_TYPE_BGR_101010X_XR,    { 0, 0.5f, 0, 0.5f }     },
+        { VX_COLOR_TYPE_RGBA_10X6,         { 0.25f, 0.5f, 0.75f, 1.0f }},
+        { VX_COLOR_TYPE_BGRA_10101010_XR,  { 0.25f, 0.5f, 0.75f, 1.0f }},
+        { VX_COLOR_TYPE_GRAY_8,            kGrayCol                 },
+        { VX_COLOR_TYPE_RGBA_F16NORM,      SkColors::kLtGray        },
+        { VX_COLOR_TYPE_RGBA_F16,          SkColors::kYellow        },
+        { VX_COLOR_TYPE_RGB_F16F16F16X,    { 0, 0.5f, 0, 0.5f }     },
+        { VX_COLOR_TYPE_RGBA_F32,          SkColors::kGray          },
+        { VX_COLOR_TYPE_R8G8_UNORM,        { .25f, .75f, 0, 1 }     },
+        { VX_COLOR_TYPE_R16_UNORM,         SkColors::kRed           },
+        { VX_COLOR_TYPE_R16G16_UNORM,      SkColors::kGreen         },
+        { VX_COLOR_TYPE_A16_UNORM,         kTransCol                },
+        { VX_COLOR_TYPE_A16_FLOAT,         kTransCol                },
+        { VX_COLOR_TYPE_R16_FLOAT,         { .25f, 0, 0, 1 }        },
+        { VX_COLOR_TYPE_R16G16_FLOAT,      { .25f, .75f, 0, 1 }     },
+        { VX_COLOR_TYPE_R16G16B16A16_UNORM,{ .25f, .5f, .75f, 1 }   },
+        { VX_COLOR_TYPE_R8_UNORM,          { .25f, 0, 0, 1 }        },
     };
 
-    static_assert(kLastEnum_SkColorType == std::size(combinations));
+    static_assert(VX_COLOR_TYPE_LASTENUM == std::size(combinations));
 
     for (auto combo : combinations) {
-        SkColorType colorType = combo.fColorType;
+        vx_color_type colorType = combo.fColorType;
 
         if (GrBackendApi::kMetal == context->backend()) {
             // skbug.com/40040379 (Metal caps may not be handling RGBA32 correctly)
-            if (kRGBA_F32_SkColorType == combo.fColorType) {
+            if (VX_COLOR_TYPE_RGBA_F32 == combo.fColorType) {
                 continue;
             }
         }
 
-        if (colorType == kBGR_101010x_XR_SkColorType) {
+        if (colorType == VX_COLOR_TYPE_BGR_101010X_XR) {
             // Creating a texture with kBGR_101010x_XR_SkColorType is not
             // implemented.
             continue;
@@ -677,9 +677,9 @@ void color_type_backend_allocation_test(const sk_gpu_test::ContextInfo& ctxInfo,
                 }
 
                 if (GrRenderable::kYes == renderable) {
-                    if (kRGB_888x_SkColorType == combo.fColorType ||
-                        kRGB_F16F16F16x_SkColorType == combo.fColorType ||
-                        kRGB_101010x_SkColorType == combo.fColorType) {
+                    if (VX_COLOR_TYPE_RGB_888X == combo.fColorType ||
+                        VX_COLOR_TYPE_RGB_F16F16F16X == combo.fColorType ||
+                        VX_COLOR_TYPE_RGB_101010X == combo.fColorType) {
                         // Ganesh can't perform the blends correctly when rendering this format
                         continue;
                     }

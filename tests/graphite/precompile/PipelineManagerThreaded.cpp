@@ -27,7 +27,7 @@ using namespace skiatest::graphite;
 
 const RenderPassProperties kRGBA_1_D {
         DepthStencilFlags::kDepth,
-        kRGBA_8888_SkColorType,
+        VX_COLOR_TYPE_RGBA_8888,
         /* fDstCS= */ nullptr,
         /* fRequiresMSAA= */ false
 };
@@ -49,8 +49,8 @@ void draw_an_arc(skiatest::Reporter* reporter, Context* context) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
     SkImageInfo ii = SkImageInfo::Make(16, 16,
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
 
 
     sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder.get(), ii, skgpu::Mipmapped::kNo);

@@ -90,7 +90,7 @@ protected:
 
         fYCbCrImage = SkImages::WrapTexture(recorder,
                                             ycbcrHelper->backendTexture(),
-                                            kUnknown_SkAlphaType, // force alpha channel to 1
+                                            VX_ALPHA_TYPE_UNKNOWN, // force alpha channel to 1
                                             /*colorSpace=*/nullptr,
                                             release_ycbcrhelper,
                                             ycbcrHelper.get());
@@ -122,8 +122,8 @@ protected:
         fYCbCrImage = SkImages::BorrowTextureFrom(dContext,
                                                   ycbcrHelper->grBackendTexture(),
                                                   kTopLeft_GrSurfaceOrigin,
-                                                  kRGB_888x_SkColorType,
-                                                  kPremul_SkAlphaType,
+                                                  VX_COLOR_TYPE_RGB_888X,
+                                                  VX_ALPHA_TYPE_PREMULTIPLIED,
                                                   nullptr,
                                                   release_ycbcrhelper,
                                                   ycbcrHelper.get());

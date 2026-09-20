@@ -127,7 +127,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
 
     // Test drawing and then resetting bindings. This should force a MIP regeneration if MIP
     // maps are supported as well.
-    auto info = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surf = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, info, 1, nullptr);
     surf->getCanvas()->clear(0x80FF0000);
     auto img = surf->makeImageSnapshot();
@@ -145,7 +145,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
     if (supportExternal) {
         GrBackendTexture texture2D = dContext->createBackendTexture(10,
                                                                     10,
-                                                                    kRGBA_8888_SkColorType,
+                                                                    VX_COLOR_TYPE_RGBA_8888,
                                                                     SkColors::kTransparent,
                                                                     skgpu::Mipmapped::kNo,
                                                                     GrRenderable::kNo,
@@ -168,8 +168,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
         img = SkImages::BorrowTextureFrom(dContext,
                                           backendTexture,
                                           kTopLeft_GrSurfaceOrigin,
-                                          kRGBA_8888_SkColorType,
-                                          kPremul_SkAlphaType,
+                                          VX_COLOR_TYPE_RGBA_8888,
+                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                           nullptr);
         REPORTER_ASSERT(reporter, img);
         surf->getCanvas()->drawImage(img, 0, 0);
@@ -192,8 +192,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(TextureBindingsResetTest,
             img = SkImages::BorrowTextureFrom(dContext,
                                               rectangleTexture,
                                               kTopLeft_GrSurfaceOrigin,
-                                              kRGBA_8888_SkColorType,
-                                              kPremul_SkAlphaType,
+                                              VX_COLOR_TYPE_RGBA_8888,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                               nullptr);
             REPORTER_ASSERT(reporter, img);
             surf->getCanvas()->drawImage(img, 0, 0);

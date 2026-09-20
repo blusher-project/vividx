@@ -172,8 +172,8 @@ protected:
         int fixedColorX[3] = {2, 4, 1};
         int fixedColorY[3] = {1, 1, 2};
         SkColor fixedColor[3] = {SK_ColorBLACK, SK_ColorBLACK, SK_ColorBLACK};
-        const SkImageInfo info = SkImageInfo::Make(1, 1, kBGRA_8888_SkColorType,
-                                                   kUnpremul_SkAlphaType);
+        const SkImageInfo info = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_BGRA_8888,
+                                                   VX_ALPHA_TYPE_UNPREMULTIPLIED);
         for (int rectNum = 0; rectNum < 3; rectNum++) {
 #if defined(SK_GANESH) || defined(SK_GRAPHITE)
             int srcX = xDivs[fixedColorX[rectNum]-1];

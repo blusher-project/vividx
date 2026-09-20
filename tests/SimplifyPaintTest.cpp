@@ -104,8 +104,8 @@ SkImageInfo get_surface_ii() {
     sk_sp<SkColorSpace> spinCS = SkColorSpace::MakeSRGB()->makeColorSpin();
 
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(kSurfaceSize, kSurfaceSize),
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType,
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED,
                                        std::move(spinCS));
     return ii;
 }
@@ -120,8 +120,8 @@ bool almost_equals(SkColor a, SkColor b, int tolerance) {
 
 void run_test(SkSurface* surface, skiatest::Reporter* reporter) {
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(kSurfaceSize, kSurfaceSize),
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bitmap;
     SkPixmap pixmap;
     bitmap.allocPixels(ii);

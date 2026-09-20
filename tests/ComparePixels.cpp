@@ -51,11 +51,11 @@ bool ComparePixels(const SkPixmap& a,
         return false;
     }
 
-    SkAlphaType floatAlphaType = a.alphaType();
+    vx_alpha_type floatAlphaType = a.alphaType();
     // If one is premul and the other is unpremul we do the comparison in premul space.
-    if ((a.alphaType() == kPremul_SkAlphaType   || b.alphaType() == kPremul_SkAlphaType) &&
-        (a.alphaType() == kUnpremul_SkAlphaType || b.alphaType() == kUnpremul_SkAlphaType)) {
-        floatAlphaType = kPremul_SkAlphaType;
+    if ((a.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED   || b.alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED) &&
+        (a.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED || b.alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED)) {
+        floatAlphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
     }
     sk_sp<SkColorSpace> floatCS;
     if (SkColorSpace::Equals(a.colorSpace(), b.colorSpace())) {
@@ -64,7 +64,7 @@ bool ComparePixels(const SkPixmap& a,
         floatCS = SkColorSpace::MakeSRGBLinear();
     }
     SkImageInfo floatInfo = SkImageInfo::Make(a.dimensions(),
-                                              kRGBA_F32_SkColorType,
+                                              VX_COLOR_TYPE_RGBA_F32,
                                               floatAlphaType,
                                               std::move(floatCS));
 
@@ -96,15 +96,15 @@ bool CheckSolidPixels(const SkColor4f& col,
                       const SkPixmap& pixmap,
                       const float tolRGBA[4],
                       std::function<ComparePixmapsErrorReporter>& error) {
-    size_t floatBpp = vx_color_type_bytes_per_pixel(kRGBA_F32_SkColorType);
+    size_t floatBpp = vx_color_type_bytes_per_pixel(VX_COLOR_TYPE_RGBA_F32);
 
     // First convert 'col' to be compatible with 'pixmap'
     SkAutoPixmapStorage colorPixmap;
     {
         sk_sp<SkColorSpace> srcCS = SkColorSpace::MakeSRGBLinear();
         auto srcInfo = SkImageInfo::Make({1, 1},
-                                         kRGBA_F32_SkColorType,
-                                         kUnpremul_SkAlphaType,
+                                         VX_COLOR_TYPE_RGBA_F32,
+                                         VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                          std::move(srcCS));
         SkPixmap srcPixmap(srcInfo, col.vec(), floatBpp);
         SkImageInfo dstInfo =
@@ -117,7 +117,7 @@ bool CheckSolidPixels(const SkColor4f& col,
     std::unique_ptr<char[]> floatB(new char[floatRowBytes * pixmap.height()]);
     // Then convert 'pixmap' to F32_RGBA
     SkAutoPixmapStorage f32Pixmap;
-    f32Pixmap.alloc(pixmap.info().makeColorType(kRGBA_F32_SkColorType));
+    f32Pixmap.alloc(pixmap.info().makeColorType(VX_COLOR_TYPE_RGBA_F32));
     SkAssertResult(convert_pixels(f32Pixmap, pixmap));
 
     for (int y = 0; y < f32Pixmap.height(); ++y) {

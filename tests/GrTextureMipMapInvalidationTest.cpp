@@ -113,7 +113,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReimportImageTextureWithMipLevels,
     auto surf = SkSurfaces::RenderTarget(
             dContext,
             skgpu::Budgeted::kYes,
-            SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+            SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
             1,
             kTopLeft_GrSurfaceOrigin,
             nullptr,
@@ -140,11 +140,11 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReimportImageTextureWithMipLevels,
     img = SkImages::BorrowTextureFrom(dContext,
                                       btex,
                                       kTopLeft_GrSurfaceOrigin,
-                                      kRGBA_8888_SkColorType,
-                                      kPremul_SkAlphaType,
+                                      VX_COLOR_TYPE_RGBA_8888,
+                                      VX_ALPHA_TYPE_PREMULTIPLIED,
                                       nullptr);
     const auto singlePixelInfo =
-            SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
+            SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
     surf = SkSurfaces::RenderTarget(
             dContext, skgpu::Budgeted::kYes, singlePixelInfo, 1, kTopLeft_GrSurfaceOrigin, nullptr);
 

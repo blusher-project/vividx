@@ -473,7 +473,7 @@ static bool write_canvas_png(Target* target, const SkString& filename) {
         return false;
     }
     if (target->getCanvas() &&
-        kUnknown_SkColorType == target->getCanvas()->imageInfo().colorType()) {
+        VX_COLOR_TYPE_UNKNOWN == target->getCanvas()->imageInfo().colorType()) {
         return false;
     }
 
@@ -629,7 +629,7 @@ static std::optional<Config> create_config(const SkCommandLineConfig* config) {
         return Config{gpuConfig->getTag(),
                       Benchmark::Backend::kGanesh,
                       colorType,
-                      kPremul_SkAlphaType,
+                      VX_ALPHA_TYPE_PREMULTIPLIED,
                       config->refColorSpace(),
                       sampleCount,
                       ctxType,
@@ -680,7 +680,7 @@ static std::optional<Config> create_config(const SkCommandLineConfig* config) {
         return Config{gpuConfig->getTag(),
                       Benchmark::Backend::kGraphite,
                       colorType,
-                      kPremul_SkAlphaType,
+                      VX_ALPHA_TYPE_PREMULTIPLIED,
                       config->refColorSpace(),
                       sampleCount,
                       graphiteCtxType,
@@ -706,17 +706,17 @@ static std::optional<Config> create_config(const SkCommandLineConfig* config) {
                       0};                                                               \
     }
 
-    CPU_CONFIG("nonrendering", Backend::kNonRendering, kUnknown_SkColorType, kUnpremul_SkAlphaType)
+    CPU_CONFIG("nonrendering", Backend::kNonRendering, VX_COLOR_TYPE_UNKNOWN, VX_ALPHA_TYPE_UNPREMULTIPLIED)
 
-    CPU_CONFIG("a8",    Backend::kRaster,    kAlpha_8_SkColorType, kPremul_SkAlphaType)
-    CPU_CONFIG("gray8", Backend::kRaster,     kGray_8_SkColorType, kOpaque_SkAlphaType)
-    CPU_CONFIG("r8",    Backend::kRaster,   kR8_unorm_SkColorType, kOpaque_SkAlphaType)
-    CPU_CONFIG("565",   Backend::kRaster,    kRGB_565_SkColorType, kOpaque_SkAlphaType)
-    CPU_CONFIG("8888",  Backend::kRaster,        kN32_SkColorType, kPremul_SkAlphaType)
-    CPU_CONFIG("rgba",  Backend::kRaster,  kRGBA_8888_SkColorType, kPremul_SkAlphaType)
-    CPU_CONFIG("bgra",  Backend::kRaster,  kBGRA_8888_SkColorType, kPremul_SkAlphaType)
-    CPU_CONFIG("f16",   Backend::kRaster,   kRGBA_F16_SkColorType, kPremul_SkAlphaType)
-    CPU_CONFIG("srgba", Backend::kRaster, kSRGBA_8888_SkColorType, kPremul_SkAlphaType)
+    CPU_CONFIG("a8",    Backend::kRaster,    VX_COLOR_TYPE_ALPHA_8, VX_ALPHA_TYPE_PREMULTIPLIED)
+    CPU_CONFIG("gray8", Backend::kRaster,     VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_OPAQUE)
+    CPU_CONFIG("r8",    Backend::kRaster,   VX_COLOR_TYPE_R8_UNORM, VX_ALPHA_TYPE_OPAQUE)
+    CPU_CONFIG("565",   Backend::kRaster,    VX_COLOR_TYPE_RGB_565, VX_ALPHA_TYPE_OPAQUE)
+    CPU_CONFIG("8888",  Backend::kRaster,        VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED)
+    CPU_CONFIG("rgba",  Backend::kRaster,  VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED)
+    CPU_CONFIG("bgra",  Backend::kRaster,  VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED)
+    CPU_CONFIG("f16",   Backend::kRaster,   VX_COLOR_TYPE_RGBA_F16, VX_ALPHA_TYPE_PREMULTIPLIED)
+    CPU_CONFIG("srgba", Backend::kRaster, VX_COLOR_TYPE_SRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED)
 
 #undef CPU_CONFIG
 
@@ -786,7 +786,7 @@ static Target* is_enabled(Benchmark* bench, const Config& config) {
 #endif
 
 #ifdef SK_ENABLE_ANDROID_UTILS
-static bool valid_brd_bench(sk_sp<SkData> encoded, SkColorType colorType, uint32_t sampleSize,
+static bool valid_brd_bench(sk_sp<SkData> encoded, vx_color_type colorType, uint32_t sampleSize,
         uint32_t minOutputSize, int* width, int* height) {
     auto brd = android::skia::BitmapRegionDecoder::Make(encoded);
     if (nullptr == brd) {
@@ -861,11 +861,11 @@ public:
         }
 
         // Choose the candidate color types for image decoding
-        fColorTypes.push_back(kN32_SkColorType);
+        fColorTypes.push_back(VX_COLOR_TYPE_N32);
         if (!FLAGS_simpleCodec) {
-            fColorTypes.push_back(kRGB_565_SkColorType);
-            fColorTypes.push_back(kAlpha_8_SkColorType);
-            fColorTypes.push_back(kGray_8_SkColorType);
+            fColorTypes.push_back(VX_COLOR_TYPE_RGB_565);
+            fColorTypes.push_back(VX_COLOR_TYPE_ALPHA_8);
+            fColorTypes.push_back(VX_COLOR_TYPE_GRAY_8);
         }
     }
 
@@ -1100,30 +1100,30 @@ public:
             }
 
             while (fCurrentColorType < fColorTypes.size()) {
-                const SkColorType colorType = fColorTypes[fCurrentColorType];
+                const vx_color_type colorType = fColorTypes[fCurrentColorType];
 
-                SkAlphaType alphaType = codec->getInfo().alphaType();
+                vx_alpha_type alphaType = codec->getInfo().alphaType();
                 if (FLAGS_simpleCodec) {
-                    if (kUnpremul_SkAlphaType == alphaType) {
-                        alphaType = kPremul_SkAlphaType;
+                    if (VX_ALPHA_TYPE_UNPREMULTIPLIED == alphaType) {
+                        alphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
                     }
 
                     fCurrentColorType++;
                 } else {
                     switch (alphaType) {
-                        case kOpaque_SkAlphaType:
+                        case VX_ALPHA_TYPE_OPAQUE:
                             // We only need to test one alpha type (opaque).
                             fCurrentColorType++;
                             break;
-                        case kUnpremul_SkAlphaType:
-                        case kPremul_SkAlphaType:
+                        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
+                        case VX_ALPHA_TYPE_PREMULTIPLIED:
                             if (0 == fCurrentAlphaType) {
                                 // Test unpremul first.
-                                alphaType = kUnpremul_SkAlphaType;
+                                alphaType = VX_ALPHA_TYPE_UNPREMULTIPLIED;
                                 fCurrentAlphaType++;
                             } else {
                                 // Test premul.
-                                alphaType = kPremul_SkAlphaType;
+                                alphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
                                 fCurrentAlphaType = 0;
                                 fCurrentColorType++;
                             }
@@ -1222,7 +1222,7 @@ public:
                     while (fCurrentSubsetType <= kLastSingle_SubsetType) {
 
                         sk_sp<SkData> encoded(SkData::MakeFromFileName(path.c_str()));
-                        const SkColorType colorType = fColorTypes[fCurrentColorType];
+                        const vx_color_type colorType = fColorTypes[fCurrentColorType];
                         uint32_t sampleSize = brdSampleSizes[fCurrentSampleSize];
                         int currentSubsetType = fCurrentSubsetType++;
 
@@ -1324,7 +1324,7 @@ private:
     TArray<SkString> fSVGs;
     TArray<SkString> fTextBlobTraces;
     TArray<SkString> fImages;
-    TArray<SkColorType, true> fColorTypes;
+    TArray<vx_color_type, true> fColorTypes;
     SkScalar           fZoomMax;
     double             fZoomPeriodMs;
 

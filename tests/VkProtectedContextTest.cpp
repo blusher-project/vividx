@@ -135,7 +135,7 @@ void create_backend_texture_ganesh(skiatest::Reporter* reporter,
 
     GrBackendTexture backendTex = dContext->createBackendTexture(kSize,
                                                                  kSize,
-                                                                 kRGBA_8888_SkColorType,
+                                                                 VX_COLOR_TYPE_RGBA_8888,
                                                                  skgpu::Mipmapped::kNo,
                                                                  GrRenderable::kNo,
                                                                  GrProtected(beTexIsProtected));
@@ -248,8 +248,8 @@ DEF_GANESH_TEST(VkProtectedContext_CopyOnWrite,
     GrDirectContext* dContext = helper->directContext();
 
     SkImageInfo ii = SkImageInfo::Make({ kSize, kSize },
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
 
     // We can't use VkTestHelper::createSurface here bc that will wrap a backend
     // texture which blocks the copy-on-write-behavior
@@ -315,11 +315,11 @@ DEF_GANESH_AND_GRAPHITE_TEST(AsyncReadFromProtectedSurface, reporter, testType) 
                                                      /* isProtected= */ true);
     REPORTER_ASSERT(reporter, surface);
     AsyncContext cbContext;
-    const SkImageInfo imageInfo = SkImageInfo::Make(6, 6, kRGBA_8888_SkColorType,
-                                                    kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+    const SkImageInfo imageInfo = SkImageInfo::Make(6, 6, VX_COLOR_TYPE_RGBA_8888,
+                                                    VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB());
 
     if (testType == skiatest::TestType::kGanesh) {
-        surface->asyncRescaleAndReadPixelsYUV420(kIdentity_SkYUVColorSpace,
+        surface->asyncRescaleAndReadPixelsYUV420(VX_YUV_COLOR_SPACE_IDENTITY,
                                                  SkColorSpace::MakeSRGB(),
                                                  imageInfo.bounds(),
                                                  imageInfo.dimensions(),
@@ -335,7 +335,7 @@ DEF_GANESH_AND_GRAPHITE_TEST(AsyncReadFromProtectedSurface, reporter, testType) 
         skgpu::graphite::Context* context = helper->context();
 
         context->asyncRescaleAndReadPixelsYUV420(surface.get(),
-                                                 kIdentity_SkYUVColorSpace,
+                                                 VX_YUV_COLOR_SPACE_IDENTITY,
                                                  SkColorSpace::MakeSRGB(),
                                                  imageInfo.bounds(),
                                                  imageInfo.dimensions(),

@@ -75,72 +75,72 @@ using namespace skia_private;
 
 struct GrContextOptions;
 
-static constexpr int min_rgb_channel_bits(SkColorType ct) {
+static constexpr int min_rgb_channel_bits(vx_color_type ct) {
     switch (ct) {
-        case kUnknown_SkColorType:            return 0;
-        case kAlpha_8_SkColorType:            return 0;
-        case kA16_unorm_SkColorType:          return 0;
-        case kA16_float_SkColorType:          return 0;
-        case kRGB_565_SkColorType:            return 5;
-        case kARGB_4444_SkColorType:          return 4;
-        case kR8G8_unorm_SkColorType:         return 8;
-        case kR16_unorm_SkColorType:          return 16;
-        case kR16G16_unorm_SkColorType:       return 16;
-        case kR16G16_float_SkColorType:       return 16;
-        case kRGBA_8888_SkColorType:          return 8;
-        case kSRGBA_8888_SkColorType:         return 8;
-        case kRGB_888x_SkColorType:           return 8;
-        case kBGRA_8888_SkColorType:          return 8;
-        case kRGBA_1010102_SkColorType:       return 10;
-        case kRGB_101010x_SkColorType:        return 10;
-        case kBGRA_1010102_SkColorType:       return 10;
-        case kBGR_101010x_SkColorType:        return 10;
-        case kBGR_101010x_XR_SkColorType:     return 10;
-        case kRGBA_10x6_SkColorType:          return 10;
-        case kBGRA_10101010_XR_SkColorType:   return 10;
-        case kGray_8_SkColorType:             return 8;   // counting gray as "rgb"
-        case kRGBA_F16Norm_SkColorType:       return 10;  // just counting the mantissa
-        case kRGBA_F16_SkColorType:           return 10;  // just counting the mantissa
-        case kRGB_F16F16F16x_SkColorType:     return 10;
-        case kR16_float_SkColorType:          return 10;
-        case kRGBA_F32_SkColorType:           return 23;  // just counting the mantissa
-        case kR16G16B16A16_unorm_SkColorType: return 16;
-        case kR8_unorm_SkColorType:           return 8;
+        case VX_COLOR_TYPE_UNKNOWN:            return 0;
+        case VX_COLOR_TYPE_ALPHA_8:            return 0;
+        case VX_COLOR_TYPE_A16_UNORM:          return 0;
+        case VX_COLOR_TYPE_A16_FLOAT:          return 0;
+        case VX_COLOR_TYPE_RGB_565:            return 5;
+        case VX_COLOR_TYPE_ARGB_4444:          return 4;
+        case VX_COLOR_TYPE_R8G8_UNORM:         return 8;
+        case VX_COLOR_TYPE_R16_UNORM:          return 16;
+        case VX_COLOR_TYPE_R16G16_UNORM:       return 16;
+        case VX_COLOR_TYPE_R16G16_FLOAT:       return 16;
+        case VX_COLOR_TYPE_RGBA_8888:          return 8;
+        case VX_COLOR_TYPE_SRGBA_8888:         return 8;
+        case VX_COLOR_TYPE_RGB_888X:           return 8;
+        case VX_COLOR_TYPE_BGRA_8888:          return 8;
+        case VX_COLOR_TYPE_RGBA_1010102:       return 10;
+        case VX_COLOR_TYPE_RGB_101010X:        return 10;
+        case VX_COLOR_TYPE_BGRA_1010102:       return 10;
+        case VX_COLOR_TYPE_BGR_101010X:        return 10;
+        case VX_COLOR_TYPE_BGR_101010X_XR:     return 10;
+        case VX_COLOR_TYPE_RGBA_10X6:          return 10;
+        case VX_COLOR_TYPE_BGRA_10101010_XR:   return 10;
+        case VX_COLOR_TYPE_GRAY_8:             return 8;   // counting gray as "rgb"
+        case VX_COLOR_TYPE_RGBA_F16NORM:       return 10;  // just counting the mantissa
+        case VX_COLOR_TYPE_RGBA_F16:           return 10;  // just counting the mantissa
+        case VX_COLOR_TYPE_RGB_F16F16F16X:     return 10;
+        case VX_COLOR_TYPE_R16_FLOAT:          return 10;
+        case VX_COLOR_TYPE_RGBA_F32:           return 23;  // just counting the mantissa
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: return 16;
+        case VX_COLOR_TYPE_R8_UNORM:           return 8;
     }
     SkUNREACHABLE;
 }
 
-static constexpr int alpha_channel_bits(SkColorType ct) {
+static constexpr int alpha_channel_bits(vx_color_type ct) {
     switch (ct) {
-        case kUnknown_SkColorType:            return 0;
-        case kAlpha_8_SkColorType:            return 8;
-        case kA16_unorm_SkColorType:          return 16;
-        case kA16_float_SkColorType:          return 16;
-        case kRGB_565_SkColorType:            return 0;
-        case kARGB_4444_SkColorType:          return 4;
-        case kR8G8_unorm_SkColorType:         return 0;
-        case kR16_unorm_SkColorType:          return 0;
-        case kR16G16_unorm_SkColorType:       return 0;
-        case kR16G16_float_SkColorType:       return 0;
-        case kRGBA_8888_SkColorType:          return 8;
-        case kSRGBA_8888_SkColorType:         return 8;
-        case kRGB_888x_SkColorType:           return 0;
-        case kBGRA_8888_SkColorType:          return 8;
-        case kRGBA_1010102_SkColorType:       return 2;
-        case kRGB_101010x_SkColorType:        return 0;
-        case kBGRA_1010102_SkColorType:       return 2;
-        case kBGR_101010x_SkColorType:        return 0;
-        case kBGR_101010x_XR_SkColorType:     return 0;
-        case kRGBA_10x6_SkColorType:          return 10;
-        case kBGRA_10101010_XR_SkColorType:   return 10;
-        case kGray_8_SkColorType:             return 0;
-        case kRGBA_F16Norm_SkColorType:       return 10;  // just counting the mantissa
-        case kRGBA_F16_SkColorType:           return 10;  // just counting the mantissa
-        case kRGB_F16F16F16x_SkColorType:     return 0;
-        case kR16_float_SkColorType:          return 0;
-        case kRGBA_F32_SkColorType:           return 23;  // just counting the mantissa
-        case kR16G16B16A16_unorm_SkColorType: return 16;
-        case kR8_unorm_SkColorType:           return 0;
+        case VX_COLOR_TYPE_UNKNOWN:            return 0;
+        case VX_COLOR_TYPE_ALPHA_8:            return 8;
+        case VX_COLOR_TYPE_A16_UNORM:          return 16;
+        case VX_COLOR_TYPE_A16_FLOAT:          return 16;
+        case VX_COLOR_TYPE_RGB_565:            return 0;
+        case VX_COLOR_TYPE_ARGB_4444:          return 4;
+        case VX_COLOR_TYPE_R8G8_UNORM:         return 0;
+        case VX_COLOR_TYPE_R16_UNORM:          return 0;
+        case VX_COLOR_TYPE_R16G16_UNORM:       return 0;
+        case VX_COLOR_TYPE_R16G16_FLOAT:       return 0;
+        case VX_COLOR_TYPE_RGBA_8888:          return 8;
+        case VX_COLOR_TYPE_SRGBA_8888:         return 8;
+        case VX_COLOR_TYPE_RGB_888X:           return 0;
+        case VX_COLOR_TYPE_BGRA_8888:          return 8;
+        case VX_COLOR_TYPE_RGBA_1010102:       return 2;
+        case VX_COLOR_TYPE_RGB_101010X:        return 0;
+        case VX_COLOR_TYPE_BGRA_1010102:       return 2;
+        case VX_COLOR_TYPE_BGR_101010X:        return 0;
+        case VX_COLOR_TYPE_BGR_101010X_XR:     return 0;
+        case VX_COLOR_TYPE_RGBA_10X6:          return 10;
+        case VX_COLOR_TYPE_BGRA_10101010_XR:   return 10;
+        case VX_COLOR_TYPE_GRAY_8:             return 0;
+        case VX_COLOR_TYPE_RGBA_F16NORM:       return 10;  // just counting the mantissa
+        case VX_COLOR_TYPE_RGBA_F16:           return 10;  // just counting the mantissa
+        case VX_COLOR_TYPE_RGB_F16F16F16X:     return 0;
+        case VX_COLOR_TYPE_R16_FLOAT:          return 0;
+        case VX_COLOR_TYPE_RGBA_F32:           return 23;  // just counting the mantissa
+        case VX_COLOR_TYPE_R16G16B16A16_UNORM: return 16;
+        case VX_COLOR_TYPE_R8_UNORM:           return 0;
     }
     SkUNREACHABLE;
 }
@@ -261,16 +261,16 @@ private:
 }  // anonymous namespace
 
 SkPixmap make_pixmap_have_valid_alpha_type(SkPixmap pm) {
-    if (pm.alphaType() == kUnknown_SkAlphaType) {
-        return {pm.info().makeAlphaType(kUnpremul_SkAlphaType), pm.addr(), pm.rowBytes()};
+    if (pm.alphaType() == VX_ALPHA_TYPE_UNKNOWN) {
+        return {pm.info().makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED), pm.addr(), pm.rowBytes()};
     }
     return pm;
 }
 
 static SkAutoPixmapStorage make_ref_data(const SkImageInfo& info, bool forceOpaque) {
     SkAutoPixmapStorage result;
-    if (info.alphaType() == kUnknown_SkAlphaType) {
-        result.alloc(info.makeAlphaType(kUnpremul_SkAlphaType));
+    if (info.alphaType() == VX_ALPHA_TYPE_UNKNOWN) {
+        result.alloc(info.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED));
     } else {
         result.alloc(info);
     }
@@ -292,7 +292,7 @@ static SkAutoPixmapStorage make_ref_data(const SkImageInfo& info, bool forceOpaq
     surface->getCanvas()->drawPaint(paint);
 
     // If not opaque add some fractional alpha.
-    if (info.alphaType() != kOpaque_SkAlphaType && !forceOpaque) {
+    if (info.alphaType() != VX_ALPHA_TYPE_OPAQUE && !forceOpaque) {
         static const SkColor4f kColors3[] = {SkColors::kWhite,
                                              SkColors::kWhite,
                                              SkColor4f::FromColor(0x60FFFFFF),
@@ -352,9 +352,9 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
 
         if (!SkIRect::Intersects(rect, surfBounds)) {
             REPORTER_ASSERT(reporter, result != Result::kSuccess);
-        } else if (readCT == kUnknown_SkColorType) {
+        } else if (readCT == VX_COLOR_TYPE_UNKNOWN) {
             REPORTER_ASSERT(reporter, result != Result::kSuccess);
-        } else if ((readAT == kUnknown_SkAlphaType) != (srcAT == kUnknown_SkAlphaType)) {
+        } else if ((readAT == VX_ALPHA_TYPE_UNKNOWN) != (srcAT == VX_ALPHA_TYPE_UNKNOWN)) {
             REPORTER_ASSERT(reporter, result != Result::kSuccess);
         } else if (!rules.fUncontainedRectSucceeds && !surfBounds.contains(rect)) {
             REPORTER_ASSERT(reporter, result != Result::kSuccess);
@@ -382,8 +382,8 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             SkIRect dstWriteRect = srcReadRect.makeOffset(-rect.fLeft, -rect.fTop);
 
             const bool lumConversion =
-                    !(SkColorTypeChannelFlags(srcCT) & kGray_SkColorChannelFlag) &&
-                    (SkColorTypeChannelFlags(readCT) & kGray_SkColorChannelFlag);
+                    !(vx_color_type_channel_flags(srcCT) & VX_COLOR_CHANNEL_FLAG_GRAY) &&
+                    (vx_color_type_channel_flags(readCT) & VX_COLOR_CHANNEL_FLAG_GRAY);
             // A CS or luminance conversion allows a 3 value difference and otherwise a 2 value
             // difference. Note that sometimes read back on GPU can be lossy even when there no
             // conversion at all because GPU->CPU read may go to a lower bit depth format and then
@@ -391,7 +391,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             // we go through 8888.
             float numer = (lumConversion || csConversion) ? 3.f : 2.f;
             // Allow some extra tolerance if unpremuling.
-            if (srcAT == kPremul_SkAlphaType && readAT == kUnpremul_SkAlphaType) {
+            if (srcAT == VX_ALPHA_TYPE_PREMULTIPLIED && readAT == VX_ALPHA_TYPE_UNPREMULTIPLIED) {
                 numer += 1;
             }
             int rgbBits = std::min({min_rgb_channel_bits(readCT), min_rgb_channel_bits(srcCT), 8});
@@ -399,7 +399,7 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             // Swiftshader is producing alpha errors with 16-bit UNORM. We choose to always allow
             // a small tolerance:
             float alphaTol = 1.f / ((1 << 10) - 1);
-            if (readAT != kOpaque_SkAlphaType && srcAT != kOpaque_SkAlphaType) {
+            if (readAT != VX_ALPHA_TYPE_OPAQUE && srcAT != VX_ALPHA_TYPE_OPAQUE) {
                 // Alpha can also get squashed down to 8 bits going through an intermediate
                 // color format.
                 const int alphaBits = std::min({alpha_channel_bits(readCT),
@@ -425,13 +425,13 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             SkAutoPixmapStorage ref;
             SkImageInfo refInfo = readInfo.makeDimensions(dstWriteRect.size());
             ref.alloc(refInfo);
-            if (readAT == kUnknown_SkAlphaType) {
+            if (readAT == VX_ALPHA_TYPE_UNKNOWN) {
                 // Do a spoofed read where src and dst alpha type are both kUnpremul. This will
                 // allow SkPixmap readPixels to succeed and won't do any alpha type conversion.
-                SkPixmap unpremulRef(refInfo.makeAlphaType(kUnpremul_SkAlphaType),
+                SkPixmap unpremulRef(refInfo.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED),
                                      ref.addr(),
                                      ref.rowBytes());
-                SkPixmap unpremulSRc(srcPixels.info().makeAlphaType(kUnpremul_SkAlphaType),
+                SkPixmap unpremulSRc(srcPixels.info().makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED),
                                      srcPixels.addr(),
                                      srcPixels.rowBytes());
 
@@ -485,28 +485,28 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
     // after one iter.
     // We consider a src or read CT thoroughly tested once it has run through the long rect array
     // and full complement of alpha types with one successful read in the loop.
-    std::array<bool, kLastEnum_SkColorType + 1> srcCTTestedThoroughly  = {},
+    std::array<bool, VX_COLOR_TYPE_LASTENUM + 1> srcCTTestedThoroughly  = {},
                                                 readCTTestedThoroughly = {};
-    for (int sat = 0; sat <= kLastEnum_SkAlphaType; ++sat) {
-        const auto srcAT = static_cast<SkAlphaType>(sat);
-        if (srcAT == kUnpremul_SkAlphaType && !rules.fAllowUnpremulSrc) {
+    for (int sat = 0; sat <= VX_ALPHA_TYPE_LASTENUM; ++sat) {
+        const auto srcAT = static_cast<vx_alpha_type>(sat);
+        if (srcAT == VX_ALPHA_TYPE_UNPREMULTIPLIED && !rules.fAllowUnpremulSrc) {
             continue;
         }
-        for (int sct = 0; sct <= kLastEnum_SkColorType; ++sct) {
-            const auto srcCT = static_cast<SkColorType>(sct);
-            if (rules.fSkipSRGBCT && srcCT == kSRGBA_8888_SkColorType) {
+        for (int sct = 0; sct <= VX_COLOR_TYPE_LASTENUM; ++sct) {
+            const auto srcCT = static_cast<vx_color_type>(sct);
+            if (rules.fSkipSRGBCT && srcCT == VX_COLOR_TYPE_SRGBA_8888) {
                 continue;
             }
             if (rules.fSkip16BitCT &&
-                (srcCT == kR16_unorm_SkColorType ||
-                 srcCT == kR16G16_unorm_SkColorType ||
-                 srcCT == kR16G16B16A16_unorm_SkColorType)) {
+                (srcCT == VX_COLOR_TYPE_R16_UNORM ||
+                 srcCT == VX_COLOR_TYPE_R16G16_UNORM ||
+                 srcCT == VX_COLOR_TYPE_R16G16B16A16_UNORM)) {
                 continue;
             }
 
             // We always make our ref data as F32
             auto refInfo = SkImageInfo::Make(kW, kH,
-                                             kRGBA_F32_SkColorType,
+                                             VX_COLOR_TYPE_RGBA_F32,
                                              srcAT,
                                              SkColorSpace::MakeSRGB());
             // 1010102 formats have an issue where it's easy to make a resulting
@@ -514,8 +514,8 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
             // channels are clipped to the alpha value. CPU clips but GPU does not.
             // Note that we only currently use srcCT for the 1010102 workaround. If we remove this
             // we can also put the ref data setup above the srcCT loop.
-            bool forceOpaque = srcAT == kPremul_SkAlphaType &&
-                    (srcCT == kRGBA_1010102_SkColorType || srcCT == kBGRA_1010102_SkColorType);
+            bool forceOpaque = srcAT == VX_ALPHA_TYPE_PREMULTIPLIED &&
+                    (srcCT == VX_COLOR_TYPE_RGBA_1010102 || srcCT == VX_COLOR_TYPE_BGRA_1010102);
 
             SkAutoPixmapStorage refPixels = make_ref_data(refInfo, forceOpaque);
             // Convert the ref data to our desired src color type.
@@ -526,8 +526,8 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                 SkPixmap readPixmap = srcPixels;
                 // Spoof the alpha type to kUnpremul so the read will succeed without doing any
                 // conversion (because we made our surface also use kUnpremul).
-                if (srcAT == kUnknown_SkAlphaType) {
-                    readPixmap.reset(srcPixels.info().makeAlphaType(kUnpremul_SkAlphaType),
+                if (srcAT == VX_ALPHA_TYPE_UNKNOWN) {
+                    readPixmap.reset(srcPixels.info().makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED),
                                      srcPixels.addr(),
                                      srcPixels.rowBytes());
                 }
@@ -539,33 +539,33 @@ static void gpu_read_pixels_test_driver(skiatest::Reporter* reporter,
                 continue;
             }
             if (vx_color_type_is_always_opaque(srcCT) && srcCTTestedThoroughly[srcCT] &&
-                (kPremul_SkAlphaType == srcAT || kUnpremul_SkAlphaType == srcAT)) {
+                (VX_ALPHA_TYPE_PREMULTIPLIED == srcAT || VX_ALPHA_TYPE_UNPREMULTIPLIED == srcAT)) {
                 continue;
             }
             if (SkColorTypeIsAlphaOnly(srcCT) && srcCTTestedThoroughly[srcCT] &&
-                (kUnpremul_SkAlphaType == srcAT ||
-                 kOpaque_SkAlphaType   == srcAT ||
-                 kUnknown_SkAlphaType  == srcAT)) {
+                (VX_ALPHA_TYPE_UNPREMULTIPLIED == srcAT ||
+                 VX_ALPHA_TYPE_OPAQUE   == srcAT ||
+                 VX_ALPHA_TYPE_UNKNOWN  == srcAT)) {
                 continue;
             }
-            for (int rct = 0; rct <= kLastEnum_SkColorType; ++rct) {
-                const auto readCT = static_cast<SkColorType>(rct);
+            for (int rct = 0; rct <= VX_COLOR_TYPE_LASTENUM; ++rct) {
+                const auto readCT = static_cast<vx_color_type>(rct);
                 for (const sk_sp<SkColorSpace>& readCS :
                      {SkColorSpace::MakeSRGB(), SkColorSpace::MakeSRGBLinear()}) {
-                    for (int at = 0; at <= kLastEnum_SkAlphaType; ++at) {
-                        const auto readAT = static_cast<SkAlphaType>(at);
-                        if (srcAT != kOpaque_SkAlphaType && readAT == kOpaque_SkAlphaType) {
+                    for (int at = 0; at <= VX_ALPHA_TYPE_LASTENUM; ++at) {
+                        const auto readAT = static_cast<vx_alpha_type>(at);
+                        if (srcAT != VX_ALPHA_TYPE_OPAQUE && readAT == VX_ALPHA_TYPE_OPAQUE) {
                             // This doesn't make sense.
                             continue;
                         }
                         if (vx_color_type_is_always_opaque(readCT) && readCTTestedThoroughly[readCT] &&
-                            (kPremul_SkAlphaType == readAT || kUnpremul_SkAlphaType == readAT)) {
+                            (VX_ALPHA_TYPE_PREMULTIPLIED == readAT || VX_ALPHA_TYPE_UNPREMULTIPLIED == readAT)) {
                             continue;
                         }
                         if (SkColorTypeIsAlphaOnly(readCT) && readCTTestedThoroughly[readCT] &&
-                            (kUnpremul_SkAlphaType == readAT ||
-                             kOpaque_SkAlphaType   == readAT ||
-                             kUnknown_SkAlphaType  == readAT)) {
+                            (VX_ALPHA_TYPE_UNPREMULTIPLIED == readAT ||
+                             VX_ALPHA_TYPE_OPAQUE   == readAT ||
+                             VX_ALPHA_TYPE_UNKNOWN  == readAT)) {
                             continue;
                         }
                         const auto& rects =
@@ -635,10 +635,10 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(ReadPixels_InvalidRowBytes_Gpu,
                                  reporter,
                                  ctxInfo,
                                  CtsEnforcement::kApiLevel_T) {
-    auto srcII = SkImageInfo::Make({10, 10}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto srcII = SkImageInfo::Make({10, 10}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surf = SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kYes, srcII);
-    for (int ct = 0; ct < kLastEnum_SkColorType + 1; ++ct) {
-        auto colorType = static_cast<SkColorType>(ct);
+    for (int ct = 0; ct < VX_COLOR_TYPE_LASTENUM + 1; ++ct) {
+        auto colorType = static_cast<vx_color_type>(ct);
         size_t bpp = vx_color_type_bytes_per_pixel(colorType);
         if (bpp <= 1) {
             continue;
@@ -654,10 +654,10 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(WritePixels_InvalidRowBytes_Gpu,
                                  reporter,
                                  ctxInfo,
                                  CtsEnforcement::kApiLevel_T) {
-    auto dstII = SkImageInfo::Make({10, 10}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto dstII = SkImageInfo::Make({10, 10}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surf = SkSurfaces::RenderTarget(ctxInfo.directContext(), skgpu::Budgeted::kYes, dstII);
-    for (int ct = 0; ct < kLastEnum_SkColorType + 1; ++ct) {
-        auto colorType = static_cast<SkColorType>(ct);
+    for (int ct = 0; ct < VX_COLOR_TYPE_LASTENUM + 1; ++ct) {
+        auto colorType = static_cast<vx_color_type>(ct);
         size_t bpp = vx_color_type_bytes_per_pixel(colorType);
         if (bpp <= 1) {
             continue;
@@ -850,7 +850,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageAsyncReadPixels_Renderable_BottomLef
 }
 
 DEF_GANESH_TEST(AsyncReadPixelsContextShutdown, reporter, options, CtsEnforcement::kApiLevel_T) {
-    const auto ii = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+    const auto ii = SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED,
                                       SkColorSpace::MakeSRGB());
     enum class ShutdownSequence {
         kFreeResult_DestroyContext,
@@ -913,13 +913,13 @@ DEF_GANESH_TEST(AsyncReadPixelsContextShutdown, reporter, options, CtsEnforcemen
                         break;
                     case ReadType::kYUV:
                         surf->asyncRescaleAndReadPixelsYUV420(
-                                kIdentity_SkYUVColorSpace, SkColorSpace::MakeSRGB(), ii.bounds(),
+                                VX_YUV_COLOR_SPACE_IDENTITY, SkColorSpace::MakeSRGB(), ii.bounds(),
                                 ii.dimensions(), SkImage::RescaleGamma::kSrc,
                                 SkImage::RescaleMode::kNearest, &async_callback, &cbContext);
                         break;
                     case ReadType::kYUVA:
                         surf->asyncRescaleAndReadPixelsYUVA420(
-                                kIdentity_SkYUVColorSpace, SkColorSpace::MakeSRGB(), ii.bounds(),
+                                VX_YUV_COLOR_SPACE_IDENTITY, SkColorSpace::MakeSRGB(), ii.bounds(),
                                 ii.dimensions(), SkImage::RescaleGamma::kSrc,
                                 SkImage::RescaleMode::kNearest, &async_callback, &cbContext);
                         break;
@@ -1032,9 +1032,9 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
 
         if (!SkIRect::Intersects(rect, surfBounds)) {
             REPORTER_ASSERT(reporter, result != Result::kSuccess);
-        } else if (writeCT == kUnknown_SkColorType) {
+        } else if (writeCT == VX_COLOR_TYPE_UNKNOWN) {
             REPORTER_ASSERT(reporter, result != Result::kSuccess);
-        } else if ((writeAT == kUnknown_SkAlphaType) != (dstAT == kUnknown_SkAlphaType)) {
+        } else if ((writeAT == VX_ALPHA_TYPE_UNKNOWN) != (dstAT == VX_ALPHA_TYPE_UNKNOWN)) {
             REPORTER_ASSERT(reporter, result != Result::kSuccess);
         } else if (result == Result::kExcusedFailure) {
             return result;
@@ -1073,7 +1073,7 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
         int rgbBits = std::min({min_rgb_channel_bits(writeCT), min_rgb_channel_bits(dstCT), 8});
         float tol = (rgbBits == 0) ? 1.f : 2.f / ((1 << rgbBits) - 1);
         float alphaTol = 0;
-        if (writeAT != kOpaque_SkAlphaType && dstAT != kOpaque_SkAlphaType) {
+        if (writeAT != VX_ALPHA_TYPE_OPAQUE && dstAT != VX_ALPHA_TYPE_OPAQUE) {
             // Alpha can also get squashed down to 8 bits going through an intermediate
             // color format.
             const int alphaBits = std::min({alpha_channel_bits(writeCT),
@@ -1179,46 +1179,46 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
     // after one iter.
     // We consider a dst or write CT thoroughly tested once it has run through the long rect array
     // and full complement of alpha types with one successful read in the loop.
-    std::array<bool, kLastEnum_SkColorType + 1> dstCTTestedThoroughly   = {},
+    std::array<bool, VX_COLOR_TYPE_LASTENUM + 1> dstCTTestedThoroughly   = {},
                                                 writeCTTestedThoroughly = {};
-    for (int dat = 0; dat < kLastEnum_SkAlphaType; ++dat) {
-        const auto dstAT = static_cast<SkAlphaType>(dat);
-        for (int dct = 0; dct <= kLastEnum_SkColorType; ++dct) {
-            const auto dstCT = static_cast<SkColorType>(dct);
+    for (int dat = 0; dat < VX_ALPHA_TYPE_LASTENUM; ++dat) {
+        const auto dstAT = static_cast<vx_alpha_type>(dat);
+        for (int dct = 0; dct <= VX_COLOR_TYPE_LASTENUM; ++dct) {
+            const auto dstCT = static_cast<vx_color_type>(dct);
             const auto dstInfo = SkImageInfo::Make(kW, kH, dstCT, dstAT, SkColorSpace::MakeSRGB());
             auto dst = dstFactory(dstInfo);
             if (!dst) {
                 continue;
             }
             if (vx_color_type_is_always_opaque(dstCT) && dstCTTestedThoroughly[dstCT] &&
-                (kPremul_SkAlphaType == dstAT || kUnpremul_SkAlphaType == dstAT)) {
+                (VX_ALPHA_TYPE_PREMULTIPLIED == dstAT || VX_ALPHA_TYPE_UNPREMULTIPLIED == dstAT)) {
                 continue;
             }
             if (SkColorTypeIsAlphaOnly(dstCT) && dstCTTestedThoroughly[dstCT] &&
-                (kUnpremul_SkAlphaType == dstAT ||
-                 kOpaque_SkAlphaType   == dstAT ||
-                 kUnknown_SkAlphaType  == dstAT)) {
+                (VX_ALPHA_TYPE_UNPREMULTIPLIED == dstAT ||
+                 VX_ALPHA_TYPE_OPAQUE   == dstAT ||
+                 VX_ALPHA_TYPE_UNKNOWN  == dstAT)) {
                 continue;
             }
-            for (int wct = 0; wct <= kLastEnum_SkColorType; ++wct) {
-                const auto writeCT = static_cast<SkColorType>(wct);
+            for (int wct = 0; wct <= VX_COLOR_TYPE_LASTENUM; ++wct) {
+                const auto writeCT = static_cast<vx_color_type>(wct);
                 for (const sk_sp<SkColorSpace>& writeCS : {SkColorSpace::MakeSRGB(),
                                                            SkColorSpace::MakeSRGBLinear()}) {
-                    for (int wat = 0; wat <= kLastEnum_SkAlphaType; ++wat) {
-                        const auto writeAT = static_cast<SkAlphaType>(wat);
-                        if (writeAT != kOpaque_SkAlphaType && dstAT == kOpaque_SkAlphaType) {
+                    for (int wat = 0; wat <= VX_ALPHA_TYPE_LASTENUM; ++wat) {
+                        const auto writeAT = static_cast<vx_alpha_type>(wat);
+                        if (writeAT != VX_ALPHA_TYPE_OPAQUE && dstAT == VX_ALPHA_TYPE_OPAQUE) {
                             // This doesn't make sense.
                             continue;
                         }
                         if (vx_color_type_is_always_opaque(writeCT) &&
                             writeCTTestedThoroughly[writeCT] &&
-                            (kPremul_SkAlphaType == writeAT || kUnpremul_SkAlphaType == writeAT)) {
+                            (VX_ALPHA_TYPE_PREMULTIPLIED == writeAT || VX_ALPHA_TYPE_UNPREMULTIPLIED == writeAT)) {
                             continue;
                         }
                         if (SkColorTypeIsAlphaOnly(writeCT) && writeCTTestedThoroughly[writeCT] &&
-                            (kUnpremul_SkAlphaType == writeAT ||
-                             kOpaque_SkAlphaType   == writeAT ||
-                             kUnknown_SkAlphaType  == writeAT)) {
+                            (VX_ALPHA_TYPE_UNPREMULTIPLIED == writeAT ||
+                             VX_ALPHA_TYPE_OPAQUE   == writeAT ||
+                             VX_ALPHA_TYPE_UNKNOWN  == writeAT)) {
                             continue;
                         }
                         const auto& rects =
@@ -1232,8 +1232,8 @@ static void gpu_write_pixels_test_driver(skiatest::Reporter* reporter,
                                                                writeCS);
                             // CPU and GPU handle 1010102 differently. CPU clamps RGB to A, GPU
                             // doesn't.
-                            bool forceOpaque = writeCT == kRGBA_1010102_SkColorType ||
-                                               writeCT == kBGRA_1010102_SkColorType;
+                            bool forceOpaque = writeCT == VX_COLOR_TYPE_RGBA_1010102 ||
+                                               writeCT == VX_COLOR_TYPE_BGRA_1010102;
                             SkAutoPixmapStorage writePixels = make_ref_data(writeInfo, forceOpaque);
                             const SkIPoint offset = rect.topLeft();
                             Result r = runTest(dst, dstInfo, writePixels, offset);
@@ -1267,8 +1267,8 @@ static void surface_context_write_pixels(GrRenderable renderable,
     auto reader = std::function<GpuReadDstFn<Surface>>([direct](const Surface& s) {
         SkAutoPixmapStorage result;
         auto grInfo = s->imageInfo();
-        SkColorType ct = GrColorTypeToSkColorType(grInfo.colorType());
-        SkASSERT(ct != kUnknown_SkColorType);
+        vx_color_type ct = GrColorTypeToSkColorType(grInfo.colorType());
+        SkASSERT(ct != VX_COLOR_TYPE_UNKNOWN);
         auto skInfo = SkImageInfo::Make(grInfo.dimensions(), ct, grInfo.alphaType(),
                                         grInfo.refColorSpace());
         result.alloc(skInfo);
@@ -1334,13 +1334,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped,
     static constexpr int kW = 25,
                          kH = 37;
     SkAutoPixmapStorage refP = make_ref_data(SkImageInfo::Make({kW, kH},
-                                                               kRGBA_F32_SkColorType,
-                                                               kPremul_SkAlphaType,
+                                                               VX_COLOR_TYPE_RGBA_F32,
+                                                               VX_ALPHA_TYPE_PREMULTIPLIED,
                                                                nullptr),
                                              false);
     SkAutoPixmapStorage refO = make_ref_data(SkImageInfo::Make({kW, kH},
-                                                               kRGBA_F32_SkColorType,
-                                                               kOpaque_SkAlphaType,
+                                                               VX_COLOR_TYPE_RGBA_F32,
+                                                               VX_ALPHA_TYPE_OPAQUE,
                                                                nullptr),
                                              true);
 
@@ -1351,10 +1351,10 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SurfaceContextWritePixelsMipped,
         if (!format.isValid()) {
             continue;
         }
-        SkAlphaType at = GrColorTypeHasAlpha(ct) ? kPremul_SkAlphaType : kOpaque_SkAlphaType;
+        vx_alpha_type at = GrColorTypeHasAlpha(ct) ? VX_ALPHA_TYPE_PREMULTIPLIED : VX_ALPHA_TYPE_OPAQUE;
         GrImageInfo info(ct, at, nullptr, kW, kH);
         TArray<GrCPixmap> levels;
-        const auto& ref = at == kPremul_SkAlphaType ? refP : refO;
+        const auto& ref = at == VX_ALPHA_TYPE_PREMULTIPLIED ? refP : refO;
         for (int w = kW, h = kH; w || h; w/=2, h/=2) {
             auto level = GrPixmap::Allocate(info.makeWH(std::max(w, 1), std::max(h, 1)));
             SkPixmap src;
@@ -1478,7 +1478,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(GLReadPixelsUnbindPBO,
                                ctxInfo,
                                CtsEnforcement::kApiLevel_T) {
     // Start with a async read so that we bind to GL_PIXEL_PACK_BUFFER.
-    auto info = SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(16, 16, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkAutoPixmapStorage pmap = make_ref_data(info, /*forceOpaque=*/false);
     auto image = SkImages::RasterFromPixmap(pmap, nullptr, nullptr);
     image = SkImages::TextureFromImage(ctxInfo.directContext(), image);
@@ -1544,8 +1544,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReadPixelsIntermediateFailedFlush,
     static constexpr SkColor kStaleColor = 0xFF112233;
     static constexpr SkColor kSrcColor = 0xFF008800;
 
-    auto srcII = SkImageInfo::Make({kSize, kSize}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    auto dstII = srcII.makeAlphaType(kUnpremul_SkAlphaType);
+    auto srcII = SkImageInfo::Make({kSize, kSize}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
+    auto dstII = srcII.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
     auto surf = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, srcII);
     if (!surf) {
         return;
@@ -1604,8 +1604,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(WritePixelsFailedFlushLeaksScratch,
     static constexpr SkColor kStalePixel = SkColorSetARGB(0xFF, 0x33, 0x22, 0x11);
     static constexpr SkColor kSrcPixel   = SkColorSetARGB(0xFF, 0x00, 0x88, 0x44);
 
-    auto dstII = SkImageInfo::Make({kSize, kSize}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-    auto srcII = dstII.makeAlphaType(kUnpremul_SkAlphaType);
+    auto dstII = SkImageInfo::Make({kSize, kSize}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
+    auto srcII = dstII.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
     auto surf = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kYes, dstII);
     if (!surf) {
         return;

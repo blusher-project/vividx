@@ -1010,7 +1010,7 @@ DEF_TEST(Serialization, reporter) {
 
         SkDeserialProcs dProcs;
         dProcs.fImageDataProc = [](sk_sp<SkData> data,
-                                   std::optional<SkAlphaType> alphaType,
+                                   std::optional<enum vx_alpha_type> alphaType,
                                    void*) -> sk_sp<SkImage> {
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
             std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);

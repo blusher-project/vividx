@@ -69,11 +69,11 @@ static sk_sp<SkData> encode_ndk(const SkPixmap& pmap, SkEncodedImageFormat forma
 }
 
 DEF_TEST(NdkEncode, r) {
-    for (auto ct : { kRGBA_8888_SkColorType,
-                     kRGB_565_SkColorType,
-                     kRGBA_F16_SkColorType }) {
+    for (auto ct : { VX_COLOR_TYPE_RGBA_8888,
+                     VX_COLOR_TYPE_RGB_565,
+                     VX_COLOR_TYPE_RGBA_F16 }) {
         SkBitmap bm;
-        bm.allocPixels(SkImageInfo::Make(10, 10, ct, kOpaque_SkAlphaType));
+        bm.allocPixels(SkImageInfo::Make(10, 10, ct, VX_ALPHA_TYPE_OPAQUE));
         bm.eraseColor(SK_ColorBLUE);
         for (const auto& rec : gRecs) {
             auto encoded = encode_ndk(bm.pixmap(), rec.format, rec.quality);
@@ -88,10 +88,10 @@ DEF_TEST(NdkEncode, r) {
                 continue;
             }
 
-            if (rec.name == kPng && bm.colorType() == kRGB_565_SkColorType) {
-                REPORTER_ASSERT(r, gen->getInfo().colorType() == kRGB_565_SkColorType);
+            if (rec.name == kPng && bm.colorType() == VX_COLOR_TYPE_RGB_565) {
+                REPORTER_ASSERT(r, gen->getInfo().colorType() == VX_COLOR_TYPE_RGB_565);
             } else {
-                REPORTER_ASSERT(r, gen->getInfo().colorType() == kN32_SkColorType);
+                REPORTER_ASSERT(r, gen->getInfo().colorType() == VX_COLOR_TYPE_N32);
             }
 
             SkBitmap bm2;
@@ -120,11 +120,11 @@ DEF_TEST(NdkEncode, r) {
 }
 
 DEF_TEST(NdkEncode_unsupportedFormats, r) {
-    for (auto ct : { kRGBA_8888_SkColorType,
-                     kRGB_565_SkColorType,
-                     kRGBA_F16_SkColorType }) {
+    for (auto ct : { VX_COLOR_TYPE_RGBA_8888,
+                     VX_COLOR_TYPE_RGB_565,
+                     VX_COLOR_TYPE_RGBA_F16 }) {
         SkBitmap bm;
-        bm.allocPixels(SkImageInfo::Make(10, 10, ct, kOpaque_SkAlphaType));
+        bm.allocPixels(SkImageInfo::Make(10, 10, ct, VX_ALPHA_TYPE_OPAQUE));
         bm.eraseColor(SK_ColorBLUE);
         for (auto format : { SkEncodedImageFormat::kBMP,
                              SkEncodedImageFormat::kGIF,
@@ -141,11 +141,11 @@ DEF_TEST(NdkEncode_unsupportedFormats, r) {
 }
 
 DEF_TEST(NdkEncode_badQuality, r) {
-    for (auto ct : { kRGBA_8888_SkColorType,
-                     kRGB_565_SkColorType,
-                     kRGBA_F16_SkColorType }) {
+    for (auto ct : { VX_COLOR_TYPE_RGBA_8888,
+                     VX_COLOR_TYPE_RGB_565,
+                     VX_COLOR_TYPE_RGBA_F16 }) {
         SkBitmap bm;
-        bm.allocPixels(SkImageInfo::Make(10, 10, ct, kOpaque_SkAlphaType));
+        bm.allocPixels(SkImageInfo::Make(10, 10, ct, VX_ALPHA_TYPE_OPAQUE));
         bm.eraseColor(SK_ColorBLUE);
         for (auto format : { SkEncodedImageFormat::kJPEG,
                              SkEncodedImageFormat::kPNG,
@@ -193,30 +193,30 @@ DEF_TEST(NdkEncode_badInfo, r) {
 }
 
 DEF_TEST(NdkEncode_unsupportedColorTypes, r) {
-    for (SkColorType ct : {
-        kUnknown_SkColorType,
-        kAlpha_8_SkColorType,
-        kARGB_4444_SkColorType,
-        kRGB_888x_SkColorType,
-        kBGRA_8888_SkColorType,
-        kRGBA_1010102_SkColorType,
-        kBGRA_1010102_SkColorType,
-        kRGB_101010x_SkColorType,
-        kBGR_101010x_SkColorType,
-        kGray_8_SkColorType,
-        kRGBA_F16Norm_SkColorType,
-        kRGB_F16F16F16x_SkColorType,
-        kRGBA_F32_SkColorType,
-        kR8G8_unorm_SkColorType,
-        kA16_float_SkColorType,
-        kR16_float_SkColorType,
-        kR16G16_float_SkColorType,
-        kA16_unorm_SkColorType,
-        kR16_unorm_SkColorType,
-        kR16G16_unorm_SkColorType,
-        kR16G16B16A16_unorm_SkColorType,
+    for (vx_color_type ct : {
+        VX_COLOR_TYPE_UNKNOWN,
+        VX_COLOR_TYPE_ALPHA_8,
+        VX_COLOR_TYPE_ARGB_4444,
+        VX_COLOR_TYPE_RGB_888X,
+        VX_COLOR_TYPE_BGRA_8888,
+        VX_COLOR_TYPE_RGBA_1010102,
+        VX_COLOR_TYPE_BGRA_1010102,
+        VX_COLOR_TYPE_RGB_101010X,
+        VX_COLOR_TYPE_BGR_101010X,
+        VX_COLOR_TYPE_GRAY_8,
+        VX_COLOR_TYPE_RGBA_F16NORM,
+        VX_COLOR_TYPE_RGB_F16F16F16X,
+        VX_COLOR_TYPE_RGBA_F32,
+        VX_COLOR_TYPE_R8G8_UNORM,
+        VX_COLOR_TYPE_A16_FLOAT,
+        VX_COLOR_TYPE_R16_FLOAT,
+        VX_COLOR_TYPE_R16G16_FLOAT,
+        VX_COLOR_TYPE_A16_UNORM,
+        VX_COLOR_TYPE_R16_UNORM,
+        VX_COLOR_TYPE_R16G16_UNORM,
+        VX_COLOR_TYPE_R16G16B16A16_UNORM,
     }) {
-        auto info = SkImageInfo::Make(7, 13, ct, kOpaque_SkAlphaType, SkColorSpace::MakeSRGB());
+        auto info = SkImageInfo::Make(7, 13, ct, VX_ALPHA_TYPE_OPAQUE, SkColorSpace::MakeSRGB());
         SkBitmap bm;
         bm.allocPixels(info);
         bm.eraseColor(SK_ColorGREEN);
@@ -224,7 +224,7 @@ DEF_TEST(NdkEncode_unsupportedColorTypes, r) {
             REPORTER_ASSERT(r, !encode_ndk(bm.pixmap(), rec.format, rec.quality));
         }
         if (!vx_color_type_is_always_opaque(ct)) {
-            for (auto at : { kPremul_SkAlphaType, kUnpremul_SkAlphaType}) {
+            for (auto at : { VX_ALPHA_TYPE_PREMULTIPLIED, VX_ALPHA_TYPE_UNPREMULTIPLIED}) {
                 info = info.makeAlphaType(at);
                 bm.allocPixels(info);
                 bm.eraseARGB(0x7F, 0xFF, 0xFF, 0xFF);
@@ -237,10 +237,10 @@ DEF_TEST(NdkEncode_unsupportedColorTypes, r) {
 }
 
 DEF_TEST(NdkEncode_unsupportedAlphaTypes, r) {
-    for (auto ct : { kRGBA_8888_SkColorType,
-                     kRGB_565_SkColorType,
-                     kRGBA_F16_SkColorType }) {
-        for (auto at : { kUnknown_SkAlphaType, (SkAlphaType) -1}) {
+    for (auto ct : { VX_COLOR_TYPE_RGBA_8888,
+                     VX_COLOR_TYPE_RGB_565,
+                     VX_COLOR_TYPE_RGBA_F16 }) {
+        for (auto at : { VX_ALPHA_TYPE_UNKNOWN, (vx_alpha_type) -1}) {
             auto info = SkImageInfo::Make(10, 10, ct, at);
             size_t rowBytes = info.minRowBytes();
             void* pixels = sk_malloc_throw(info.computeByteSize(rowBytes));
@@ -307,9 +307,9 @@ DEF_TEST(NdkEncode_ColorSpace, r) {
         { SkColorSpace::MakeRGB(k2Dot6,                      kDCIP3),                   "dci-p3"  },
     };
     for (const auto& colorSpace : colorSpaces) {
-        for (auto ct : { kRGBA_8888_SkColorType, kRGB_565_SkColorType, kRGBA_F16_SkColorType }) {
+        for (auto ct : { VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_RGB_565, VX_COLOR_TYPE_RGBA_F16 }) {
             SkBitmap bm;
-            bm.allocPixels(SkImageInfo::Make(10, 10, ct, kOpaque_SkAlphaType, colorSpace.cs));
+            bm.allocPixels(SkImageInfo::Make(10, 10, ct, VX_ALPHA_TYPE_OPAQUE, colorSpace.cs));
             bm.eraseColor(SK_ColorRED);
 
             for (const auto& rec : gRecs) {
@@ -371,9 +371,9 @@ DEF_TEST(NdkEncode_unsupportedColorSpace, r) {
     }
 
     for (auto unsupported : unsupportedCs) {
-        for (auto ct : { kRGBA_8888_SkColorType, kRGB_565_SkColorType, kRGBA_F16_SkColorType }) {
+        for (auto ct : { VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_RGB_565, VX_COLOR_TYPE_RGBA_F16 }) {
             SkBitmap bm;
-            bm.allocPixels(SkImageInfo::Make(10, 10, ct, kOpaque_SkAlphaType, unsupported));
+            bm.allocPixels(SkImageInfo::Make(10, 10, ct, VX_ALPHA_TYPE_OPAQUE, unsupported));
             bm.eraseColor(SK_ColorBLUE);
 
             for (const auto& rec : gRecs) {

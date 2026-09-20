@@ -61,9 +61,9 @@ struct GrContextOptions;
 // skbug.com/40037130
 static void test_basic_draw_as_src(skiatest::Reporter* reporter, GrDirectContext* dContext,
                                    const GrSurfaceProxyView& rectView, GrColorType colorType,
-                                   SkAlphaType alphaType, uint32_t expectedPixelValues[]) {
+                                   vx_alpha_type alphaType, uint32_t expectedPixelValues[]) {
     auto sfc = dContext->priv().makeSFC(
-            {colorType, kPremul_SkAlphaType, nullptr, rectView.dimensions()}, /*label=*/{});
+            {colorType, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr, rectView.dimensions()}, /*label=*/{});
     for (auto filter : {GrSamplerState::Filter::kNearest, GrSamplerState::Filter::kLinear}) {
         for (auto mm : {GrSamplerState::MipmapMode::kNone, GrSamplerState::MipmapMode::kLinear}) {
             sfc->clear(SkPMColor4f::FromBytes_RGBA(0xDDCCBBAA));
@@ -137,7 +137,7 @@ static void test_copy_to_surface(skiatest::Reporter* reporter,
     for (auto renderable : {GrRenderable::kNo, GrRenderable::kYes}) {
         auto origin = dstContext->origin();
         GrImageInfo info(GrColorType::kRGBA_8888,
-                         kPremul_SkAlphaType,
+                         VX_ALPHA_TYPE_PREMULTIPLIED,
                          nullptr,
                          dstContext->dimensions());
         GrCPixmap pixmap(info, pixels.get(), dstContext->width()*sizeof(uint32_t));
@@ -165,7 +165,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(RectangleTexture, reporter, ctxInfo, CtsEnforceme
             pixels[y * kWidth + x] = y * kWidth + x;
         }
     }
-    auto ii = SkImageInfo::Make(kWidth, kHeight, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto ii = SkImageInfo::Make(kWidth, kHeight, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkPixmap pm(ii, pixels, sizeof(uint32_t)*kWidth);
 
     for (auto origin : { kBottomLeft_GrSurfaceOrigin, kTopLeft_GrSurfaceOrigin }) {
@@ -208,7 +208,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(RectangleTexture, reporter, ctxInfo, CtsEnforceme
                 rectangleTex.getBackendFormat(), grII.colorType());
         GrSurfaceProxyView view(rectProxy, origin, swizzle);
 
-        test_basic_draw_as_src(reporter, dContext, view, grII.colorType(), kPremul_SkAlphaType,
+        test_basic_draw_as_src(reporter, dContext, view, grII.colorType(), VX_ALPHA_TYPE_PREMULTIPLIED,
                                refPixels);
 
         // Test copy to both a texture and RT

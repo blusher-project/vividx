@@ -176,7 +176,7 @@ DEF_TEST(RustJpeg_IncrementalDecode_PartialStreaming, r) {
             continue;
         }
         SkBitmap reference;
-        reference.allocPixels(refCodec->getInfo().makeColorType(kN32_SkColorType));
+        reference.allocPixels(refCodec->getInfo().makeColorType(VX_COLOR_TYPE_N32));
         {
             SkCodec::Result refResult = refCodec->getPixels(reference.pixmap());
             REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(r, refResult);
@@ -206,7 +206,7 @@ DEF_TEST(RustJpeg_IncrementalDecode_PartialStreaming, r) {
             continue;
         }
 
-        const SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+        const SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
         SkBitmap bitmap;
         if (!bitmap.tryAllocPixels(info)) {
             ERRORF(r, "%s: failed to allocate bitmap", testCase.description);
@@ -368,7 +368,7 @@ DEF_TEST(RustJpeg_IncrementalDecode_RejectsSubset, r) {
         return;
     }
 
-    const SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    const SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     const SkIRect subset = SkIRect::MakeXYWH(0, 1, info.width(), info.height() - 1);
     SkBitmap bitmap;
     bitmap.allocPixels(info.makeWH(subset.width(), subset.height()));
@@ -388,7 +388,7 @@ DEF_TEST(RustJpeg_IncrementalDecode_RejectsShortRowBytes, r) {
         return;
     }
 
-    const SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    const SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap bitmap;
     bitmap.allocPixels(info);
     const SkCodec::Result result = codec->startIncrementalDecode(
@@ -404,7 +404,7 @@ DEF_TEST(RustJpeg_IncrementalDecode_AfterRewind, r) {
         return;
     }
 
-    const SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    const SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap firstIncremental;
     firstIncremental.allocPixels(info);
     REPORTER_ASSERT_SUCCESSFUL_CODEC_RESULT(
@@ -456,7 +456,7 @@ DEF_TEST(RustJpeg_IncrementalDecode_ColorTransformPaddedStride, r) {
     }
 
     const SkImageInfo dstInfo = referenceCodec->getInfo()
-                                        .makeColorType(kRGBA_8888_SkColorType)
+                                        .makeColorType(VX_COLOR_TYPE_RGBA_8888)
                                         .makeColorSpace(SkColorSpace::MakeSRGB());
     SkBitmap reference;
     reference.allocPixels(dstInfo);
@@ -591,7 +591,7 @@ DEF_TEST(RustJpegCodec_decode_with_color_transform, r) {
 
     // The image has a non-sRGB ICC profile. Requesting sRGB forces a color transform.
     SkImageInfo dstInfo = codec->getInfo()
-        .makeColorType(kRGBA_8888_SkColorType)
+        .makeColorType(VX_COLOR_TYPE_RGBA_8888)
         .makeColorSpace(SkColorSpace::MakeSRGB());
     SkBitmap bitmap;
     bitmap.allocPixels(dstInfo);
@@ -707,27 +707,27 @@ DEF_TEST(RustJpegEncode_quality_affects_size, r) {
 DEF_TEST(RustJpegEncode_color_formats, r) {
     struct TestCase {
         const char* description;
-        SkColorType colorType;
-        SkAlphaType alphaType;
+        vx_color_type colorType;
+        vx_alpha_type alphaType;
         SkColor fillColor;
         SkJpegEncoder::AlphaOption alphaOption;
     };
 
     static const TestCase kTestCases[] = {
         {"grayscale",
-         kGray_8_SkColorType,   kOpaque_SkAlphaType,   SK_ColorGRAY,
+         VX_COLOR_TYPE_GRAY_8,   VX_ALPHA_TYPE_OPAQUE,   SK_ColorGRAY,
          SkJpegEncoder::AlphaOption::kIgnore},
         {"RGBA ignore alpha",
-         kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, 0x80FF0000,
+         VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, 0x80FF0000,
          SkJpegEncoder::AlphaOption::kIgnore},
         {"RGBA blend on black",
-         kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, 0x8000FF00,
+         VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, 0x8000FF00,
          SkJpegEncoder::AlphaOption::kBlendOnBlack},
         {"BGRA",
-         kBGRA_8888_SkColorType, kUnpremul_SkAlphaType, SK_ColorBLUE,
+         VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED, SK_ColorBLUE,
          SkJpegEncoder::AlphaOption::kIgnore},
         {"RGB_888x (4-byte opaque)",
-         kRGB_888x_SkColorType, kOpaque_SkAlphaType, SK_ColorRED,
+         VX_COLOR_TYPE_RGB_888X, VX_ALPHA_TYPE_OPAQUE, SK_ColorRED,
          SkJpegEncoder::AlphaOption::kIgnore},
     };
 

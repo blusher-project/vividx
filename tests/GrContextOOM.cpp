@@ -37,7 +37,7 @@ DEF_GANESH_TEST(GrContext_oomed, reporter, originalOptions, CtsEnforcement::kApi
         if (context->backend() != GrBackendApi::kOpenGL) {
             continue;
         }
-        auto info = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+        auto info = SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
         for (int run = 0; run < 20; ++run) {
             bool oomed = false;
             for (int i = 0; i < 500; ++i) {

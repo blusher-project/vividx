@@ -77,7 +77,7 @@ DEF_TEST(serial_procs_image, reporter) {
             },
     };
     const SkDeserialImageFromDataProc dprocs[] = {
-            [](sk_sp<SkData> data, std::optional<SkAlphaType> alphaType, void*) -> sk_sp<SkImage> {
+            [](sk_sp<SkData> data, std::optional<enum vx_alpha_type> alphaType, void*) -> sk_sp<SkImage> {
 #if defined(SK_CODEC_DECODES_PNG_WITH_RUST)
                 std::unique_ptr<SkStream> stream = SkMemoryStream::Make(data);
                 auto codec = SkPngRustDecoder::Decode(std::move(stream), nullptr, nullptr);
@@ -86,7 +86,7 @@ DEF_TEST(serial_procs_image, reporter) {
 #endif
                 return std::get<0>(codec->getImage());
             },
-            [](sk_sp<SkData> data, std::optional<SkAlphaType>, void* ctx) -> sk_sp<SkImage> {
+            [](sk_sp<SkData> data, std::optional<enum vx_alpha_type>, void* ctx) -> sk_sp<SkImage> {
                 State* state = (State*)ctx;
                 if (data->size() != strlen(state->fStr) + 1 ||
                     0 != memcmp(data->data(), state->fStr, data->size())) {

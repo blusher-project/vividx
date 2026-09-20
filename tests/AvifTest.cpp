@@ -22,8 +22,8 @@ struct AvifTestCase {
     int bitmapHeight;
     int expectedFrameCount;
     int expectedFrameDuration;
-    SkColorType color_type;
-    SkAlphaType alpha_type;
+    vx_color_type color_type;
+    vx_alpha_type alpha_type;
 };
 
 static void run_avif_test(skiatest::Reporter* r, const AvifTestCase& t) {
@@ -82,8 +82,8 @@ DEF_TEST(AvifDecodeBasic, r) {
                       .bitmapHeight = 180,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_8888_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_8888,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -95,8 +95,8 @@ DEF_TEST(AvifDecodeOddDimensions, r) {
                       .bitmapHeight = 537,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_8888_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_8888,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -108,8 +108,8 @@ DEF_TEST(AvifDecodeScaleDown, r) {
                       .bitmapHeight = 20,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_8888_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_8888,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -121,8 +121,8 @@ DEF_TEST(AvifDecode10BitToRGBA8888Bitmap, r) {
                       .bitmapHeight = 512,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_8888_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_8888,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -134,8 +134,8 @@ DEF_TEST(AvifDecode10BitToRGBAF16Bitmap, r) {
                       .bitmapHeight = 512,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_F16_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_F16,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -147,8 +147,8 @@ DEF_TEST(AvifDecode10BitToRGBAF16BitmapDownscale, r) {
                       .bitmapHeight = 100,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_F16_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_F16,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -160,8 +160,8 @@ DEF_TEST(AvifDecode12BitToRGBA8888Bitmap, r) {
                       .bitmapHeight = 512,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_8888_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_8888,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -173,8 +173,8 @@ DEF_TEST(AvifDecode12BitToRGBAF16Bitmap, r) {
                       .bitmapHeight = 512,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_F16_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_F16,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -186,8 +186,8 @@ DEF_TEST(AvifDecode12BitToRGBAF16BitmapDownscale, r) {
                       .bitmapHeight = 100,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_F16_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_F16,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -199,8 +199,8 @@ DEF_TEST(AvifDecodeImageWithAlpha, r) {
                       .bitmapHeight = 246,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kRGBA_8888_SkColorType,
-                      .alpha_type = kUnpremul_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_8888,
+                      .alpha_type = VX_ALPHA_TYPE_UNPREMULTIPLIED};
     run_avif_test(r, t);
 }
 
@@ -212,8 +212,8 @@ DEF_TEST(AvifDecodeAnimation, r) {
                       .bitmapHeight = 100,
                       .expectedFrameCount = 13,
                       .expectedFrameDuration = 100,
-                      .color_type = kRGBA_8888_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_8888,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 
@@ -225,8 +225,8 @@ DEF_TEST(AvifDecodeAnimationWithAlpha, r) {
                       .bitmapHeight = 256,
                       .expectedFrameCount = 8,
                       .expectedFrameDuration = 33,
-                      .color_type = kRGBA_8888_SkColorType,
-                      .alpha_type = kUnpremul_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_RGBA_8888,
+                      .alpha_type = VX_ALPHA_TYPE_UNPREMULTIPLIED};
     run_avif_test(r, t);
 }
 
@@ -238,8 +238,8 @@ DEF_TEST(AvifDecodeMonochrome, r) {
                       .bitmapHeight = 2,
                       .expectedFrameCount = 1,
                       .expectedFrameDuration = 0,
-                      .color_type = kGray_8_SkColorType,
-                      .alpha_type = kOpaque_SkAlphaType};
+                      .color_type = VX_COLOR_TYPE_GRAY_8,
+                      .alpha_type = VX_ALPHA_TYPE_OPAQUE};
     run_avif_test(r, t);
 }
 

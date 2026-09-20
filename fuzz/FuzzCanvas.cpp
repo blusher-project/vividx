@@ -172,7 +172,7 @@ static void fuzz_ganesh(Fuzz* fuzz, GrDirectContext* context) {
     auto surface = SkSurfaces::RenderTarget(
             context,
             skgpu::Budgeted::kNo,
-            SkImageInfo::Make(kCanvasSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(kCanvasSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     SkASSERT(surface && surface->getCanvas());
     FuzzCanvas(fuzz, surface->getCanvas());
 }

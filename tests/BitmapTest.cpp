@@ -100,27 +100,27 @@ static void test_allocpixels(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, !success);
     REPORTER_ASSERT(reporter, bm.isNull());
 
-    for (SkColorType ct : {
-        kAlpha_8_SkColorType,
-        kRGB_565_SkColorType,
-        kARGB_4444_SkColorType,
-        kRGBA_8888_SkColorType,
-        kBGRA_8888_SkColorType,
-        kRGB_888x_SkColorType,
-        kRGBA_1010102_SkColorType,
-        kRGB_101010x_SkColorType,
-        kGray_8_SkColorType,
-        kRGBA_F16Norm_SkColorType,
-        kRGBA_F16_SkColorType,
-        kRGBA_F32_SkColorType,
-        kR8G8_unorm_SkColorType,
-        kA16_unorm_SkColorType,
-        kR16_unorm_SkColorType,
-        kR16G16_unorm_SkColorType,
-        kA16_float_SkColorType,
-        kR16_float_SkColorType,
-        kR16G16_float_SkColorType,
-        kR16G16B16A16_unorm_SkColorType,
+    for (vx_color_type ct : {
+        VX_COLOR_TYPE_ALPHA_8,
+        VX_COLOR_TYPE_RGB_565,
+        VX_COLOR_TYPE_ARGB_4444,
+        VX_COLOR_TYPE_RGBA_8888,
+        VX_COLOR_TYPE_BGRA_8888,
+        VX_COLOR_TYPE_RGB_888X,
+        VX_COLOR_TYPE_RGBA_1010102,
+        VX_COLOR_TYPE_RGB_101010X,
+        VX_COLOR_TYPE_GRAY_8,
+        VX_COLOR_TYPE_RGBA_F16NORM,
+        VX_COLOR_TYPE_RGBA_F16,
+        VX_COLOR_TYPE_RGBA_F32,
+        VX_COLOR_TYPE_R8G8_UNORM,
+        VX_COLOR_TYPE_A16_UNORM,
+        VX_COLOR_TYPE_R16_UNORM,
+        VX_COLOR_TYPE_R16G16_UNORM,
+        VX_COLOR_TYPE_A16_FLOAT,
+        VX_COLOR_TYPE_R16_FLOAT,
+        VX_COLOR_TYPE_R16G16_FLOAT,
+        VX_COLOR_TYPE_R16G16B16A16_UNORM,
     }) {
         SkImageInfo imageInfo = info.makeColorType(ct);
         for (int rowBytesPadding = 1; rowBytesPadding <= 17; rowBytesPadding++) {
@@ -145,7 +145,7 @@ static void test_bigwidth(skiatest::Reporter* reporter) {
 
     SkImageInfo info = SkImageInfo::MakeA8(width, 1);
     REPORTER_ASSERT(reporter, bm.setInfo(info));
-    REPORTER_ASSERT(reporter, bm.setInfo(info.makeColorType(kRGB_565_SkColorType)));
+    REPORTER_ASSERT(reporter, bm.setInfo(info.makeColorType(VX_COLOR_TYPE_RGB_565)));
 
     // for a 4-byte config, this width will compute a rowbytes of 0x80000000,
     // which does not fit in a int32_t. setConfig should detect this, and fail.
@@ -153,7 +153,7 @@ static void test_bigwidth(skiatest::Reporter* reporter) {
     // TODO: perhaps skia can relax this, and only require that rowBytes fit
     //       in a uint32_t (or larger), but for now this is the constraint.
 
-    REPORTER_ASSERT(reporter, !bm.setInfo(info.makeColorType(kN32_SkColorType)));
+    REPORTER_ASSERT(reporter, !bm.setInfo(info.makeColorType(VX_COLOR_TYPE_N32)));
 }
 
 DEF_TEST(Bitmap, reporter) {
@@ -185,8 +185,8 @@ DEF_TEST(Bitmap_setColorSpace, r) {
     // Readback should use the normal sRGB colorspace.
     const SkImageInfo kReadbackInfo = SkImageInfo::Make(/*width=*/1,
                                                         /*height=*/1,
-                                                        kN32_SkColorType,
-                                                        kOpaque_SkAlphaType,
+                                                        VX_COLOR_TYPE_N32,
+                                                        VX_ALPHA_TYPE_OPAQUE,
                                                         SkColorSpace::MakeSRGB());
     // Do readback and verify that the color is gray.
     uint8_t pixelData[4];
@@ -228,11 +228,11 @@ DEF_TEST(Bitmap_getColor_Swizzle, r) {
     SkBitmap source;
     source.allocN32Pixels(1,1);
     source.eraseColor(SK_ColorRED);
-    SkColorType colorTypes[] = {
-        kRGBA_8888_SkColorType,
-        kBGRA_8888_SkColorType,
+    vx_color_type colorTypes[] = {
+        VX_COLOR_TYPE_RGBA_8888,
+        VX_COLOR_TYPE_BGRA_8888,
     };
-    for (SkColorType ct : colorTypes) {
+    for (vx_color_type ct : colorTypes) {
         SkBitmap copy;
         if (!ToolUtils::copy_to(&copy, ct, source)) {
             ERRORF(r, "SkBitmap::copy failed %d", (int)ct);
@@ -242,10 +242,10 @@ DEF_TEST(Bitmap_getColor_Swizzle, r) {
     }
 }
 
-static void test_erasecolor_premul(skiatest::Reporter* reporter, SkColorType ct, SkColor input,
+static void test_erasecolor_premul(skiatest::Reporter* reporter, vx_color_type ct, SkColor input,
                                    SkColor expected) {
   SkBitmap bm;
-  bm.allocPixels(SkImageInfo::Make(1, 1, ct, kPremul_SkAlphaType));
+  bm.allocPixels(SkImageInfo::Make(1, 1, ct, VX_ALPHA_TYPE_PREMULTIPLIED));
   bm.eraseColor(input);
   INFOF(reporter, "expected: %x actual: %x\n", expected, bm.getColor(0, 0));
   REPORTER_ASSERT(reporter, bm.getColor(0, 0) == expected);
@@ -256,27 +256,27 @@ static void test_erasecolor_premul(skiatest::Reporter* reporter, SkColorType ct,
  */
 DEF_TEST(Bitmap_eraseColor_Premul, r) {
     SkColor color = 0x80FF0080;
-    test_erasecolor_premul(r, kAlpha_8_SkColorType, color, 0x80000000);
-    test_erasecolor_premul(r, kRGB_565_SkColorType, color, 0xFF840042);
-    test_erasecolor_premul(r, kARGB_4444_SkColorType, color, 0x88FF0080);
-    test_erasecolor_premul(r, kRGBA_8888_SkColorType, color, color);
-    test_erasecolor_premul(r, kBGRA_8888_SkColorType, color, color);
+    test_erasecolor_premul(r, VX_COLOR_TYPE_ALPHA_8, color, 0x80000000);
+    test_erasecolor_premul(r, VX_COLOR_TYPE_RGB_565, color, 0xFF840042);
+    test_erasecolor_premul(r, VX_COLOR_TYPE_ARGB_4444, color, 0x88FF0080);
+    test_erasecolor_premul(r, VX_COLOR_TYPE_RGBA_8888, color, color);
+    test_erasecolor_premul(r, VX_COLOR_TYPE_BGRA_8888, color, color);
 }
 
 // Test that SkBitmap::ComputeOpaque() is correct for various colortypes.
 DEF_TEST(Bitmap_compute_is_opaque, r) {
 
-    for (int i = 1; i <= kLastEnum_SkColorType; ++i) {
-        SkColorType ct = (SkColorType) i;
+    for (int i = 1; i <= VX_COLOR_TYPE_LASTENUM; ++i) {
+        vx_color_type ct = (vx_color_type) i;
         SkBitmap bm;
-        SkAlphaType at = vx_color_type_is_always_opaque(ct) ? kOpaque_SkAlphaType : kPremul_SkAlphaType;
+        vx_alpha_type at = vx_color_type_is_always_opaque(ct) ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_PREMULTIPLIED;
         bm.allocPixels(SkImageInfo::Make(13, 17, ct, at));
         bm.eraseColor(SkColorSetARGB(255, 10, 20, 30));
         REPORTER_ASSERT(r, SkBitmap::ComputeIsOpaque(bm));
 
         bm.eraseColor(SkColorSetARGB(128, 255, 255, 255));
         bool isOpaque = SkBitmap::ComputeIsOpaque(bm);
-        bool shouldBeOpaque = (at == kOpaque_SkAlphaType);
+        bool shouldBeOpaque = (at == VX_ALPHA_TYPE_OPAQUE);
         REPORTER_ASSERT(r, isOpaque == shouldBeOpaque);
     }
 }
@@ -286,7 +286,7 @@ DEF_TEST(Bitmap_erase_f16_erase_getColor, r) {
     SkRandom random;
     SkPixmap pm;
     SkBitmap bm;
-    bm.allocPixels(SkImageInfo::Make(1, 1, kRGBA_F16_SkColorType, kPremul_SkAlphaType));
+    bm.allocPixels(SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_F16, VX_ALPHA_TYPE_PREMULTIPLIED));
     REPORTER_ASSERT(r, bm.peekPixels(&pm));
     for (unsigned i = 0; i < 0x100; ++i) {
         // Test all possible values of blue component.
@@ -309,7 +309,7 @@ DEF_TEST(Bitmap_erase_f16_erase_getColor, r) {
 DEF_TEST(Bitmap_erase_srgb, r) {
     SkBitmap bm;
     // Use a color spin from SRGB.
-    bm.allocPixels(SkImageInfo::Make(1, 1, kN32_SkColorType, kPremul_SkAlphaType,
+    bm.allocPixels(SkImageInfo::Make(1, 1, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED,
                                      SkColorSpace::MakeSRGB()->makeColorSpin()));
     // RED will be converted into the spun color space.
     bm.eraseColor(SK_ColorRED);
@@ -329,18 +329,18 @@ DEF_TEST(Bitmap_clear_pixelref_keep_info, r) {
 // At the time of writing, SkBitmap::erase() works when the color is zero for all formats,
 // but some formats failed when the color is non-zero!
 DEF_TEST(Bitmap_erase, r) {
-    SkColorType colorTypes[] = {
-        kRGB_565_SkColorType,
-        kARGB_4444_SkColorType,
-        kRGB_888x_SkColorType,
-        kRGBA_8888_SkColorType,
-        kBGRA_8888_SkColorType,
-        kRGB_101010x_SkColorType,
-        kRGBA_1010102_SkColorType,
+    vx_color_type colorTypes[] = {
+        VX_COLOR_TYPE_RGB_565,
+        VX_COLOR_TYPE_ARGB_4444,
+        VX_COLOR_TYPE_RGB_888X,
+        VX_COLOR_TYPE_RGBA_8888,
+        VX_COLOR_TYPE_BGRA_8888,
+        VX_COLOR_TYPE_RGB_101010X,
+        VX_COLOR_TYPE_RGBA_1010102,
     };
 
-    for (SkColorType ct : colorTypes) {
-        SkImageInfo info = SkImageInfo::Make(1,1, (SkColorType)ct, kPremul_SkAlphaType);
+    for (vx_color_type ct : colorTypes) {
+        SkImageInfo info = SkImageInfo::Make(1,1, (vx_color_type)ct, VX_ALPHA_TYPE_PREMULTIPLIED);
 
         SkBitmap bm;
         bm.allocPixels(info);
@@ -359,7 +359,7 @@ DEF_TEST(Bitmap_erase, r) {
 }
 
 static void check_alphas(skiatest::Reporter* reporter, const SkBitmap& bm,
-                         bool (*pred)(float expected, float actual), SkColorType ct) {
+                         bool (*pred)(float expected, float actual), vx_color_type ct) {
     SkASSERT(bm.width() == 16);
     SkASSERT(bm.height() == 16);
 
@@ -428,32 +428,32 @@ DEF_TEST(getalphaf, reporter) {
     };
 
     const struct {
-        SkColorType fColorType;
+        vx_color_type fColorType;
         bool (*fPred)(float, float);
     } recs[] = {
-        { kRGB_565_SkColorType,            opaque },
-        { kGray_8_SkColorType,             opaque },
-        { kR8G8_unorm_SkColorType,         opaque },
-        { kR16_unorm_SkColorType,          opaque },
-        { kR16_float_SkColorType,          opaque },
-        { kR16G16_unorm_SkColorType,       opaque },
-        { kR16G16_float_SkColorType,       opaque },
-        { kRGB_888x_SkColorType,           opaque },
-        { kRGB_101010x_SkColorType,        opaque },
-        { kRGB_F16F16F16x_SkColorType,     opaque },
+        { VX_COLOR_TYPE_RGB_565,            opaque },
+        { VX_COLOR_TYPE_GRAY_8,             opaque },
+        { VX_COLOR_TYPE_R8G8_UNORM,         opaque },
+        { VX_COLOR_TYPE_R16_UNORM,          opaque },
+        { VX_COLOR_TYPE_R16_FLOAT,          opaque },
+        { VX_COLOR_TYPE_R16G16_UNORM,       opaque },
+        { VX_COLOR_TYPE_R16G16_FLOAT,       opaque },
+        { VX_COLOR_TYPE_RGB_888X,           opaque },
+        { VX_COLOR_TYPE_RGB_101010X,        opaque },
+        { VX_COLOR_TYPE_RGB_F16F16F16X,     opaque },
 
-        { kAlpha_8_SkColorType,            nearly },
-        { kA16_unorm_SkColorType,          nearly },
-        { kA16_float_SkColorType,          nearly_half },
-        { kRGBA_8888_SkColorType,          nearly },
-        { kBGRA_8888_SkColorType,          nearly },
-        { kR16G16B16A16_unorm_SkColorType, nearly },
-        { kRGBA_F16_SkColorType,           nearly_half },
-        { kRGBA_F32_SkColorType,           nearly },
+        { VX_COLOR_TYPE_ALPHA_8,            nearly },
+        { VX_COLOR_TYPE_A16_UNORM,          nearly },
+        { VX_COLOR_TYPE_A16_FLOAT,          nearly_half },
+        { VX_COLOR_TYPE_RGBA_8888,          nearly },
+        { VX_COLOR_TYPE_BGRA_8888,          nearly },
+        { VX_COLOR_TYPE_R16G16B16A16_UNORM, nearly },
+        { VX_COLOR_TYPE_RGBA_F16,           nearly_half },
+        { VX_COLOR_TYPE_RGBA_F32,           nearly },
 
-        { kRGBA_1010102_SkColorType,       nearly2bit },
+        { VX_COLOR_TYPE_RGBA_1010102,       nearly2bit },
 
-        { kARGB_4444_SkColorType,          nearly4bit },
+        { VX_COLOR_TYPE_ARGB_4444,          nearly4bit },
     };
 
     for (const auto& rec : recs) {
@@ -487,7 +487,7 @@ DEF_TEST(bitmap_zerowidth_crbug_1103827, reporter) {
 
     for (const auto& r : rec) {
         auto info = SkImageInfo::Make(r.width, r.height,
-                                      kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                                      VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
         size_t size = info.computeByteSize(r.rowbytes);
         REPORTER_ASSERT(reporter, size == r.expected_size);
 

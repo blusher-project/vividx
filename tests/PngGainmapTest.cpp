@@ -141,9 +141,9 @@ DEF_TEST(AndroidCodec_pngGainmapInvalidDecode, r) {
 }
 
 DEF_TEST(AndroidCodec_pngGainmapEncodeAndDecode, r) {
-    SkColorType colorTypes[] = {
-            kRGBA_8888_SkColorType,
-            kAlpha_8_SkColorType,
+    vx_color_type colorTypes[] = {
+            VX_COLOR_TYPE_RGBA_8888,
+            VX_COLOR_TYPE_ALPHA_8,
     };
 
     for (const auto& colorType : colorTypes) {
@@ -159,10 +159,10 @@ DEF_TEST(AndroidCodec_pngGainmapEncodeAndDecode, r) {
         sourceGainmapInfo.fGainmapMathColorSpace = SkColorSpace::MakeSRGB();
         SkBitmap sourceBase;
         sourceBase.allocPixels(
-                SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kOpaque_SkAlphaType));
+                SkImageInfo::Make(16, 16, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE));
         sourceBase.eraseColor(SK_ColorRED);
         SkBitmap sourceGainmap;
-        sourceGainmap.allocPixels(SkImageInfo::Make(4, 4, colorType, kOpaque_SkAlphaType));
+        sourceGainmap.allocPixels(SkImageInfo::Make(4, 4, colorType, VX_ALPHA_TYPE_OPAQUE));
         sourceGainmap.eraseColor(SK_ColorGREEN);
 
         SkPngEncoder::Options options;
@@ -187,7 +187,7 @@ DEF_TEST(AndroidCodec_pngGainmapEncodeAndDecode, r) {
         REPORTER_ASSERT(r, gainmapBitmap.dimensions().fHeight == 4);
         REPORTER_ASSERT(r, gainmapBitmap.dimensions().fWidth == 4);
 
-        if (colorType == kAlpha_8_SkColorType) {
+        if (colorType == VX_COLOR_TYPE_ALPHA_8) {
             REPORTER_ASSERT(r, gainmapBitmap.getColor(0, 0) == SK_ColorBLACK);
             REPORTER_ASSERT(r, gainmapBitmap.getColor(3, 3) == SK_ColorBLACK);
         } else {
@@ -195,7 +195,7 @@ DEF_TEST(AndroidCodec_pngGainmapEncodeAndDecode, r) {
             REPORTER_ASSERT(r, gainmapBitmap.getColor(3, 3) == SK_ColorGREEN);
         }
         // Verify the gainmap rendering parameters.
-        if (colorType == kAlpha_8_SkColorType) {
+        if (colorType == VX_COLOR_TYPE_ALPHA_8) {
             sourceGainmapInfo.fGainmapMathColorSpace = nullptr;
         }
 

@@ -136,8 +136,8 @@ DEF_SIMPLE_GM(runtimecolorfilter_vertices_atlas_and_patch, canvas, 404, 404) {
 
     // Make an image from the vertices to do equivalent drawAtlas, drawPatch using an image shader.
     auto info = SkImageInfo::Make({128, 128},
-                                  kRGBA_8888_SkColorType,
-                                  kPremul_SkAlphaType,
+                                  VX_COLOR_TYPE_RGBA_8888,
+                                  VX_ALPHA_TYPE_PREMULTIPLIED,
                                   canvas->imageInfo().refColorSpace());
     auto surf = SkSurfaces::Raster(info);
     surf->getCanvas()->drawVertices(verts, SkBlendMode::kDst, SkPaint());

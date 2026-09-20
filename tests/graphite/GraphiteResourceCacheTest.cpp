@@ -182,7 +182,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(GraphiteBudgetedResourcesTest,
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Test that SkImage's and SkSurface's underlying Resource's follow the expected budgeted
     // system.
-    auto info = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     // First test SkImages. Since we can't directly create a Graphite SkImage we first have to make
     // a raster SkImage than convert that to a Graphite SkImage via makeTextureImage.

@@ -34,7 +34,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(PrecompileStatsTest, is_dawn_metal_context_type,
     GlobalCache* cache = precompileContext->priv().globalCache();
 
     const RenderPassProperties kBGRA_1_D { DepthStencilFlags::kDepth,
-                                           kBGRA_8888_SkColorType,
+                                           VX_COLOR_TYPE_BGRA_8888,
                                            /* fDstCS= */ nullptr,
                                            /* fRequiresMSAA= */ false };
 

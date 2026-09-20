@@ -65,8 +65,8 @@ sk_sp<SkImage> create_and_attach_mipmaps(sk_sp<SkImage> img) {
 sk_sp<SkImage> create_raster(Mipmapped mipmapped) {
     SkImageInfo ii = SkImageInfo::Make(kImageSize.width(),
                                        kImageSize.height(),
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bm;
     if (!bm.tryAllocPixels(ii)) {
         return nullptr;
@@ -132,8 +132,8 @@ sk_sp<SkImage> create_bitmap_generator_backed_image(Recorder*) {
         BitmapBackedGenerator()
                 : SkImageGenerator(SkImageInfo::Make(kImageSize.width(),
                                                      kImageSize.height(),
-                                                     kRGBA_8888_SkColorType,
-                                                     kPremul_SkAlphaType)) {
+                                                     VX_COLOR_TYPE_RGBA_8888,
+                                                     VX_ALPHA_TYPE_PREMULTIPLIED)) {
         }
 
         bool onGetPixels(const SkImageInfo& dstInfo,
@@ -169,7 +169,7 @@ bool check_img(skiatest::Reporter* reporter,
                Mipmapped mipmapped,
                const char* testcase,
                const SkColor4f& expectedColor) {
-    SkImageInfo ii = SkImageInfo::Make(kSurfaceSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(kSurfaceSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap result;
     result.allocPixels(ii);
@@ -443,27 +443,27 @@ namespace {
 // Technically, these internal operations wouldn't trigger MSAA, but there isn't a system to have
 // internal surfaces skip that validation. b/507427401 would address this, in which case we can
 // remove the MSAA checks.
-SkColorType pick_colortype(const Caps* caps, bool mipmapped) {
+vx_color_type pick_colortype(const Caps* caps, bool mipmapped) {
     auto mm = mipmapped ? skgpu::Mipmapped::kYes : skgpu::Mipmapped::kNo;
     TextureInfo info = caps->getDefaultSampledTextureInfo(
-            kRGB_565_SkColorType, mm, skgpu::Protected::kNo, skgpu::Renderable::kYes);
+            VX_COLOR_TYPE_RGB_565, mm, skgpu::Protected::kNo, skgpu::Renderable::kYes);
     if (info.isValid() && caps->getCompatibleMSAASampleCount(info) > SampleCount::k1) {
-        return kRGB_565_SkColorType;
+        return VX_COLOR_TYPE_RGB_565;
     }
 
     info = caps->getDefaultSampledTextureInfo(
-            kRGBA_F16_SkColorType, mm, skgpu::Protected::kNo, skgpu::Renderable::kYes);
+            VX_COLOR_TYPE_RGBA_F16, mm, skgpu::Protected::kNo, skgpu::Renderable::kYes);
     if (info.isValid() && caps->getCompatibleMSAASampleCount(info) > SampleCount::k1) {
-        return kRGBA_F16_SkColorType;
+        return VX_COLOR_TYPE_RGBA_F16;
     }
 
     info = caps->getDefaultSampledTextureInfo(
-            kRGBA_1010102_SkColorType, mm, skgpu::Protected::kNo, skgpu::Renderable::kYes);
+            VX_COLOR_TYPE_RGBA_1010102, mm, skgpu::Protected::kNo, skgpu::Renderable::kYes);
     if (info.isValid() && caps->getCompatibleMSAASampleCount(info) > SampleCount::k1) {
-        return kRGBA_1010102_SkColorType;
+        return VX_COLOR_TYPE_RGBA_1010102;
     }
 
-    return kUnknown_SkColorType;
+    return VX_COLOR_TYPE_UNKNOWN;
 }
 
 } // anonymous namespace
@@ -497,8 +497,8 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(MakeColorSpace_Test, reporter, context,
         skiatest::ReporterContext subtest(reporter, testcase.name);
         sk_sp<SkImage> orig = testcase.fFactory(recorder.get());
 
-        SkASSERT(orig->colorType() == kRGBA_8888_SkColorType ||
-                 orig->colorType() == kBGRA_8888_SkColorType);
+        SkASSERT(orig->colorType() == VX_COLOR_TYPE_RGBA_8888 ||
+                 orig->colorType() == VX_COLOR_TYPE_BGRA_8888);
         SkASSERT(!orig->colorSpace() || orig->colorSpace() == SkColorSpace::MakeSRGB().get());
 
         for (bool mipmapped : {false, true}) {
@@ -515,8 +515,8 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(MakeColorSpace_Test, reporter, context,
                 REPORTER_ASSERT(reporter, !i->hasMipmaps());
             }
 
-            SkColorType altCT = pick_colortype(caps, mipmapped);
-            if (altCT == kUnknown_SkColorType) {
+            vx_color_type altCT = pick_colortype(caps, mipmapped);
+            if (altCT == VX_COLOR_TYPE_UNKNOWN) {
                 // Unsupported on current device
                 continue;
             }

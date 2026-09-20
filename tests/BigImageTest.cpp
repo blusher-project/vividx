@@ -331,8 +331,8 @@ void tiling_comparison_test(GrDirectContext* dContext,
 
                     auto destII = SkImageInfo::Make(rotatedRect.width(),
                                                     rotatedRect.height(),
-                                                    kRGBA_8888_SkColorType,
-                                                    kPremul_SkAlphaType);
+                                                    VX_COLOR_TYPE_RGBA_8888,
+                                                    VX_ALPHA_TYPE_PREMULTIPLIED);
 
                     SkBitmap expected, actual;
                     expected.allocPixels(destII);
@@ -489,8 +489,8 @@ void tiled_image_caching_test(GrDirectContext* dContext,
                                                /* desiredDepth= */ 7);
 
     auto destII = SkImageInfo::Make(kImageSize, kImageSize,
-                                    kRGBA_8888_SkColorType,
-                                    kPremul_SkAlphaType);
+                                    VX_COLOR_TYPE_RGBA_8888,
+                                    VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap readback;
     readback.allocPixels(destII);

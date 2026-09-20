@@ -307,8 +307,8 @@ public:
 
         auto p3 = SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
                                         SkNamedGamut::kDisplayP3);
-        auto xform = GrColorSpaceXform::Make(sk_srgb_singleton(), kUnpremul_SkAlphaType,
-                                             p3.get(),            kUnpremul_SkAlphaType);
+        auto xform = GrColorSpaceXform::Make(sk_srgb_singleton(), VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                                             p3.get(),            VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
         SkRandom r;
         const int kDrawsPerLoop = 32;

@@ -73,7 +73,7 @@ protected:
         constexpr SkScalar kAngleStep = 360.0f / kNumLines;
         constexpr int kInnerOffset = 10;
 
-        auto info = SkImageInfo::MakeN32(kImageSize, kImageSize, kOpaque_SkAlphaType);
+        auto info = SkImageInfo::MakeN32(kImageSize, kImageSize, VX_ALPHA_TYPE_OPAQUE);
         auto surf = SkSurfaces::Raster(info);
         auto canvas = surf->getCanvas();
 
@@ -180,13 +180,13 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        auto ct = canvas->imageInfo().colorType() == kUnknown_SkColorType
-                          ? kRGBA_8888_SkColorType
+        auto ct = canvas->imageInfo().colorType() == VX_COLOR_TYPE_UNKNOWN
+                          ? VX_COLOR_TYPE_RGBA_8888
                           : canvas->imageInfo().colorType();
         auto ii = SkImageInfo::Make(kImageSize,
                                     kImageSize,
                                     ct,
-                                    kPremul_SkAlphaType,
+                                    VX_ALPHA_TYPE_PREMULTIPLIED,
                                     canvas->imageInfo().refColorSpace());
         // In GPU mode we want a surface that is created with mipmaps to ensure that we exercise the
         // case where the SkSurface and SkImage share a texture. If the surface texture isn't

@@ -16,8 +16,8 @@
 static DEFINE_bool(zero_init, false,
                    "Pretend our destination is zero-intialized, simulating Android?");
 
-CodecBench::CodecBench(SkString baseName, SkData* encoded, SkColorType colorType,
-        SkAlphaType alphaType)
+CodecBench::CodecBench(SkString baseName, SkData* encoded, vx_color_type colorType,
+        vx_alpha_type alphaType)
     : fColorType(colorType)
     , fAlphaType(alphaType)
     , fData(SkRef(encoded))

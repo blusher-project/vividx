@@ -176,8 +176,8 @@ static void test_nested_blends(skiatest::Reporter* reporter, SkSurface* surface)
 
 DEF_TEST(ShaderTestNestedBlendsCpu, reporter) {
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(1, 1),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                       vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::Raster(ii);
     test_nested_blends(reporter, surface.get());
 }
@@ -188,8 +188,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ShaderTestNestedBlendsGanesh,
                                        contextInfo,
                                        CtsEnforcement::kApiLevel_202404) {
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(1, 1),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                       vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     GrDirectContext* context = contextInfo.directContext();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, ii);
     test_nested_blends(reporter, surface.get());
@@ -202,8 +202,8 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(ShaderTestNestedBlendsGraphite, reporte
     using namespace skgpu::graphite;
 
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(1, 1),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                       vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
     test_nested_blends(reporter, surface.get());

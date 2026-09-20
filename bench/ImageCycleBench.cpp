@@ -38,8 +38,8 @@ protected:
     const char* onGetName() override { return fName.c_str(); }
 
     void onPerCanvasPreDraw(SkCanvas* canvas) override {
-        auto ii = SkImageInfo::Make(kImageSize.fWidth, kImageSize.fHeight, kRGBA_8888_SkColorType,
-                                    kPremul_SkAlphaType, nullptr);
+        auto ii = SkImageInfo::Make(kImageSize.fWidth, kImageSize.fHeight, VX_COLOR_TYPE_RGBA_8888,
+                                    VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
         SkRandom random;
         fImages = std::make_unique<sk_sp<SkImage>[]>(fImageCnt);
         for (int i = 0; i < fImageCnt; ++i) {

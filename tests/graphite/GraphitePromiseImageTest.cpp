@@ -189,7 +189,7 @@ void setup_test_context(Context* context,
 
     skgpu::Protected isProtected = skgpu::Protected(caps->protectedSupport());
 
-    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGBA_8888,
                                                                  skgpu::Mipmapped::kNo,
                                                                  isProtected,
                                                                  skgpu::Renderable::kYes);
@@ -221,8 +221,8 @@ void setup_test_context(Context* context,
 
     SkImageInfo ii = SkImageInfo::Make(dimensions.fWidth,
                                        dimensions.fHeight,
-                                       kRGBA_8888_SkColorType,
-                                       kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
 
     testCtx->fImg = SkImages::PromiseTextureFrom(testCtx->fRecorder.get(),
                                                  dimensions,

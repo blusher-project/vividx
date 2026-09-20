@@ -225,44 +225,44 @@ DEF_TEST(HdrMetadata_Agtm_Mix, r) {
 
     test("Red only",
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction({.fRed=1.f}),
-         SkColor4f({0.5f, 0.75f, 0.25f, 1.f}),
-         SkColor4f({0.5f, 0.5f,  0.5f,  1.f}));
+         SkColor4f(0.5f, 0.75f, 0.25f, 1.f),
+         SkColor4f(0.5f, 0.5f,  0.5f,  1.f));
 
     test("Green only",
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction({.fGreen=1.f}),
-         SkColor4f({0.75f, 0.5f, 0.25f, 1.f}),
-         SkColor4f({0.5f,  0.5f, 0.5f,  1.f}));
+         SkColor4f(0.75f, 0.5f, 0.25f, 1.f),
+         SkColor4f(0.5f,  0.5f, 0.5f,  1.f));
 
     test("Blue only",
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction({.fBlue=1.f}),
-         SkColor4f({0.75f, 0.25f, 0.5f, 1.f}),
-         SkColor4f({0.5f,  0.5f,  0.5f,  1.f}));
+         SkColor4f(0.75f, 0.25f, 0.5f, 1.f),
+         SkColor4f(0.5f,  0.5f,  0.5f,  1.f));
 
     test("Max only",
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction({.fMax=1.f}),
-         SkColor4f({0.75f, 0.5f,  0.25f, 1.f}),
-         SkColor4f({0.75f, 0.75f, 0.75f, 1.f}));
+         SkColor4f(0.75f, 0.5f,  0.25f, 1.f),
+         SkColor4f(0.75f, 0.75f, 0.75f, 1.f));
 
     test("Min only",
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction({.fMin=1.f}),
-         SkColor4f({0.75f, 0.5f,  0.25f, 1.f}),
-         SkColor4f({0.25f, 0.25f, 0.25f, 1.f}));
+         SkColor4f(0.75f, 0.5f,  0.25f, 1.f),
+         SkColor4f(0.25f, 0.25f, 0.25f, 1.f));
 
     test("Component only",
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction({.fComponent=1.f}),
-         SkColor4f({0.75f, 0.5f, 0.25f, 1.f}),
-         SkColor4f({0.75f, 0.5f, 0.25f, 1.f}));
+         SkColor4f(0.75f, 0.5f, 0.25f, 1.f),
+         SkColor4f(0.75f, 0.5f, 0.25f, 1.f));
 
     test("CIE Y (luminance)",
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction(
              {.fRed=0.2627f, .fGreen=0.6780f, .fBlue=0.0593f}),
-         SkColor4f({0.75f,    0.5f,     0.25f,    0.125f}),
-         SkColor4f({0.55085f, 0.55085f, 0.55085f, 0.125f}));
+         SkColor4f(0.75f,    0.5f,     0.25f,    0.125f),
+         SkColor4f(0.55085f, 0.55085f, 0.55085f, 0.125f));
 
     test("max-component",
          skhdr::AdaptiveGlobalToneMap::ComponentMixingFunction({.fMax=0.75f, .fComponent=0.25f}),
-         SkColor4f({0.75f, 0.5f,    0.25f,   0.125f}),
-         SkColor4f({0.75f, 0.6875f, 0.6250f, 0.125f}));
+         SkColor4f(0.75f, 0.5f,    0.25f,   0.125f),
+         SkColor4f(0.75f, 0.6875f, 0.6250f, 0.125f));
 
 }
 
@@ -1040,7 +1040,7 @@ DEF_TEST(HdrMetadata_Agtm_Apply_and_Shader, r) {
         // The input and output images will be kNumTestColors-by-1.
         const auto info = SkImageInfo::Make(
             kNumTestColors, 1,
-            kRGBA_F32_SkColorType, kPremul_SkAlphaType,
+            VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_PREMULTIPLIED,
             skhdr::AgtmHelpers::GetGainApplicationSpace(hatm));
 
         // Create an SkImage that references the inputTestColors array directly.

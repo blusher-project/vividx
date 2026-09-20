@@ -69,17 +69,17 @@ static void init_paint(Fuzz* fuzz, SkPaint* p) {
 
 static void init_bitmap(Fuzz* fuzz, SkBitmap* bmp) {
     uint8_t colorType;
-    fuzz->nextRange(&colorType, 0, (int)kLastEnum_SkColorType);
+    fuzz->nextRange(&colorType, 0, (int)VX_COLOR_TYPE_LASTENUM);
     // ColorType needs to match what the system configuration is.
-    if (colorType == kRGBA_8888_SkColorType || colorType == kBGRA_8888_SkColorType) {
-        colorType = kN32_SkColorType;
+    if (colorType == VX_COLOR_TYPE_RGBA_8888 || colorType == VX_COLOR_TYPE_BGRA_8888) {
+        colorType = VX_COLOR_TYPE_N32;
     }
     bool b;
     fuzz->next(&b);
     SkImageInfo info = SkImageInfo::Make(kBmpSize,
                                          kBmpSize,
-                                         (SkColorType)colorType,
-                                         b ? kOpaque_SkAlphaType : kPremul_SkAlphaType);
+                                         (vx_color_type)colorType,
+                                         b ? VX_ALPHA_TYPE_OPAQUE : VX_ALPHA_TYPE_PREMULTIPLIED);
     if (!bmp->tryAllocPixels(info)) {
         SkDEBUGF("Bitmap not allocated\n");
     }

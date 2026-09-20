@@ -134,18 +134,18 @@ static void test_image(SkCanvas* canvas, const SkImageInfo& info) {
 
 DEF_SIMPLE_GM(cgimage, canvas, 800, 250) {
         const struct {
-            SkColorType fCT;
-            SkAlphaType fAT;
+            vx_color_type fCT;
+            vx_alpha_type fAT;
         } rec[] = {
-            { kRGB_565_SkColorType, kOpaque_SkAlphaType },
+            { VX_COLOR_TYPE_RGB_565, VX_ALPHA_TYPE_OPAQUE },
 
-            { kRGBA_8888_SkColorType, kPremul_SkAlphaType },
-            { kRGBA_8888_SkColorType, kUnpremul_SkAlphaType },
-            { kRGBA_8888_SkColorType, kOpaque_SkAlphaType },
+            { VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED },
+            { VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED },
+            { VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE },
 
-            { kBGRA_8888_SkColorType, kPremul_SkAlphaType },
-            { kBGRA_8888_SkColorType, kUnpremul_SkAlphaType },
-            { kBGRA_8888_SkColorType, kOpaque_SkAlphaType },
+            { VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED },
+            { VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED },
+            { VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_OPAQUE },
         };
 
         for (size_t i = 0; i < std::size(rec); ++i) {

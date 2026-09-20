@@ -60,7 +60,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest,
     auto dContext = ctxInfo.directContext();
 
     SkImageInfo info =
-            SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(8, 8, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, info);
     SkCanvas* canvas = surface->getCanvas();
 
@@ -175,7 +175,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
     auto dContext = ctxInfo.directContext();
 
     SkImageInfo info =
-            SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+            SkImageInfo::Make(8, 8, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeFromInfo(
             dContext, info, skgpu::Mipmapped::kNo, GrRenderable::kYes);
@@ -187,7 +187,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(FinishedAsyncProcWhenAbandonedTest,
                                                   mbet->texture(),
                                                   kTopLeft_GrSurfaceOrigin,
                                                   /*sample count*/ 1,
-                                                  kRGBA_8888_SkColorType,
+                                                  VX_COLOR_TYPE_RGBA_8888,
                                                   /*color space*/ nullptr,
                                                   /*surface props*/ nullptr,
                                                   sk_gpu_test::ManagedBackendTexture::ReleaseProc,

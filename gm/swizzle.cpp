@@ -32,7 +32,7 @@ DEF_SIMPLE_GPU_GM(swizzle, rContext, canvas, 512, 512) {
     ToolUtils::GetResourceAsBitmap("images/mandrill_512_q075.jpg", &bmp);
     auto bitmap = GrMippedBitmap::Make(bmp.pixmap());
     SkASSERT_RELEASE(bitmap);
-    SkAlphaType alphaType = bitmap->alphaType();
+    vx_alpha_type alphaType = bitmap->alphaType();
     auto view = std::get<0>(GrMakeCachedBitmapProxyView(
             rContext, bitmap.value(), /*label=*/"Gm_Swizzle", skgpu::Mipmapped::kNo));
     if (!view) {

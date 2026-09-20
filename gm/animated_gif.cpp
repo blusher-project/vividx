@@ -47,7 +47,7 @@ private:
         }
         SkBitmap& bm = fFrames[frameIndex];
         if (!bm.getPixels()) {
-            const SkImageInfo info = fCodec->getInfo().makeColorType(kN32_SkColorType);
+            const SkImageInfo info = fCodec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
             bm.allocPixels(info);
 
             SkCodec::Options opts;

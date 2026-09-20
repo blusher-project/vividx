@@ -31,20 +31,20 @@ namespace skiagm {
 static const int imageWidth = 128;
 static const int imageHeight = 128;
 
-static void make(SkBitmap* bitmap, SkColorType colorType, SkAlphaType alphaType,
+static void make(SkBitmap* bitmap, vx_color_type colorType, vx_alpha_type alphaType,
                  sk_sp<SkColorSpace> colorSpace) {
     const char* resource;
     switch (colorType) {
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             resource = "images/grayscale.jpg";
-            alphaType = kOpaque_SkAlphaType;
+            alphaType = VX_ALPHA_TYPE_OPAQUE;
             break;
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             resource = "images/color_wheel.jpg";
-            alphaType = kOpaque_SkAlphaType;
+            alphaType = VX_ALPHA_TYPE_OPAQUE;
             break;
         default:
-            resource = (kOpaque_SkAlphaType == alphaType) ? "images/color_wheel.jpg"
+            resource = (VX_ALPHA_TYPE_OPAQUE == alphaType) ? "images/color_wheel.jpg"
                                                           : "images/color_wheel.png";
             break;
     }
@@ -114,25 +114,25 @@ protected:
     SkISize getISize() override { return SkISize::Make(imageWidth * 2, imageHeight * 15); }
 
     void onDraw(SkCanvas* canvas) override {
-        const SkColorType colorTypes[] = {
-            kN32_SkColorType, kRGBA_F16_SkColorType,
+        const vx_color_type colorTypes[] = {
+            VX_COLOR_TYPE_N32, VX_COLOR_TYPE_RGBA_F16,
 #if !defined(SK_ENABLE_NDK_IMAGES)
             // These fail with the NDK encoders because there is a mismatch between
             // Gray_8 and Alpha_8
-            kGray_8_SkColorType,
+            VX_COLOR_TYPE_GRAY_8,
 #endif
-            kRGB_565_SkColorType,
+            VX_COLOR_TYPE_RGB_565,
         };
-        const SkAlphaType alphaTypes[] = {
-            kUnpremul_SkAlphaType, kPremul_SkAlphaType, kOpaque_SkAlphaType,
+        const vx_alpha_type alphaTypes[] = {
+            VX_ALPHA_TYPE_UNPREMULTIPLIED, VX_ALPHA_TYPE_PREMULTIPLIED, VX_ALPHA_TYPE_OPAQUE,
         };
         const sk_sp<SkColorSpace> colorSpaces[] = {
             nullptr, SkColorSpace::MakeSRGB(),
         };
 
         SkBitmap bitmap;
-        for (SkColorType colorType : colorTypes) {
-            for (SkAlphaType alphaType : alphaTypes) {
+        for (vx_color_type colorType : colorTypes) {
+            for (vx_alpha_type alphaType : alphaTypes) {
                 canvas->save();
                 for (const sk_sp<SkColorSpace>& colorSpace : colorSpaces) {
                     make(&bitmap, colorType, alphaType, colorSpace);

@@ -75,8 +75,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(CopySurface,
     };
 
     static const SkImageInfo kImageInfos[] {
-        SkImageInfo::Make(kW, kH, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
-        SkImageInfo::Make(kW, kH, kBGRA_8888_SkColorType, kPremul_SkAlphaType)
+        SkImageInfo::Make(kW, kH, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
+        SkImageInfo::Make(kW, kH, VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED)
     };
 
     AutoTMalloc<uint32_t> read(kW * kH);
@@ -97,7 +97,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(CopySurface,
 
                                 // Should always work if the color type is RGBA, but may not work
                                 // for BGRA
-                                if (ii.colorType() == kRGBA_8888_SkColorType) {
+                                if (ii.colorType() == VX_COLOR_TYPE_RGBA_8888) {
                                     if (!srcView || !dstView) {
                                         ERRORF(reporter,
                                                "Could not create surfaces for copy surface test.");
@@ -105,7 +105,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(CopySurface,
                                     }
                                 } else {
                                     if (!dContext->defaultBackendFormat(
-                                            kBGRA_8888_SkColorType, GrRenderable::kNo).isValid()) {
+                                            VX_COLOR_TYPE_BGRA_8888, GrRenderable::kNo).isValid()) {
                                         continue;
                                     }
                                     if (!srcView || !dstView) {

@@ -25,6 +25,7 @@
 #include "src/core/SkRandom.h"
 #include "tools/DecodeUtils.h"
 #include "tools/timer/TimeUtils.h"
+#include "vividx/core/alpha-type.h"
 
 using namespace skia_private;
 
@@ -379,7 +380,7 @@ protected:
                 }
         )";
         for (bool unpremul : {false, true}) {
-            auto at = unpremul ? kUnpremul_SkAlphaType : kPremul_SkAlphaType;
+            auto at = unpremul ? VX_ALPHA_TYPE_UNPREMULTIPLIED : VX_ALPHA_TYPE_PREMULTIPLIED;
             auto vs = unpremul ? kUnpremulVS : kPremulVS;
             for (bool spin : {false, true}) {
                 auto cs = SkColorSpace::MakeSRGB();
@@ -550,7 +551,7 @@ protected:
                                           SkString(kVS),
                                           SkString(kFS),
                                           SkColorSpace::MakeSRGB(),
-                                          kPremul_SkAlphaType);
+                                          VX_ALPHA_TYPE_PREMULTIPLIED);
         if (!spec) {
             SkDebugf("%s\n", error.c_str());
         }
@@ -705,14 +706,14 @@ protected:
                                                        SkString(kVS),
                                                        SkString(kFS),
                                                        SkColorSpace::MakeSRGB(),
-                                                       kPremul_SkAlphaType);
+                                                       VX_ALPHA_TYPE_PREMULTIPLIED);
         if (!spec) {
             SkDebugf("%s\n", error.c_str());
         }
         fSpec = std::move(spec);
 
         uint32_t colors[] = {SK_ColorYELLOW, SK_ColorMAGENTA, SK_ColorCYAN, SK_ColorWHITE};
-        SkPixmap pixmap(SkImageInfo::Make({2, 2}, kBGRA_8888_SkColorType, kPremul_SkAlphaType),
+        SkPixmap pixmap(SkImageInfo::Make({2, 2}, VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                         colors,
                         /*rowBytes=*/8);
         fShader = SkImages::RasterFromPixmapCopy(pixmap)->makeShader(
@@ -920,7 +921,7 @@ protected:
                                                 SkString(kVS),
                                                 SkString(kFS),
                                                 SkColorSpace::MakeSRGB(),
-                                                kPremul_SkAlphaType);
+                                                VX_ALPHA_TYPE_PREMULTIPLIED);
         if (!result.specification) {
             SkDebugf("%s\n", result.error.c_str());
         }
@@ -932,7 +933,7 @@ protected:
                                            SkString(kVS),
                                            SkString(kFS),
                                            SkColorSpace::MakeSRGB(),
-                                           kPremul_SkAlphaType);
+                                           VX_ALPHA_TYPE_PREMULTIPLIED);
         if (!result.specification) {
             SkDebugf("%s\n", result.error.c_str());
         }
@@ -1070,7 +1071,7 @@ protected:
                                           SkString(kVS),
                                           kFS,
                                           SkColorSpace::MakeSRGB()->makeColorSpin(),
-                                          kPremul_SkAlphaType);
+                                          VX_ALPHA_TYPE_PREMULTIPLIED);
         if (!spec) {
             SkDebugf("%s\n", error.c_str());
         }
@@ -1548,7 +1549,7 @@ DEF_SIMPLE_GM_CAN_FAIL(custommesh_cs_uniforms, canvas, errorMsg, 200, 900) {
                 SkString(kVS),
                 SkString(managed == Managed::kYes ? kManagedFS : kRawFS),
                 std::move(workingCS),
-                kPremul_SkAlphaType);
+                VX_ALPHA_TYPE_PREMULTIPLIED);
         SkASSERT(spec);
 
         SkMesh::Result result = SkMesh::Make(std::move(spec),

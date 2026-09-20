@@ -43,7 +43,7 @@ void test_draw(skiatest::Reporter* reporter,
     skgpu::Protected isProtected = skgpu::Protected(context->priv().caps()->protectedSupport());
 
     SkBitmap bitmap;
-    bitmap.allocPixels(SkImageInfo::Make(kImageSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+    bitmap.allocPixels(SkImageInfo::Make(kImageSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                        0);
     bitmap.eraseColor(kTopColor);
     bitmap.erase(kBottomColor,
@@ -63,7 +63,7 @@ void test_draw(skiatest::Reporter* reporter,
 
     sk_sp<SkImage> image = SkImages::WrapTexture(recorder.get(),
                                                  managedTexture->texture(),
-                                                 kPremul_SkAlphaType,
+                                                 VX_ALPHA_TYPE_PREMULTIPLIED,
                                                  /*colorSpace=*/nullptr,
                                                  origin);
 
@@ -74,7 +74,7 @@ void test_draw(skiatest::Reporter* reporter,
 
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
             recorder.get(),
-            SkImageInfo::Make(kImageSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(kImageSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
 
     REPORTER_ASSERT(reporter, surface);
     if (!surface) {
@@ -88,7 +88,7 @@ void test_draw(skiatest::Reporter* reporter,
     SkPixmap pm;
 
     SkBitmap result;
-    result.allocPixels(SkImageInfo::Make(kImageSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    result.allocPixels(SkImageInfo::Make(kImageSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     bool peekPixelsSuccess = result.peekPixels(&pm);
     REPORTER_ASSERT(reporter, peekPixelsSuccess);
 

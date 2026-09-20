@@ -40,7 +40,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(MatrixColorFilter_TransparentBlack,
     // Make a transparent black image rather than use a paint color to avoid an optimization that
     // applies the color filter on the CPU to paint colors.
     auto imgSurf = SkSurfaces::RenderTarget(
-            context, skgpu::Budgeted::kYes, SkImageInfo::MakeN32(5, 5, kPremul_SkAlphaType));
+            context, skgpu::Budgeted::kYes, SkImageInfo::MakeN32(5, 5, VX_ALPHA_TYPE_PREMULTIPLIED));
     imgSurf->getCanvas()->drawColor(0x0000000);
     auto shader = imgSurf->makeImageSnapshot()->makeShader(SkSamplingOptions());
     SkColorMatrix m;
@@ -50,7 +50,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(MatrixColorFilter_TransparentBlack,
     p.setShader(shader);
     p.setBlendMode(SkBlendMode::kSrc);
     auto surf = SkSurfaces::RenderTarget(
-            context, skgpu::Budgeted::kYes, SkImageInfo::MakeN32(5, 5, kPremul_SkAlphaType));
+            context, skgpu::Budgeted::kYes, SkImageInfo::MakeN32(5, 5, VX_ALPHA_TYPE_PREMULTIPLIED));
     // Seed the output surface with red so we would notice if we failed to draw at all.
     surf->getCanvas()->clear(SK_ColorRED);
     surf->getCanvas()->drawPaint(p);

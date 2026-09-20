@@ -34,7 +34,7 @@ static sk_sp<SkImage> make_image(int firstBlackRow, int lastBlackRow) {
         }
     }
 
-    bm.setAlphaType(SkAlphaType::kOpaque_SkAlphaType);
+    bm.setAlphaType(vx_alpha_type::VX_ALPHA_TYPE_OPAQUE);
     bm.setImmutable();
 
     return bm.asImage();

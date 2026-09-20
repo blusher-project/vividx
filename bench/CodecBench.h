@@ -21,7 +21,7 @@
 class CodecBench : public Benchmark {
 public:
     // Calls encoded->ref()
-    CodecBench(SkString basename, SkData* encoded, SkColorType colorType, SkAlphaType alphaType);
+    CodecBench(SkString basename, SkData* encoded, vx_color_type colorType, vx_alpha_type alphaType);
 
 protected:
     const char* onGetName() override;
@@ -31,8 +31,8 @@ protected:
 
 private:
     SkString                fName;
-    const SkColorType       fColorType;
-    const SkAlphaType       fAlphaType;
+    const vx_color_type       fColorType;
+    const vx_alpha_type       fAlphaType;
     sk_sp<SkData>           fData;
     SkImageInfo             fInfo;          // Set in onDelayedSetup.
     SkAutoMalloc            fPixelStorage;

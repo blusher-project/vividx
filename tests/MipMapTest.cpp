@@ -230,7 +230,7 @@ DEF_TEST(MipMap_ComputeLevelSize, reporter) {
 
 DEF_TEST(MipMap_F16, reporter) {
     SkBitmap bmp;
-    bmp.allocPixels(SkImageInfo::Make(10, 10, kRGBA_F16_SkColorType, kPremul_SkAlphaType));
+    bmp.allocPixels(SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_F16, VX_ALPHA_TYPE_PREMULTIPLIED));
     bmp.eraseColor(0);
     sk_sp<SkMipmap> mipmap(SkMipmap::Build(bmp, nullptr));
 }
@@ -280,9 +280,9 @@ DEF_TEST(image_mip_mismatch, reporter) {
 
     check_fails(img, img->imageInfo().makeWH(img->width() + 2, img->height() - 3));
 
-    SkASSERT(img->imageInfo().colorType() != kRGB_565_SkColorType);
-    check_fails(img, img->imageInfo().makeColorType(kRGB_565_SkColorType));
+    SkASSERT(img->imageInfo().colorType() != VX_COLOR_TYPE_RGB_565);
+    check_fails(img, img->imageInfo().makeColorType(VX_COLOR_TYPE_RGB_565));
 
-    SkASSERT(img->imageInfo().alphaType() != kUnpremul_SkAlphaType);
-    check_fails(img, img->imageInfo().makeAlphaType(kUnpremul_SkAlphaType));
+    SkASSERT(img->imageInfo().alphaType() != VX_ALPHA_TYPE_UNPREMULTIPLIED);
+    check_fails(img, img->imageInfo().makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED));
 }

@@ -40,7 +40,7 @@ static SkBitmap read_pixels(sk_sp<SkSurface> surface, SkColor initColor) {
 }
 
 static sk_sp<SkSurface> make_surface(GrRecordingContext* rContext) {
-    SkImageInfo info = SkImageInfo::Make(50, 50, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(50, 50, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     return SkSurfaces::RenderTarget(
             rContext, skgpu::Budgeted::kNo, info, 4, kBottomLeft_GrSurfaceOrigin, nullptr);
 }

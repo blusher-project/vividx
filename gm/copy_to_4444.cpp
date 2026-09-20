@@ -37,7 +37,7 @@ class CopyTo4444GM : public skiagm::GM {
         canvas->drawImage(bm.asImage(), 0, 0);
 
         // This should dither or we will see artifacts in the background of the image.
-        SkAssertResult(ToolUtils::copy_to(&bm4444, kARGB_4444_SkColorType, bm));
+        SkAssertResult(ToolUtils::copy_to(&bm4444, VX_COLOR_TYPE_ARGB_4444, bm));
         canvas->drawImage(bm4444.asImage(), SkIntToScalar(bm.width()), 0);
         return DrawResult::kOk;
     }
@@ -51,7 +51,7 @@ DEF_GM( return new CopyTo4444GM; )
 DEF_SIMPLE_GM(format4444, canvas, 64, 64) {
     canvas->scale(16, 16);
     SkBitmap bitmap;
-    SkImageInfo imageInfo = SkImageInfo::Make(1, 1, kARGB_4444_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo imageInfo = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_ARGB_4444, VX_ALPHA_TYPE_PREMULTIPLIED);
     bitmap.allocPixels(imageInfo);
     SkCanvas offscreen(bitmap);
     offscreen.clear(SK_ColorRED);

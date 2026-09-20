@@ -27,8 +27,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DashPathEffectTest_2PiInterval,
     const float dashWidth = 10.0f;
 
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(16, 16),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                       vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     GrDirectContext* context = contextInfo.directContext();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kYes, ii);
     SkCanvas* canvas = surface->getCanvas();

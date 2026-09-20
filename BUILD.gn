@@ -3353,7 +3353,7 @@ if (skia_enable_tools) {
       if (skia_use_libpng_decode) {
         test_app("skqp") {
           sources = [ "tools/skqp/src/skqp_main.cpp" ]
-          include_dirs = [ "//" ]
+          include_dirs = [ "//", "//include" ]
           lib_dirs = []
           deps = [ ":skqp_lib" ]
         }
@@ -3635,10 +3635,11 @@ if (skia_enable_tools) {
     }
 
     if (is_linux || is_win || is_mac) {
-      test_app("editor") {
-        is_shared_library = is_android
-        deps = [ "modules/skplaintexteditor:editor_app" ]
-      }
+      # TODO: Turn on when `#include <vividx/assert.h>` works.
+      # test_app("editor") {
+      #   is_shared_library = is_android
+      #   deps = [ "modules/skplaintexteditor:editor_app" ]
+      # }
     }
 
     skia_executable("image_diff_metric") {

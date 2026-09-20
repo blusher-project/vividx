@@ -285,8 +285,8 @@ sk_sp<SkImage> EGLTestHelper::importHardwareBufferForRead(skiatest::Reporter* re
     sk_sp<SkImage> image = SkImages::BorrowTextureFrom(fDirectContext,
                                                        backendTex,
                                                        kTopLeft_GrSurfaceOrigin,
-                                                       kRGBA_8888_SkColorType,
-                                                       kPremul_SkAlphaType,
+                                                       VX_COLOR_TYPE_RGBA_8888,
+                                                       VX_ALPHA_TYPE_PREMULTIPLIED,
                                                        nullptr);
 
     if (!image) {
@@ -314,7 +314,7 @@ sk_sp<SkSurface> EGLTestHelper::importHardwareBufferForWrite(skiatest::Reporter*
                                                               backendTex,
                                                               kTopLeft_GrSurfaceOrigin,
                                                               0,
-                                                              kRGBA_8888_SkColorType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
                                                               nullptr,
                                                               nullptr);
 
@@ -834,8 +834,8 @@ sk_sp<SkImage> VulkanTestHelper::importHardwareBufferForRead(skiatest::Reporter*
     sk_sp<SkImage> wrappedImage = SkImages::BorrowTextureFrom(fDirectContext.get(),
                                                               backendTex,
                                                               kTopLeft_GrSurfaceOrigin,
-                                                              kRGBA_8888_SkColorType,
-                                                              kPremul_SkAlphaType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
+                                                              VX_ALPHA_TYPE_PREMULTIPLIED,
                                                               nullptr);
 
     if (!wrappedImage.get()) {
@@ -996,7 +996,7 @@ sk_sp<SkSurface> VulkanTestHelper::importHardwareBufferForWrite(skiatest::Report
                                                               backendTex,
                                                               kTopLeft_GrSurfaceOrigin,
                                                               0,
-                                                              kRGBA_8888_SkColorType,
+                                                              VX_COLOR_TYPE_RGBA_8888,
                                                               nullptr,
                                                               nullptr);
 
@@ -1272,8 +1272,8 @@ void run_test(skiatest::Reporter* reporter, const GrContextOptions& options,
     auto direct = dstHelper->directContext();
 
     // Make SkSurface to render wrapped HWB into.
-    SkImageInfo imageInfo = SkImageInfo::Make(DEV_W, DEV_H, kRGBA_8888_SkColorType,
-                                              kPremul_SkAlphaType, nullptr);
+    SkImageInfo imageInfo = SkImageInfo::Make(DEV_W, DEV_H, VX_COLOR_TYPE_RGBA_8888,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
 
     sk_sp<SkSurface> dstSurf = SkSurfaces::RenderTarget(
             direct, skgpu::Budgeted::kNo, imageInfo, 0, kTopLeft_GrSurfaceOrigin, nullptr, false);

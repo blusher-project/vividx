@@ -47,7 +47,7 @@ DEF_TEST(SkImageFromBitmap_extractSubset, reporter) {
     canvas.drawImage(image, 0, 0);
 
     uint32_t pixel = 0;
-    SkImageInfo info = SkImageInfo::Make(1, 1, kBGRA_8888_SkColorType, kUnpremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make(1, 1, VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED);
     tgt.readPixels(info, &pixel, 4, 0, 0);
     REPORTER_ASSERT(reporter, pixel == SK_ColorGREEN);
     tgt.readPixels(info, &pixel, 4, gWidth - 6, gWidth - 6);

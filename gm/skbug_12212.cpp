@@ -21,8 +21,8 @@
 
 DEF_SIMPLE_GM_BG(skbug_12212, canvas, 400, 400, SK_ColorCYAN) {
     // Create an Alpha_8 surface to draw into (strangely, with RGB pixel geometry).
-    auto imageInfo = SkImageInfo::Make(/*width=*/400, /*height=*/400, kAlpha_8_SkColorType,
-                                       kPremul_SkAlphaType);
+    auto imageInfo = SkImageInfo::Make(/*width=*/400, /*height=*/400, VX_COLOR_TYPE_ALPHA_8,
+                                       VX_ALPHA_TYPE_PREMULTIPLIED);
     SkSurfaceProps props(/*flags=*/0, kRGB_H_SkPixelGeometry);
     sk_sp<SkSurface> surface;
 #if defined(SK_GANESH)

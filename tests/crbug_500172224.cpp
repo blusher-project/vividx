@@ -24,7 +24,7 @@ namespace {
 
 sk_sp<SkImage> make_gpu_src_img(GrDirectContext* dContext, float srcSize) {
     SkImageInfo ii = SkImageInfo::Make(srcSize, srcSize,
-                                       kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap srcBM;
     srcBM.allocPixels(ii);
@@ -49,7 +49,7 @@ void run_test(GrDirectContext* dContext, uint32_t numXSteps, uint32_t numYSteps,
     sk_sp<SkImage> srcImg = make_gpu_src_img(dContext, kRectSize);
 
     SkImageInfo ii = SkImageInfo::Make(numXSteps*kRectSize, numYSteps*kRectSize,
-                                       kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+                                       VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     auto surface(SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, ii));
 
     SkCanvas* canvas = surface->getCanvas();

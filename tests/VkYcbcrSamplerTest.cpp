@@ -65,8 +65,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
     sk_sp<SkImage> srcImage = SkImages::BorrowTextureFrom(dContext,
                                                           ycbcrHelper.grBackendTexture(),
                                                           kTopLeft_GrSurfaceOrigin,
-                                                          kRGB_888x_SkColorType,
-                                                          kPremul_SkAlphaType,
+                                                          VX_COLOR_TYPE_RGB_888X,
+                                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                                           nullptr);
     if (!srcImage) {
         ERRORF(reporter, "Failed to create I420 image");
@@ -76,7 +76,7 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(
             dContext,
             skgpu::Budgeted::kNo,
-            SkImageInfo::Make(kImageWidth, kImageHeight, kN32_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(kImageWidth, kImageHeight, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED));
     if (!surface) {
         ERRORF(reporter, "Failed to create target SkSurface");
         return;
@@ -85,8 +85,8 @@ DEF_GANESH_TEST_FOR_VULKAN_CONTEXT(VkYCbcrSampler_DrawImageWithYcbcrSampler,
     dContext->flushAndSubmit(surface.get());
 
     std::vector<uint8_t> readbackData(kImageWidth * kImageHeight * 4);
-    if (!surface->readPixels(SkImageInfo::Make(kImageWidth, kImageHeight, kRGBA_8888_SkColorType,
-                                               kOpaque_SkAlphaType),
+    if (!surface->readPixels(SkImageInfo::Make(kImageWidth, kImageHeight, VX_COLOR_TYPE_RGBA_8888,
+                                               VX_ALPHA_TYPE_OPAQUE),
                              readbackData.data(), kImageWidth * 4, 0, 0)) {
         ERRORF(reporter, "Readback failed");
         return;

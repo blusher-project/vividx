@@ -54,10 +54,10 @@ protected:
         SkYUVAInfo yuvaInfo = SkYUVAInfo({8, 8},
                                          SkYUVAInfo::PlaneConfig::kY_U_V,
                                          SkYUVAInfo::Subsampling::k420,
-                                         kJPEG_Full_SkYUVColorSpace);
-        SkColorType colorTypes[] = {kAlpha_8_SkColorType,
-                                    kAlpha_8_SkColorType,
-                                    kAlpha_8_SkColorType};
+                                         VX_YUV_COLOR_SPACE_JPEG_FULL);
+        vx_color_type colorTypes[] = {VX_COLOR_TYPE_ALPHA_8,
+                                    VX_COLOR_TYPE_ALPHA_8,
+                                    VX_COLOR_TYPE_ALPHA_8};
         SkYUVAPixmapInfo pmapInfo(yuvaInfo, colorTypes, nullptr);
         fPixmaps = SkYUVAPixmaps::Allocate(pmapInfo);
 

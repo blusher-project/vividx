@@ -10,28 +10,28 @@
 
 #include "include/core/SkImageInfo.h"
 
-inline const char* color_type_to_str(SkColorType colorType) {
+inline const char* color_type_to_str(vx_color_type colorType) {
     switch (colorType) {
-        case kN32_SkColorType:
+        case VX_COLOR_TYPE_N32:
             return "N32";
-        case kRGB_565_SkColorType:
+        case VX_COLOR_TYPE_RGB_565:
             return "565";
-        case kGray_8_SkColorType:
+        case VX_COLOR_TYPE_GRAY_8:
             return "Gray8";
-        case kAlpha_8_SkColorType:
+        case VX_COLOR_TYPE_ALPHA_8:
             return "Alpha8";
         default:
             return "Unknown";
     }
 }
 
-inline const char* alpha_type_to_str(SkAlphaType alphaType) {
+inline const char* alpha_type_to_str(vx_alpha_type alphaType) {
     switch (alphaType) {
-        case kOpaque_SkAlphaType:
+        case VX_ALPHA_TYPE_OPAQUE:
             return "";
-        case kPremul_SkAlphaType:
+        case VX_ALPHA_TYPE_PREMULTIPLIED:
             return "Premul";
-        case kUnpremul_SkAlphaType:
+        case VX_ALPHA_TYPE_UNPREMULTIPLIED:
             return "Unpremul";
         default:
             SkASSERT(false);

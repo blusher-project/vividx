@@ -68,7 +68,7 @@ protected:
             SkYUVAInfo yuvaInfo(fSrcImage->dimensions(),
                                 tc.config,
                                 tc.subsampling,
-                                kJPEG_Full_SkYUVColorSpace);
+                                VX_YUV_COLOR_SPACE_JPEG_FULL);
 
             float rgbToYuv[20];
             SkColorMatrix::RGBtoYUV(yuvaInfo.yuvColorSpace()).getRowMajor(rgbToYuv);
@@ -76,14 +76,14 @@ protected:
             SkISize dimensions[SkYUVAInfo::kMaxPlanes];
             int numPlanes = yuvaInfo.planeDimensions(dimensions);
 
-            SkColorType colorTypes  [SkYUVAInfo::kMaxPlanes];
+            vx_color_type colorTypes  [SkYUVAInfo::kMaxPlanes];
             uint32_t    channelFlags[SkYUVAInfo::kMaxPlanes];
             for (int i = 0; i < numPlanes; ++i) {
                 switch (yuvaInfo.numChannelsInPlane(i)) {
-                    case 1: colorTypes[i] = kAlpha_8_SkColorType;    break;
-                    case 2: colorTypes[i] = kR8G8_unorm_SkColorType; break;
-                    case 3: colorTypes[i] = kRGB_888x_SkColorType;   break;
-                    case 4: colorTypes[i] = kRGBA_8888_SkColorType;  break;
+                    case 1: colorTypes[i] = VX_COLOR_TYPE_ALPHA_8;    break;
+                    case 2: colorTypes[i] = VX_COLOR_TYPE_R8G8_UNORM; break;
+                    case 3: colorTypes[i] = VX_COLOR_TYPE_RGB_888X;   break;
+                    case 4: colorTypes[i] = VX_COLOR_TYPE_RGBA_8888;  break;
 
                     default: SkUNREACHABLE;
                 }
@@ -92,13 +92,13 @@ protected:
             SkYUVAInfo::YUVALocations locations = yuvaInfo.toYUVALocations(channelFlags);
 
             for (int i = 0; i < numPlanes; ++i) {
-                auto info = SkImageInfo::Make(dimensions[i], colorTypes[i], kPremul_SkAlphaType);
+                auto info = SkImageInfo::Make(dimensions[i], colorTypes[i], VX_ALPHA_TYPE_PREMULTIPLIED);
                 auto surf = SkSurfaces::RenderTarget(recorder, info, skgpu::Mipmapped::kYes);
-                if (colorTypes[i] == kRGB_888x_SkColorType && !surf) {
+                if (colorTypes[i] == VX_COLOR_TYPE_RGB_888X && !surf) {
                     // kRGB_888x is rarely renderable with a native texture format, so fallback to
                     // RGBA8 and the YUV shaders will ignore the extra alpha channel.
                     surf = SkSurfaces::RenderTarget(recorder,
-                                                    info.makeColorType(kRGBA_8888_SkColorType),
+                                                    info.makeColorType(VX_COLOR_TYPE_RGBA_8888),
                                                     skgpu::Mipmapped::kYes);
                 }
                 if (!surf) {

@@ -561,7 +561,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BlurMaskBiggerThanDest,
                                        CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
 
-    SkImageInfo ii = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(32, 32, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     sk_sp<SkSurface> dst(SkSurfaces::RenderTarget(context, skgpu::Budgeted::kNo, ii));
     if (!dst) {
@@ -606,7 +606,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(BlurDegenerateAffineFuzzer,
                                        ctxInfo,
                                        CtsEnforcement::kNever) {
     auto context = ctxInfo.directContext();
-    SkImageInfo ii = SkImageInfo::Make(128, 128, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(128, 128, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface(SkSurfaces::RenderTarget(context, skgpu::Budgeted::kNo, ii));
     if (!surface) {
         ERRORF(reporter, "Could not create surface.");
@@ -649,8 +649,8 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(BlurPointCircle,
                                          CtsEnforcement::kNever) {
     using namespace skgpu::graphite;
     SkImageInfo ii = SkImageInfo::Make(SkISize::Make(1, 1),
-                                       SkColorType::kRGBA_8888_SkColorType,
-                                       SkAlphaType::kPremul_SkAlphaType);
+                                       vx_color_type::VX_COLOR_TYPE_RGBA_8888,
+                                       vx_alpha_type::VX_ALPHA_TYPE_PREMULTIPLIED);
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(recorder.get(), ii);
     SkCanvas* canvas = surface->getCanvas();

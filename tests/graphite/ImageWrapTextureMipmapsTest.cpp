@@ -36,7 +36,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageWrapTextureMipmapsTest,
 
     skgpu::Protected isProtected = skgpu::Protected(context->priv().caps()->protectedSupport());
 
-    auto info = SkImageInfo::Make({2, 1}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    auto info = SkImageInfo::Make({2, 1}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     SkAutoPixmapStorage basePM, topPM;
     basePM.alloc(info);
     basePM.erase(SK_ColorGREEN);

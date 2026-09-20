@@ -45,8 +45,8 @@ static SkString fmt(SkColor4f c) {
 }
 
 static SkColor4f transform(SkColor4f c, SkColorSpace* src, SkColorSpace* dst) {
-    SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType,
-                           dst, kUnpremul_SkAlphaType).apply(c.vec());
+    SkColorSpaceXformSteps(src, VX_ALPHA_TYPE_UNPREMULTIPLIED,
+                           dst, VX_ALPHA_TYPE_UNPREMULTIPLIED).apply(c.vec());
     return c;
 }
 
@@ -67,7 +67,7 @@ static void compare_pixel(const char* label,
     y += (int)dy;
 
     SkBitmap bm;
-    bm.allocPixels(SkImageInfo::Make(1,1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, canvas_cs));
+    bm.allocPixels(SkImageInfo::Make(1,1, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_UNPREMULTIPLIED, canvas_cs));
     if (!canvas->readPixels(bm, x,y)) {
         MarkGMGood(canvas, 140,40);
         canvas->drawString("can't readPixels() on this canvas :(", 100,20, font, paint);
@@ -84,7 +84,7 @@ static void compare_pixel(const char* label,
             expected[i] = SkTPin(expected[i], 0.0f, 1.0f);
         }
     }
-    if (canvas->imageInfo().colorType() == kGray_8_SkColorType) {
+    if (canvas->imageInfo().colorType() == VX_COLOR_TYPE_GRAY_8) {
         // Drawing into Gray8 is known to be maybe-totally broken.
         // TODO: update expectation here to be {lum,lum,lum,1} if we fix Gray8.
         expected = SkColor4f{NAN, NAN, NAN, 1};
@@ -139,7 +139,7 @@ DEF_SIMPLE_GM(p3, canvas, 450, 1300) {
     // Draw a P3 red bitmap, using a draw.
     {
         SkBitmap bm;
-        bm.allocPixels(SkImageInfo::Make(60,60, kRGBA_F16_SkColorType, kPremul_SkAlphaType, p3));
+        bm.allocPixels(SkImageInfo::Make(60,60, VX_COLOR_TYPE_RGBA_F16, VX_ALPHA_TYPE_PREMULTIPLIED, p3));
 
         SkPaint paint;
         paint.setColor4f({1,0,0,1}, p3.get());

@@ -174,15 +174,15 @@ static void basic_draw_test_helper(skiatest::Reporter* reporter,
     ///////////////////////////////////////////////////////////////////////////
 
     sk_sp<SkImage> image = SkImages::DeferredFromAHardwareBuffer(
-            buffer, kPremul_SkAlphaType, nullptr, surfaceOrigin);
+            buffer, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr, surfaceOrigin);
     REPORTER_ASSERT(reporter, image);
 
     ///////////////////////////////////////////////////////////////////////////
     // Make a surface to draw into
     ///////////////////////////////////////////////////////////////////////////
 
-    SkImageInfo imageInfo = SkImageInfo::Make(DEV_W, DEV_H, kRGBA_8888_SkColorType,
-                                              kPremul_SkAlphaType);
+    SkImageInfo imageInfo = SkImageInfo::Make(DEV_W, DEV_H, VX_COLOR_TYPE_RGBA_8888,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surface = SkSurfaces::RenderTarget(context, skgpu::Budgeted::kNo, imageInfo);
     REPORTER_ASSERT(reporter, surface);
 

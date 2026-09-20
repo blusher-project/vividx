@@ -24,27 +24,27 @@ namespace skiagm {
 static const int imageWidth = 128;
 static const int imageHeight = 128;
 
-static sk_sp<SkImage> make_image(SkColorType colorType, SkAlphaType alphaType) {
+static sk_sp<SkImage> make_image(vx_color_type colorType, vx_alpha_type alphaType) {
     const char* resource;
     switch (colorType) {
-        case kGray_8_SkColorType:
-            if (alphaType != kOpaque_SkAlphaType) {
+        case VX_COLOR_TYPE_GRAY_8:
+            if (alphaType != VX_ALPHA_TYPE_OPAQUE) {
                 return nullptr;
             }
             resource = "images/grayscale.jpg";
             break;
-        case kRGB_565_SkColorType:
-        case kRGB_888x_SkColorType:
-        case kRGB_101010x_SkColorType:
-        case kBGR_101010x_SkColorType:
-        case kRGB_F16F16F16x_SkColorType:
-            if (alphaType != kOpaque_SkAlphaType) {
+        case VX_COLOR_TYPE_RGB_565:
+        case VX_COLOR_TYPE_RGB_888X:
+        case VX_COLOR_TYPE_RGB_101010X:
+        case VX_COLOR_TYPE_BGR_101010X:
+        case VX_COLOR_TYPE_RGB_F16F16F16X:
+            if (alphaType != VX_ALPHA_TYPE_OPAQUE) {
                 return nullptr;
             }
             resource = "images/color_wheel.jpg";
             break;
         default:
-            resource = (kOpaque_SkAlphaType == alphaType) ? "images/color_wheel.jpg"
+            resource = (VX_ALPHA_TYPE_OPAQUE == alphaType) ? "images/color_wheel.jpg"
                                                           : "images/rainbow-gradient.png";
             break;
     }
@@ -100,39 +100,39 @@ protected:
         const auto colorType = canvas->imageInfo().colorType();
         switch (fVariant) {
             case Variant::kGray:
-                if (colorType != kGray_8_SkColorType) {
+                if (colorType != VX_COLOR_TYPE_GRAY_8) {
                     return DrawResult::kSkip;
                 }
                 break;
             case Variant::kOpaque:
-                if (colorType != kRGB_565_SkColorType         &&
-                    colorType != kRGB_888x_SkColorType        &&
-                    colorType != kRGB_101010x_SkColorType     &&
-                    colorType != kRGB_F16F16F16x_SkColorType  &&
-                    colorType != kBGR_101010x_SkColorType)
+                if (colorType != VX_COLOR_TYPE_RGB_565         &&
+                    colorType != VX_COLOR_TYPE_RGB_888X        &&
+                    colorType != VX_COLOR_TYPE_RGB_101010X     &&
+                    colorType != VX_COLOR_TYPE_RGB_F16F16F16X  &&
+                    colorType != VX_COLOR_TYPE_BGR_101010X)
                 {
                     return DrawResult::kSkip;
                 }
                 break;
             case Variant::kNormal:
-                if (colorType != kARGB_4444_SkColorType    &&
-                    colorType != kRGBA_8888_SkColorType    &&
-                    colorType != kBGRA_8888_SkColorType    &&
-                    colorType != kRGBA_1010102_SkColorType &&
-                    colorType != kBGRA_1010102_SkColorType &&
-                    colorType != kRGBA_F16Norm_SkColorType &&
-                    colorType != kRGBA_F16_SkColorType     &&
-                    colorType != kRGBA_F32_SkColorType)
+                if (colorType != VX_COLOR_TYPE_ARGB_4444    &&
+                    colorType != VX_COLOR_TYPE_RGBA_8888    &&
+                    colorType != VX_COLOR_TYPE_BGRA_8888    &&
+                    colorType != VX_COLOR_TYPE_RGBA_1010102 &&
+                    colorType != VX_COLOR_TYPE_BGRA_1010102 &&
+                    colorType != VX_COLOR_TYPE_RGBA_F16NORM &&
+                    colorType != VX_COLOR_TYPE_RGBA_F16     &&
+                    colorType != VX_COLOR_TYPE_RGBA_F32)
                 {
                     return DrawResult::kSkip;
                 }
             break;
         }
-        const SkAlphaType alphaTypes[] = {
-            kOpaque_SkAlphaType, kPremul_SkAlphaType, kUnpremul_SkAlphaType,
+        const vx_alpha_type alphaTypes[] = {
+            VX_ALPHA_TYPE_OPAQUE, VX_ALPHA_TYPE_PREMULTIPLIED, VX_ALPHA_TYPE_UNPREMULTIPLIED,
         };
 
-        for (SkAlphaType alphaType : alphaTypes) {
+        for (vx_alpha_type alphaType : alphaTypes) {
             auto src = make_image(colorType, alphaType);
             if (!src) {
                 break;

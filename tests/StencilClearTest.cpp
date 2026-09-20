@@ -38,7 +38,7 @@ SkPath make_star() {
 sk_sp<SkSurface> gpu_surface(GrDirectContext* dContext) {
     SkSurfaceProps props(SkSurfaceProps::kDynamicMSAA_Flag, kUnknown_SkPixelGeometry);
 
-    SkImageInfo ii = SkImageInfo::Make(256, 256, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(256, 256, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     return SkSurfaces::RenderTarget(dContext,
                                     skgpu::Budgeted::kYes,
                                     ii,

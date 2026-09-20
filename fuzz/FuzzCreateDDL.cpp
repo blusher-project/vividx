@@ -54,12 +54,12 @@ static SkPaint gen_fuzzed_skpaint(Fuzz* fuzz) {
     return SkPaint(color);
 }
 
-static SkImageInfo gen_fuzzed_imageinfo(Fuzz* fuzz, SkColorType surfaceType) {
+static SkImageInfo gen_fuzzed_imageinfo(Fuzz* fuzz, vx_color_type surfaceType) {
     int width, height;
     fuzz->nextRange(&width, 1, kMaxWidth);
     fuzz->nextRange(&height, 1, kMaxHeight);
-    SkAlphaType alphaType;
-    fuzz->nextEnum(&alphaType, SkAlphaType::kLastEnum_SkAlphaType);
+    vx_alpha_type alphaType;
+    fuzz->nextEnum(&alphaType, vx_alpha_type::VX_ALPHA_TYPE_LASTENUM);
     skcms_TransferFunction skcmsFn;
     uint8_t skcms;
     fuzz->nextRange(&skcms, 0, 5);
@@ -124,7 +124,7 @@ static SkImageInfo gen_fuzzed_imageinfo(Fuzz* fuzz, SkColorType surfaceType) {
 }
 
 static GrSurfaceCharacterization make_characterization(Fuzz* fuzz, GrDirectContext* dContext,
-                                                       SkImageInfo& ii, SkColorType surfaceType,
+                                                       SkImageInfo& ii, vx_color_type surfaceType,
                                                        GrSurfaceOrigin origin) {
     if (!dContext->colorTypeSupportedAsSurface(surfaceType)) {
         SkDebugf("Couldn't create backend texture in the backend %s",
@@ -194,7 +194,7 @@ static bool draw_ddl(sk_sp<SkSurface> surface, sk_sp<const GrDeferredDisplayList
 
 using SurfaceAndChar = std::tuple<sk_sp<SkSurface>, GrSurfaceCharacterization>;
 static SurfaceAndChar create_surface_and_characterization(Fuzz* fuzz, GrDirectContext* dContext,
-                                                          SkColorType surfaceType,
+                                                          vx_color_type surfaceType,
                                                           GrSurfaceOrigin origin) {
     SkImageInfo ii = gen_fuzzed_imageinfo(fuzz, surfaceType);
     GrSurfaceCharacterization c = make_characterization(fuzz, dContext, ii, surfaceType, origin);
@@ -210,9 +210,9 @@ static SurfaceAndChar create_surface_and_characterization(Fuzz* fuzz, GrDirectCo
 }
 
 DEF_FUZZ(CreateDDL, fuzz) {
-    SkColorType surfaceType;
+    vx_color_type surfaceType;
     GrSurfaceOrigin origin;
-    fuzz->nextEnum(&surfaceType, SkColorType::kLastEnum_SkColorType);
+    fuzz->nextEnum(&surfaceType, vx_color_type::VX_COLOR_TYPE_LASTENUM);
     fuzz->nextEnum(&origin, GrSurfaceOrigin::kTopLeft_GrSurfaceOrigin);
 
     sk_gpu_test::GrContextFactory factory;

@@ -38,7 +38,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(BackendTextureTest, reporter, context,
 
     Protected isProtected = Protected(context->supportsProtectedContent());
 
-    TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+    TextureInfo info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGBA_8888,
                                                           /*mipmapped=*/Mipmapped::kNo,
                                                           isProtected,
                                                           Renderable::kNo);
@@ -97,7 +97,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest,
     auto caps = context->priv().caps();
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
-    TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+    TextureInfo info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGBA_8888,
                                                           /*mipmapped=*/Mipmapped::kNo,
                                                           Protected::kNo,
                                                           Renderable::kYes);
@@ -116,7 +116,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(SurfaceBackendTextureTest,
     recorder->deleteBackendTexture(texture);
 
     // We should fail to wrap a non-renderable texture in a surface.
-    info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+    info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGBA_8888,
                                               /*mipmapped=*/Mipmapped::kNo,
                                               Protected::kNo,
                                               Renderable::kNo);
@@ -147,7 +147,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
     for (Mipmapped mipmapped : { Mipmapped::kYes, Mipmapped::kNo }) {
         for (Renderable renderable : { Renderable::kYes, Renderable::kNo }) {
 
-            TextureInfo info = caps->getDefaultSampledTextureInfo(kRGBA_8888_SkColorType,
+            TextureInfo info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_RGBA_8888,
                                                                   mipmapped,
                                                                   Protected::kNo,
                                                                   renderable);
@@ -157,31 +157,31 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
 
             sk_sp<SkImage> image = SkImages::WrapTexture(recorder.get(),
                                                          texture,
-                                                         kPremul_SkAlphaType,
+                                                         VX_ALPHA_TYPE_PREMULTIPLIED,
                                                          /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kRGBA_8888_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kPremul_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_RGBA_8888);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED);
 
             image.reset();
 
             // We should switch to k888x when possible for forceOpaque
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kUnknown_SkAlphaType,
+                                          VX_ALPHA_TYPE_UNKNOWN,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kRGB_888x_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_RGB_888X);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_OPAQUE);
 
             image.reset();
             recorder->deleteBackendTexture(texture);
 
             // We should still be flagged as opaque and have a A=1 swizzle for color types that
             // don't have an A->X variant
-            info = caps->getDefaultSampledTextureInfo(kARGB_4444_SkColorType,
+            info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_ARGB_4444,
                                                       mipmapped,
                                                       Protected::kNo,
                                                       renderable);
@@ -191,12 +191,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
             if (texture.isValid()) {
                 image = SkImages::WrapTexture(recorder.get(),
                                               texture,
-                                              kUnknown_SkAlphaType,
+                                              VX_ALPHA_TYPE_UNKNOWN,
                                               /*colorSpace=*/nullptr);
                 REPORTER_ASSERT(reporter, image);
                 REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-                REPORTER_ASSERT(reporter, image->colorType() == kARGB_4444_SkColorType);
-                REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+                REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_ARGB_4444);
+                REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_OPAQUE);
 
                 Swizzle readSwizzle =
                         static_cast<Image*>(image.get())->textureProxyView().swizzle();
@@ -207,7 +207,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
             }
 
             // Now test handling of red format ambiguity
-            info = caps->getDefaultSampledTextureInfo(kR8_unorm_SkColorType,
+            info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_R8_UNORM,
                                                       mipmapped,
                                                       Protected::kNo,
                                                       renderable);
@@ -216,40 +216,40 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
             // Opaque/unknown becomes red + opaque
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kOpaque_SkAlphaType,
+                                          VX_ALPHA_TYPE_OPAQUE,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kR8_unorm_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_R8_UNORM);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_OPAQUE);
 
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kUnknown_SkAlphaType,
+                                          VX_ALPHA_TYPE_UNKNOWN,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kR8_unorm_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_R8_UNORM);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_OPAQUE);
 
             // Premul/unpremul becomes alpha-only
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kPremul_SkAlphaType,
+                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kPremul_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_ALPHA_8);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED);
 
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kUnpremul_SkAlphaType,
+                                          VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kUnpremul_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_ALPHA_8);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
             image.reset();
             recorder->deleteBackendTexture(texture);
@@ -257,7 +257,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
             // Test how an A8 texture format behaves, which does not have the red/alpha ambiguity
             // and stays as an alpha-only colortype regardless of SkAlphaType. A8 is not always
             // available, so skip it if the TextureInfo selects an R8 texture again.
-            info = caps->getDefaultSampledTextureInfo(kAlpha_8_SkColorType,
+            info = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_ALPHA_8,
                                                       mipmapped,
                                                       Protected::kNo,
                                                       renderable);
@@ -271,21 +271,21 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
             // Opaque/unknown becomes opaque alpha (not super useful)
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kOpaque_SkAlphaType,
+                                          VX_ALPHA_TYPE_OPAQUE,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_ALPHA_8);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_OPAQUE);
 
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kUnknown_SkAlphaType,
+                                          VX_ALPHA_TYPE_UNKNOWN,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kOpaque_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_ALPHA_8);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_OPAQUE);
              Swizzle readSwizzle =
                         static_cast<Image*>(image.get())->textureProxyView().swizzle();
                 REPORTER_ASSERT(reporter, readSwizzle[3] == '1');
@@ -293,21 +293,21 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest,
             // Premul/unpremul stay alpha-only
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kPremul_SkAlphaType,
+                                          VX_ALPHA_TYPE_PREMULTIPLIED,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kPremul_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_ALPHA_8);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_PREMULTIPLIED);
 
             image = SkImages::WrapTexture(recorder.get(),
                                           texture,
-                                          kUnpremul_SkAlphaType,
+                                          VX_ALPHA_TYPE_UNPREMULTIPLIED,
                                           /*colorSpace=*/nullptr);
             REPORTER_ASSERT(reporter, image);
             REPORTER_ASSERT(reporter, image->hasMipmaps() == (mipmapped == Mipmapped::kYes));
-            REPORTER_ASSERT(reporter, image->colorType() == kAlpha_8_SkColorType);
-            REPORTER_ASSERT(reporter, image->alphaType() == kUnpremul_SkAlphaType);
+            REPORTER_ASSERT(reporter, image->colorType() == VX_COLOR_TYPE_ALPHA_8);
+            REPORTER_ASSERT(reporter, image->alphaType() == VX_ALPHA_TYPE_UNPREMULTIPLIED);
 
             image.reset();
             recorder->deleteBackendTexture(texture);

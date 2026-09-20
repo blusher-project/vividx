@@ -94,8 +94,8 @@ static void copyToMask(const SkRegion& rgn, SkMaskBuilder* mask) {
 
     SkImageInfo info = SkImageInfo::Make(mask->fBounds.width(),
                                          mask->fBounds.height(),
-                                         kAlpha_8_SkColorType,
-                                         kPremul_SkAlphaType);
+                                         VX_COLOR_TYPE_ALPHA_8,
+                                         VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bitmap;
     bitmap.installPixels(info, mask->image(), mask->fRowBytes);
 

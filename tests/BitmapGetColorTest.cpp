@@ -20,19 +20,19 @@
 
 DEF_TEST(GetColor, reporter) {
     static const struct Rec {
-        SkColorType fColorType;
+        vx_color_type fColorType;
         SkColor     fInColor;
         SkColor     fOutColor;
     } gRec[] = {
         // todo: add some tests that involve alpha, so we exercise the
         // unpremultiply aspect of getColor()
-        {   kAlpha_8_SkColorType,   0xFF000000,     0xFF000000  },
-        {   kAlpha_8_SkColorType,   0,              0           },
-        {   kRGB_565_SkColorType,   0xFF00FF00,     0xFF00FF00  },
-        {   kRGB_565_SkColorType,   0xFFFF00FF,     0xFFFF00FF  },
-        {   kN32_SkColorType,       0xFFFFFFFF,     0xFFFFFFFF  },
-        {   kN32_SkColorType,       0,              0           },
-        {   kN32_SkColorType,       0xFF224466,     0xFF224466  },
+        {   VX_COLOR_TYPE_ALPHA_8,   0xFF000000,     0xFF000000  },
+        {   VX_COLOR_TYPE_ALPHA_8,   0,              0           },
+        {   VX_COLOR_TYPE_RGB_565,   0xFF00FF00,     0xFF00FF00  },
+        {   VX_COLOR_TYPE_RGB_565,   0xFFFF00FF,     0xFFFF00FF  },
+        {   VX_COLOR_TYPE_N32,       0xFFFFFFFF,     0xFFFFFFFF  },
+        {   VX_COLOR_TYPE_N32,       0,              0           },
+        {   VX_COLOR_TYPE_N32,       0xFF224466,     0xFF224466  },
     };
 
     // specify an area that doesn't touch (0,0) and may extend beyond the
@@ -42,7 +42,7 @@ DEF_TEST(GetColor, reporter) {
 
     for (size_t i = 0; i < std::size(gRec); i++) {
         SkImageInfo info = SkImageInfo::Make(2, 2, gRec[i].fColorType,
-                                             kPremul_SkAlphaType);
+                                             VX_ALPHA_TYPE_PREMULTIPLIED);
         SkBitmap bm;
         uint32_t storage[4];
         bm.installPixels(info, storage, info.minRowBytes());

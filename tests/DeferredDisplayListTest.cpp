@@ -128,7 +128,7 @@ public:
             , fWidth(64)
             , fHeight(64)
             , fOrigin(kTopLeft_GrSurfaceOrigin)
-            , fColorType(kRGBA_8888_SkColorType)
+            , fColorType(VX_COLOR_TYPE_RGBA_8888)
             , fColorSpace(SkColorSpace::MakeSRGB())
             , fSampleCount(1)
             , fSurfaceProps(0x0, kUnknown_SkPixelGeometry)
@@ -155,8 +155,8 @@ public:
 
     int sampleCount() const { return fSampleCount; }
 
-    void setColorType(SkColorType ct) { fColorType = ct; }
-    SkColorType colorType() const { return fColorType; }
+    void setColorType(vx_color_type ct) { fColorType = ct; }
+    vx_color_type colorType() const { return fColorType; }
     void setColorSpace(sk_sp<SkColorSpace> cs) { fColorSpace = std::move(cs); }
     void disableTextureability() {
         fIsTextureable = false;
@@ -193,7 +193,7 @@ public:
             set(fOrigin, kBottomLeft_GrSurfaceOrigin);
             break;
         case 3:
-            set(fColorType, kRGBA_F16_SkColorType);
+            set(fColorType, VX_COLOR_TYPE_RGBA_F16);
             break;
         case 4:
             // This just needs to be a colorSpace different from that returned by MakeSRGB().
@@ -250,7 +250,7 @@ public:
 
         // Note that Ganesh doesn't make use of the SkImageInfo's alphaType
         SkImageInfo ii = SkImageInfo::Make(fWidth, fHeight, fColorType,
-                                           kPremul_SkAlphaType, fColorSpace);
+                                           VX_ALPHA_TYPE_PREMULTIPLIED, fColorSpace);
 
         GrBackendFormat backendFormat = dContext->defaultBackendFormat(fColorType,
                                                                        GrRenderable::kYes);
@@ -360,7 +360,7 @@ public:
     sk_sp<GrVkSecondaryCBDrawContext> makeVkSCB(GrDirectContext* dContext) {
         const GrSurfaceCharacterization c = this->createCharacterization(dContext);
         SkImageInfo imageInfo = SkImageInfo::Make({fWidth, fHeight},
-                                                  {fColorType, kPremul_SkAlphaType, fColorSpace});
+                                                  {fColorType, VX_ALPHA_TYPE_PREMULTIPLIED, fColorSpace});
         GrVkDrawableInfo vkInfo;
         // putting in a bunch of placeholder values here
         vkInfo.fSecondaryCommandBuffer = (VkCommandBuffer)1;
@@ -380,7 +380,7 @@ private:
     int                 fWidth;
     int                 fHeight;
     GrSurfaceOrigin     fOrigin;
-    SkColorType         fColorType;
+    vx_color_type         fColorType;
     sk_sp<SkColorSpace> fColorSpace;
     int                 fSampleCount;
     SkSurfaceProps      fSurfaceProps;
@@ -444,8 +444,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLOperatorEqTest,
 // This tests GrSurfaceCharacterization/SkSurface compatibility
 void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Reporter* reporter) {
     // Create a bitmap that we can readback into
-    SkImageInfo imageInfo = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType,
-                                              kPremul_SkAlphaType);
+    SkImageInfo imageInfo = SkImageInfo::Make(64, 64, VX_COLOR_TYPE_RGBA_8888,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bitmap;
     bitmap.allocPixels(imageInfo);
 
@@ -536,7 +536,7 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
 
     // Make sure non-GPU-backed surfaces fail characterization
     {
-        SkImageInfo ii = SkImageInfo::MakeN32(64, 64, kOpaque_SkAlphaType);
+        SkImageInfo ii = SkImageInfo::MakeN32(64, 64, VX_ALPHA_TYPE_OPAQUE);
 
         sk_sp<SkSurface> rasterSurface = SkSurfaces::Raster(ii);
         GrSurfaceCharacterization c;
@@ -624,23 +624,23 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
         SkAssertResult(s->characterize(&char0));
 
         // The default params create a renderable RGBA8 surface
-        auto originalBackendFormat = dContext->defaultBackendFormat(kRGBA_8888_SkColorType,
+        auto originalBackendFormat = dContext->defaultBackendFormat(VX_COLOR_TYPE_RGBA_8888,
                                                                     GrRenderable::kYes);
         REPORTER_ASSERT(reporter, originalBackendFormat.isValid());
         REPORTER_ASSERT(reporter, char0.backendFormat() == originalBackendFormat);
 
-        auto newBackendFormat = dContext->defaultBackendFormat(kRGB_565_SkColorType,
+        auto newBackendFormat = dContext->defaultBackendFormat(VX_COLOR_TYPE_RGB_565,
                                                                GrRenderable::kYes);
 
         if (newBackendFormat.isValid()) {
-            GrSurfaceCharacterization char1 = char0.createBackendFormat(kRGB_565_SkColorType,
+            GrSurfaceCharacterization char1 = char0.createBackendFormat(VX_COLOR_TYPE_RGB_565,
                                                                         newBackendFormat);
             REPORTER_ASSERT(reporter, char1.isValid());
             REPORTER_ASSERT(reporter, char1.backendFormat() == newBackendFormat);
 
             GrSurfaceCharacterization invalid;
             REPORTER_ASSERT(reporter, !invalid.isValid());
-            auto stillInvalid = invalid.createBackendFormat(kRGB_565_SkColorType,
+            auto stillInvalid = invalid.createBackendFormat(VX_COLOR_TYPE_RGB_565,
                                                             newBackendFormat);
             REPORTER_ASSERT(reporter, !stillInvalid.isValid());
         }
@@ -703,7 +703,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(CharacterizationFBO0nessTest,
         return;
     }
 
-    SkImageInfo ii = SkImageInfo::Make({ 128, 128 }, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make({ 128, 128 }, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     static constexpr int kStencilBits = 8;
     static constexpr bool kNotTextureable = false;
@@ -744,7 +744,7 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(CharacterizationFBO0nessTest,
             surfaces[index] = SkSurfaces::WrapBackendRenderTarget(context,
                                                                   backendRT,
                                                                   kTopLeft_GrSurfaceOrigin,
-                                                                  kRGBA_8888_SkColorType,
+                                                                  VX_COLOR_TYPE_RGBA_8888,
                                                                   nullptr,
                                                                   &surfaceProps);
             ++index;
@@ -820,8 +820,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLNonTextureabilityTest,
     auto context = ctxInfo.directContext();
 
     // Create a bitmap that we can readback into
-    SkImageInfo imageInfo = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType,
-                                              kPremul_SkAlphaType);
+    SkImageInfo imageInfo = SkImageInfo::Make(64, 64, VX_COLOR_TYPE_RGBA_8888,
+                                              VX_ALPHA_TYPE_PREMULTIPLIED);
     SkBitmap bitmap;
     bitmap.allocPixels(imageInfo);
 
@@ -972,7 +972,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLWrapBackendTest,
     auto mbet = sk_gpu_test::ManagedBackendTexture::MakeWithoutData(dContext,
                                                                     kSize,
                                                                     kSize,
-                                                                    kRGBA_8888_SkColorType,
+                                                                    VX_COLOR_TYPE_RGBA_8888,
                                                                     skgpu::Mipmapped::kNo,
                                                                     GrRenderable::kNo,
                                                                     skgpu::Protected::kNo);
@@ -1006,8 +1006,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLWrapBackendTest,
             rContext,
             mbet->texture(),
             kTopLeft_GrSurfaceOrigin,
-            kRGBA_8888_SkColorType,
-            kPremul_SkAlphaType,
+            VX_COLOR_TYPE_RGBA_8888,
+            VX_ALPHA_TYPE_PREMULTIPLIED,
             nullptr,
             sk_gpu_test::ManagedBackendTexture::ReleaseProc,
             mbet->releaseContext(TextureReleaseChecker::Release, &releaseChecker));
@@ -1061,7 +1061,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLCreateCharacterizationFailures,
                                       const GrBackendFormat& backendFormat,
                                       int width,
                                       int height,
-                                      SkColorType ct,
+                                      vx_color_type ct,
                                       bool willUseGLFBO0,
                                       bool isTextureable,
                                       Protected prot,
@@ -1070,7 +1070,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLCreateCharacterizationFailures,
         const SkSurfaceProps surfaceProps(0x0, kRGB_H_SkPixelGeometry);
 
         SkImageInfo ii = SkImageInfo::Make(width, height, ct,
-                                           kPremul_SkAlphaType, nullptr);
+                                           VX_ALPHA_TYPE_PREMULTIPLIED, nullptr);
 
         GrSurfaceCharacterization c =
                 proxy->createCharacterization(maxResourceBytes,
@@ -1088,15 +1088,15 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLCreateCharacterizationFailures,
         REPORTER_ASSERT(reporter, !c.isValid());
     };
 
-    GrBackendFormat goodBackendFormat = dContext->defaultBackendFormat(kRGBA_8888_SkColorType,
+    GrBackendFormat goodBackendFormat = dContext->defaultBackendFormat(VX_COLOR_TYPE_RGBA_8888,
                                                                        GrRenderable::kYes);
     SkASSERT(goodBackendFormat.isValid());
 
     GrBackendFormat badBackendFormat;
     SkASSERT(!badBackendFormat.isValid());
 
-    SkColorType kGoodCT = kRGBA_8888_SkColorType;
-    SkColorType kBadCT = kUnknown_SkColorType;
+    vx_color_type kGoodCT = VX_COLOR_TYPE_RGBA_8888;
+    vx_color_type kBadCT = VX_COLOR_TYPE_UNKNOWN;
 
     static const bool kIsTextureable = true;
     static const bool kIsNotTextureable = false;
@@ -1189,7 +1189,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
 
     Protected isProtected = Protected(context->priv().caps()->supportsProtectedContent());
 
-    SkImageInfo ii = SkImageInfo::Make(32, 32, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(32, 32, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> s = SkSurfaces::RenderTarget(context, Budgeted::kNo, ii);
 
     GrSurfaceCharacterization characterization;
@@ -1212,7 +1212,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
     {
         GrDeferredDisplayListRecorder recorder(characterization);
 
-        GrBackendFormat format = context->defaultBackendFormat(kRGBA_8888_SkColorType,
+        GrBackendFormat format = context->defaultBackendFormat(VX_COLOR_TYPE_RGBA_8888,
                                                                GrRenderable::kNo);
         SkASSERT(format.isValid());
 
@@ -1224,8 +1224,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DDLSkSurfaceFlush,
                                              SkISize::Make(32, 32),
                                              skgpu::Mipmapped::kNo,
                                              kTopLeft_GrSurfaceOrigin,
-                                             kRGBA_8888_SkColorType,
-                                             kPremul_SkAlphaType,
+                                             VX_COLOR_TYPE_RGBA_8888,
+                                             VX_ALPHA_TYPE_PREMULTIPLIED,
                                              nullptr,
                                              tracking_fulfill_proc,
                                              tracking_release_proc,
@@ -1342,8 +1342,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(DDLTextureFlagsTest, reporter, ctxInfo, CtsEnforc
                     SkISize::Make(32, 32),
                     mipmapped,
                     kTopLeft_GrSurfaceOrigin,
-                    kRGBA_8888_SkColorType,
-                    kPremul_SkAlphaType,
+                    VX_COLOR_TYPE_RGBA_8888,
+                    VX_ALPHA_TYPE_PREMULTIPLIED,
                     /*color space*/ nullptr,
                     noop_fulfill_proc,
                     /*release proc*/ nullptr,
@@ -1376,8 +1376,8 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(DDLTextureFlagsTest, reporter, ctxInfo, CtsEnforc
 DEF_GANESH_TEST_FOR_GL_CONTEXT(DDLCompatibilityTest, reporter, ctxInfo, CtsEnforcement::kNever) {
     auto context = ctxInfo.directContext();
 
-    for (int ct = 0; ct <= kLastEnum_SkColorType; ++ct) {
-        SkColorType colorType = static_cast<SkColorType>(ct);
+    for (int ct = 0; ct <= VX_COLOR_TYPE_LASTENUM; ++ct) {
+        vx_color_type colorType = static_cast<vx_color_type>(ct);
 
         SurfaceParameters params(context);
         params.setColorType(colorType);

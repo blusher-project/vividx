@@ -38,7 +38,7 @@ sk_sp<SkShader> create_image_shader(SkCanvas* destCanvas, SkTileMode tmX, SkTile
     SkBitmap bitmap;
 
     {
-        SkImageInfo ii = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+        SkImageInfo ii = SkImageInfo::Make(64, 64, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
         bitmap.allocPixels(ii);
         bitmap.eraseColor(SK_ColorWHITE);
 
@@ -58,7 +58,7 @@ sk_sp<SkShader> create_image_shader(SkCanvas* destCanvas, SkTileMode tmX, SkTile
             }
         }
 
-        bitmap.setAlphaType(kOpaque_SkAlphaType);
+        bitmap.setAlphaType(VX_ALPHA_TYPE_OPAQUE);
         bitmap.setImmutable();
     }
 

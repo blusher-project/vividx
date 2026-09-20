@@ -22,7 +22,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(RecorderDevicePtrTest, reporter, context,
                                    CtsEnforcement::kApiLevel_202404) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
-    SkImageInfo info = SkImageInfo::Make({16, 16}, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo info = SkImageInfo::Make({16, 16}, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     // Add multiple devices to later test different patterns of destruction.
     sk_sp<Device> device1 = Device::Make(recorder.get(),

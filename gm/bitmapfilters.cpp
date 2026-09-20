@@ -77,8 +77,8 @@ class FilterGM : public skiagm::GM {
     void onOnceBeforeDraw() override {
         SkBitmap bm32, bm4444, bm565;
         make_bm(&bm32);
-        ToolUtils::copy_to(&bm4444, kARGB_4444_SkColorType, bm32);
-        ToolUtils::copy_to(&bm565, kRGB_565_SkColorType, bm32);
+        ToolUtils::copy_to(&bm4444, VX_COLOR_TYPE_ARGB_4444, bm32);
+        ToolUtils::copy_to(&bm565, VX_COLOR_TYPE_RGB_565, bm32);
 
         fImg32 = bm32.asImage();
         fImg4444 = bm4444.asImage();

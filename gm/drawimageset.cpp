@@ -40,7 +40,7 @@ static void make_image_tiles(int tileW, int tileH, int m, int n, SkSpan<const Sk
     const int w = tileW * m;
     const int h = tileH * n;
     auto surf = SkSurfaces::Raster(
-            SkImageInfo::Make(w, h, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(w, h, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED));
     surf->getCanvas()->clear(bgColor);
 
     static constexpr SkScalar kStripeW = 10;
@@ -315,7 +315,7 @@ private:
                 fSet[i].fAlpha = (kM - x) / (float) kM;
                 if (y % 2 == 0) {
                     fSet[i].fImage = fSet[i].fImage->makeColorTypeAndColorSpace(
-                            recorder, kAlpha_8_SkColorType, alphaSpace, {});
+                            recorder, VX_COLOR_TYPE_ALPHA_8, alphaSpace, {});
                 }
             }
         }

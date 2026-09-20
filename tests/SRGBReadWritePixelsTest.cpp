@@ -217,7 +217,7 @@ static std::unique_ptr<uint32_t[]> make_data() {
 static std::unique_ptr<skgpu::ganesh::SurfaceContext> make_surface_context(
         Encoding contextEncoding, GrRecordingContext* rContext, skiatest::Reporter* reporter) {
     GrImageInfo info(GrColorType::kRGBA_8888,
-                     kPremul_SkAlphaType,
+                     VX_ALPHA_TYPE_PREMULTIPLIED,
                      encoding_as_color_space(contextEncoding),
                      kW, kH);
 
@@ -239,7 +239,7 @@ static void test_write_read(Encoding contextEncoding, Encoding writeEncoding, En
     if (!surfaceContext) {
         return;
     }
-    auto writeII = SkImageInfo::Make(kW, kH, kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+    auto writeII = SkImageInfo::Make(kW, kH, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED,
                                      encoding_as_color_space(writeEncoding));
     auto data = make_data();
     GrCPixmap dataPM(writeII, data.get(), kW*sizeof(uint32_t));
@@ -249,7 +249,7 @@ static void test_write_read(Encoding contextEncoding, Encoding writeEncoding, En
         return;
     }
 
-    auto readII = SkImageInfo::Make(kW, kH, kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+    auto readII = SkImageInfo::Make(kW, kH, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED,
                                     encoding_as_color_space(readEncoding));
     SkString testName;
     testName.printf("write %s data to a %s context and read as %s.", encoding_as_str(writeEncoding),

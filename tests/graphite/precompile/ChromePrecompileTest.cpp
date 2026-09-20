@@ -21,55 +21,55 @@ using namespace PrecompileTestUtils;
 
 // Single sampled R w/ just depth
 const RenderPassProperties kR_1_D{DepthStencilFlags::kDepth,
-                                kAlpha_8_SkColorType,
+                                VX_COLOR_TYPE_ALPHA_8,
                                 /* fDstCS= */ nullptr,
                                 /* fRequiresMSAA= */ false};
 
 // MSAA R w/ depth and stencil
 const RenderPassProperties kR_4_DS{DepthStencilFlags::kDepthStencil,
-                                 kAlpha_8_SkColorType,
+                                 VX_COLOR_TYPE_ALPHA_8,
                                  /* fDstCS= */ nullptr,
                                  /* fRequiresMSAA= */ true};
 
 // Single sampled BGRA w/ just depth
 const RenderPassProperties kBGRA_1_D{DepthStencilFlags::kDepth,
-                                   kBGRA_8888_SkColorType,
+                                   VX_COLOR_TYPE_BGRA_8888,
                                    /* fDstCS= */ nullptr,
                                    /* fRequiresMSAA= */ false};
 
 // MSAA BGRA w/ just depth
 const RenderPassProperties kBGRA_4_D{DepthStencilFlags::kDepth,
-                                   kBGRA_8888_SkColorType,
+                                   VX_COLOR_TYPE_BGRA_8888,
                                    /* fDstCS= */ nullptr,
                                    /* fRequiresMSAA= */ true};
 
 // MSAA BGRA w/ depth and stencil
 const RenderPassProperties kBGRA_4_DS{DepthStencilFlags::kDepthStencil,
-                                    kBGRA_8888_SkColorType,
+                                    VX_COLOR_TYPE_BGRA_8888,
                                     /* fDstCS= */ nullptr,
                                     /* fRequiresMSAA= */ true};
 
 // The same as kBGRA_1_D but w/ an SRGB colorSpace
 const RenderPassProperties kBGRA_1_D_SRGB{DepthStencilFlags::kDepth,
-                                        kBGRA_8888_SkColorType,
+                                        VX_COLOR_TYPE_BGRA_8888,
                                         SkColorSpace::MakeSRGB(),
                                         /* fRequiresMSAA= */ false};
 
 // The same as kBGRA_1_D but w/ an Adobe RGB colorSpace
 const RenderPassProperties kBGRA_1_D_Adobe{
-  DepthStencilFlags::kDepth, kBGRA_8888_SkColorType,
+  DepthStencilFlags::kDepth, VX_COLOR_TYPE_BGRA_8888,
   SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kAdobeRGB),
   /* fRequiresMSAA= */ false};
 
 // The same as kBGRA_4_DS but w/ an SRGB colorSpace
 const RenderPassProperties kBGRA_4_DS_SRGB{DepthStencilFlags::kDepthStencil,
-                                         kBGRA_8888_SkColorType,
+                                         VX_COLOR_TYPE_BGRA_8888,
                                          SkColorSpace::MakeSRGB(),
                                          /* fRequiresMSAA= */ true};
 
 // The same as kBGRA_4_DS but w/ an Adobe RGB colorSpace
 const RenderPassProperties kBGRA_4_DS_Adobe{
-  DepthStencilFlags::kDepthStencil, kBGRA_8888_SkColorType,
+  DepthStencilFlags::kDepthStencil, VX_COLOR_TYPE_BGRA_8888,
   SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kAdobeRGB),
   /* fRequiresMSAA= */ true};
 
@@ -1043,7 +1043,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     const skgpu::graphite::Caps* caps = precompileContext->priv().caps();
 
-    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kBGRA_8888_SkColorType,
+    TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(VX_COLOR_TYPE_BGRA_8888,
                                                                  skgpu::Mipmapped::kNo,
                                                                  skgpu::Protected::kNo,
                                                                  skgpu::Renderable::kYes);

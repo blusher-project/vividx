@@ -59,7 +59,7 @@
 
  static SkBitmap create_bm() {
      SkImageInfo ii =
-             SkImageInfo::Make(kFullSize, kFullSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+             SkImageInfo::Make(kFullSize, kFullSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
      SkBitmap bm;
      bm.allocPixels(ii);
@@ -277,8 +277,8 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterCache_ImageBackedGPU,
     sk_sp<SkImage> srcImage(SkImages::BorrowTextureFrom(dContext,
                                                         backendTex,
                                                         texOrigin,
-                                                        kRGBA_8888_SkColorType,
-                                                        kPremul_SkAlphaType,
+                                                        VX_COLOR_TYPE_RGBA_8888,
+                                                        VX_ALPHA_TYPE_PREMULTIPLIED,
                                                         nullptr,
                                                         nullptr,
                                                         nullptr));
@@ -322,7 +322,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterCache_GPUBacked,
             full,
             kNeedNewImageUniqueID_SpecialImage,
             srcView,
-            {GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr},
+            {GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr},
             SkSurfaceProps()));
 
     const SkIRect& subset = SkIRect::MakeXYWH(kPad, kPad, kSmallerSize, kSmallerSize);
@@ -332,7 +332,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ImageFilterCache_GPUBacked,
             subset,
             kNeedNewImageUniqueID_SpecialImage,
             std::move(srcView),
-            {GrColorType::kRGBA_8888, kPremul_SkAlphaType, nullptr},
+            {GrColorType::kRGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED, nullptr},
             SkSurfaceProps()));
 
     test_find_existing(reporter, fullImg, subsetImg);

@@ -189,7 +189,7 @@ public:
         kGrayscale_Always_DstColorType,
         kNonNative8888_Always_DstColorType,
     };
-    CodecSrc(Path, Mode, DstColorType, SkAlphaType, float);
+    CodecSrc(Path, Mode, DstColorType, vx_alpha_type, float);
 
     Result draw(SkCanvas*, GraphiteTestContext*) const override;
     SkISize size() const override;
@@ -200,14 +200,14 @@ private:
     Path                    fPath;
     Mode                    fMode;
     DstColorType            fDstColorType;
-    SkAlphaType             fDstAlphaType;
+    vx_alpha_type             fDstAlphaType;
     float                   fScale;
     bool                    fRunSerially;
 };
 
 class AndroidCodecSrc : public Src {
 public:
-    AndroidCodecSrc(Path, CodecSrc::DstColorType, SkAlphaType, int sampleSize);
+    AndroidCodecSrc(Path, CodecSrc::DstColorType, vx_alpha_type, int sampleSize);
 
     Result draw(SkCanvas*, GraphiteTestContext*) const override;
     SkISize size() const override;
@@ -217,7 +217,7 @@ public:
 private:
     Path                    fPath;
     CodecSrc::DstColorType  fDstColorType;
-    SkAlphaType             fDstAlphaType;
+    vx_alpha_type             fDstAlphaType;
     int                     fSampleSize;
     bool                    fRunSerially;
 };
@@ -256,7 +256,7 @@ public:
         kCodec_Mode,    // Use CodecImageGenerator
         kPlatform_Mode, // Uses CG or WIC
     };
-    ImageGenSrc(Path, Mode, SkAlphaType, bool);
+    ImageGenSrc(Path, Mode, vx_alpha_type, bool);
 
     Result draw(SkCanvas*, GraphiteTestContext*) const override;
     SkISize size() const override;
@@ -266,7 +266,7 @@ public:
 private:
     Path        fPath;
     Mode        fMode;
-    SkAlphaType fDstAlphaType;
+    vx_alpha_type fDstAlphaType;
     bool        fIsGpu;
     bool        fRunSerially;
 };
@@ -424,8 +424,8 @@ private:
     SkCommandLineConfigGpu::SurfType                  fSurfType;
     int                                               fSampleCount;
     uint32_t                                          fSurfaceFlags;
-    SkColorType                                       fColorType;
-    SkAlphaType                                       fAlphaType;
+    vx_color_type                                       fColorType;
+    vx_alpha_type                                       fAlphaType;
     sk_sp<SkColorSpace>                               fColorSpace;
     GrContextOptions                                  fBaseContextOptions;
     sk_gpu_test::MemoryCache                          fMemoryCache;
@@ -537,7 +537,7 @@ public:
 
 class RasterSink : public Sink {
 public:
-    explicit RasterSink(SkColorType);
+    explicit RasterSink(vx_color_type);
 
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "png"; }
@@ -546,14 +546,14 @@ public:
 
     SkColorInfo colorInfo() const override {
         // If there's an appropriate alpha type for this color type, use it, otherwise use premul.
-        SkAlphaType alphaType = kPremul_SkAlphaType;
+        vx_alpha_type alphaType = VX_ALPHA_TYPE_PREMULTIPLIED;
         (void)vx_color_type_validate_alpha_type(fColorType, alphaType, &alphaType);
 
         return SkColorInfo(fColorType, alphaType, fColorSpace);
     }
 
 private:
-    SkColorType         fColorType;
+    vx_color_type         fColorType;
     sk_sp<SkColorSpace> fColorSpace;
 };
 
@@ -605,8 +605,8 @@ protected:
 
     skiatest::graphite::TestOptions fOptions;
     skgpu::ContextType fContextType;
-    SkColorType fColorType;
-    SkAlphaType fAlphaType;
+    vx_color_type fColorType;
+    vx_alpha_type fAlphaType;
     sk_sp<SkColorSpace> fColorSpace;
 };
 

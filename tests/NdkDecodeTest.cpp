@@ -61,8 +61,8 @@ DEF_TEST(NdkDecode, r) {
         bm.allocPixels(info);
         REPORTER_ASSERT(r, gen->getPixels(bm.pixmap()));
 
-        REPORTER_ASSERT(r, info.alphaType() != kUnpremul_SkAlphaType);
-        auto unpremulInfo = info.makeAlphaType(kUnpremul_SkAlphaType);
+        REPORTER_ASSERT(r, info.alphaType() != VX_ALPHA_TYPE_UNPREMULTIPLIED);
+        auto unpremulInfo = info.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
         bm.allocPixels(unpremulInfo);
         REPORTER_ASSERT(r, gen->getPixels(bm.pixmap()));
     }
@@ -93,7 +93,7 @@ DEF_TEST(NdkDecode_reportedColorSpace, r) {
         SkColorSpace::MakeRGB(k2Dot6, kDCIP3),
     }) {
         SkBitmap bm;
-        bm.allocPixels(SkImageInfo::Make(10, 10, kRGBA_F16_SkColorType, kOpaque_SkAlphaType, cs));
+        bm.allocPixels(SkImageInfo::Make(10, 10, VX_COLOR_TYPE_RGBA_F16, VX_ALPHA_TYPE_OPAQUE, cs));
         bm.eraseColor(SK_ColorBLUE);
 
         for (auto format : { SkEncodedImageFormat::kPNG,
@@ -221,7 +221,7 @@ DEF_TEST(NdkDecode_reuseNoColorSpace, r) {
         if (rec.fIsOpaque) {
             // Use something other than the default color type to verify that the modified color
             // type is used even when the color space is reset.
-            noColorCorrection = noColorCorrection.makeColorType(kRGB_565_SkColorType);
+            noColorCorrection = noColorCorrection.makeColorType(VX_COLOR_TYPE_RGB_565);
         }
 
         SkBitmap orig;
@@ -299,8 +299,8 @@ DEF_TEST(NdkDecode_webpArbitraryDownscale, r) {
             bm.allocPixels(info);
             REPORTER_ASSERT(r, gen->getPixels(bm.pixmap()));
 
-            REPORTER_ASSERT(r, info.alphaType() != kUnpremul_SkAlphaType);
-            auto unpremulInfo = info.makeAlphaType(kUnpremul_SkAlphaType);
+            REPORTER_ASSERT(r, info.alphaType() != VX_ALPHA_TYPE_UNPREMULTIPLIED);
+            auto unpremulInfo = info.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
             bm.allocPixels(unpremulInfo);
             REPORTER_ASSERT(r, gen->getPixels(bm.pixmap()));
         }
@@ -333,8 +333,8 @@ DEF_TEST(NdkDecode_jpegDownscale, r) {
                           dims.height());
             }
 
-            REPORTER_ASSERT(r, info.alphaType() != kUnpremul_SkAlphaType);
-            auto unpremulInfo = info.makeAlphaType(kUnpremul_SkAlphaType);
+            REPORTER_ASSERT(r, info.alphaType() != VX_ALPHA_TYPE_UNPREMULTIPLIED);
+            auto unpremulInfo = info.makeAlphaType(VX_ALPHA_TYPE_UNPREMULTIPLIED);
             bm.allocPixels(unpremulInfo);
             REPORTER_ASSERT(r, gen->getPixels(bm.pixmap()));
         }
@@ -416,10 +416,10 @@ DEF_TEST(NdkDecode_Gray8, r) {
 
         SkImageInfo info = gen->getInfo();
         if (rec.fGrayscale) {
-            REPORTER_ASSERT(r, info.colorType() == kGray_8_SkColorType);
-            REPORTER_ASSERT(r, info.alphaType() == kOpaque_SkAlphaType);
+            REPORTER_ASSERT(r, info.colorType() == VX_COLOR_TYPE_GRAY_8);
+            REPORTER_ASSERT(r, info.alphaType() == VX_ALPHA_TYPE_OPAQUE);
         } else {
-            info = info.makeColorType(kGray_8_SkColorType);
+            info = info.makeColorType(VX_COLOR_TYPE_GRAY_8);
         }
         SkBitmap bm;
         bm.allocPixels(info);
@@ -456,13 +456,13 @@ DEF_TEST(NdkDecode_Opaque_and_565, r) {
         auto gen = make_generator(path, r);
         if (!gen) continue;
 
-        auto info = gen->getInfo().makeAlphaType(kOpaque_SkAlphaType);
+        auto info = gen->getInfo().makeAlphaType(VX_ALPHA_TYPE_OPAQUE);
         SkBitmap bm;
         bm.allocPixels(info);
         bool success = gen->getPixels(bm.pixmap());
         REPORTER_ASSERT(r, success == gen->getInfo().isOpaque());
 
-        info = info.makeColorType(kRGB_565_SkColorType);
+        info = info.makeColorType(VX_COLOR_TYPE_RGB_565);
         bm.allocPixels(info);
         success = gen->getPixels(bm.pixmap());
         REPORTER_ASSERT(r, success == gen->getInfo().isOpaque());
@@ -494,14 +494,14 @@ DEF_TEST(NdkDecode_AlwaysSupportedColorTypes, r) {
         auto gen = make_generator(path, r);
         if (!gen) continue;
 
-        auto info = gen->getInfo().makeColorType(kRGBA_F16_SkColorType);
+        auto info = gen->getInfo().makeColorType(VX_COLOR_TYPE_RGBA_F16);
         SkBitmap bm;
         bm.allocPixels(info);
         REPORTER_ASSERT(r, gen->getPixels(bm.pixmap()));
 
         // This also tests that we can reuse the same generator for a different
         // color type.
-        info = info.makeColorType(kRGBA_8888_SkColorType);
+        info = info.makeColorType(VX_COLOR_TYPE_RGBA_8888);
         bm.allocPixels(info);
         REPORTER_ASSERT(r, gen->getPixels(bm.pixmap()));
     }
@@ -532,27 +532,27 @@ DEF_TEST(NdkDecode_UnsupportedColorTypes, r) {
         auto gen = make_generator(path, r);
         if (!gen) continue;
 
-        for (SkColorType ct : {
-            kUnknown_SkColorType,
-            kAlpha_8_SkColorType,
-            kARGB_4444_SkColorType,
-            kRGB_888x_SkColorType,
-            kBGRA_8888_SkColorType,
-            kRGBA_1010102_SkColorType,
-            kBGRA_1010102_SkColorType,
-            kRGB_101010x_SkColorType,
-            kBGR_101010x_SkColorType,
-            kRGBA_F16Norm_SkColorType,
-            kRGB_F16F16F16x_SkColorType,
-            kRGBA_F32_SkColorType,
-            kR8G8_unorm_SkColorType,
-            kA16_float_SkColorType,
-            kR16_float_SkColorType,
-            kR16G16_float_SkColorType,
-            kA16_unorm_SkColorType,
-            kR16_unorm_SkColorType,
-            kR16G16_unorm_SkColorType,
-            kR16G16B16A16_unorm_SkColorType,
+        for (vx_color_type ct : {
+            VX_COLOR_TYPE_UNKNOWN,
+            VX_COLOR_TYPE_ALPHA_8,
+            VX_COLOR_TYPE_ARGB_4444,
+            VX_COLOR_TYPE_RGB_888X,
+            VX_COLOR_TYPE_BGRA_8888,
+            VX_COLOR_TYPE_RGBA_1010102,
+            VX_COLOR_TYPE_BGRA_1010102,
+            VX_COLOR_TYPE_RGB_101010X,
+            VX_COLOR_TYPE_BGR_101010X,
+            VX_COLOR_TYPE_RGBA_F16NORM,
+            VX_COLOR_TYPE_RGB_F16F16F16X,
+            VX_COLOR_TYPE_RGBA_F32,
+            VX_COLOR_TYPE_R8G8_UNORM,
+            VX_COLOR_TYPE_A16_FLOAT,
+            VX_COLOR_TYPE_R16_FLOAT,
+            VX_COLOR_TYPE_R16G16_FLOAT,
+            VX_COLOR_TYPE_A16_UNORM,
+            VX_COLOR_TYPE_R16_UNORM,
+            VX_COLOR_TYPE_R16G16_UNORM,
+            VX_COLOR_TYPE_R16G16B16A16_UNORM,
         }) {
             auto info = gen->getInfo().makeColorType(ct);
             SkBitmap bm;

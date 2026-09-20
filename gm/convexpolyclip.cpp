@@ -30,7 +30,7 @@
 #include "tools/fonts/FontToolUtils.h"
 
 static sk_sp<SkImage> make_img(int w, int h) {
-    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32(w, h, kOpaque_SkAlphaType));
+    auto surf = SkSurfaces::Raster(SkImageInfo::MakeN32(w, h, VX_ALPHA_TYPE_OPAQUE));
     auto canvas = surf->getCanvas();
 
     SkScalar wScalar = SkIntToScalar(w);

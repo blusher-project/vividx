@@ -39,7 +39,7 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(clear_swizzle, rContext, canvas, errorMsg, 6*kSize, 2
                                                              skgpu::Swizzle{"bgra"});
         skgpu::Swizzle writeSwizzle = skgpu::Swizzle::Concat(sfc->readSwizzle(),
                                                              skgpu::Swizzle{"bgra"});
-        return rContext->priv().makeSFC(kPremul_SkAlphaType,
+        return rContext->priv().makeSFC(VX_ALPHA_TYPE_PREMULTIPLIED,
                                         sfc->colorInfo().refColorSpace(),
                                         dimensions,
                                         SkBackingFit::kExact,

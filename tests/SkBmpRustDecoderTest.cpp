@@ -45,7 +45,7 @@ static void assert_pixel_color(skiatest::Reporter* r,
                     "x=%d >= width=%d", x, pixmap.width());
     REPORTER_ASSERT(r, y < pixmap.height(),
                     "y=%d >= height=%d", y, pixmap.height());
-    REPORTER_ASSERT(r, kN32_SkColorType == pixmap.colorType(),
+    REPORTER_ASSERT(r, VX_COLOR_TYPE_N32 == pixmap.colorType(),
                     "kN32_SkColorType != pixmap.ColorType()=%d",
                     pixmap.colorType());
 
@@ -80,7 +80,7 @@ static std::unique_ptr<SkCodec> decode_bmp(skiatest::Reporter* r, const char* pa
 // Table-based test for decoding valid BMP files.
 DEF_TEST(RustBmpCodec_decode_valid_bmp, r) {
     auto test = [&r](const char* description, const char* file, SkISize expectedSize,
-                     SkColorType expectedColorType,
+                     vx_color_type expectedColorType,
                      SkCodec::SkScanlineOrder expectedScanlineOrder) {
         skiatest::ReporterContext ctx(r, description);
         std::unique_ptr<SkCodec> codec = decode_bmp(r, file);
@@ -105,13 +105,13 @@ DEF_TEST(RustBmpCodec_decode_valid_bmp, r) {
         REPORTER_ASSERT(r, image->height() == expectedSize.height());
     };
 
-    test("basic 24-bit", "images/randPixels.bmp", {8, 8}, kN32_SkColorType,
+    test("basic 24-bit", "images/randPixels.bmp", {8, 8}, VX_COLOR_TYPE_N32,
         SkCodec::kBottomUp_SkScanlineOrder);
-    test("rle compression", "images/rle.bmp", {320, 240}, kN32_SkColorType,
+    test("rle compression", "images/rle.bmp", {320, 240}, VX_COLOR_TYPE_N32,
         SkCodec::kBottomUp_SkScanlineOrder);
-    test("8 bit indexed", "images/bmp-size-32x32-8bpp.bmp", {32, 32}, kN32_SkColorType,
+    test("8 bit indexed", "images/bmp-size-32x32-8bpp.bmp", {32, 32}, VX_COLOR_TYPE_N32,
         SkCodec::kBottomUp_SkScanlineOrder);
-    test("32 bit top-down", "images/32bpp-topdown-320x240.bmp", {320, 240}, kN32_SkColorType,
+    test("32 bit top-down", "images/32bpp-topdown-320x240.bmp", {320, 240}, VX_COLOR_TYPE_N32,
         SkCodec::kTopDown_SkScanlineOrder);
 }
 
@@ -189,7 +189,7 @@ DEF_TEST(RustBmpCodec_getPixels, r) {
         return;
     }
 
-    SkImageInfo info = codec->getInfo().makeColorType(kN32_SkColorType);
+    SkImageInfo info = codec->getInfo().makeColorType(VX_COLOR_TYPE_N32);
     SkBitmap bitmap;
     bitmap.allocPixels(info);
 

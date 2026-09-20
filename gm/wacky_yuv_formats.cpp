@@ -195,7 +195,7 @@ public:
     int numPlanes() const { return SkYUVAInfo::NumPlanes(fPlaneConfig); }
 
     SkYUVAPixmaps makeYUVAPixmaps(SkISize dimensions,
-                                  SkYUVColorSpace yuvColorSpace,
+                                  vx_yuv_color_space yuvColorSpace,
                                   const SkBitmap bitmaps[],
                                   int numBitmaps) const;
 
@@ -206,7 +206,7 @@ private:
 };
 
 SkYUVAPixmaps YUVAPlanarConfig::makeYUVAPixmaps(SkISize dimensions,
-                                                SkYUVColorSpace yuvColorSpace,
+                                                vx_yuv_color_space yuvColorSpace,
                                                 const SkBitmap bitmaps[],
                                                 int numBitmaps) const {
     SkYUVAInfo info(dimensions, fPlaneConfig, fSubsampling, yuvColorSpace, fOrigin);
@@ -334,7 +334,7 @@ static SkPath create_splat(const SkPoint& o, SkScalar innerRadius, SkScalar oute
     return p.detach();
 }
 
-static SkBitmap make_bitmap(SkColorType colorType, const SkPath& path,
+static SkBitmap make_bitmap(vx_color_type colorType, const SkPath& path,
                             const SkTDArray<SkRect>& circles, bool opaque, bool padWithRed) {
     const SkColor kGreen   = ToolUtils::color_to_565(SkColorSetARGB(0xFF, 178, 240, 104));
     const SkColor kBlue    = ToolUtils::color_to_565(SkColorSetARGB(0xFF, 173, 167, 252));
@@ -345,7 +345,7 @@ static SkBitmap make_bitmap(SkColorType colorType, const SkPath& path,
     int widthHeight = kTileWidthHeight + (padWithRed ? 2 * kSubsetPadding : 0);
 
     SkImageInfo ii = SkImageInfo::Make(widthHeight, widthHeight,
-                                       colorType, kPremul_SkAlphaType);
+                                       colorType, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap bm;
     bm.allocPixels(ii);
@@ -396,7 +396,7 @@ static void convert_rgba_to_yuva(const float mtx[20], SkColor col, uint8_t yuv[4
 }
 
 static void extract_planes(const SkBitmap& origBM,
-                           SkYUVColorSpace yuvColorSpace,
+                           vx_yuv_color_space yuvColorSpace,
                            SkEncodedOrigin origin,
                            PlaneData* planes) {
     SkImageInfo ii = origBM.info();
@@ -410,29 +410,29 @@ static void extract_planes(const SkBitmap& origBM,
     canvas.concat(matrix);
     canvas.drawImage(origBM.asImage(), 0, 0);
 
-    if (yuvColorSpace == kIdentity_SkYUVColorSpace) {
+    if (yuvColorSpace == VX_YUV_COLOR_SPACE_IDENTITY) {
         // To test the identity color space we use JPEG YUV planes
-        yuvColorSpace = kJPEG_SkYUVColorSpace;
+        yuvColorSpace = VX_YUV_COLOR_SPACE_JPEG;
     }
 
     SkASSERT(!(ii.width() % 2));
     SkASSERT(!(ii.height() % 2));
     planes->fYFull.allocPixels(
-            SkImageInfo::Make(ii.dimensions(), kGray_8_SkColorType, kUnpremul_SkAlphaType));
+            SkImageInfo::Make(ii.dimensions(), VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_UNPREMULTIPLIED));
     planes->fUFull.allocPixels(
-            SkImageInfo::Make(ii.dimensions(), kGray_8_SkColorType, kUnpremul_SkAlphaType));
+            SkImageInfo::Make(ii.dimensions(), VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_UNPREMULTIPLIED));
     planes->fVFull.allocPixels(
-            SkImageInfo::Make(ii.dimensions(), kGray_8_SkColorType, kUnpremul_SkAlphaType));
+            SkImageInfo::Make(ii.dimensions(), VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_UNPREMULTIPLIED));
     planes->fAFull.allocPixels(SkImageInfo::MakeA8(ii.dimensions()));
     planes->fUQuarter.allocPixels(SkImageInfo::Make(ii.width()/2, ii.height()/2,
-                                  kGray_8_SkColorType, kUnpremul_SkAlphaType));
+                                  VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_UNPREMULTIPLIED));
     planes->fVQuarter.allocPixels(SkImageInfo::Make(ii.width()/2, ii.height()/2,
-                                  kGray_8_SkColorType, kUnpremul_SkAlphaType));
+                                  VX_COLOR_TYPE_GRAY_8, VX_ALPHA_TYPE_UNPREMULTIPLIED));
 
     planes->fFull.allocPixels(
-            SkImageInfo::Make(ii.dimensions(), kRGBA_F32_SkColorType, kUnpremul_SkAlphaType));
+            SkImageInfo::Make(ii.dimensions(), VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_UNPREMULTIPLIED));
     planes->fQuarter.allocPixels(SkImageInfo::Make(ii.width()/2, ii.height()/2,
-                                 kRGBA_F32_SkColorType, kUnpremul_SkAlphaType));
+                                 VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_UNPREMULTIPLIED));
 
     float mtx[20];
     SkColorMatrix_RGB2YUV(yuvColorSpace, mtx);
@@ -509,8 +509,8 @@ static SkBitmap make_quarter_2_channel(const SkBitmap& fullY,
 
     result.allocPixels(SkImageInfo::Make(fullY.width()/2,
                                          fullY.height()/2,
-                                         kR8G8_unorm_SkColorType,
-                                         kUnpremul_SkAlphaType));
+                                         VX_COLOR_TYPE_R8G8_UNORM,
+                                         VX_ALPHA_TYPE_UNPREMULTIPLIED));
 
     for (int y = 0; y < fullY.height()/2; ++y) {
         for (int x = 0; x < fullY.width()/2; ++x) {
@@ -529,13 +529,13 @@ static SkBitmap make_quarter_2_channel(const SkBitmap& fullY,
 }
 
 // Create some flavor of a 16bits/channel bitmap from a RGBA_F32 source
-static SkBitmap make_16(const SkBitmap& src, SkColorType dstCT,
+static SkBitmap make_16(const SkBitmap& src, vx_color_type dstCT,
                         std::function<void(uint16_t* dstPixel, const float* srcPixel)> convert) {
-    SkASSERT(src.colorType() == kRGBA_F32_SkColorType);
+    SkASSERT(src.colorType() == VX_COLOR_TYPE_RGBA_F32);
 
     SkBitmap result;
 
-    result.allocPixels(SkImageInfo::Make(src.dimensions(), dstCT, kUnpremul_SkAlphaType));
+    result.allocPixels(SkImageInfo::Make(src.dimensions(), dstCT, VX_ALPHA_TYPE_UNPREMULTIPLIED));
 
     for (int y = 0; y < src.height(); ++y) {
         for (int x = 0; x < src.width(); ++x) {
@@ -560,7 +560,7 @@ static int create_YUV(const PlaneData& planes,
 
     switch (yuvFormat) {
         case kY416_YUVFormat: {
-            resultBMs[nextLayer++] = make_16(planes.fFull, kR16G16B16A16_unorm_SkColorType,
+            resultBMs[nextLayer++] = make_16(planes.fFull, VX_COLOR_TYPE_R16G16B16A16_UNORM,
                                              [] (uint16_t* dstPixel, const float* srcPixel) {
                                                  dstPixel[0] = flt_2_uint16(srcPixel[1]); // U
                                                  dstPixel[1] = flt_2_uint16(srcPixel[0]); // Y
@@ -573,7 +573,7 @@ static int create_YUV(const PlaneData& planes,
             SkBitmap yuvaFull;
 
             yuvaFull.allocPixels(SkImageInfo::Make(planes.fYFull.width(), planes.fYFull.height(),
-                                                   kRGBA_8888_SkColorType, kUnpremul_SkAlphaType));
+                                                   VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED));
 
             for (int y = 0; y < planes.fYFull.height(); ++y) {
                 for (int x = 0; x < planes.fYFull.width(); ++x) {
@@ -599,8 +599,8 @@ static int create_YUV(const PlaneData& planes,
             uint8_t A;
 
             yuvaFull.allocPixels(SkImageInfo::Make(planes.fYFull.width(), planes.fYFull.height(),
-                                                   kRGBA_1010102_SkColorType,
-                                                   kUnpremul_SkAlphaType));
+                                                   VX_COLOR_TYPE_RGBA_1010102,
+                                                   VX_ALPHA_TYPE_UNPREMULTIPLIED));
 
             for (int y = 0; y < planes.fYFull.height(); ++y) {
                 for (int x = 0; x < planes.fYFull.width(); ++x) {
@@ -620,14 +620,14 @@ static int create_YUV(const PlaneData& planes,
         }
         case kP016_YUVFormat:     // fall through
         case kP010_YUVFormat: {
-            resultBMs[nextLayer++] = make_16(planes.fFull, kA16_unorm_SkColorType,
+            resultBMs[nextLayer++] = make_16(planes.fFull, VX_COLOR_TYPE_A16_UNORM,
                                              [tenBitsPP = (yuvFormat == kP010_YUVFormat)]
                                              (uint16_t* dstPixel, const float* srcPixel) {
                                                  uint16_t val16 = flt_2_uint16(srcPixel[0]);
                                                  dstPixel[0] = tenBitsPP ? (val16 & 0xFFC0)
                                                                          : val16;
                                               });
-            resultBMs[nextLayer++] = make_16(planes.fQuarter, kR16G16_unorm_SkColorType,
+            resultBMs[nextLayer++] = make_16(planes.fQuarter, VX_COLOR_TYPE_R16G16_UNORM,
                                              [tenBitsPP = (yuvFormat == kP010_YUVFormat)]
                                              (uint16_t* dstPixel, const float* srcPixel) {
                                                  uint16_t u16 = flt_2_uint16(srcPixel[1]);
@@ -636,7 +636,7 @@ static int create_YUV(const PlaneData& planes,
                                                  dstPixel[1] = tenBitsPP ? (v16 & 0xFFC0) : v16;
                                              });
             if (!opaque) {
-                resultBMs[nextLayer++] = make_16(planes.fFull, kA16_unorm_SkColorType,
+                resultBMs[nextLayer++] = make_16(planes.fFull, VX_COLOR_TYPE_A16_UNORM,
                                                  [tenBitsPP = (yuvFormat == kP010_YUVFormat)]
                                                  (uint16_t* dstPixel, const float* srcPixel) {
                                                      uint16_t val16 = flt_2_uint16(srcPixel[3]);
@@ -647,17 +647,17 @@ static int create_YUV(const PlaneData& planes,
             return nextLayer;
         }
         case kP016F_YUVFormat: {
-            resultBMs[nextLayer++] = make_16(planes.fFull, kA16_float_SkColorType,
+            resultBMs[nextLayer++] = make_16(planes.fFull, VX_COLOR_TYPE_A16_FLOAT,
                                              [] (uint16_t* dstPixel, const float* srcPixel) {
                                                  dstPixel[0] = SkFloatToHalf(srcPixel[0]);
                                              });
-            resultBMs[nextLayer++] = make_16(planes.fQuarter, kR16G16_float_SkColorType,
+            resultBMs[nextLayer++] = make_16(planes.fQuarter, VX_COLOR_TYPE_R16G16_FLOAT,
                                              [] (uint16_t* dstPixel, const float* srcPixel) {
                                                  dstPixel[0] = SkFloatToHalf(srcPixel[1]);
                                                  dstPixel[1] = SkFloatToHalf(srcPixel[2]);
                                              });
             if (!opaque) {
-                resultBMs[nextLayer++] = make_16(planes.fFull, kA16_float_SkColorType,
+                resultBMs[nextLayer++] = make_16(planes.fFull, VX_COLOR_TYPE_A16_FLOAT,
                                                  [] (uint16_t* dstPixel, const float* srcPixel) {
                                                      dstPixel[0] = SkFloatToHalf(srcPixel[3]);
                                                  });
@@ -705,7 +705,7 @@ static void draw_col_label(SkCanvas* canvas, int x, int yuvColorSpace, bool opaq
             "FCCF",      "FCCL",      "SMPTE240F", "SMPTE240L", "YDZDXF",    "YDZDXL",
             "GBRF",      "GBRL",      "YCGCO_8F",  "YCGCO_8L",  "YCGCO_10F", "YCGCO_10L",
             "YCGCO_12F", "YCGCO_12L", "YCGCO_16F", "YCGCO_16L", "Identity"};
-    static_assert(std::size(kYUVColorSpaceNames) == kLastEnum_SkYUVColorSpace + 1);
+    static_assert(std::size(kYUVColorSpaceNames) == VX_YUV_COLOR_SPACE_LASTENUM + 1);
 
     SkPaint paint;
     SkFont  font(ToolUtils::CreatePortableTypeface("Sans", SkFontStyle::Bold()), 16);
@@ -825,7 +825,7 @@ protected:
     }
 
     SkISize getISize() override {
-        int numCols = 2 * (kLastEnum_SkYUVColorSpace + 1)/2; // opacity x #-color-spaces/2
+        int numCols = 2 * (VX_YUV_COLOR_SPACE_LASTENUM + 1)/2; // opacity x #-color-spaces/2
         int numRows = 1 + (kLast_YUVFormat + 1);  // original + #-yuv-formats
         int wh = SkScalarCeilToInt(kTileWidthHeight * (fUseSubset ? 1.5f : 1.f));
         return SkISize::Make(kLabelWidth  + numCols * (wh + kPad),
@@ -841,14 +841,14 @@ protected:
             // transparent
             SkTDArray<SkRect> circles;
             SkPath path = create_splat(origin, innerRadius, outerRadius, 1.0f, 5, &circles);
-            fOriginalBMs[0] = make_bitmap(kRGBA_8888_SkColorType, path, circles, false, fUseSubset);
+            fOriginalBMs[0] = make_bitmap(VX_COLOR_TYPE_RGBA_8888, path, circles, false, fUseSubset);
         }
 
         {
             // opaque
             SkTDArray<SkRect> circles;
             SkPath path = create_splat(origin, innerRadius, outerRadius, 1.0f, 7, &circles);
-            fOriginalBMs[1] = make_bitmap(kRGBA_8888_SkColorType, path, circles, true, fUseSubset);
+            fOriginalBMs[1] = make_bitmap(VX_COLOR_TYPE_RGBA_8888, path, circles, true, fUseSubset);
         }
 
         if (fUseTargetColorSpace) {
@@ -859,15 +859,15 @@ protected:
     bool createImages(GrDirectContext* dContext, Recorder* recorder) {
         int origin = 0;
         for (bool opaque : { false, true }) {
-            for (int cs = kJPEG_SkYUVColorSpace; cs <= kLastEnum_SkYUVColorSpace; ++cs) {
+            for (int cs = VX_YUV_COLOR_SPACE_JPEG; cs <= VX_YUV_COLOR_SPACE_LASTENUM; ++cs) {
                 if (fUseLimitedRange !=
-                    SkYUVColorSpaceIsLimitedRange(static_cast<SkYUVColorSpace>(cs))) {
+                    vx_yuv_color_space_is_limited_range(static_cast<vx_yuv_color_space>(cs))) {
                     continue;
                 }
 
                 PlaneData planes;
                 extract_planes(fOriginalBMs[opaque],
-                               static_cast<SkYUVColorSpace>(cs),
+                               static_cast<vx_yuv_color_space>(cs),
                                static_cast<SkEncodedOrigin>(origin + 1),  // valid origins are 1...8
                                &planes);
 
@@ -881,7 +881,7 @@ protected:
                                                         static_cast<SkEncodedOrigin>(origin + 1));
                     SkYUVAPixmaps pixmaps =
                             planarConfig.makeYUVAPixmaps(fOriginalBMs[opaque].dimensions(),
-                                                         static_cast<SkYUVColorSpace>(cs),
+                                                         static_cast<vx_yuv_color_space>(cs),
                                                          resultBMs,
                                                          numPlanes);
                     auto lazyYUV = sk_gpu_test::LazyYUVImage::Make(std::move(pixmaps));
@@ -939,7 +939,7 @@ protected:
 
     void onGpuTeardown() override {
         for (int i = 0; i < 2; ++i) {
-            for (int j = 0; j <= kLastEnum_SkYUVColorSpace; ++j) {
+            for (int j = 0; j <= VX_YUV_COLOR_SPACE_LASTENUM; ++j) {
                 for (int k = 0; k <= kLast_YUVFormat; ++k) {
                     fImages[i][j][k] = nullptr;
                 }
@@ -973,14 +973,14 @@ protected:
         SkSamplingOptions sampling = fUseCubicSampling
                                          ? SkSamplingOptions(SkCubicResampler::Mitchell())
                                          : SkSamplingOptions(SkFilterMode::kLinear);
-        for (int cs = kJPEG_SkYUVColorSpace; cs <= kLastEnum_SkYUVColorSpace; ++cs) {
+        for (int cs = VX_YUV_COLOR_SPACE_JPEG; cs <= VX_YUV_COLOR_SPACE_LASTENUM; ++cs) {
             if (fUseLimitedRange !=
-                SkYUVColorSpaceIsLimitedRange(static_cast<SkYUVColorSpace>(cs))) {
+                vx_yuv_color_space_is_limited_range(static_cast<vx_yuv_color_space>(cs))) {
                 continue;
             }
 
             SkPaint paint;
-            if (kIdentity_SkYUVColorSpace == cs) {
+            if (VX_YUV_COLOR_SPACE_IDENTITY == cs) {
                 // The identity color space needs post processing to appear correctly
                 paint.setColorFilter(yuv_to_rgb_colorfilter());
             }
@@ -1018,7 +1018,7 @@ protected:
 
 private:
     SkBitmap                   fOriginalBMs[2];
-    sk_sp<SkImage>             fImages[2][kLastEnum_SkYUVColorSpace + 1][kLast_YUVFormat + 1];
+    sk_sp<SkImage>             fImages[2][VX_YUV_COLOR_SPACE_LASTENUM + 1][kLast_YUVFormat + 1];
     bool                       fUseLimitedRange;
     bool                       fUseTargetColorSpace;
     bool                       fUseSubset;
@@ -1109,14 +1109,14 @@ protected:
             // transparent
             SkTDArray<SkRect> circles;
             SkPath path = create_splat(origin, innerRadius, outerRadius, 1.0f, 5, &circles);
-            fOriginalBMs[0] = make_bitmap(kN32_SkColorType, path, circles, false, false);
+            fOriginalBMs[0] = make_bitmap(VX_COLOR_TYPE_N32, path, circles, false, false);
         }
 
         {
             // opaque
             SkTDArray<SkRect> circles;
             SkPath path = create_splat(origin, innerRadius, outerRadius, 1.0f, 7, &circles);
-            fOriginalBMs[1] = make_bitmap(kN32_SkColorType, path, circles, true, false);
+            fOriginalBMs[1] = make_bitmap(VX_COLOR_TYPE_N32, path, circles, true, false);
         }
 
         fTargetColorSpace = SkColorSpace::MakeSRGB()->makeColorSpin();
@@ -1126,7 +1126,7 @@ protected:
         for (bool opaque : { false, true }) {
             PlaneData planes;
             extract_planes(fOriginalBMs[opaque],
-                           kJPEG_SkYUVColorSpace,
+                           VX_YUV_COLOR_SPACE_JPEG,
                            kTopLeft_SkEncodedOrigin,
                            &planes);
 
@@ -1137,7 +1137,7 @@ protected:
             YUVAPlanarConfig planarConfig(kAYUV_YUVFormat, opaque, kTopLeft_SkEncodedOrigin);
 
             auto yuvaPixmaps = planarConfig.makeYUVAPixmaps(fOriginalBMs[opaque].dimensions(),
-                                                            kJPEG_Full_SkYUVColorSpace,
+                                                            VX_YUV_COLOR_SPACE_JPEG_FULL,
                                                             resultBMs,
                                                             std::size(resultBMs));
 
@@ -1338,10 +1338,10 @@ protected:
         canvas->save();
         SkYUVAInfo info;
         std::array<sk_sp<SkImage>, SkYUVAInfo::kMaxPlanes> planes;
-        for (auto cs : {kRec709_SkYUVColorSpace,
-                        kRec601_SkYUVColorSpace,
-                        kJPEG_SkYUVColorSpace,
-                        kBT2020_SkYUVColorSpace}) {
+        for (auto cs : {VX_YUV_COLOR_SPACE_REC709,
+                        VX_YUV_COLOR_SPACE_REC601,
+                        VX_YUV_COLOR_SPACE_JPEG,
+                        VX_YUV_COLOR_SPACE_BT2020}) {
             std::tie(planes, info) = sk_gpu_test::MakeYUVAPlanesAsA8(fOrig.get(),
                                                                      cs,
                                                                      SkYUVAInfo::Subsampling::k444,

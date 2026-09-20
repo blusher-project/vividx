@@ -50,7 +50,7 @@ constexpr SkColor4f kColorsNew[6] = {
 void check_solid_pixmap(skiatest::Reporter* reporter,
                         const SkColor4f& expected,
                         const SkPixmap& actual,
-                        SkColorType ct,
+                        vx_color_type ct,
                         const char* label) {
     auto error = std::function<ComparePixmapsErrorReporter>(
         [reporter, ct, label, expected](int x, int y, const float diffs[4]) {
@@ -71,7 +71,7 @@ void check_solid_pixmap(skiatest::Reporter* reporter,
 
 void update_backend_texture(Recorder* recorder,
                             const BackendTexture& backendTex,
-                            SkColorType ct,
+                            vx_color_type ct,
                             bool withMips,
                             const SkColor4f colors[6],
                             GpuFinishedProc finishedProc = nullptr,
@@ -79,7 +79,7 @@ void update_backend_texture(Recorder* recorder,
     SkPixmap pixmaps[6];
     std::unique_ptr<char[]> memForPixmaps;
 
-    int numMipLevels = ToolUtils::make_pixmaps(ct, kPremul_SkAlphaType, withMips, colors, pixmaps,
+    int numMipLevels = ToolUtils::make_pixmaps(ct, VX_ALPHA_TYPE_PREMULTIPLIED, withMips, colors, pixmaps,
                                                &memForPixmaps);
     SkASSERT(numMipLevels == 1 || numMipLevels == kNumMipLevels);
     SkASSERT(kSize == pixmaps[0].dimensions());
@@ -91,7 +91,7 @@ void update_backend_texture(Recorder* recorder,
 BackendTexture create_backend_texture(skiatest::Reporter* reporter,
                                       const Caps* caps,
                                       Recorder* recorder,
-                                      SkColorType ct,
+                                      vx_color_type ct,
                                       bool withMips,
                                       Renderable renderable,
                                       skgpu::Protected isProtected,
@@ -119,8 +119,8 @@ sk_sp<SkImage> wrap_backend_texture(skiatest::Reporter* reporter,
                                     bool withMips) {
     sk_sp<SkImage> image = SkImages::WrapTexture(recorder,
                                                  backendTex,
-                                                 forceOpaque ? kUnknown_SkAlphaType
-                                                             : kPremul_SkAlphaType,
+                                                 forceOpaque ? VX_ALPHA_TYPE_UNKNOWN
+                                                             : VX_ALPHA_TYPE_PREMULTIPLIED,
                                                  /* colorSpace= */ nullptr);
     REPORTER_ASSERT(reporter, image);
     REPORTER_ASSERT(reporter, image->hasMipmaps() == withMips);
@@ -141,7 +141,7 @@ void check_levels(skiatest::Reporter* reporter,
                                  ? SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNearest)
                                  : SkSamplingOptions(SkFilterMode::kNearest);
 
-    SkImageInfo surfaceII = SkImageInfo::Make(kSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo surfaceII = SkImageInfo::Make(kSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
     sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, surfaceII, Mipmapped::kNo);
     SkCanvas* canvas = surf->getCanvas();
 
@@ -151,8 +151,8 @@ void check_levels(skiatest::Reporter* reporter,
             continue;
         }
 
-        SkImageInfo readbackII = SkImageInfo::Make({drawSize, drawSize}, kRGBA_8888_SkColorType,
-                                                   kUnpremul_SkAlphaType);
+        SkImageInfo readbackII = SkImageInfo::Make({drawSize, drawSize}, VX_COLOR_TYPE_RGBA_8888,
+                                                   VX_ALPHA_TYPE_UNPREMULTIPLIED);
         SkAutoPixmapStorage actual;
         SkAssertResult(actual.tryAlloc(readbackII));
         actual.erase(SkColors::kTransparent);
@@ -200,7 +200,7 @@ DEF_GRAPHITE_TEST_FOR_RENDERING_CONTEXTS(UpdateImageBackendTextureTest, reporter
     skgpu::Protected isProtected = skgpu::Protected(caps->protectedSupport());
 
     // TODO: test more than just RGBA8
-    for (SkColorType ct : { kRGBA_8888_SkColorType, kARGB_4444_SkColorType }) {
+    for (vx_color_type ct : { VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_ARGB_4444 }) {
         for (bool withMips : { true, false }) {
             for (bool forceOpaque : { false, true }) {
                 for (Renderable renderable : { Renderable::kYes, Renderable::kNo }) {
@@ -276,7 +276,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(UpdateBackendTextureFinishedProcT
     BackendTexture backendTex = create_backend_texture(reporter,
                                                        caps,
                                                        recorder.get(),
-                                                       kRGBA_8888_SkColorType,
+                                                       VX_COLOR_TYPE_RGBA_8888,
                                                        /*withMips=*/false,
                                                        Renderable::kNo,
                                                        isProtected,

@@ -31,7 +31,7 @@
 static GrSurfaceProxyView create_view(GrDirectContext* dContext,
                                       const SkBitmap& src,
                                       GrSurfaceOrigin origin) {
-    SkASSERT(src.colorType() == kRGBA_8888_SkColorType);
+    SkASSERT(src.colorType() == VX_COLOR_TYPE_RGBA_8888);
 
 #define USE_LAZY_PROXIES 1 // Toggle this to generate the reference images
 
@@ -94,7 +94,7 @@ static SkBitmap create_bitmap(SkIRect contentRect, SkISize fullSize, GrSurfaceOr
 
     {
         SkImageInfo contentInfo = SkImageInfo::Make(kContentSize, kContentSize,
-                                                    kRGBA_8888_SkColorType, kOpaque_SkAlphaType);
+                                                    VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE);
         contentBM.allocPixels(contentInfo);
 
         contentBM.eraseColor(SK_ColorWHITE);
@@ -122,7 +122,7 @@ static SkBitmap create_bitmap(SkIRect contentRect, SkISize fullSize, GrSurfaceOr
         const int kTop  = contentRect.fTop;
 
         SkImageInfo bigInfo = SkImageInfo::Make(fullSize.fWidth, fullSize.fHeight,
-                                                kRGBA_8888_SkColorType, kOpaque_SkAlphaType);
+                                                VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_OPAQUE);
 
         bigBM.allocPixels(bigInfo);
 
@@ -145,7 +145,7 @@ static SkBitmap create_bitmap(SkIRect contentRect, SkISize fullSize, GrSurfaceOr
                          contentBM.rowBytes(), contentBM.height());
         }
 
-        bigBM.setAlphaType(kOpaque_SkAlphaType);
+        bigBM.setAlphaType(VX_ALPHA_TYPE_OPAQUE);
         bigBM.setImmutable();
     }
 
@@ -162,7 +162,7 @@ static void draw_texture(const GrCaps* caps,
                          GrSamplerState::WrapMode yTileMode) {
     GrSamplerState sampler(xTileMode, yTileMode, SkFilterMode::kNearest);
 
-    auto fp = GrTextureEffect::MakeSubset(src, kOpaque_SkAlphaType, mat,
+    auto fp = GrTextureEffect::MakeSubset(src, VX_ALPHA_TYPE_OPAQUE, mat,
                                           sampler, SkRect::Make(srcRect), *caps);
     GrPaint paint;
     paint.setColorFragmentProcessor(std::move(fp));

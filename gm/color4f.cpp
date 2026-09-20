@@ -82,7 +82,7 @@ DEF_SIMPLE_GM(color4f, canvas, 1024, 260) {
         SkColorSpace::MakeSRGB()
     };
     for (const sk_sp<SkColorSpace>& colorSpace : colorSpaces) {
-        const SkImageInfo info = SkImageInfo::Make(1024, 100, kN32_SkColorType, kPremul_SkAlphaType,
+        const SkImageInfo info = SkImageInfo::Make(1024, 100, VX_COLOR_TYPE_N32, VX_ALPHA_TYPE_PREMULTIPLIED,
                                                    colorSpace);
         auto surface(SkSurfaces::Raster(info));
         surface->getCanvas()->drawPaint(bg);

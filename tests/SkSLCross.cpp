@@ -144,7 +144,7 @@ static void run_test(skiatest::Reporter* reporter,
                   SkRect::MakeWH(1,1));
 
     GrColor result;
-    GrPixmap resultPM(SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType),
+    GrPixmap resultPM(SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED),
                       &result,
                       sizeof(GrColor));
     sdc->readPixels(directContext, resultPM, {0, 0});

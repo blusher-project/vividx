@@ -105,7 +105,7 @@ static void test_trace_simple() {
         // can be any simple type. Strings need to be static/literal - we just copy pointers.
         // Argument names & values are shown when the event is selected in the viewer.
         TRACE_EVENT1("skia", "Nested work",
-                     "isBGRA", kN32_SkColorType == kBGRA_8888_SkColorType);
+                     "isBGRA", VX_COLOR_TYPE_N32 == VX_COLOR_TYPE_BGRA_8888);
         do_work(500);
     }
 

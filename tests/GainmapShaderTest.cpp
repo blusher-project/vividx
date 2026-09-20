@@ -33,16 +33,16 @@ static bool approx_equal(const SkColor4f& a, const SkColor4f& b) {
 // Create a 1x1 image with a specified color.
 static sk_sp<SkImage> make_1x1_image(
         sk_sp<SkColorSpace> imageColorSpace,
-        SkAlphaType imageAlphaType,
+        vx_alpha_type imageAlphaType,
         SkColor4f imageColor,
         sk_sp<SkColorSpace> imageColorColorSpace = SkColorSpace::MakeSRGBLinear()) {
     SkImageInfo bmInfo =
-            SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, imageAlphaType, imageColorSpace);
+            SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_F32, imageAlphaType, imageColorSpace);
     SkBitmap bm;
     bm.allocPixels(bmInfo);
 
     SkImageInfo writePixelsInfo = SkImageInfo::Make(
-            1, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, imageColorColorSpace);
+            1, 1, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_UNPREMULTIPLIED, imageColorColorSpace);
     SkPixmap writePixelsPixmap(writePixelsInfo, &imageColor, writePixelsInfo.minRowBytes());
     bm.writePixels(writePixelsPixmap, 0, 0);
     return SkImages::RasterFromBitmap(bm);
@@ -69,7 +69,7 @@ static SkColor4f draw_1x1_gainmap(sk_sp<SkImage> baseImage,
                                   sk_sp<SkColorSpace> dstColorSpace = SkColorSpace::MakeSRGB()) {
     auto kRect = SkRect::MakeWH(1.f, 1.f);
     SkImageInfo canvasInfo =
-            SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, kPremul_SkAlphaType, dstColorSpace);
+            SkImageInfo::Make(1, 1, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_PREMULTIPLIED, dstColorSpace);
     SkBitmap canvasBitmap;
     canvasBitmap.allocPixels(canvasInfo);
     canvasBitmap.eraseColor(SK_ColorTRANSPARENT);
@@ -90,7 +90,7 @@ static SkColor4f draw_1x1_gainmap(sk_sp<SkImage> baseImage,
 
     SkColor4f result = {0.f, 0.f, 0.f, 0.f};
     SkImageInfo readPixelsInfo = SkImageInfo::Make(
-            1, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType, SkColorSpace::MakeSRGBLinear());
+            1, 1, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_UNPREMULTIPLIED, SkColorSpace::MakeSRGBLinear());
     canvas.readPixels(readPixelsInfo, &result, sizeof(result), 0, 0);
     return result;
 }
@@ -104,7 +104,7 @@ DEF_TEST(GainmapShader_rects, r) {
             {{0.5f, 1.0f, 1.0f, 1.0f}, {0.5f, 1.0f, 0.5f, 1.0f}},
             {{0.5f, 0.5f, 1.0f, 1.0f}, {0.5f, 0.5f, 0.5f, 1.0f}},
     };
-    SkPixmap sdrPixmap(SkImageInfo::Make(2, 5, kRGBA_F32_SkColorType, kOpaque_SkAlphaType),
+    SkPixmap sdrPixmap(SkImageInfo::Make(2, 5, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_OPAQUE),
                        sdrColors,
                        2 * sizeof(SkColor4f));
     auto sdrImage = SkImages::RasterFromPixmap(sdrPixmap, nullptr, nullptr);
@@ -116,7 +116,7 @@ DEF_TEST(GainmapShader_rects, r) {
             {{-1.f, -1.f, -1.f, 1.f}, {1.0f, 0.0f, 0.0f, 1.f}},
             {{-1.f, -1.f, -1.f, 1.f}, {0.0f, 1.0f, 1.0f, 1.f}},
     };
-    SkPixmap gainmapPixmap(SkImageInfo::Make(2, 2, kRGBA_F32_SkColorType, kOpaque_SkAlphaType),
+    SkPixmap gainmapPixmap(SkImageInfo::Make(2, 2, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_OPAQUE),
                            gainmapColors,
                            2 * sizeof(SkColor4f));
     auto gainmapImage = SkImages::RasterFromPixmap(gainmapPixmap, nullptr, nullptr);
@@ -125,7 +125,7 @@ DEF_TEST(GainmapShader_rects, r) {
     gainmapInfo.fEpsilonHdr[0] = 0.1f;
 
     SkImageInfo canvasInfo = SkImageInfo::Make(
-            4, 6, kRGBA_F32_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+            4, 6, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB());
     SkBitmap canvasBitmap;
     canvasBitmap.allocPixels(canvasInfo);
     canvasBitmap.eraseColor(SK_ColorTRANSPARENT);
@@ -192,7 +192,7 @@ DEF_TEST(GainmapShader_baseImageIsHdr, r) {
             {{0.5f, 1.0f, 1.0f, 1.0f}, {0.5f, 1.0f, 0.5f, 1.0f}},
             {{0.5f, 0.5f, 1.0f, 1.0f}, {0.5f, 0.5f, 0.5f, 1.0f}},
     };
-    SkPixmap hdrPixmap(SkImageInfo::Make(2, 4, kRGBA_F32_SkColorType, kOpaque_SkAlphaType),
+    SkPixmap hdrPixmap(SkImageInfo::Make(2, 4, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_OPAQUE),
                        hdrColors,
                        2 * sizeof(SkColor4f));
     auto hdrImage = SkImages::RasterFromPixmap(hdrPixmap, nullptr, nullptr);
@@ -204,7 +204,7 @@ DEF_TEST(GainmapShader_baseImageIsHdr, r) {
             {{1.0f, 0.0f, 0.0f, 1.f}},
             {{0.0f, 1.0f, 1.0f, 1.f}},
     };
-    SkPixmap gainmapPixmap(SkImageInfo::Make(1, 2, kRGBA_F32_SkColorType, kOpaque_SkAlphaType),
+    SkPixmap gainmapPixmap(SkImageInfo::Make(1, 2, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_OPAQUE),
                            gainmapColors,
                            1 * sizeof(SkColor4f));
     auto gainmapImage = SkImages::RasterFromPixmap(gainmapPixmap, nullptr, nullptr);
@@ -214,7 +214,7 @@ DEF_TEST(GainmapShader_baseImageIsHdr, r) {
     gainmapInfo.fEpsilonSdr[0] = 0.1f;
 
     SkImageInfo canvasInfo = SkImageInfo::Make(
-            2, 4, kRGBA_F32_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGB());
+            2, 4, VX_COLOR_TYPE_RGBA_F32, VX_ALPHA_TYPE_PREMULTIPLIED, SkColorSpace::MakeSRGB());
     SkBitmap canvasBitmap;
     canvasBitmap.allocPixels(canvasInfo);
     canvasBitmap.eraseColor(SK_ColorTRANSPARENT);
@@ -290,9 +290,9 @@ DEF_TEST(GainmapShader_colorSpace, r) {
             1.f};
     constexpr SkColor4f kExpectedColor = {0.5f, 0.5f, 1.414f, 1.f};
 
-    auto sdrImage = make_1x1_image(sdrColorSpace, kOpaque_SkAlphaType, kSdrColor);
+    auto sdrImage = make_1x1_image(sdrColorSpace, VX_ALPHA_TYPE_OPAQUE, kSdrColor);
     auto gainmapImage = make_1x1_image(
-            gainmapColorSpace, kOpaque_SkAlphaType, kGainmapColor, gainmapColorSpace);
+            gainmapColorSpace, VX_ALPHA_TYPE_OPAQUE, kGainmapColor, gainmapColorSpace);
     SkGainmapInfo gainmapInfo = simple_gainmap_info(2.f);
 
     auto color = draw_1x1_gainmap(
@@ -329,8 +329,8 @@ DEF_TEST(GainmapShader_apple, r) {
                                       1.00f * (1 + (kH - 1) * 1.0f),  // 5.0,
                                       1.f};
 
-    auto sdrImage = make_1x1_image(SkColorSpace::MakeSRGB(), kOpaque_SkAlphaType, kSdrColor);
-    auto gainmapImage = make_1x1_image(nullptr, kOpaque_SkAlphaType, kGainmapColor);
+    auto sdrImage = make_1x1_image(SkColorSpace::MakeSRGB(), VX_ALPHA_TYPE_OPAQUE, kSdrColor);
+    auto gainmapImage = make_1x1_image(nullptr, VX_ALPHA_TYPE_OPAQUE, kGainmapColor);
     SkGainmapInfo gainmapInfo = simple_gainmap_info(kH);
     gainmapInfo.fType = SkGainmapInfo::Type::kApple;
 

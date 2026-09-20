@@ -82,7 +82,7 @@ DEF_TEST(ImageGenerator, reporter) {
     SkYUVAInfo yuvaInfo({250, 250},
                         SkYUVAInfo::PlaneConfig::kY_UV,
                         SkYUVAInfo::Subsampling::k420,
-                        kJPEG_Full_SkYUVColorSpace);
+                        VX_YUV_COLOR_SPACE_JPEG_FULL);
     yuvaPixmapInfo = SkYUVAPixmapInfo(yuvaInfo,
                                       SkYUVAPixmapInfo::DataType::kUnorm8,
                                       /*rowBytes[]*/ nullptr);
@@ -103,20 +103,20 @@ static sk_sp<SkPicture> make_picture() {
 
 DEF_TEST(PictureImageGenerator, reporter) {
     const struct {
-        SkColorType fColorType;
-        SkAlphaType fAlphaType;
+        vx_color_type fColorType;
+        vx_alpha_type fAlphaType;
     } recs[] = {
-        { kRGBA_8888_SkColorType, kPremul_SkAlphaType },
-        { kBGRA_8888_SkColorType, kPremul_SkAlphaType },
-        { kRGBA_F16_SkColorType,  kPremul_SkAlphaType },
-        { kRGBA_F32_SkColorType,  kPremul_SkAlphaType },
-        { kRGBA_1010102_SkColorType, kPremul_SkAlphaType },
+        { VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED },
+        { VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_PREMULTIPLIED },
+        { VX_COLOR_TYPE_RGBA_F16,  VX_ALPHA_TYPE_PREMULTIPLIED },
+        { VX_COLOR_TYPE_RGBA_F32,  VX_ALPHA_TYPE_PREMULTIPLIED },
+        { VX_COLOR_TYPE_RGBA_1010102, VX_ALPHA_TYPE_PREMULTIPLIED },
 
-        { kRGBA_8888_SkColorType, kUnpremul_SkAlphaType },
-        { kBGRA_8888_SkColorType, kUnpremul_SkAlphaType },
-        { kRGBA_F16_SkColorType,  kUnpremul_SkAlphaType },
-        { kRGBA_F32_SkColorType,  kUnpremul_SkAlphaType },
-        { kRGBA_1010102_SkColorType, kUnpremul_SkAlphaType },
+        { VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED },
+        { VX_COLOR_TYPE_BGRA_8888, VX_ALPHA_TYPE_UNPREMULTIPLIED },
+        { VX_COLOR_TYPE_RGBA_F16,  VX_ALPHA_TYPE_UNPREMULTIPLIED },
+        { VX_COLOR_TYPE_RGBA_F32,  VX_ALPHA_TYPE_UNPREMULTIPLIED },
+        { VX_COLOR_TYPE_RGBA_1010102, VX_ALPHA_TYPE_UNPREMULTIPLIED },
     };
 
     auto colorspace = SkColorSpace::MakeSRGB();
@@ -125,7 +125,7 @@ DEF_TEST(PictureImageGenerator, reporter) {
             {100, 100}, picture, nullptr, nullptr, SkImages::BitDepth::kU8, colorspace);
 
     // worst case for all requests
-    SkAutoMalloc storage(100 * 100 * vx_color_type_bytes_per_pixel(kRGBA_F32_SkColorType));
+    SkAutoMalloc storage(100 * 100 * vx_color_type_bytes_per_pixel(VX_COLOR_TYPE_RGBA_F32));
 
     for (const auto& rec : recs) {
         SkImageInfo info = SkImageInfo::Make(100, 100, rec.fColorType, rec.fAlphaType, colorspace);

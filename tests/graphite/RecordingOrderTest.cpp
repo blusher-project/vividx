@@ -29,7 +29,7 @@ constexpr SkColor4f kBackgroundColor = SkColors::kWhite;
 bool run_test(skiatest::Reporter* reporter,
               Context* context,
               Recorder* recorder) {
-    SkImageInfo ii = SkImageInfo::Make(kSurfaceSize, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(kSurfaceSize, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
     SkBitmap result0, result1;
     result0.allocPixels(ii);

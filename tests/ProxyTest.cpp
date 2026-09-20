@@ -274,7 +274,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(WrappedProxyTest,
     static const int kWidthHeight = 100;
 
     for (auto colorType :
-         {kAlpha_8_SkColorType, kRGBA_8888_SkColorType, kRGBA_1010102_SkColorType}) {
+         {VX_COLOR_TYPE_ALPHA_8, VX_COLOR_TYPE_RGBA_8888, VX_COLOR_TYPE_RGBA_1010102}) {
         GrColorType grColorType = SkColorTypeToGrColorType(colorType);
 
         // External on-screen render target.

@@ -21,10 +21,10 @@
 
 DEF_TEST(AlphaEncodedInfo, r) {
     auto codec = SkCodec::MakeFromStream(GetResourceAsStream("images/grayscale.jpg"));
-    REPORTER_ASSERT(r, codec->getInfo().colorType() == kGray_8_SkColorType);
+    REPORTER_ASSERT(r, codec->getInfo().colorType() == VX_COLOR_TYPE_GRAY_8);
 
     SkBitmap bm;
-    bm.allocPixels(codec->getInfo().makeColorType(kAlpha_8_SkColorType).makeColorSpace(nullptr));
+    bm.allocPixels(codec->getInfo().makeColorType(VX_COLOR_TYPE_ALPHA_8).makeColorSpace(nullptr));
     auto result = codec->getPixels(codec->getInfo(), bm.getPixels(), bm.rowBytes());
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
 
@@ -35,7 +35,7 @@ DEF_TEST(AlphaEncodedInfo, r) {
     codec = SkCodec::MakeFromData(data);
     REPORTER_ASSERT(r, codec);
     // TODO: Make SkEncodedInfo public and compare to its version of kAlpha_8.
-    REPORTER_ASSERT(r, codec->getInfo().colorType() == kAlpha_8_SkColorType);
+    REPORTER_ASSERT(r, codec->getInfo().colorType() == VX_COLOR_TYPE_ALPHA_8);
 
     SkBitmap bm2;
     bm2.allocPixels(codec->getInfo().makeColorSpace(nullptr));

@@ -44,7 +44,7 @@ DEF_SIMPLE_GM_CAN_FAIL(image_dither, canvas, errorMsg, 425, 110) {
     gradientPaint.setShader(gradient);
 
     sk_sp<SkSurface> surface = SkSurfaces::Raster(
-            SkImageInfo::Make(100, 100, kRGBA_F16_SkColorType, kPremul_SkAlphaType));
+            SkImageInfo::Make(100, 100, VX_COLOR_TYPE_RGBA_F16, VX_ALPHA_TYPE_PREMULTIPLIED));
     surface->getCanvas()->drawPaint(gradientPaint);
     sk_sp<SkImage> image = surface->makeImageSnapshot();
 

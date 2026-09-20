@@ -46,7 +46,7 @@ DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLe
         Protected isProtected = Protected(dContext->priv().caps()->supportsProtectedContent());
 
         SkIRect subsetBounds = SkIRect::MakeLTRB(4,4,8,8);
-        SkImageInfo ii = SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+        SkImageInfo ii = SkImageInfo::Make(16, 16, VX_COLOR_TYPE_RGBA_8888, VX_ALPHA_TYPE_PREMULTIPLIED);
 
         // Raster image:
         SkBitmap bm;

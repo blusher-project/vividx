@@ -23,35 +23,35 @@ using namespace skiatest::graphite;
 
 const skgpu::graphite::RenderPassProperties kR_1_D {
     skgpu::graphite::DepthStencilFlags::kDepth,
-    kAlpha_8_SkColorType,
+    VX_COLOR_TYPE_ALPHA_8,
     /* fDstCS= */ nullptr,
     /* fRequiresMSAA= */ false
 };
 
 const skgpu::graphite::RenderPassProperties kRGBA_1_D {
     skgpu::graphite::DepthStencilFlags::kDepth,
-    kRGBA_8888_SkColorType,
+    VX_COLOR_TYPE_RGBA_8888,
     /* fDstCS= */ nullptr,
     /* fRequiresMSAA= */ false
 };
 
 const skgpu::graphite::RenderPassProperties kRGBA_1_D_SRGB {
     skgpu::graphite::DepthStencilFlags::kDepth,
-    kRGBA_8888_SkColorType,
+    VX_COLOR_TYPE_RGBA_8888,
     SkColorSpace::MakeSRGB(),
     /* fRequiresMSAA= */ false
 };
 
 const skgpu::graphite::RenderPassProperties kRGBA_4_DS {
     skgpu::graphite::DepthStencilFlags::kDepthStencil,
-    kRGBA_8888_SkColorType,
+    VX_COLOR_TYPE_RGBA_8888,
     /* fDstCS= */ nullptr,
     /* fRequiresMSAA= */ true
 };
 
 const skgpu::graphite::RenderPassProperties kRGBA_4_DS_SRGB {
     skgpu::graphite::DepthStencilFlags::kDepthStencil,
-    kRGBA_8888_SkColorType,
+    VX_COLOR_TYPE_RGBA_8888,
     SkColorSpace::MakeSRGB(),
     /* fRequiresMSAA= */ true
 };
