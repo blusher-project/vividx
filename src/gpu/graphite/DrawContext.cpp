@@ -100,7 +100,8 @@ DrawContext::DrawContext(const Caps* caps,
                           ? std::unique_ptr<DrawListBase>(std::make_unique<DrawListLayer>(
                                    caps->storageBufferSupport()))
                           : std::unique_ptr<DrawListBase>(std::make_unique<DrawList>()))
-        , fPendingUploads(std::make_unique<UploadList>()) {
+        , fPendingUploads(std::make_unique<UploadList>())
+        , fStorageContext(caps->storageBufferSupport()) {
     // Must determine a valid strategy to use should a dst texture read be required.
     SkASSERT(fDstReadStrategy != DstReadStrategy::kNoneRequired);
 
@@ -183,8 +184,8 @@ std::pair<DrawParams*, Layer*> DrawContext::recordDraw(
     }
 
     return fPendingDraws->recordDraw(renderer, localToDevice, geometry, clip, ordering, paintID,
-                                     dstUsage,  barrierBeforeDraws, gatherer, stroke,
-                                     lastInsertion);
+                                     dstUsage, barrierBeforeDraws, gatherer, &fStorageContext,
+                                     stroke, lastInsertion);
 }
 
 bool DrawContext::recordUpload(Recorder* recorder,
@@ -259,6 +260,7 @@ void DrawContext::flush(Recorder* recorder) {
     // subpasses are implemented, they will either be collected alongside fPendingDraws or added
     // to the RenderPassTask separately.
     std::unique_ptr<DrawPass> pass = fPendingDraws->snapDrawPass(recorder,
+                                                                 &fStorageContext,
                                                                  fTarget.refProxy(),
                                                                  this->imageInfo(),
                                                                  drawPassDstReadStrategy);

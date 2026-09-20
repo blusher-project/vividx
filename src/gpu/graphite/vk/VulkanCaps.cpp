@@ -78,7 +78,7 @@ void populate_resource_binding_reqs(ResourceBindingRequirements& reqs) {
 
     // Assign uniform buffer binding values for shader generation
     reqs.fCombinedUniformBufferBinding = VulkanGraphicsPipeline::kCombinedUniformIndex;
-    reqs.fGradientBufferBinding = VulkanGraphicsPipeline::kGradientBufferIndex;
+    reqs.fStorageBufferBinding = VulkanGraphicsPipeline::kStorageBufferIndex;
 
     // Assign descriptor set indices for shader generation
     reqs.fUniformsSetIdx = VulkanGraphicsPipeline::kUniformBufferDescSetIndex;
@@ -132,8 +132,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
     // Assert that our push constant sizes are below the maximum allowed (which is guaranteed to be
     // at least 128 bytes per spec).
-    static_assert(VulkanResourceProvider::kIntrinsicConstantSize < 128 &&
-                  VulkanResourceProvider::kLoadMSAAPushConstantSize < 128);
+    static_assert(VulkanResourceProvider::kIntrinsicConstantSize < 128);
 
     fRequiredUniformBufferAlignment = deviceLimits.minUniformBufferOffsetAlignment;
     fRequiredStorageBufferAlignment = deviceLimits.minStorageBufferOffsetAlignment;
@@ -248,9 +247,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     }
 
     // Note: ARM GPUs have always been coherent, do not add a subpass self-dependency even if the
-    // application hasn't enabled this feature as it comes with a performance cost on this GPU. Use
-    // of VK_EXT_rasterization_order_attachment_access is disabled on ARM due to an unexplained
-    // memory regression (b/437907749).
+    // application hasn't enabled this feature as it comes with a performance cost on this GPU.
     //
     // Imagination GPUs are also coherent but only within the same sample when sample-shading.
     // VK_EXT_rasterization_order_attachment_access indicates coherence when input attachment read
@@ -258,7 +255,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // this extension. This is not a problem for Graphite however, which does not enable sample
     // shading (nor would it read color from other samples even if it did).
     fSupportsRasterizationOrderColorAttachmentAccess =
-            enabledFeatures.fRasterizationOrderColorAttachmentAccess && vendorID != kARM_VkVendor;
+            enabledFeatures.fRasterizationOrderColorAttachmentAccess;
     fIsInputAttachmentReadCoherent = fSupportsRasterizationOrderColorAttachmentAccess ||
                                      vendorID == kARM_VkVendor || vendorID == kImagination_VkVendor;
 
@@ -776,11 +773,16 @@ std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> VulkanCaps::g
     if (VkFormatNeedsYcbcrSampler(vkFormat) || format == TextureFormat::kExternal) {
         // Assume all external formats are sampleable, since we support adjusting the filtering on
         // a per-immutable sampler basis.
-        supports |= TextureUsage::kSample;
-    } else if ((featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT) &&
-               (featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
-        // Otherwise require full filtering control to count as sampleable
-        supports |= TextureUsage::kSample;
+        supports |= TextureUsage::kSample | TextureUsage::kRead;
+    } else if (featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT) {
+        // VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT guarantees point/nearest sampling, VK_FILTER_NEAREST,
+        // and texelFetch. Linear filtering, VK_FILTER_LINEAR, requires
+        // VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT.
+        // See https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkFormatFeatureFlagBits.html
+        supports |= TextureUsage::kRead;
+        if (featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT) {
+            supports |= TextureUsage::kSample;
+        }
     }
 
     // NOTE: We don't check the protected-ness of the Context for format support. It is handled on
@@ -811,7 +813,8 @@ std::pair<SkEnumBitMask<TextureUsage>, SkEnumBitMask<SampleCount>> VulkanCaps::g
     // can be sampled. There is a pedantic argument that this is valid since neither of these types
     // of textures have conventional texels to begin with, but in practice, sampling acts as though
     // its 1x. Include 1x to simplify higher-level support checks.
-    if (!SkToBool(sampleCounts & SampleCount::k1) && SkToBool(supports & TextureUsage::kSample)) {
+    if (!SkToBool(sampleCounts & SampleCount::k1) &&
+        SkToBool(supports & (TextureUsage::kSample | TextureUsage::kRead))) {
         sampleCounts |= SampleCount::k1;
     }
 
@@ -845,9 +848,9 @@ std::pair<SkEnumBitMask<TextureUsage>, Tiling> VulkanCaps::getTextureUsage(
     // All images using external formats are required to be able to be sampled per Vulkan spec.
     // https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkAndroidHardwareBufferFormatPropertiesANDROID.html#_description
     if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
-        usage |= TextureUsage::kSample;
+        usage |= TextureUsage::kSample | TextureUsage::kRead;
     } else if (SkToBool(vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_SAMPLED_BIT)) {
-        usage |= TextureUsage::kSample;
+        usage |= TextureUsage::kSample | TextureUsage::kRead;
     }
 
     // We include CopyDst/CopySrc without worrying about format support since that is masked out
@@ -888,7 +891,7 @@ TextureInfo VulkanCaps::onGetDefaultTextureInfo(SkEnumBitMask<TextureUsage> usag
     VkImageCreateFlags createFlags =
             isProtected == Protected::kYes ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
 
-    if (usage & TextureUsage::kSample) {
+    if (usage & (TextureUsage::kSample | TextureUsage::kRead)) {
         vkUsage |= VK_IMAGE_USAGE_SAMPLED_BIT;
     }
     if (usage & TextureUsage::kStorage) {
@@ -1004,7 +1007,8 @@ SkEnumBitMask<SampleCount> VulkanCaps::getSupportedSampleCounts(
                         VK_IMAGE_CREATE_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_BIT_EXT,
                         &properties));
         if (result != VK_SUCCESS && result != VK_ERROR_FORMAT_NOT_SUPPORTED) {
-            SKIA_LOG_W("Vulkan call GetPhysicalDeviceImageFormatProperties failed: %d", result);
+            SKIA_LOG_W("Vulkan call GetPhysicalDeviceImageFormatProperties failed for msaa: %d",
+                       result);
             return {};
         }
         if (result == VK_ERROR_FORMAT_NOT_SUPPORTED ||

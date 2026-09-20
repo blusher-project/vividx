@@ -9,7 +9,7 @@
     },
     {
       "build_file": "//bazel/external/dawn:BUILD.bazel",
-      "commit": "1e897275172a23f27b0022fa6beae3084ed54a9b",
+      "commit": "396fe14739bfa02f91e1eaafe43c1db359f7a3d1",
       "name": "dawn",
       "remote": "https://dawn.googlesource.com/dawn.git"
     },
@@ -192,12 +192,12 @@
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/SPIRV-Cross"
     },
     {
-      "commit": "29981f65241605e08b0ede4cfeb999fe3b723c6a",
+      "commit": "04fd3caa1e8267e4d95c806cad901181728e1006",
       "name": "spirv_headers",
       "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Headers.git"
     },
     {
-      "commit": "a665e21f3061f34064b39937cf00fe8d8769f4ef",
+      "commit": "d6f63db7031c181c146963206da772445704d5a0",
       "name": "spirv_tools",
       "remote": "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools.git"
     },
@@ -209,19 +209,19 @@
     },
     {
       "build_file": "//bazel/external/vulkan_headers:BUILD.bazel",
-      "commit": "d314eae73fdc90847bb8304a86ee7c6a8ee023b6",
+      "commit": "ee2ec5fd83dafce291024683b50dc89219333076",
       "name": "vulkan_headers",
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Headers"
     },
     {
       "build_file": "//bazel/external/vulkan_tools:BUILD.bazel",
-      "commit": "286299bb6b732e4b22771cfb9d7d421542d40501",
+      "commit": "462d9819e5953e064e1dcdc04d3edc5fc6bc9431",
       "name": "vulkan_tools",
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Tools"
     },
     {
       "build_file": "//bazel/external/vulkan_utility_libraries:BUILD.bazel",
-      "commit": "e9585c3e3d41ab608ee3b098ce4721d357308fc8",
+      "commit": "930a38bce146cf85c5bd7cb00fa33a66c640c0c6",
       "name": "vulkan_utility_libraries",
       "remote": "https://chromium.googlesource.com/external/github.com/KhronosGroup/Vulkan-Utility-Libraries"
     },
@@ -245,8 +245,15 @@
       "remote": "https://skia.googlesource.com/external/github.com/google/brotli.git"
     },
     {
-      "commit": "ff6e8ce3e932c16cebd1611c8fc42c45080a0e55",
+      "commit": "2d78d7ce09549caca58fc28b442bbad3a19da432",
       "name": "abseil_cpp",
+      "patch_cmds": [
+        "find . -name BUILD.bazel -type f -exec sed -i.bak -e '/do_not_use_for_gloop_visibility_only/d' {} +",
+        "find . -name '*.bak' -type f -delete"
+      ],
+      "patch_cmds_win": [
+        "Get-ChildItem -Recurse -Filter BUILD.bazel | ForEach-Object { $p = $_.FullName; (Get-Content $p) -notmatch 'do_not_use_for_gloop_visibility_only' | Set-Content -Force -Encoding Ascii $p }"
+      ],
       "remote": "https://chromium.googlesource.com/chromium/src/third_party/abseil-cpp"
     },
     {

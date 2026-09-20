@@ -239,6 +239,8 @@ def get_compile_flags(api, checkout_root, out_dir, workdir):
     args['skia_use_rust_exif'] = 'true'
     args['skia_use_rust_icc'] = 'true'
     args['skia_use_rust_ico_decode'] = 'true'
+    args['skia_use_rust_jpeg_decode'] = 'true'
+    args['skia_use_rust_jpeg_encode'] = 'true'
     args['skia_use_rust_png_decode'] = 'true'
     args['skia_use_rust_png_encode'] = 'true'
     args['skia_use_libpng_decode'] = 'false'
@@ -379,9 +381,10 @@ def compile_fn(api, checkout_root, out_dir):
 
   # Putting ninja on the path makes it easier for subcommands to find it
   # (e.g. when building Dawn via CMake+ninja)
-  # Importantly, this needs to go *after* depot_tools, so we append it
+  # Prepend ninja_root so subcommands use Skia's hermetic ninja binary
+  # rather than wrappers in depot_tools.
   existing_path = env.get('PATH', '%(PATH)s')
-  env['PATH'] = api.path.pathsep.join([existing_path, str(ninja_root)])
+  env['PATH'] = api.path.pathsep.join([str(ninja_root), existing_path])
 
   with api.context(cwd=skia_dir):
     with api.env(env):

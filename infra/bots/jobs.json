@@ -26,6 +26,9 @@
     "name": "BazelBuild-viewer-debug-linux_x64"
   },
   {
+    "name": "BazelBuild-viewer-for_windows_x64_release-windows_x64"
+  },
+  {
     "name": "BazelBuild-viewer-release-linux_x64"
   },
   {
@@ -63,10 +66,6 @@
   },
   {
     "name": "BazelTest-external_client-use_ganesh_vulkan-default-linux_x64"
-  },
-  {
-    "name": "BazelTest-external_client-use_graphite_native_vulkan-default-linux_x64",
-    "cq_config": {}
   },
   {
     "name": "BazelTest-external_client-use_skresources-default-linux_x64"
@@ -607,6 +606,15 @@
     "name": "Build-Ubuntu24.04-EMCC-wasm-Release-StandaloneWasm"
   },
   {
+    "name": "Build-Ubuntu26.04-Clang-x86_64-Debug-Graphite_Dawn_Vulkan"
+  },
+  {
+    "name": "Build-Ubuntu26.04-Clang-x86_64-Debug-Graphite_Native_Vulkan"
+  },
+  {
+    "name": "Build-Ubuntu26.04-Clang-x86_64-Debug-Vulkan"
+  },
+  {
     "name": "Build-Win-Clang-arm64-Debug"
   },
   {
@@ -773,12 +781,6 @@
   {
     "name": "Build-Win-MSVC-x86_64-Release-Vulkan",
     "cq_config": {}
-  },
-  {
-    "name": "BuildStats-Ubuntu24.04-Clang-x86_64-Release"
-  },
-  {
-    "name": "BuildStats-Ubuntu24.04-Clang-x86_64-Release-Vulkan"
   },
   {
     "name": "Canary-Android"
@@ -1161,6 +1163,15 @@
   },
   {
     "name": "Perf-Ubuntu24.04-Clang-NUC5PPYH-GPU-IntelHD405-x86_64-Release-All-Vulkan"
+  },
+  {
+    "name": "Perf-Ubuntu26.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Dawn_Vulkan"
+  },
+  {
+    "name": "Perf-Ubuntu26.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Native_Vulkan"
+  },
+  {
+    "name": "Perf-Ubuntu26.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Vulkan"
   },
   {
     "name": "Perf-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-ANGLE"
@@ -2057,6 +2068,15 @@
   },
   {
     "name": "Test-Ubuntu24.04-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit"
+  },
+  {
+    "name": "Test-Ubuntu26.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Dawn_Vulkan"
+  },
+  {
+    "name": "Test-Ubuntu26.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Graphite_Native_Vulkan"
+  },
+  {
+    "name": "Test-Ubuntu26.04-Clang-FalconRAK-GPU-IntelArcB570-x86_64-Debug-All-Vulkan"
   },
   {
     "name": "Test-Win11-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-ANGLE"
