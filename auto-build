@@ -6,6 +6,11 @@ case "$1" in
         OUT_DIR="out/Debug"
         ARGS_FILE="gn-args.debug.txt"
         ;;
+    static)
+        CMAKE_FLAGS=""
+        OUT_DIR="out/Static"
+        ARGS_FILE="gn-args.static.txt"
+        ;;
     *)
         CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Release"
         OUT_DIR="out/Shared"
