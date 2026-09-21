@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(vividx
-    VERSION 0.152001.0
+    VERSION 0.155001.0
     LANGUAGES C CXX
 )
 
@@ -37,6 +37,9 @@ set(VIVIDX_CORE_SOURCES
     src/core/rect.c
     src/core/size.c
     src/core/surface.cpp
+)
+
+set(VIVIDX_GPU_SOURCES
     src/gpu/backend-render-target.cpp
     src/gpu/backend-surface.cpp
     src/gpu/converts.h
@@ -45,34 +48,9 @@ set(VIVIDX_CORE_SOURCES
     src/gpu/gpu-surfaces.cpp
 )
 
-set(VIVIDX_CORE_PARTIAL_SOURCES
-    # src/core/SkMD5.cpp
-    # src/core/SkBase64.cpp
-    # src/core/SkCPURecorder.cpp
-    # src/core/SkStream.cpp
-)
-
-set(VIVIDX_GPU_PARTIAL_SOURCES
-    # src/gpu/GlobalResourceStats.cpp
-    # src/gpu/ganesh/GrBackendSurface.cpp
-    # src/gpu/ganesh/GrContext_Base.cpp
-    # src/gpu/ganesh/GrDirectContext.cpp
-    # src/gpu/ganesh/GrImageContext.cpp
-    # src/gpu/ganesh/GrRecordingContext.cpp
-    # src/gpu/ganesh/gl/GrGLBackendSurface.cpp
-    # src/gpu/ganesh/gl/GrGLDirectContext.cpp
-
-    # DEBUG
-    # src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp
-
-    # src/image/SkSurface_Base.cpp
-    # src/image/SkSurface_Raster.cpp
-)
-
 add_library(vividx-partial STATIC
     ${VIVIDX_CORE_SOURCES}
-    ${VIVIDX_CORE_PARTIAL_SOURCES}
-    ${VIVIDX_GPU_PARTIAL_SOURCES}
+    ${VIVIDX_GPU_SOURCES}
 )
 
 target_compile_definitions(vividx-partial PRIVATE
