@@ -13,7 +13,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
-#include "src/core/SkHalf.h"
+#include "vividx/common.h"
 
 #include <cmath>
 
@@ -23,14 +23,14 @@ bool EncodeGradientStopToHalf(float offset, float* mantissa, float* exponent) {
     int exp;
     float mant = std::frexp(offset, &exp);
 
-    SkHalf halfE = SkFloatToHalf(static_cast<float>(exp));
-    if (static_cast<int>(SkHalfToFloat(halfE)) != exp) {
+    vx_half_t halfE = vx_float_to_uint16(static_cast<float>(exp));
+    if (static_cast<int>(vx_uint16_to_float(halfE)) != exp) {
         return false;
     }
 
 #if defined(VX_DEBUG)
-    SkHalf halfM = SkFloatToHalf(mant);
-    float restored = std::ldexp(SkHalfToFloat(halfM), exp);
+    vx_half_t halfM = vx_float_to_uint16(mant);
+    float restored = std::ldexp(vx_uint16_to_float(halfM), exp);
     SkASSERT(std::abs(restored - offset) < 0.001f);
 #endif
 

@@ -13,7 +13,6 @@
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkMatrixInvert.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
@@ -827,7 +826,7 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
         }
         case k_packHalf2x16_IntrinsicKind: {
             auto Pack = [&](int n) -> unsigned int {
-                return SkFloatToHalf(Get(0, n));
+                return vx_float_to_uint16(Get(0, n));
             };
             const double packed = ((Pack(0) << 0)  & 0x0000FFFF) |
                                   ((Pack(1) << 16) & 0xFFFF0000);
@@ -856,8 +855,8 @@ static std::unique_ptr<Expression> optimize_intrinsic_call(const Context& contex
             SKSL_INT x = *arguments[0]->getConstantValue(0);
             uint16_t a = ((x >> 0)  & 0x0000FFFF);
             uint16_t b = ((x >> 16) & 0x0000FFFF);
-            const double unpacked[2] = {SkHalfToFloat(a),
-                                        SkHalfToFloat(b)};
+            const double unpacked[2] = {vx_uint16_to_float(a),
+                                        vx_uint16_to_float(b)};
             return ConstructorCompound::MakeFromConstants(context, arguments[0]->fPosition,
                                                           *context.fTypes.fFloat2, unpacked);
         }

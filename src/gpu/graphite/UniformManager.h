@@ -20,7 +20,6 @@
 #include "include/private/SkMath.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkColorData.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkSLTypeShared.h"
@@ -147,7 +146,7 @@ class UniformDataBlock;
  * When N = 4, the CPU and GPU primitives are compatible, regardless of being float, int, or uint.
  * Contiguous ranges between any padding (for alignment or for array stride) can be memcpy'ed.
  * When N = 2, the CPU data is float and the GPU data f16, so values must be converted one primitive
- * at a time using SkFloatToHalf or skvx::to_half.
+ * at a time using vx_float_to_uint16 or skvx::to_half.
  *
  * The UniformManager will zero out any padding bytes (either prepended for starting alignment,
  * or appended for stride alignment). This is so that the final byte array can be hashed for uniform
@@ -482,7 +481,7 @@ template <int N, bool Half>
 struct LayoutTraits {
     static_assert(1 <= N && N <= 4);
 
-    static constexpr int kElemSize = Half ? sizeof(SkHalf) : sizeof(float);
+    static constexpr int kElemSize = Half ? sizeof(vx_half_t) : sizeof(float);
     static constexpr int kSize     = N * kElemSize;
     static constexpr int kAlign    = SkNextPow2(N) * kElemSize;
 

@@ -12,7 +12,6 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorPriv.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkVx.h"
 #include "src/gpu/BufferWriter.h"
 

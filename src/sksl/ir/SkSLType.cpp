@@ -9,7 +9,6 @@
 
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkTo.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkSafeMath.h"
 #include "src/core/SkTHash.h"
@@ -417,7 +416,7 @@ public:
             case NumberKind::kFloat:
             default:
                 return this->highPrecision() ? float_limits::lowest()
-                                             : -SkHalfToFloat(SK_HalfMax);
+                                             : -vx_uint16_to_float(VX_UINT16_MAX);
         }
     }
 
@@ -435,7 +434,7 @@ public:
             case NumberKind::kFloat:
             default:
                 return this->highPrecision() ? float_limits::max()
-                                             : SkHalfToFloat(SK_HalfMax);
+                                             : vx_uint16_to_float(VX_UINT16_MAX);
         }
     }
 

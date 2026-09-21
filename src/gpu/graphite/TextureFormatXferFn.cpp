@@ -12,7 +12,6 @@
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkFloatBits.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkRasterPipeline.h"
@@ -332,7 +331,7 @@ XferRowFn get_xfer_row_fn(TextureFormat format, uint8_t ops) {
             return xfer_rows_by_channel<uint16_t, /*C=*/1>(ops, /*opaqueAlpha=*/0xFFFF);
 
         case TF::kR16F:
-            return xfer_rows_by_channel<uint16_t, /*C=*/1>(ops, /*opaqueAlpha=*/SK_Half1);
+            return xfer_rows_by_channel<uint16_t, /*C=*/1>(ops, /*opaqueAlpha=*/VX_UINT16_1);
 
         case TF::kRG8:
             return xfer_rows_by_channel<uint8_t, /*C=*/2>(ops, /*opaqueAlpha=*/0xFF);
@@ -341,7 +340,7 @@ XferRowFn get_xfer_row_fn(TextureFormat format, uint8_t ops) {
             return xfer_rows_by_channel<uint16_t, /*C=*/2>(ops, /*opaqueAlpha=*/0xFF);
 
         case TF::kRG16F:
-            return xfer_rows_by_channel<uint16_t, /*C=*/2>(ops, /*opaqueAlpha=*/SK_Half1);
+            return xfer_rows_by_channel<uint16_t, /*C=*/2>(ops, /*opaqueAlpha=*/VX_UINT16_1);
 
         case TF::kRG32F:
             return xfer_rows_by_channel<uint32_t, /*C=*/2>(ops, /*opaqueAlpha=*/kFloatBits1);
@@ -355,7 +354,7 @@ XferRowFn get_xfer_row_fn(TextureFormat format, uint8_t ops) {
             return xfer_rows_by_channel<uint16_t, /*C=*/3>(ops, /*opaqueAlpha=*/0xFFFF);
 
         case TF::kRGB16F:
-            return xfer_rows_by_channel<uint16_t, /*C=*/3>(ops, /*opaqueAlpha=*/SK_Half1);
+            return xfer_rows_by_channel<uint16_t, /*C=*/3>(ops, /*opaqueAlpha=*/VX_UINT16_1);
 
         case TF::kRGB32F:
             return xfer_rows_by_channel<uint32_t, /*C=*/3>(ops, /*opaqueAlpha=*/kFloatBits1);
@@ -379,7 +378,7 @@ XferRowFn get_xfer_row_fn(TextureFormat format, uint8_t ops) {
             return xfer_rows_by_channel<uint16_t, /*C=*/4>(ops, /*opaqueAlpha=*/0xFFFF);
 
         case TF::kRGBA16F:
-            return xfer_rows_by_channel<uint16_t, /*C=*/4>(ops, /*opaqueAlpha=*/SK_Half1);
+            return xfer_rows_by_channel<uint16_t, /*C=*/4>(ops, /*opaqueAlpha=*/VX_UINT16_1);
 
         case TF::kRGBA32F:
             return xfer_rows_by_channel<uint32_t, /*C=*/4>(ops, /*opaqueAlpha=*/kFloatBits1);

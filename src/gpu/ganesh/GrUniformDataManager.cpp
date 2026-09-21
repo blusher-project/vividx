@@ -9,7 +9,6 @@
 
 #include "include/private/SkAssert.h"
 #include "include/private/SkTemplates.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
 
@@ -19,7 +18,7 @@
 static_assert(sizeof(int32_t) == 4);
 static_assert(sizeof(float) == 4);
 static_assert(sizeof(short) == 2);
-static_assert(sizeof(SkHalf) == 2);
+static_assert(sizeof(vx_half_t) == 2);
 
 GrUniformDataManager::GrUniformDataManager(uint32_t uniformCount, uint32_t uniformSize)
     : fUniformSize(uniformSize)
@@ -48,9 +47,9 @@ int GrUniformDataManager::copyUniforms(void* dest,
             case SkSLType::kHalf3x3:
             case SkSLType::kHalf4x4: {
                 const float* floatBits = static_cast<const float*>(src);
-                SkHalf* halfBits = static_cast<SkHalf*>(dest);
+                vx_half_t* halfBits = static_cast<vx_half_t*>(dest);
                 while (numUniforms-- > 0) {
-                    *halfBits++ = SkFloatToHalf(*floatBits++);
+                    *halfBits++ = vx_float_to_uint16(*floatBits++);
                 }
                 return 2;
             }

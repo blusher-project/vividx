@@ -14,7 +14,6 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorSpaceXformSteps.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
@@ -178,7 +177,7 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             auto src64 = (const uint64_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
-                    dst[x] = (uint8_t) (255.0f * SkHalfToFloat(src64[x] >> 48));
+                    dst[x] = (uint8_t) (255.0f * vx_uint16_to_float(src64[x] >> 48));
                 }
                 dst = SkTAddOffset<uint8_t>(dst, dstRB);
                 src64 = SkTAddOffset<const uint64_t>(src64, srcRB);
@@ -202,7 +201,7 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
             auto srcF16 = (const uint16_t*) src;
             for (int y = 0; y < srcInfo.height(); y++) {
                 for (int x = 0; x < srcInfo.width(); x++) {
-                    dst[x] = (uint8_t) (255.0f * SkHalfToFloat(srcF16[x]));
+                    dst[x] = (uint8_t) (255.0f * vx_uint16_to_float(srcF16[x]));
                 }
                 dst = SkTAddOffset<uint8_t>(dst, dstRB);
                 srcF16 = SkTAddOffset<const uint16_t>(srcF16, srcRB);

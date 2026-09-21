@@ -5,6 +5,8 @@
 #include <limits>
 #include <type_traits>
 
+#include "src/core/SkVx.h"
+
 /**
  * std::underlying_type is only defined for enums. For integral types, we just want the type.
  */
@@ -87,6 +89,18 @@ extern "C" {
 bool vx_int64_fits_in_int32(int64_t val)
 {
     return SkTFitsIn<int32_t>(val);
+}
+
+vx_half_t vx_float_to_uint16(float f) {
+    if (std::isnan(f)) {
+        return VX_UINT16_NAN;
+    } else {
+        return to_half(skvx::Vec<1,float>(f))[0];
+    }
+}
+
+float vx_uint16_to_float(vx_half_t h) {
+    return from_half(skvx::Vec<1,uint16_t>(h))[0];
 }
 
 } // extern "C"

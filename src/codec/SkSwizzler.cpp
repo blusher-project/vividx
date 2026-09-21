@@ -19,7 +19,6 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorPriv.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkSwizzlePriv.h"
 
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
@@ -170,14 +169,14 @@ static void swizzle_bit_to_565(
 static void swizzle_bit_to_f16(
         void* SK_RESTRICT dstRow, const uint8_t* SK_RESTRICT src, int dstWidth,
         int bpp, int deltaSrc, int offset, const SkPMColor* /*ctable*/) {
-    constexpr uint64_t kWhite = (((uint64_t) SK_Half1) <<  0) |
-                                (((uint64_t) SK_Half1) << 16) |
-                                (((uint64_t) SK_Half1) << 32) |
-                                (((uint64_t) SK_Half1) << 48);
+    constexpr uint64_t kWhite = (((uint64_t) VX_UINT16_1) <<  0) |
+                                (((uint64_t) VX_UINT16_1) << 16) |
+                                (((uint64_t) VX_UINT16_1) << 32) |
+                                (((uint64_t) VX_UINT16_1) << 48);
     constexpr uint64_t kBlack = (((uint64_t)        0) <<  0) |
                                 (((uint64_t)        0) << 16) |
                                 (((uint64_t)        0) << 32) |
-                                (((uint64_t) SK_Half1) << 48);
+                                (((uint64_t) VX_UINT16_1) << 48);
 
     uint64_t* SK_RESTRICT dst = (uint64_t*) dstRow;
 

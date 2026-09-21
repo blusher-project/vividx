@@ -12,7 +12,7 @@
 // ensure that these types are the sizes the uniform data is expecting
 static_assert(sizeof(int32_t) == 4);
 static_assert(sizeof(float) == 4);
-static_assert(sizeof(SkHalf) == 2);
+static_assert(sizeof(vx_half_t) == 2);
 
 namespace skgpu::graphite {
 

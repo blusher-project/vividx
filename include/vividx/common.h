@@ -167,6 +167,30 @@ static inline bool vx_float_is_finite_4f(float f1, float f2, float f3, float f4)
     return prod == prod;
 }
 
+
+//!<==================
+//!< Half (uint16_t)
+//!<==================
+
+// 16-bit floating point value
+// format is 1 bit sign, 5 bits exponent, 10 bits mantissa
+// only used for storage
+#define vx_half_t uint16_t
+
+static const uint16_t VX_UINT16_NAN      = 0x7c01; // a NaN value, not all possible NaN values
+static const uint16_t VX_UINT16_INFINITY = 0x7c00;
+static const uint16_t VX_UINT16_MIN      = 0x0400; // 2^-14  (minimum positive normal value)
+static const uint16_t VX_UINT16_MAX      = 0x7bff; // 65504  (maximum positive normal value)
+static const uint16_t VX_UINT16_EPSILON  = 0x1400; // 2^-10
+static const uint16_t VX_UINT16_1        = 0x3C00; // 1
+
+// Convert between half and single precision floating point. Vectorized functions
+// skvx::from_half and skvx::to_half are also available. Unlike skvx::to_half, this will
+// correctly handle float NaN -> half NaN.
+float vx_uint16_to_float(uint16_t h);
+uint16_t vx_float_to_uint16(float f);
+
+
 //!<=============================
 //!< Attributes
 //!<-----------------------------

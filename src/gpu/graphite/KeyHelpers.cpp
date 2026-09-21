@@ -20,7 +20,6 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkDebugUtils.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkMeshPriv.h"
 #include "src/core/SkRuntimeBlender.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -975,9 +974,9 @@ void add_matrix_colorfilter_uniform_data(const KeyContext& keyContext,
         gatherer->writeHalf(SkV2{0.f, 1.f});
     } else {
         // Alpha is always clamped to 1. RGB clamp to the max finite half value.
-        static constexpr float kUnclamped = 65504.f; // SK_HalfMax converted back to float
-        SkASSERT(SkHalfToFloat(SkFloatToHalf(kUnclamped)) == kUnclamped);
-        SkASSERT(SkHalfToFloat(SkFloatToHalf(-kUnclamped)) == -kUnclamped);
+        static constexpr float kUnclamped = 65504.f; // VX_UINT16_MAX converted back to float
+        SkASSERT(vx_uint16_to_float(vx_float_to_uint16(kUnclamped)) == kUnclamped);
+        SkASSERT(vx_uint16_to_float(vx_float_to_uint16(-kUnclamped)) == -kUnclamped);
         gatherer->writeHalf(SkV2{-kUnclamped, kUnclamped});
     }
 }

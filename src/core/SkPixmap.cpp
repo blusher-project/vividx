@@ -16,13 +16,13 @@
 #include "src/core/SkColorData.h"
 #include "src/core/SkColorPriv.h"
 #include "src/core/SkConvertPixels.h"
-#include "src/core/SkHalf.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkReadPixelsRec.h"
 #include "src/core/SkSwizzlePriv.h"
 #include "src/core/SkVx.h"
 #include "src/opts/SkMemset_opts.h"
+#include "vividx/common.h"
 
 #include <array>
 #include <cstdint>
@@ -125,8 +125,8 @@ float SkPixmap::getAlphaf(int x, int y) const {
             value = static_cast<const uint16_t*>(srcPtr)[0] * (1.0f/65535);
             break;
         case VX_COLOR_TYPE_A16_FLOAT: {
-            SkHalf half = static_cast<const SkHalf*>(srcPtr)[0];
-            value = SkHalfToFloat(half);
+            vx_half_t half = static_cast<const vx_half_t*>(srcPtr)[0];
+            value = vx_uint16_to_float(half);
             break;
         }
         case VX_COLOR_TYPE_ARGB_4444: {
@@ -215,10 +215,10 @@ SkColor SkPixmap::getColor(int x, int y) const {
             return SkColorSetA(0, (*this->addr16(x, y)) * (255 / 65535.0f));
         }
         case VX_COLOR_TYPE_A16_FLOAT: {
-            return SkColorSetA(0, 255 * SkHalfToFloat(*this->addr16(x, y)));
+            return SkColorSetA(0, 255 * vx_uint16_to_float(*this->addr16(x, y)));
         }
         case VX_COLOR_TYPE_R16_FLOAT: {
-            return SkColorSetRGB(255 * SkHalfToFloat(*this->addr16(x, y)), 0, 0);
+            return SkColorSetRGB(255 * vx_uint16_to_float(*this->addr16(x, y)), 0, 0);
         }
         case VX_COLOR_TYPE_RGB_565: {
             return SkPixel16ToColor(*this->addr16(x, y));
@@ -243,8 +243,8 @@ SkColor SkPixmap::getColor(int x, int y) const {
         }
         case VX_COLOR_TYPE_R16G16_FLOAT: {
             uint32_t value = *this->addr32(x, y);
-            float r = SkHalfToFloat((uint16_t)(value >>  0) & 0xffff),
-                  g = SkHalfToFloat((uint16_t)(value >> 16) & 0xffff);
+            float r = vx_uint16_to_float((uint16_t)(value >>  0) & 0xffff),
+                  g = vx_uint16_to_float((uint16_t)(value >> 16) & 0xffff);
             return SkColorSetRGB((uint8_t)(255 * r), (uint8_t)(255 * g), 0);
         }
         case VX_COLOR_TYPE_RGB_888X: {
@@ -421,10 +421,10 @@ SkColor4f SkPixmap::getColor4f(int x, int y) const {
             return SkColor4f{0.0f, 0.0f, 0.0f, (*this->addr16(x, y) / 65535.0f)};
         }
         case VX_COLOR_TYPE_R16_FLOAT: {
-            return SkColor4f{SkHalfToFloat(*this->addr16(x, y)), 0.f, 0.f, 1.f};
+            return SkColor4f{vx_uint16_to_float(*this->addr16(x, y)), 0.f, 0.f, 1.f};
         }
         case VX_COLOR_TYPE_A16_FLOAT: {
-            return SkColor4f{0.0f, 0.0f, 0.0f, SkHalfToFloat(*this->addr16(x, y))};
+            return SkColor4f{0.0f, 0.0f, 0.0f, vx_uint16_to_float(*this->addr16(x, y))};
         }
         case VX_COLOR_TYPE_RGB_565: {
             return SkColor4f::FromColor(SkPixel16ToColor(*this->addr16(x, y)));
@@ -445,8 +445,8 @@ SkColor4f SkPixmap::getColor4f(int x, int y) const {
         }
         case VX_COLOR_TYPE_R16G16_FLOAT: {
             uint32_t value = *this->addr32(x, y);
-            float r = SkHalfToFloat((value >> 0 ) & 0xffff);
-            float g = SkHalfToFloat((value >> 16) & 0xffff);
+            float r = vx_uint16_to_float((value >> 0 ) & 0xffff);
+            float g = vx_uint16_to_float((value >> 16) & 0xffff);
             return SkColor4f{r, g, 0.0, 1.0};
         }
         case VX_COLOR_TYPE_RGB_888X: {
@@ -608,9 +608,9 @@ bool SkPixmap::computeIsOpaque() const {
         }
         case VX_COLOR_TYPE_A16_FLOAT: {
             for (int y = 0; y < height; ++y) {
-                const SkHalf* row = this->addr16(0, y);
+                const vx_half_t* row = this->addr16(0, y);
                 for (int x = 0; x < width; ++x) {
-                    if (row[x] < SK_Half1) {
+                    if (row[x] < VX_UINT16_1) {
                         return false;
                     }
                 }
@@ -661,10 +661,10 @@ bool SkPixmap::computeIsOpaque() const {
         }
         case VX_COLOR_TYPE_RGBA_F16NORM:
         case VX_COLOR_TYPE_RGBA_F16: {
-            const SkHalf* row = (const SkHalf*)this->addr();
+            const vx_half_t* row = (const vx_half_t*)this->addr();
             for (int y = 0; y < height; ++y) {
                 for (int x = 0; x < width; ++x) {
-                    if (row[4 * x + 3] < SK_Half1) {
+                    if (row[4 * x + 3] < VX_UINT16_1) {
                         return false;
                     }
                 }
