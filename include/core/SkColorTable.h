@@ -10,7 +10,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstdint>
 

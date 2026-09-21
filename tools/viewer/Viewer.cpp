@@ -31,7 +31,7 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTextBlob.h"
 #include "include/gpu/graphite/Context.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkLog.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"

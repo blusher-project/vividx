@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/GrProcessorSet.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/gpu/ganesh/GrAppliedClip.h"
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrXferProcessor.h"
@@ -185,7 +185,7 @@ GrProcessorSet::Analysis GrProcessorSet::finalize(
 
     fFlags |= kFinalized_Flag;
     analysis.fIsInitialized = true;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool hasXferBarrier =
             fXP.fProcessor &&
             GrXferBarrierType::kNone_GrXferBarrierType != fXP.fProcessor->xferBarrierType(caps);

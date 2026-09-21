@@ -48,7 +48,7 @@ private:
     }
 
     std::string toString() const override {
-#if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
+#if defined(VX_DEBUG) || defined(GPU_TEST_UTILS)
         return GrDxgiFormatToStr(fFormat);
 #else
         return "";
@@ -59,7 +59,7 @@ private:
         formatData.emplace<GrD3DBackendFormatData>(fFormat);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kDirect3D; }
 #endif
 
@@ -136,7 +136,7 @@ private:
         return GrBackendFormats::MakeD3D(d3dInfo.fFormat);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kDirect3D; }
 #endif
 
@@ -259,7 +259,7 @@ private:
         return GrBackendFormats::MakeD3D(d3dInfo.fFormat);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kDirect3D; }
 #endif
 

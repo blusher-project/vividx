@@ -11,7 +11,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/TextureInfo.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkLog.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/RefCntedCallback.h"
@@ -24,7 +24,7 @@
 #include "src/gpu/graphite/Sampler.h"  // IWYU pragma: keep
 #include "src/gpu/graphite/Texture.h"
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 #include "src/gpu/graphite/SharedContext.h"
 #endif
 
@@ -62,7 +62,7 @@ void CommandBuffer::trackResource(sk_sp<Resource> resource) {
     fCommandBufferResources.push_back(std::move(resource));
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 bool CommandBuffer::isResourceTracked(const Resource* resource) {
     for (const gr_cb<Resource>& trackedResource : fCommandBufferResources) {
         if (trackedResource.get() == resource)

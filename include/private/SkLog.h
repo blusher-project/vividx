@@ -10,8 +10,8 @@
 
 #include <cstdarg>
 
-#include "include/private/SkAPI.h"
-#include "include/private/SkAttributes.h"
+#include <vividx/common.h>
+#include <vividx/common.h>
 // #include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
 // #include "include/private/SkLogPriority.h"
 
@@ -19,8 +19,8 @@
 
 #if !defined(SkLog)
 // Implemented per platform.
-void SkLogVAList(enum vx_log_priority priority, const char format[], va_list args) SK_PRINTF_LIKE(2, 0);
-void SK_SPI SkLog(enum vx_log_priority priority, const char format[], ...) SK_PRINTF_LIKE(2, 3);
+void SkLogVAList(enum vx_log_priority priority, const char format[], va_list args) VX_PRINTF_LIKE(2, 0);
+void SK_SPI SkLog(enum vx_log_priority priority, const char format[], ...) VX_PRINTF_LIKE(2, 3);
 #endif
 
 #if !defined(SKIA_LOWEST_ACTIVE_LOG_PRIORITY)

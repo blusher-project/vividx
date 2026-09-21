@@ -14,7 +14,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/graphite/AtlasProvider.h"

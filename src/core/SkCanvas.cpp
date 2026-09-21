@@ -34,7 +34,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkSafe32.h"
 #include "include/private/SkTPin.h"
@@ -429,7 +429,7 @@ void SkCanvas::checkForDeferredSave() {
 }
 
 int SkCanvas::getSaveCount() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     int count = 0;
     SkDeque::Iter iter(fMCStack, SkDeque::Iter::kFront_IterStart);
     for (;;) {
@@ -1536,7 +1536,7 @@ void SkCanvas::onClipRegion(const SkRegion& rgn, SkClipOp op) {
 }
 
 void SkCanvas::validateClip() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkRect tmp = this->computeDeviceClipBounds();
     if (this->isClipEmpty()) {
         SkASSERT(fQuickRejectBounds.isEmpty());
@@ -1573,7 +1573,7 @@ bool SkCanvas::isClipRect() const {
 }
 
 bool SkCanvas::quickReject(const SkRect& src) const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // Verify that fQuickRejectBounds are set properly.
     this->validateClip();
 #endif

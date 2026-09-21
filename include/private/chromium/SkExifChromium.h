@@ -8,7 +8,7 @@
 #ifndef SkExifChromium_DEFINED
 #define SkExifChromium_DEFINED
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 namespace SkExif {
 

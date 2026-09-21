@@ -269,6 +269,19 @@ enum vx_log_priority {
 //!< Copied from SkAssert.h
 //!<=============================
 
+#if !defined(SkUNREACHABLE)
+#  if defined(_MSC_VER) && !defined(__clang__)
+#    include <intrin.h>
+#    define FAST_FAIL_INVALID_ARG                 5
+// See https://developercommunity.visualstudio.com/content/problem/1128631/code-flow-doesnt-see-noreturn-with-extern-c.html
+// for why this is wrapped. Hopefully removable after msvc++ 19.27 is no longer supported.
+[[noreturn]] static inline void sk_fast_fail() { __fastfail(FAST_FAIL_INVALID_ARG); }
+#    define SkUNREACHABLE sk_fast_fail()
+#  else
+#    define SkUNREACHABLE __builtin_trap()
+#  endif
+#endif
+
 #if defined(__clang__) && defined(__has_attribute)
     #if __has_attribute(likely)
         #define VX_LIKELY [[likely]]
@@ -348,7 +361,6 @@ enum vx_log_priority {
         : [&]{ VX_ABORT("assertf(%s): " fmt, #cond, ##__VA_ARGS__); }() )
 #endif
 
-#define SK_DEBUG VX_DEBUG
 #if defined(VX_DEBUG)
     #define VX_ASSERT(cond)            VX_ASSERT_RELEASE(cond)
     #define VX_ASSERTF(cond, fmt, ...) VX_ASSERTF_RELEASE(cond, fmt, ##__VA_ARGS__)
@@ -365,6 +377,7 @@ enum vx_log_priority {
     // The if is present so that this can be used with functions marked [[nodiscard]].
     #define VXAssertResult(cond)         if (cond) {} do {} while(false)
 #endif
+#define SK_DEBUG VX_DEBUG
 
 #define SkASSERT                        VX_ASSERT
 #define SkASSERTF                       VX_ASSERTF
@@ -377,6 +390,29 @@ enum vx_log_priority {
 #define SkDEBUGFAIL                     VX_DEBUGFAIL
 #define SkDEBUGFAILF                    VX_DEBUGFAILF
 #define SK_ASSUME                       VX_ASSUME
+
+
+//!<=============================
+//!< Debug
+//!<-----------------------------
+//!< Copied from SkDebug.h
+//!<=============================
+
+#if !defined(vx_debugf)
+    void VX_SPI vx_debugf(const char format[], ...) VX_PRINTF_LIKE(1, 2);
+#endif
+
+#if defined(VX_DEBUG)
+    #define VX_DEBUGCODE(...)  __VA_ARGS__
+    #define VX_DEBUGF(...)     vx_debugf(__VA_ARGS__)
+#else
+    #define VX_DEBUGCODE(...)
+    #define VX_DEBUGF(...)
+#endif
+
+#define SkDEBUGCODE             VX_DEBUGCODE
+#define SkDebugf                vx_debugf
+#define SkDEBUGF                VX_DEBUGF
 
 #ifdef __cplusplus
 extern "C" {

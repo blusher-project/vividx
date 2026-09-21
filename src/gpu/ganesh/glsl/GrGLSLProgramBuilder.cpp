@@ -92,7 +92,7 @@ bool GrGLSLProgramBuilder::emitAndInstallPrimProc(SkString* outputColor, SkStrin
     fUniformHandles.fRTAdjustmentUni = this->uniformHandler()->addUniform(
             nullptr, kVertex_GrShaderFlag, SkSLType::kFloat4, SkSL::Compiler::RTADJUST_NAME);
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     fFS.codeAppendf("// Stage %d, %s\n", fStageIndex, geomProc.name());
     fVS.codeAppendf("// Primitive Processor %s\n", geomProc.name());
 #endif
@@ -353,7 +353,7 @@ bool GrGLSLProgramBuilder::emitAndInstallDstTexture() {
                 SkSLType::kHalf4,
                 "DstTextureCoords",
                 &dstTextureCoordsName);
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         fFS.codeAppend("// Read color from copy of the destination\n");
 #endif
         if (dstTextureProxy->textureType() == GrTextureType::k2D) {
@@ -388,7 +388,7 @@ bool GrGLSLProgramBuilder::emitAndInstallDstTexture() {
 
         // Populate the _dstColor variable by loading from the input attachment at the top of the
         // fragment shader.
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         fFS.codeAppend("// Read color from input attachment\n");
 #endif
         const char* dstColor = fFS.dstColor();
@@ -417,7 +417,7 @@ bool GrGLSLProgramBuilder::emitAndInstallXferProc(const SkString& colorIn,
     }
 
     SkString openBrace;
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     openBrace.printf("{ // Xfer Processor: %s\n", xp.name());
 #else
     openBrace.printf("{\n");
@@ -469,7 +469,7 @@ bool GrGLSLProgramBuilder::checkSamplerCounts() {
     return true;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrGLSLProgramBuilder::verify(const GrGeometryProcessor& geomProc) {
     SkASSERT(!fFS.fHasReadDstColorThisStage_DebugOnly);
 }

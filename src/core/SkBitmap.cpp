@@ -170,7 +170,7 @@ SkIPoint SkBitmap::pixelRefOrigin() const {
 }
 
 void SkBitmap::setPixelRef(sk_sp<SkPixelRef> pr, int dx, int dy) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (pr) {
         if (VX_COLOR_TYPE_UNKNOWN != this->colorType()) {
             SkASSERT(dx >= 0 && this->width() + dx <= pr->width());
@@ -585,7 +585,7 @@ bool SkBitmap::extractAlpha(SkBitmap* dst, const SkPaint* paint,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkBitmap::validate() const {
     this->info().validate();
 

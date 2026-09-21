@@ -144,7 +144,7 @@ private:
 
     bool inPurgeableQueue(const Resource*) const;
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     bool isInCache(const Resource* r) const;
     void validate() const;
 

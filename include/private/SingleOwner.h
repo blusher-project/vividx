@@ -8,7 +8,7 @@
 #ifndef skgpu_SingleOwner_DEFINED
 #define skgpu_SingleOwner_DEFINED
 
-#include "include/private/SkDebug.h" // IWYU pragma: keep
+#include <vividx/assert.h> // IWYU pragma: keep
 
 #if defined(SK_DEBUG)
 #include "include/private/SkAssert.h"
@@ -20,7 +20,7 @@
 
 namespace skgpu {
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 
 #define SKGPU_ASSERT_SINGLE_OWNER(obj) \
     skgpu::SingleOwner::AutoEnforce debug_SingleOwner(obj, __FILE__, __LINE__);

@@ -14,7 +14,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/utils/SkParsePath.h"
 #include "src/core/SkFloatBits.h"
 #include "src/core/SkGeometry.h"

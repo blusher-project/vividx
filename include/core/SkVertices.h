@@ -12,7 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstddef>
 #include <cstdint>

@@ -220,7 +220,7 @@ std::optional<SkPath> SimplifyDebug(const SkPath& path SkDEBUGPARAMS(bool skipAs
             SkDEBUGPARAMS(skipAssert) SkDEBUGPARAMS(testName));
     SkOpCoincidence coincidence(&globalState);
 #if DEBUG_DUMP_VERIFY
-#ifndef SK_DEBUG
+#ifndef VX_DEBUG
     const char* testName = "release";
 #endif
     if (SkPathOpsDebug::gDumpOp) {

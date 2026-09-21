@@ -9,7 +9,7 @@
 #define SkPoint3_DEFINED
 
 #include "include/core/SkScalar.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkFloatingPoint.h"
 
 struct SK_API SkPoint3 {

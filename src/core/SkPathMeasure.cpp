@@ -60,7 +60,7 @@ bool SkPathMeasure::nextContour() {
     return !!fContour;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkPathMeasure::dump() {}
 #endif
 

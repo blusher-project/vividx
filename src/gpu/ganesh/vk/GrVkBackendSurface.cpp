@@ -16,7 +16,7 @@
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 #include "src/gpu/ganesh/vk/GrVkTypesPriv.h"
@@ -80,7 +80,7 @@ private:
     }
 
     std::string toString() const override {
-#if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
+#if defined(VX_DEBUG) || defined(GPU_TEST_UTILS)
         return skgpu::VkFormatToStr(fFormat);
 #else
         return "";
@@ -100,7 +100,7 @@ private:
         }
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kVulkan; }
 #endif
 
@@ -227,7 +227,7 @@ private:
         return GrBackendFormats::MakeVk(info.fFormat, usesDRMModifier);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kVulkan; }
 #endif
 
@@ -386,7 +386,7 @@ private:
         rtData.emplace<GrVkBackendRenderTargetData>(fVkInfo, fMutableState);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kVulkan; }
 #endif
 

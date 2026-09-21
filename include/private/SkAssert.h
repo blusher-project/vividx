@@ -8,28 +8,14 @@
 #ifndef SkAssert_DEFINED
 #define SkAssert_DEFINED
 
-#include "include/private/SkAPI.h"
-#include "include/private/SkAttributes.h"
-#include "include/private/SkDebug.h" // IWYU pragma: keep
+#include <vividx/common.h>
+// #include <vividx/assert.h> // IWYU pragma: keep
 #include "include/private/SkLog.h"
 
 #include <cstddef>
 #include <limits>
 
 #include <vividx/assert.h>
-
-#if !defined(SkUNREACHABLE)
-#  if defined(_MSC_VER) && !defined(__clang__)
-#    include <intrin.h>
-#    define FAST_FAIL_INVALID_ARG                 5
-// See https://developercommunity.visualstudio.com/content/problem/1128631/code-flow-doesnt-see-noreturn-with-extern-c.html
-// for why this is wrapped. Hopefully removable after msvc++ 19.27 is no longer supported.
-[[noreturn]] static inline void sk_fast_fail() { __fastfail(FAST_FAIL_INVALID_ARG); }
-#    define SkUNREACHABLE sk_fast_fail()
-#  else
-#    define SkUNREACHABLE __builtin_trap()
-#  endif
-#endif
 
 [[noreturn]] SK_API inline void sk_print_index_out_of_bounds(size_t i, size_t size) {
     VX_ABORT("Index (%zu) out of bounds for size %zu.", i, size);

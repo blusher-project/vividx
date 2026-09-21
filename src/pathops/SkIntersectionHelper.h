@@ -11,7 +11,7 @@
 #include "src/pathops/SkOpContour.h"
 #include "src/pathops/SkOpSegment.h"
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #include "src/pathops/SkPathOpsPoint.h"
 #endif
 

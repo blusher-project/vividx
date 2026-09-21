@@ -9,7 +9,7 @@
 #define GrGLProgramDataManager_DEFINED
 
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
@@ -77,7 +77,7 @@ public:
 private:
     struct Uniform {
         GrGLint     fLocation;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         SkSLType    fType;
         int         fArrayCount;
 #endif

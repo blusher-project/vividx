@@ -11,7 +11,7 @@
 #include "include/core/SkString.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkTraceEvent.h"
@@ -180,7 +180,7 @@ const GrVkRenderPass* GrVkResourceProvider::findCompatibleExternalRenderPass(
     for (int i = 0; i < fExternalRenderPasses.size(); ++i) {
         if (fExternalRenderPasses[i]->isCompatibleExternalRP(renderPass)) {
             fExternalRenderPasses[i]->ref();
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
             uint32_t cachedColorIndex;
             SkASSERT(fExternalRenderPasses[i]->colorAttachmentIndex(&cachedColorIndex));
             SkASSERT(cachedColorIndex == colorAttachmentIndex);

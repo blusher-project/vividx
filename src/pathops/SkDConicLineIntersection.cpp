@@ -8,7 +8,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCurve.h"
@@ -71,7 +71,7 @@ public:
         }
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static bool close_to(double a, double b, const double c[3]) {
         double max = std::max(-std::min(std::min(c[0], c[1]), c[2]), std::max(std::max(c[0], c[1]), c[2]));
         return approximately_zero_when_compared_to(a - b, max);
@@ -117,7 +117,7 @@ public:
         for (int index = 0; index < roots; ++index) {
             double conicT = rootVals[index];
             double lineT = this->findLineT(conicT);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
             if (!fIntersections->globalState()
                     || !fIntersections->globalState()->debugSkipAssert()) {
                 SkDEBUGCODE(SkDPoint conicPt = fConic.ptAtT(conicT));

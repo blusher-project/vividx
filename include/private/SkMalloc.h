@@ -10,7 +10,7 @@
 
 #include <cstring>
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 /*
     memory wrappers to be implemented by the porting layer (platform)

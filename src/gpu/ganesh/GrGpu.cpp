@@ -604,7 +604,7 @@ bool GrGpu::transferPixelsFrom(GrSurface* surface,
     SkASSERT(this->caps()->areColorTypeAndFormatCompatible(surfaceColorType,
                                                            surface->backendFormat()));
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     auto supportedRead = this->caps()->supportedReadPixelsColorType(
             surfaceColorType, surface->backendFormat(), bufferColorType);
     SkASSERT(supportedRead.fOffsetAlignmentForTransferBuffer);

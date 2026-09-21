@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkFloatBits.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkPathOpsDebug.h"

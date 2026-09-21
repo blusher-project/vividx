@@ -10,7 +10,7 @@
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -53,7 +53,7 @@ private:
 #if defined(GPU_TEST_UTILS)
     const char* name() const final { return "TextureResolve"; }
 #endif
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override;
 #endif
 

@@ -8,7 +8,7 @@
 #ifndef SkSpinlock_DEFINED
 #define SkSpinlock_DEFINED
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkThreadAnnotations.h"
 
 #include <atomic>

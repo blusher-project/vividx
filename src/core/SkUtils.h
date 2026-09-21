@@ -8,7 +8,7 @@
 #ifndef SkUtils_DEFINED
 #define SkUtils_DEFINED
 
-#include "include/private/SkAttributes.h"
+#include <vividx/common.h>
 
 #include <cstring>
 #include <type_traits> // is_trivially_copyable

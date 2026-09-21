@@ -1232,7 +1232,7 @@ void GrMtlGpu::copySurfaceAsResolve(GrSurface* dst, GrSurface* src) {
 void GrMtlGpu::copySurfaceAsBlit(GrSurface* dst, GrSurface* src,
                                  GrMtlAttachment* dstAttachment, GrMtlAttachment* srcAttachment,
                                  const SkIRect& srcRect, const SkIPoint& dstPoint) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkASSERT(this->mtlCaps().canCopyAsBlit(dstAttachment->mtlFormat(), dstAttachment->numSamples(),
                                            srcAttachment->mtlFormat(), dstAttachment->numSamples(),
                                            srcRect, dstPoint, dst == src));
@@ -1356,7 +1356,7 @@ bool GrMtlGpu::onWritePixels(GrSurface* surface,
     if (!mipLevelCount) {
         return false;
     }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (int i = 0; i < mipLevelCount; i++) {
         SkASSERT(texels[i].fPixels);
     }

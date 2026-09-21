@@ -9,7 +9,7 @@
 #define SkEncoder_DEFINED
 
 #include "include/core/SkPixmap.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTemplates.h"
 

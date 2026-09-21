@@ -132,7 +132,7 @@ sk_sp<GraphicsPipeline> SharedContext::findOrCreateGraphicsPipeline(
     return pipeline;
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 size_t SharedContext::getResourceCacheLimit() const {
     return fThreadSafeResourceProvider->getResourceCacheLimit();
 }

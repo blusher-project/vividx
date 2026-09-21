@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMutex.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkThreadAnnotations.h"
@@ -22,7 +22,7 @@
 #include <utility>
 
 // uncomment to enable tracing of resource refs
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #define SK_TRACE_MANAGED_RESOURCES
 #endif
 
@@ -92,14 +92,14 @@ public:
     /** Destruct, asserting that the reference count is 1.
      */
     virtual ~GrManagedResource() {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         auto count = this->getRefCnt();
         SkASSERTF(count == 1, "fRefCnt was %d", count);
         fRefCnt.store(0);    // illegal value, to catch us if we reuse after delete
 #endif
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     /** Return the reference count. Use only for debugging. */
     int32_t getRefCnt() const { return fRefCnt.load(); }
 #endif
@@ -139,14 +139,14 @@ public:
         }
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // This is used for validating in the vulkan backend when using a main command buffer and temp
     // command buffer at the same time. We need to validate that no images in the temp command
     // buffer have been used in the main command buffer.
     virtual const GrManagedResource* asVkImageResource() const { return nullptr; }
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const {
         SkASSERT(this->getRefCnt() > 0);
     }
@@ -177,7 +177,7 @@ private:
         GetTrace()->remove(this);
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         SkASSERT(0 == this->getRefCnt());
         fRefCnt.store(1);
 #endif

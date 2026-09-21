@@ -9,7 +9,7 @@
 
 #include "include/core/SkScalar.h"
 #include "include/effects/SkGradient.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMutex.h"
 #include "include/private/SkNoncopyable.h"
 #include "src/core/SkColorData.h"
@@ -65,7 +65,7 @@ private:
                       const SkColorSpace* dstColorSpace,
                       SkBitmap* bitmap);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const;
 #else
     void validate() const {}

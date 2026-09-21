@@ -10,7 +10,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkSafe32.h"

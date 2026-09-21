@@ -188,7 +188,7 @@ bool Builder::appendStepInternal(
                                r.fType == Type::kSampledTexture ||
                                r.fType == Type::kWriteOnlyStorageTexture) &&
                               std::holds_alternative<TextureIndex>(*slot)));
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
                     // Ensure that the texture has the right format if it was assigned via
                     // `assignSharedTexture()`.
                     const TextureIndex* texIdx = std::get_if<TextureIndex>(slot);
@@ -199,7 +199,7 @@ bool Builder::appendStepInternal(
                         SkASSERT(t->textureInfo().canBeFulfilledBy(
                                 fRecorder->priv().caps()->getDefaultStorageTextureInfo(colorType)));
                     }
-#endif  // SK_DEBUG
+#endif  // VX_DEBUG
 
                     maybeResource = *slot;
 

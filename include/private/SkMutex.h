@@ -9,7 +9,7 @@
 #define SkMutex_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkSemaphore.h"
 #include "include/private/SkThreadAnnotations.h"
 #include "include/private/SkThreadID.h"

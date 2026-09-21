@@ -10,7 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
@@ -81,7 +81,7 @@ struct SkDQuad {
     SkDVector dxdyAtT(double t) const;
     static int FindExtrema(const double src[], double tValue[1]);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpGlobalState* globalState() const { return fDebugGlobalState; }
 #endif
 
@@ -159,7 +159,7 @@ public:
     void dumpID(int id) const override { return fQuad.dumpID(id); }
 #endif
     SkDVector dxdyAtT(double t) const override { return fQuad.dxdyAtT(t); }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpGlobalState* globalState() const override { return fQuad.globalState(); }
 #endif
 

@@ -13,7 +13,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMacros.h"
@@ -40,7 +40,7 @@ struct SkMask;
 #define kEDGE_HEAD_Y    SK_MinS32
 #define kEDGE_TAIL_Y    SK_MaxS32
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static void validate_sort(const SkEdge* edge) {
         int y = kEDGE_HEAD_Y;
 
@@ -87,7 +87,7 @@ nextEdge:
     } while (newEdge->fFirstY == curr_y);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static void validate_edges_for_y(const SkEdge* edge, int curr_y) {
     while (edge->fFirstY <= curr_y) {
         SkASSERT(edge->fPrev && edge->fNext);
@@ -509,7 +509,7 @@ SkScanClipper::SkScanClipper(SkBlitter* blitter, const SkRegion* clip,
 
         if (clip->isRect()) {
             if (!irPreClipped && fClipRect->contains(ir)) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
                 fRectClipCheckBlitter.init(blitter, *fClipRect);
                 blitter = &fRectClipCheckBlitter;
 #endif
@@ -521,7 +521,7 @@ SkScanClipper::SkScanClipper(SkBlitter* blitter, const SkRegion* clip,
                     fRectBlitter.init(blitter, *fClipRect);
                     blitter = &fRectBlitter;
                 } else {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
                     fRectClipCheckBlitter.init(blitter, *fClipRect);
                     blitter = &fRectClipCheckBlitter;
 #endif

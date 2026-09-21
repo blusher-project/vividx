@@ -18,7 +18,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkMathPriv.h"
@@ -87,7 +87,7 @@ bool is_visible(const SkRect& pathDevBounds, const SkIRect& clipBounds) {
     return all(pathTopLeft < clipBotRight) && all(pathBotRight > clipTopLeft);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 // Ensures the atlas dependencies are set up such that each atlas will be totally out of service
 // before we render the next one in line. This means there will only ever be one atlas active at a
 // time and that they can all share the same texture.
@@ -212,7 +212,7 @@ bool AtlasPathRenderer::addPathToAtlas(GrRecordingContext* rContext,
     SkASSERT(!viewMatrix.hasPerspective());  // See onCanDrawPath().
 
     pathDevBounds.roundOut(devIBounds);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // is_visible() should have guaranteed the path's bounds were representable as ints, since clip
     // bounds within the max render target size are nowhere near INT_MAX.
     auto [topLeftFloor, botRightCeil] = round_out(pathDevBounds);
@@ -287,7 +287,7 @@ bool AtlasPathRenderer::addPathToAtlas(GrRecordingContext* rContext,
 }
 
 PathRenderer::CanDrawPath AtlasPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (!fAtlasRenderTasks.empty()) {
         // args.fPaint should NEVER reference our current atlas. If it does, it means somebody
         // intercepted a clip FP meant for a different op and will cause rendering artifacts.

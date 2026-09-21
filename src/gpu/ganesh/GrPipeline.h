@@ -10,7 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMacros.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -189,7 +189,7 @@ public:
     bool hasStencilClip() const {
         return SkToBool(fFlags & Flags::kHasStencilClip);
     }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool allProxiesInstantiated() const {
         for (int i = 0; i < fFragmentProcessors.count(); ++i) {
             if (!fFragmentProcessors[i]->isInstantiated()) {

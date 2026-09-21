@@ -817,7 +817,7 @@ static constexpr VkFormat kVkFormats[] = {
 };
 
 void GrVkCaps::setColorType(GrColorType colorType, std::initializer_list<VkFormat> formats) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (size_t i = 0; i < kNumVkFormats; ++i) {
         const auto& formatInfo = fFormatTable[i];
         for (int j = 0; j < formatInfo.fColorTypeInfoCount; ++j) {
@@ -1569,7 +1569,7 @@ static bool backend_format_is_external(const GrBackendFormat& format) {
 
     // All external formats have a valid ycbcrInfo used for sampling and a non zero external format.
     if (ycbcrInfo->isValid() && ycbcrInfo->hasExternalFormat()) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         VkFormat vkFormat;
         SkAssertResult(GrBackendFormats::AsVkFormat(format, &vkFormat));
         SkASSERT(vkFormat == VK_FORMAT_UNDEFINED);
@@ -1922,7 +1922,7 @@ uint64_t GrVkCaps::computeFormatKey(const GrBackendFormat& format) const {
     VkFormat vkFormat;
     SkAssertResult(GrBackendFormats::AsVkFormat(format, &vkFormat));
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // We should never be trying to compute a key for an external format
     const skgpu::VulkanYcbcrConversionInfo* ycbcrInfo =
             GrBackendFormats::GetVkYcbcrConversionInfo(format);
@@ -2053,7 +2053,7 @@ GrProgramDesc GrVkCaps::makeDesc(GrRenderTarget* rt,
         SkASSERT(rp);
         rp->genKey(&b);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         if (!rp->isExternal()) {
             // This is to ensure ReconstructAttachmentsDescriptor keeps matching
             // getSimpleRenderPass' result

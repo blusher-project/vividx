@@ -8,7 +8,7 @@
 #include "src/text/gpu/DistanceFieldAdjustTable.h"
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTemplates.h"
 #include "src/core/SkNoDestructor.h"
 #include "src/core/SkScalerContext.h"

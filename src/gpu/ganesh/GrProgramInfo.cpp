@@ -64,7 +64,7 @@ GrStencilSettings GrProgramInfo::nonGLStencilSettings() const {
     return stencil;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 void GrProgramInfo::validate(bool flushTime) const {
     if (flushTime) {

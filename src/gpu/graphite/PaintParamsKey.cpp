@@ -23,7 +23,7 @@ namespace skgpu::graphite {
 //--------------------------------------------------------------------------------------------------
 // PaintParamsKeyBuilder
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 void PaintParamsKeyBuilder::checkReset() {
     SkASSERT(!fLocked);
@@ -106,7 +106,7 @@ void PaintParamsKeyBuilder::validateReplacement(int32_t oldCodeSnippetID,
     SkASSERT(!newSnippet->storesSamplerDescData());
 }
 
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 //--------------------------------------------------------------------------------------------------
 // PaintParamsKey
@@ -487,7 +487,7 @@ SkString PaintParamsKey::toString(const Caps* caps,
     return str.isEmpty() ? SkString("(empty)") : str;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 void PaintParamsKey::dump(const Caps* caps,
                           const ShaderCodeDictionary* dict,
@@ -510,7 +510,7 @@ void PaintParamsKey::dump(const Caps* caps,
     }
 }
 
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 namespace {
 

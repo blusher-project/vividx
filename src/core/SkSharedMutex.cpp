@@ -72,7 +72,7 @@
 
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
     #include "include/private/SkTDArray.h"
     #include "include/private/SkThreadID.h"

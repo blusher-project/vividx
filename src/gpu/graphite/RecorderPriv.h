@@ -11,7 +11,7 @@
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/graphite/Recorder.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/gpu/graphite/DebugUtils.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -104,7 +104,7 @@ public:
 
     uint32_t uniqueID() const { return fRecorder->fUniqueID; }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     uint32_t nextRecordingID() const { return fRecorder->fNextRecordingID; }
 #endif
 

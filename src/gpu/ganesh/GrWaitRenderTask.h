@@ -8,7 +8,7 @@
 #ifndef GrWaitRenderTask_DEFINED
 #define GrWaitRenderTask_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
 #include "src/gpu/ganesh/GrSemaphore.h"
@@ -48,7 +48,7 @@ private:
 #if defined(GPU_TEST_UTILS)
     const char* name() const final { return "Wait"; }
 #endif
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // No non-dst proxies.
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override {}
 #endif

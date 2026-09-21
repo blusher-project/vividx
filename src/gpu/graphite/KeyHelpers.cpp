@@ -104,7 +104,7 @@ public:
 
 private:
     ScopedUniformWriter(PipelineDataGatherer* gatherer, const ShaderSnippet* snippet)
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         : fValidator(gatherer, snippet->fUniforms, SkToBool(snippet->fUniformStructName))
 #endif
     {

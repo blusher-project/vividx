@@ -7,7 +7,7 @@
 
 static DEFINE_int_2(option, o, 0, "An option");
 
-static void exitf(const char* format, ...) SK_PRINTF_LIKE(1, 2);
+static void exitf(const char* format, ...) VX_PRINTF_LIKE(1, 2);
 
 static void exitf(const char* format, ...) {
     va_list args;

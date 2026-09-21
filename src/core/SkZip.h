@@ -10,7 +10,7 @@
 
 #include "include/core/SkSpan.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 #include <algorithm>
 #include <cstddef>
@@ -182,7 +182,7 @@ public:
         // Pick the first collection that has a size, and use that for the size.
         size_t size = PickOneSize<DecayPointerT<Ts>...>::Size(std::forward<Ts>(ts)...);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         // Check that all sizes are the same.
         size_t minSize = SIZE_MAX;
         size_t maxSize = 0;

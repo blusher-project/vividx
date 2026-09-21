@@ -8,7 +8,7 @@
 #ifndef SkFloatingPoint_DEFINED
 #define SkFloatingPoint_DEFINED
 
-#include "include/private/SkAttributes.h"
+#include <vividx/common.h>
 #include "include/private/SkMath.h"
 
 #include <cmath>

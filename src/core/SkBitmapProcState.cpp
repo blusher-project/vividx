@@ -470,7 +470,7 @@ static void S32_D32_constX_shaderproc(const void* sIn,
                 break;
         }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         {
             const SkBitmapProcStateAutoMapper mapper(s, x, y);
             int iY2;
@@ -587,7 +587,7 @@ SkBitmapProcState::ShaderProc32 SkBitmapProcState::chooseShaderProc32() {
     return nullptr;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 static void check_scale_nofilter(uint32_t bitmapXY[], int count,
                                  unsigned mx, unsigned my) {

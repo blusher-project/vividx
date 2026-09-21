@@ -346,7 +346,7 @@ DEF_TEST(String_fromUTF16, r) {
 }
 
 static void test_va_list_print(skiatest::Reporter* r, const char format[], ...)
-        SK_PRINTF_LIKE(2, 3);
+        VX_PRINTF_LIKE(2, 3);
 
 static void test_va_list_print(skiatest::Reporter* r, const char format[], ...) {
     va_list args;
@@ -360,7 +360,7 @@ static void test_va_list_print(skiatest::Reporter* r, const char format[], ...) 
 }
 
 static void test_va_list_append(skiatest::Reporter* r, const char format[], ...)
-        SK_PRINTF_LIKE(2, 3);
+        VX_PRINTF_LIKE(2, 3);
 
 static void test_va_list_append(skiatest::Reporter* r, const char format[], ...) {
     va_list args;
@@ -374,7 +374,7 @@ static void test_va_list_append(skiatest::Reporter* r, const char format[], ...)
 }
 
 static void test_va_list_prepend(skiatest::Reporter* r, const char format[], ...)
-        SK_PRINTF_LIKE(2, 3);
+        VX_PRINTF_LIKE(2, 3);
 
 static void test_va_list_prepend(skiatest::Reporter* r, const char format[], ...) {
     va_list args;
@@ -394,7 +394,7 @@ DEF_TEST(String_VAList, r) {
 }
 
 static void test_va_list_overflow_print(skiatest::Reporter* r, const char format[], ...)
-        SK_PRINTF_LIKE(2, 3);
+        VX_PRINTF_LIKE(2, 3);
 
 static void test_va_list_overflow_print(skiatest::Reporter* r, const char format[], ...) {
     va_list args;
@@ -408,7 +408,7 @@ static void test_va_list_overflow_print(skiatest::Reporter* r, const char format
 }
 
 static void test_va_list_overflow_append(skiatest::Reporter* r, const char format[], ...)
-        SK_PRINTF_LIKE(2, 3);
+        VX_PRINTF_LIKE(2, 3);
 
 static void test_va_list_overflow_append(skiatest::Reporter* r, const char format[], ...) {
     va_list args;
@@ -424,7 +424,7 @@ static void test_va_list_overflow_append(skiatest::Reporter* r, const char forma
 }
 
 static void test_va_list_overflow_prepend(skiatest::Reporter* r, const char format[], ...)
-        SK_PRINTF_LIKE(2, 3);
+        VX_PRINTF_LIKE(2, 3);
 
 static void test_va_list_overflow_prepend(skiatest::Reporter* r, const char format[], ...) {
     va_list args;

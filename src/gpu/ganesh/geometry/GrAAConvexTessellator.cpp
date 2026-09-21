@@ -912,7 +912,7 @@ void GrAAConvexTessellator::Ring::computeBisectors(const GrAAConvexTessellator& 
 }
 
 //////////////////////////////////////////////////////////////////////////////
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 // Is this ring convex?
 bool GrAAConvexTessellator::Ring::isConvex(const GrAAConvexTessellator& tess) const {
     if (fPts.size() < 3) {

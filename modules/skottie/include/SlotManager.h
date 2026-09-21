@@ -11,7 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkTArray.h"
 #include "modules/skottie/src/SkottieValue.h"
 #include "modules/skottie/src/text/TextAdapter.h"

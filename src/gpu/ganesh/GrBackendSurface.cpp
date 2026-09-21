@@ -73,7 +73,7 @@ bool GrBackendFormat::operator==(const GrBackendFormat& that) const {
     return fFormatData->equal(that.fFormatData.get());
 }
 
-#if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
+#if defined(VX_DEBUG) || defined(GPU_TEST_UTILS)
 #include "include/core/SkString.h"
 
 SkString GrBackendFormat::toStr() const {

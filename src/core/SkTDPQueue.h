@@ -9,7 +9,7 @@
 #define SkTDPQueue_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkTSort.h"
@@ -205,7 +205,7 @@ private:
     }
 
     void validate(int excludedIndex = -1) const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         for (int i = 1; i < fArray.size(); ++i) {
             int p = ParentOf(i);
             if (excludedIndex != p && excludedIndex != i) {

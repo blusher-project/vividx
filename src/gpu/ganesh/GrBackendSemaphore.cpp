@@ -8,7 +8,7 @@
 #include "include/gpu/ganesh/GrBackendSemaphore.h"
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/gpu/ganesh/GrBackendSemaphorePriv.h"
 
 GrBackendSemaphore::GrBackendSemaphore() = default;

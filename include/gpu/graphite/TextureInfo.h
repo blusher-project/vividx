@@ -10,7 +10,7 @@
 
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkAnySubclass.h"
 
 struct SkISize;

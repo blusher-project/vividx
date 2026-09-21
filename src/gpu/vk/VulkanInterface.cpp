@@ -8,7 +8,7 @@
 
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 #include <functional>
 
@@ -281,7 +281,7 @@ VulkanInterface::VulkanInterface(VulkanGetProc getProc,
 
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     constexpr int kIsDebug = 1;
 #else
     constexpr int kIsDebug = 0;

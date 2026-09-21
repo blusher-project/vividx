@@ -9,7 +9,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/d3d/GrD3DTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/gpu/ganesh/GrBackendSemaphorePriv.h"
 
 class GrD3DBackendSemaphoreData final : public GrBackendSemaphoreData {
@@ -23,7 +23,7 @@ private:
         data.emplace<GrD3DBackendSemaphoreData>(fFenceInfo);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kDirect3D; }
 #endif
 

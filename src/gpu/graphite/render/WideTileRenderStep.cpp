@@ -8,7 +8,7 @@
 #include "src/gpu/graphite/render/WideTileRenderStep.h"
 
 #include "include/core/SkPath.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/graphite/Attribute.h"

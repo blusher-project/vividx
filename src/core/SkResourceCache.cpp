@@ -11,7 +11,7 @@
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkAlign.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMath.h"
 #include "include/private/SkTArray.h"
@@ -374,7 +374,7 @@ void SkResourceCache::addToHead(Rec* rec) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkResourceCache::validate() const {
     if (nullptr == fHead) {
         SkASSERT(nullptr == fTail);

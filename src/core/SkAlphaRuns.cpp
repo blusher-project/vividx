@@ -11,7 +11,7 @@
 void SkAlphaRuns::reset(int width) {
     SkASSERT(width > 0);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpts::memset16((uint16_t*)fRuns, (uint16_t)(-42), width);
 #endif
     fRuns[0] = SkToS16(width);
@@ -22,7 +22,7 @@ void SkAlphaRuns::reset(int width) {
     SkDEBUGCODE(this->validate();)
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void SkAlphaRuns::assertValid(int y, int maxStep) const {
         int max = (y + 1) * maxStep - (y == maxStep - 1);
 

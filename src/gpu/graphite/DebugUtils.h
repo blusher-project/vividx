@@ -8,9 +8,9 @@
 #ifndef DebugUtils_DEFINED
 #define DebugUtils_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
-#if defined(SK_DEBUG) && defined(SK_DUMP_TASKS)
+#if defined(VX_DEBUG) && defined(SK_DUMP_TASKS)
     #define SK_DUMP_TASKS_CODE(...)  __VA_ARGS__
 #else
     #define SK_DUMP_TASKS_CODE(...)

@@ -356,7 +356,7 @@ bool SkOpSpanBase::mergeMatches(SkOpSpanBase* opp) {
                     inner->setDeleted();
                 }
             }
-#ifdef SK_DEBUG   // assert if another undeleted entry points to segment
+#ifdef VX_DEBUG   // assert if another undeleted entry points to segment
             const SkOpPtT* debugInner = inner;
             while ((debugInner = debugInner->next()) != innerStop) {
                 if (debugInner->segment() != segment) {

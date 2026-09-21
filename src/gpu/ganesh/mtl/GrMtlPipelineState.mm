@@ -80,7 +80,7 @@ void GrMtlPipelineState::setData(GrMtlFramebuffer* framebuffer,
 
     fDataManager.resetDirtyBits();
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (programInfo.isStencilEnabled()) {
         SkDEBUGCODE(const GrAttachment* stencil = framebuffer->stencilAttachment());
         SkASSERT(stencil);

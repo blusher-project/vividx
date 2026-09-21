@@ -16,7 +16,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkDeque.h"
 
 #include <cstddef>
@@ -176,7 +176,7 @@ public:
                    fDeviceSpacePath->isInverseFillType();
         }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         /**
          * Dumps the element to SkDebugf. This is intended for Skia development debugging
          * Don't rely on the existence of this function or the formatting of its output.
@@ -383,7 +383,7 @@ public:
 
     uint32_t getTopmostGenID() const;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     /**
      * Dumps the contents of the clip stack to SkDebugf. This is intended for Skia development
      * debugging. Don't rely on the existence of this function or the formatting of its output.

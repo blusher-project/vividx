@@ -8,7 +8,7 @@
 #ifndef GrGLSLFragmentShaderBuilder_DEFINED
 #define GrGLSLFragmentShaderBuilder_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMacros.h"
 #include "src/gpu/ganesh/glsl/GrGLSLShaderBuilder.h"
 
@@ -103,7 +103,7 @@ private:
     const char* getSecondaryColorOutputName() const;
     bool primaryColorOutputIsInOut() const;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // As GLSLProcessors emit code, there are some conditions we need to verify.  We use the below
     // state to track this.  The reset call is called per processor emitted.
     bool fHasReadDstColorThisStage_DebugOnly = false;

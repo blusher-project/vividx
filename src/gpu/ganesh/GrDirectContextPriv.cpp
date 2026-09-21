@@ -20,7 +20,7 @@
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SingleOwner.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTemplates.h"
 #include "include/private/chromium/GrDeferredDisplayList.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -82,7 +82,7 @@ GrDirectContext::FlushResult GrDirectContextPriv::flushSurfaces(
         return {false, GrSemaphoresSubmitted::kNo};
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (GrSurfaceProxy* proxy : proxies) {
         SkASSERT(proxy);
         ASSERT_OWNED_PROXY(proxy);

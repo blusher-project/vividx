@@ -19,7 +19,7 @@ class DawnBackendTextureData final : public BackendTextureData {
 public:
     DawnBackendTextureData(WGPUTexture tex, WGPUTextureView tv) : fTexture(tex), fTextureView(tv) {}
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     skgpu::BackendApi type() const override { return skgpu::BackendApi::kDawn; }
 #endif
 

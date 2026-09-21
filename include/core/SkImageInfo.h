@@ -12,8 +12,8 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
-#include "include/private/SkAPI.h"
-#include "include/private/SkDebug.h"
+#include <vividx/common.h>
+#include <vividx/assert.h>
 #include "include/private/SkMath.h"
 #include "include/private/SkTFitsIn.h"
 

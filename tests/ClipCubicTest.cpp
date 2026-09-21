@@ -18,7 +18,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkCubicClipper.h"
 #include "src/core/SkFloatBits.h"
 #include "tests/Test.h"

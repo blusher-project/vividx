@@ -12,7 +12,7 @@
 #include "include/core/SkSpan.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -150,7 +150,7 @@ public:
     virtual const char* name() const = 0;
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     virtual int numClips() const { return 0; }
 
     virtual void visitProxies_debugOnly(const GrVisitProxyFunc&) const = 0;

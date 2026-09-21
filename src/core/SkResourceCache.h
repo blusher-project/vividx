@@ -8,7 +8,7 @@
 #ifndef SkResourceCache_DEFINED
 #define SkResourceCache_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkMessageBus.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
 
@@ -288,7 +288,7 @@ private:
 
     void init();    // called by constructors
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const;
 #else
     void validate() const {}

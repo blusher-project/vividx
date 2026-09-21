@@ -13,7 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkTHash.h"
@@ -661,7 +661,7 @@ public:
         return {fPlotCoord.fX * fPlotDimensions.width(), fPlotCoord.fY * fPlotDimensions.height()};
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void resetListPtrs() {
         fPrev = fNext = nullptr;
         fList = nullptr;

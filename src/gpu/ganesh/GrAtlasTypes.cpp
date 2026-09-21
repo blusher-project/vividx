@@ -35,7 +35,7 @@ GrPlot::GrPlot(int pageIndex,
         , fOffset(SkIPoint16::Make(fX * fWidth, fY * fHeight))
         , fColorType(colorType)
         , fBytesPerPixel(bpp)
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         , fDirty(false)
 #endif
 {

@@ -6,13 +6,13 @@
  */
 
 #include "include/core/SkScalar.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 float SkFloatInterpFunc(float searchKey, const float keys[], const float values[], int length) {
     SkASSERT(length > 0);
     SkASSERT(keys != nullptr);
     SkASSERT(values != nullptr);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (int i = 1; i < length; i++) {
         SkASSERT(keys[i-1] <= keys[i]);
     }

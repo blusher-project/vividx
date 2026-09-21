@@ -12,7 +12,7 @@
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 #include <optional>
 
@@ -61,7 +61,7 @@ private:
     void appendCubic(const SkPoint pts[4], bool reverse);
 };
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void sk_assert_monotonic_x(const SkPoint pts[], int count);
     void sk_assert_monotonic_y(const SkPoint pts[], int count);
 #else

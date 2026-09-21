@@ -11,7 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTo.h"
@@ -147,7 +147,7 @@ public:
      */
     GrGpuResource* findAndRefScratchResource(const skgpu::ScratchKey& scratchKey);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // This is not particularly fast and only used for validation, so debug only.
     int countScratchEntriesForKey(const skgpu::ScratchKey& scratchKey) const {
         return fScratchMap.countForKey(scratchKey);
@@ -324,7 +324,7 @@ private:
     void purgeUnlockedResources(const skgpu::StdSteadyClock::time_point* purgeTime,
                                 GrPurgeResourceOptions opts);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool isInCache(const GrGpuResource* r) const;
     void validate() const;
 #else

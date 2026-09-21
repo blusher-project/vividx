@@ -106,7 +106,7 @@ public:
             std::optional<std::chrono::microseconds> microsMaxPurgingDur);
     void forceProcessReturnedResources() { fResourceCache->forceProcessReturnedResources(); }
 
-#if defined(GPU_TEST_UTILS) || defined(SK_DEBUG)
+#if defined(GPU_TEST_UTILS) || defined(VX_DEBUG)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
 #endif
 

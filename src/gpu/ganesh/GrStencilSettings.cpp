@@ -6,7 +6,7 @@
  */
 #include "src/gpu/ganesh/GrStencilSettings.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/gpu/KeyBuilder.h"
 
 #include <algorithm>

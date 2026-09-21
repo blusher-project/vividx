@@ -12,7 +12,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkCPUTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMacros.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMath.h"
@@ -42,7 +42,7 @@ private:
     const SkAAClip& fClip;
 };
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     #define AUTO_AACLIP_VALIDATE(clip)  AutoAAClipValidate acv(clip)
 #else
     #define AUTO_AACLIP_VALIDATE(clip)
@@ -52,7 +52,7 @@ private:
 
 static constexpr int32_t kMaxInt32 = 0x7FFFFFFF;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 // assert we're exactly width-wide, and then return the number of bytes used
 static size_t compute_row_length(const uint8_t row[], int width) {
     const uint8_t* origRow = row;
@@ -454,7 +454,7 @@ private:
     }
 
     void validate() {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         int prevY = -1;
         for (int i = 0; i < fRows.size(); ++i) {
             const Row& row = fRows[i];
@@ -890,7 +890,7 @@ void SkAAClip::copyToMask(SkMaskBuilder* mask) const {
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 void SkAAClip::validate() const {
     if (nullptr == fRunHead) {

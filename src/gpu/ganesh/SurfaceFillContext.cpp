@@ -262,7 +262,7 @@ void SurfaceFillContext::internalClear(const SkIRect* scissor,
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SurfaceFillContext::onValidate() const {
     if (fOpsTask && !fOpsTask->isClosed()) {
         SkASSERT(this->drawingManager()->getLastRenderTask(fWriteView.proxy()) == fOpsTask.get());

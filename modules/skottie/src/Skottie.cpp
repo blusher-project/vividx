@@ -13,7 +13,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"

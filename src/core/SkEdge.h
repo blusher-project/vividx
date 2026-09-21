@@ -10,7 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkMath.h"
 #include "src/core/SkFDot6.h"

@@ -10,7 +10,7 @@
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkContainers.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
@@ -127,7 +127,7 @@ public:
         fBarrierToIssueBeforeDraws = barrierType;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // Query current pipeline state for validation
     uint32_t      appendStride()  const { return fAppendStride;  }
     uint32_t      staticStride()  const { return fStaticStride;  }

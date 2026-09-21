@@ -13,7 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTypeTraits.h"
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/ResourceKey.h"

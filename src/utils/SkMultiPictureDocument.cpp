@@ -16,7 +16,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSerialProcs.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "include/utils/SkNWayCanvas.h"

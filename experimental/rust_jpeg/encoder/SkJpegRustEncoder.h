@@ -7,7 +7,7 @@
 #ifndef SkJpegRustEncoder_DEFINED
 #define SkJpegRustEncoder_DEFINED
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 class SkPixmap;
 class SkWStream;

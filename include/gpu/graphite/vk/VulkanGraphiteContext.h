@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 struct SkContextOptions;
 class SkContext;

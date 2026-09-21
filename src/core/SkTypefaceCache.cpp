@@ -11,7 +11,7 @@
 #include "include/core/SkGraphics.h"
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMutex.h"
 
 #include <atomic>
@@ -95,7 +95,7 @@ void SkTypefaceCache::PurgeAll() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static bool DumpProc(SkTypeface* face, void* ctx) {
     SkString n;
     face->getFamilyName(&n);
@@ -108,7 +108,7 @@ static bool DumpProc(SkTypeface* face, void* ctx) {
 #endif
 
 void SkTypefaceCache::Dump() {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     (void)Get().findByProcAndRef(DumpProc, nullptr);
 #endif
 }

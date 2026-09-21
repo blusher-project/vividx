@@ -12,7 +12,7 @@
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrSurfaceCharacterization::validate() const {
     const GrCaps* caps = fContextInfo->priv().caps();
 

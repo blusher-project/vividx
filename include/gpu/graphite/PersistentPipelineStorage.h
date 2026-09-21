@@ -9,7 +9,7 @@
 #define skgpu_graphite_PersistentPipelineStorage_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 class SkData;
 

@@ -462,7 +462,7 @@ private:
         fBackendLabelDirty = true;
     }
 
-#if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
+#if defined(VX_DEBUG) || defined(GPU_TEST_UTILS)
     bool hasCacheRef() const {
         return (fRefs.load(std::memory_order_acquire) & RefMask(RefType::kCache)) != 0;
     }

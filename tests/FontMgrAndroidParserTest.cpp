@@ -21,7 +21,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/ports/SkFontMgr_android.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"

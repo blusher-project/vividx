@@ -531,7 +531,7 @@ Device::~Device() {
     // require that its recorder be adandoned. Scratch devices must either have been marked
     // immutable or be destroyed before the recorder has been snapped.
     SkASSERT(!fRecorder || fScopedRecordingID != 0);
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     if (fScopedRecordingID != 0 && fRecorder) {
         SkASSERT(fScopedRecordingID == fRecorder->priv().nextRecordingID());
     }
@@ -1846,7 +1846,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         fAtlasedPathCount++;
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     // Renderers and their component RenderSteps have flexibility in defining their
     // DepthStencilSettings. However, the clipping and ordering managed between Device and ClipStack
     // requires that only LESS or LEQUAL depth tests are used for draws recorded through the

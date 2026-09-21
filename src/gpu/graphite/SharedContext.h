@@ -83,7 +83,7 @@ public:
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     size_t getResourceCacheLimit() const;
     size_t getResourceCacheCurrentBudgetedBytes() const;
     size_t getResourceCacheCurrentPurgeableBytes() const;

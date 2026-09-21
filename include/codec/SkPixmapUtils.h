@@ -10,7 +10,7 @@
 
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkImageInfo.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 class SkPixmap;
 

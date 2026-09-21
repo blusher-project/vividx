@@ -21,7 +21,7 @@ class MtlBackendTextureData final : public BackendTextureData {
 public:
     MtlBackendTextureData(CFTypeRef tex) : fMtlTexture(tex) {}
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     skgpu::BackendApi type() const override { return skgpu::BackendApi::kMetal; }
 #endif
 

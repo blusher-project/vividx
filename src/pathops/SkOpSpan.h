@@ -9,7 +9,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMath.h"
 #include "src/pathops/SkPathOpsTypes.h"
 
@@ -237,7 +237,7 @@ public:
     const SkOpCoincidence* debugCoincidence() const;
     bool debugCoinEndLoopCheck() const;
     SkOpContour* debugContour(int id) const;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool debugDeleted() const { return fDebugDeleted; }
 #endif
 #if DEBUG_COIN
@@ -250,7 +250,7 @@ public:
     void debugResetCoinT() const;
     const SkOpSegment* debugSegment(int id) const;
     void debugSetCoinT(int ) const;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void debugSetDeleted() { fDebugDeleted = true; }
 #endif
     const SkOpSpanBase* debugSpan(int id) const;

@@ -10,7 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkArenaAlloc.h"
 #include "src/pathops/SkPathOpsDebug.h"
 #include "src/pathops/SkPathOpsPoint.h"
@@ -52,7 +52,7 @@ struct SkDConic {
         return result;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpGlobalState* globalState() const { return fPts.globalState(); }
 #endif
 
@@ -168,7 +168,7 @@ public:
     void dumpID(int id) const override { return fConic.dumpID(id); }
 #endif
     SkDVector dxdyAtT(double t) const override { return fConic.dxdyAtT(t); }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpGlobalState* globalState() const override { return fConic.globalState(); }
 #endif
     bool hullIntersects(const SkDQuad& quad, bool* isLinear) const override;

@@ -10,7 +10,7 @@
 
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstdint>
 #include <optional>

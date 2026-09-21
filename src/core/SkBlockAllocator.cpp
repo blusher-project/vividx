@@ -7,10 +7,10 @@
 
 #include "src/core/SkBlockAllocator.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #include <vector>
 #endif
 
@@ -262,7 +262,7 @@ void SkBlockAllocator::addBlock(int minSize, int maxSize) {
     fTail = fTail->fNext;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkBlockAllocator::validate() const {
     std::vector<const Block*> blocks;
     const Block* prev = nullptr;

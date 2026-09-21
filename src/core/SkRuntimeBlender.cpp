@@ -11,7 +11,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkEffectPriv.h"

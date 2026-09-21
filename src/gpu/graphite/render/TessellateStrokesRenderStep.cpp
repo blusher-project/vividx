@@ -14,7 +14,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkSLTypeShared.h"

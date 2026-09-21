@@ -343,7 +343,7 @@ void GrDrawingManager::sortTasks() {
         }));
         SkASSERT(span.data() + span.size() == fDAG.end() || fDAG[end]->blocksReordering());
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         // In order to partition the dag array like this it must be the case that each partition
         // only depends on nodes in the partition or earlier partitions.
         auto check = [&](const GrRenderTask* task, auto&& check) -> void {
@@ -364,7 +364,7 @@ void GrDrawingManager::sortTasks() {
             SkDEBUGFAIL("Render task topo sort failed.");
         }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         if (sorted && !span.empty()) {
             // This block checks for any unnecessary splits in the opsTasks. If two sequential
             // opsTasks could have merged it means the opsTask was artificially split.
@@ -574,7 +574,7 @@ void GrDrawingManager::testingOnly_removeOnFlushCallbackObject(GrOnFlushCallback
 #endif
 
 void GrDrawingManager::setLastRenderTask(const GrSurfaceProxy* proxy, GrRenderTask* task) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (auto prior = this->getLastRenderTask(proxy)) {
         SkASSERT(prior->isClosed() || prior == task);
     }
@@ -661,7 +661,7 @@ void GrDrawingManager::createDDLTask(sk_sp<const GrDeferredDisplayList> ddl,
     SkDEBUGCODE(this->validate());
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrDrawingManager::validate() const {
     if (fActiveOpsTask) {
         SkASSERT(!fDAG.empty());
@@ -694,7 +694,7 @@ void GrDrawingManager::validate() const {
         SkASSERT(fActiveOpsTask == nullptr);
     }
 }
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 void GrDrawingManager::closeActiveOpsTask() {
     if (fActiveOpsTask) {

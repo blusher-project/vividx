@@ -9,7 +9,7 @@
 #define GrProgramInfo_DEFINED
 
 #include "include/gpu/ganesh/GrBackendSurface.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrPipeline.h"
@@ -72,7 +72,7 @@ public:
     // to call the visitor on its own primProc proxies.
     void visitFPProxies(const GrVisitProxyFunc& func) const { fPipeline->visitProxies(func); }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate(bool flushTime) const;
     void checkAllInstantiated() const;
     void checkMSAAAndMIPSAreResolved() const;

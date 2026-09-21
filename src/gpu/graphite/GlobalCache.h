@@ -78,7 +78,7 @@ public:
     void forceNextEpochOverflow() SK_EXCLUDES(fSpinLock);
 #endif
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     bool isResourceTracked(const Resource* resource) const;
 #endif
 

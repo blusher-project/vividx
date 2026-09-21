@@ -226,7 +226,7 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
         SkDebugf("Lazy Image. This: %p, image: %d, size: %d\n", this, fImage, size);
     }
 #endif
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (textureInfo.fSharingMode == VK_SHARING_MODE_CONCURRENT) {
         if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED) {
             SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||
@@ -307,7 +307,7 @@ bool uses_lazy_memory(const VulkanAlloc& alloc) {
     return alloc.fFlags & VulkanAlloc::Flag::kLazilyAllocated_Flag;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 bool has_transient_usage(const TextureInfo& info) {
     const auto& vkInfo = TextureInfoPriv::Get<VulkanTextureInfo>(info);
     return vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;

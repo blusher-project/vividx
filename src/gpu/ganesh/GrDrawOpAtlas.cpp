@@ -40,7 +40,7 @@ static const constexpr bool kDumpAtlasData = true;
 static const constexpr bool kDumpAtlasData = false;
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrDrawOpAtlas::validate(const GrAtlasLocator& atlasLocator) const {
     // Verify that the plotIndex stored in the PlotLocator is consistent with the glyph rectangle
     int numPlotsX = fTextureWidth / fPlotWidth;

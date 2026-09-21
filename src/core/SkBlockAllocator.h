@@ -11,7 +11,7 @@
 #include "include/private/SkASAN.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMacros.h"
 #include "include/private/SkMath.h"
 #include "include/private/SkNoncopyable.h"
@@ -403,7 +403,7 @@ public:
     inline BlockIter<false, false> rblocks();
     inline BlockIter<false, true> rblocks() const;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     inline static constexpr uint32_t kAssignedMarker = 0xBEEFFACE;
     inline static constexpr uint32_t kFreedMarker = 0xCAFEBABE;
 

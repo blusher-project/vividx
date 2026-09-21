@@ -8,7 +8,7 @@
 #include "src/core/SkEdge.h"
 
 #include "include/core/SkRect.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkSafe32.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkFDot6.h"

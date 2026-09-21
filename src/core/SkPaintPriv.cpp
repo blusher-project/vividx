@@ -18,7 +18,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
@@ -174,7 +174,7 @@ void SkPaintPriv::RemoveColorFilter(SkPaint* p, SkColorSpace* dstCS) {
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static void ASSERT_FITS_IN(uint32_t value, int bitCount) {
         SkASSERT(bitCount > 0 && bitCount <= 32);
         uint32_t mask = ~0U;

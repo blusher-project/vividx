@@ -8,7 +8,7 @@
 #include "src/gpu/ganesh/GrDDLTask.h"
 
 #include "include/core/SkString.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/chromium/GrDeferredDisplayList.h"
 #include "src/gpu/ganesh/GrDeferredDisplayListPriv.h"

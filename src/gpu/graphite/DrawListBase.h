@@ -9,7 +9,7 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkBlockAllocator.h"
 #include "src/core/SkTBlockList.h"
@@ -134,7 +134,7 @@ protected:
     LoadOp fLoadOp = LoadOp::kLoad;
     std::array<float, 4> fClearColor = {0.f, 0.f, 0.f, 0.f};
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     int fCoverageMaskShapeDrawCount = 0;
 #endif
 

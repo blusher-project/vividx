@@ -8,7 +8,7 @@
 #define SkOpCoincidence_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsTypes.h"
@@ -52,7 +52,7 @@ public:
     }
 
     void debugShow() const;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void debugStartCheck(const SkOpSpanBase* outer, const SkOpSpanBase* over,
             const SkOpGlobalState* debugState) const;
 #endif

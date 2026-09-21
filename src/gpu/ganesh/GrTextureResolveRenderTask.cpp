@@ -145,7 +145,7 @@ void GrTextureResolveRenderTask::endFlush(GrDrawingManager* drawingMgr) {
     this->GrRenderTask::endFlush(drawingMgr);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrTextureResolveRenderTask::visitProxies_debugOnly(const GrVisitProxyFunc&) const {}
 #endif
 

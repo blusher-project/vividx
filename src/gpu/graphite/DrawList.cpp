@@ -87,7 +87,7 @@ std::pair<DrawParams*, Layer*> DrawList::recordDraw(
         fDstReadBounds.join(clip.drawBounds());
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     if (geometry.isCoverageMaskShape()) {
         fCoverageMaskShapeDrawCount++;
     }

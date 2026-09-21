@@ -72,7 +72,7 @@ bool GrProxyProvider::assignUniqueKeyToProxy(const skgpu::UniqueKey& key, GrText
     // Only the proxyProvider that created a proxy should be assigning unique keys to it.
     SkASSERT(this->isDDLProvider() == proxy->creatingProvider());
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     {
         auto direct = fImageContext->asDirectContext();
         if (direct) {
@@ -209,7 +209,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::testingOnly_createWrapped(sk_sp<GrTexture
 
 sk_sp<GrTextureProxy> GrProxyProvider::createWrapped(sk_sp<GrTexture> tex,
                                                      UseAllocator useAllocator) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (tex->getUniqueKey().isValid()) {
         SkASSERT(!this->findProxyByUniqueKey(tex->getUniqueKey()));
     }

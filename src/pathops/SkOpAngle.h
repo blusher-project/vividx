@@ -9,7 +9,7 @@
 
 #include "include/core/SkPath.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/pathops/SkLineParameters.h"
 #include "src/pathops/SkPathOpsCurve.h"
 #include "src/pathops/SkPathOpsTypes.h"

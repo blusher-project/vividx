@@ -15,7 +15,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkRandom.h"
 #include "src/core/SkScan.h"

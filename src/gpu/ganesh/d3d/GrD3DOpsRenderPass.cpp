@@ -21,7 +21,7 @@
 #include "src/gpu/ganesh/d3d/GrD3DTexture.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #endif

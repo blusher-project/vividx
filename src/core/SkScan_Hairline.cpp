@@ -14,7 +14,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMath.h"
@@ -92,7 +92,7 @@ static void vertline(int y, int stopy, SkFixed fx, SkFixed dx,
 
 //////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static bool canConvertFDot6ToFixed(SkFDot6 x) {
     const int maxDot6 = SK_MaxS32 >> (16 - 6);
     return SkAbs32(x) <= maxDot6;

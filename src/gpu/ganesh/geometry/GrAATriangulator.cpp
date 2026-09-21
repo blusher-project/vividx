@@ -9,7 +9,7 @@
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
 #include "include/core/SkPathTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMath.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/ganesh/GrEagerVertexAllocator.h"

@@ -69,7 +69,7 @@ static const constexpr bool kDumpAtlasData = true;
 static const constexpr bool kDumpAtlasData = false;
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void DrawAtlas::validate(const AtlasLocator& atlasLocator) const {
     // Verify that the plotIndex stored in the PlotLocator is consistent with the glyph rectangle
     int numPlotsX = fTextureWidth / fPlotWidth;
@@ -731,7 +731,7 @@ SkPixmap DrawAtlas::Plot::prepForRender(const AtlasLocator& al,
             al.dimensions(), MaskFormatToColorType(fMaskFormat), VX_ALPHA_TYPE_OPAQUE);
     SkPixmap outerPM{info, this->dataAt(al.topLeft() - this->topLeftInAtlas()), this->rowBytes()};
     if (initialColor) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         if (*initialColor == 0) {
             SkDebugf("Plot Data: potential redudant clear of Plot to zero.");
         }
@@ -758,7 +758,7 @@ SkPixmap DrawAtlas::Plot::entryPixmap(EntryID entryID, int padding,
             localRect.size(), MaskFormatToColorType(fMaskFormat), VX_ALPHA_TYPE_OPAQUE);
     SkPixmap outerPM{info, this->dataAt(localRect.topLeft()), this->rowBytes()};
     if (clearColor) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         if (*clearColor == 0) {
             SkDebugf("Plot Data: potential redudant clear of Plot to zero.");
         }

@@ -20,7 +20,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/SkAlignedStorage.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkMath.h"
@@ -169,7 +169,7 @@ sk_sp<const GrBuffer> get_lines_index_buffer(GrResourceProvider* resourceProvide
 // Takes 178th time of logf on Z600 / VC2010
 int get_float_exp(float x) {
     static_assert(sizeof(int) == sizeof(float));
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static bool tested;
     if (!tested) {
         tested = true;

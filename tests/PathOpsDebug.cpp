@@ -9,7 +9,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMath.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkFloatBits.h"

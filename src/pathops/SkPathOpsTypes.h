@@ -67,7 +67,7 @@ public:
         return fContourHead;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     const class SkOpAngle* debugAngle(int id) const;
     const SkOpCoincidence* debugCoincidence() const;
     SkOpContour* debugContour(int id) const;
@@ -76,7 +76,7 @@ public:
 
     static bool DebugRunFail();
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     const class SkOpSegment* debugSegment(int id) const;
     bool debugSkipAssert() const { return fDebugSkipAssert; }
     const class SkOpSpanBase* debugSpan(int id) const;
@@ -114,7 +114,7 @@ public:
         return fNested;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     int nextAngleID() {
         return ++fAngleID;
     }
@@ -185,7 +185,7 @@ private:
     bool fAllocatedOpSpan;
     bool fWindingFailed;
     SkOpPhase fPhase;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     const char* fDebugTestName;
     void* fDebugReporter;
     int fAngleID;
@@ -213,7 +213,7 @@ private:
 #endif
 };
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #if DEBUG_COINCIDENCE
 #define SkOPASSERT(cond) SkASSERT((this->globalState() && \
         (this->globalState()->debugCheckHealth() || \
@@ -552,7 +552,7 @@ inline bool more_roughly_equal(double x, double y) {
 
 inline SkPath::Verb SkPathOpsPointsToVerb(int points) {
     int verb = (1 << points) >> 1;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     switch (points) {
         case 0: SkASSERT(SkPath::kMove_Verb == verb); break;
         case 1: SkASSERT(SkPath::kLine_Verb == verb); break;
@@ -566,7 +566,7 @@ inline SkPath::Verb SkPathOpsPointsToVerb(int points) {
 
 inline int SkPathOpsVerbToPoints(SkPath::Verb verb) {
     int points = (int) verb - (((int) verb + 1) >> 2);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     switch (verb) {
         case SkPath::kLine_Verb: SkASSERT(1 == points); break;
         case SkPath::kQuad_Verb: SkASSERT(2 == points); break;

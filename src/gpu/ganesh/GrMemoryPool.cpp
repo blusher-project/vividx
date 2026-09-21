@@ -8,13 +8,13 @@
 #include "src/gpu/ganesh/GrMemoryPool.h"
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTPin.h"
 
 #include <cstring>
 #include <new>
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     #include <atomic>
 #endif
 
@@ -48,7 +48,7 @@ GrMemoryPool::~GrMemoryPool() {
 }
 
 void GrMemoryPool::reportLeaks() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     int i = 0;
     int n = fDebug->fAllocatedIDs.count();
     for (int id : fDebug->fAllocatedIDs) {
@@ -80,11 +80,11 @@ void* GrMemoryPool::allocate(size_t size) {
 
 #if defined(SK_SANITIZE_ADDRESS)
     sk_asan_poison_memory_region(&header->fSentinel, sizeof(header->fSentinel));
-#elif defined(SK_DEBUG)
+#elif defined(VX_DEBUG)
     header->fSentinel = SkBlockAllocator::kAssignedMarker;
 #endif
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     header->fID = []{
         static std::atomic<int> nextID{1};
         return nextID.fetch_add(1, std::memory_order_relaxed);
@@ -104,19 +104,19 @@ void GrMemoryPool::release(void* p) {
 
 #if defined(SK_SANITIZE_ADDRESS)
     sk_asan_unpoison_memory_region(&header->fSentinel, sizeof(header->fSentinel));
-#elif defined(SK_DEBUG)
+#elif defined(VX_DEBUG)
     SkASSERT(SkBlockAllocator::kAssignedMarker == header->fSentinel);
     header->fSentinel = SkBlockAllocator::kFreedMarker;
 #endif
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     fDebug->fAllocatedIDs.remove(header->fID);
     fDebug->fAllocationCount--;
 #endif
 
     SkBlockAllocator::Block* block = fAllocator.owningBlock<kAlignment>(header, header->fStart);
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     // (p - block) matches the original alignedOffset value from SkBlockAllocator::allocate().
     intptr_t alignedOffset = (intptr_t)p - (intptr_t)block;
     SkASSERT(p == block->ptr(alignedOffset));
@@ -136,7 +136,7 @@ void GrMemoryPool::release(void* p) {
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrMemoryPool::validate() const {
     fAllocator.validate();
 

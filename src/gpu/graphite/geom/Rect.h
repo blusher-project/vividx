@@ -10,7 +10,7 @@
 
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkAttributes.h"
+#include <vividx/common.h>
 #include "include/private/SkFloatingPoint.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVx.h"

@@ -355,7 +355,7 @@ bool DrawBufferManager::transferToRecording(Recording* recording) {
     if (fMappingFailed) {
         // All state should have been reset by onFailedBuffer() except for this error flag.
         SkASSERT(fUsedBuffers.empty() && fClearList.empty());
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         for (const auto& state : fCurrentBuffers) {
             SkASSERT(!SkToBool(state.fAvailableBuffer));
             SkASSERT(state.fUnavailableScratchBuffers.empty());

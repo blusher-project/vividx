@@ -12,7 +12,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrDeferredUpload.h"
@@ -220,7 +220,7 @@ private:
     DrawPipelineStatus fDrawPipelineStatus = DrawPipelineStatus::kNotConfigured;
     GrXferBarrierType fXferBarrierType;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     enum class DynamicStateStatus {
         kDisabled,
         kUninitialized,

@@ -231,7 +231,7 @@ public:
         SkASSERT(SkIsPow2(requiredAlignment));
         fReqAlignment = std::max(fReqAlignment, requiredAlignment);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         fOffsetCalculator = UniformOffsetCalculator::ForTopLevel(fLayout);
         fExpectedUniforms = {};
         fExpectedUniformIndex = 0;
@@ -389,11 +389,11 @@ public:
     }
 
     // Debug-only functions to control uniform expectations.
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool isReset() const;
     void setExpectedUniforms(SkSpan<const Uniform> expected, bool isSubstruct);
     void doneWithExpectedUniforms();
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 private:
     // All public write() functions in UniformManager already match scalar/vector SkSLTypes or have
@@ -457,7 +457,7 @@ private:
 
     // Debug-only verification that UniformOffsetCalculator is consistent and that write() calls
     // match the expected uniform declaration order.
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     UniformOffsetCalculator fOffsetCalculator;       // should match implicit offsets from append()
     UniformOffsetCalculator fMarkedOffsetCalculator; // store the offset calculator at rewind
     UniformOffsetCalculator fSubstructCalculator;    // 0-based, used when inside a substruct
@@ -471,7 +471,7 @@ private:
     void checkEndStruct();
 
     friend class PipelineDataGatherer; // peak into fStorage for checkEquivalent() avoiding finish()
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -510,7 +510,7 @@ struct LayoutTraits {
         }
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static void Validate(const void* src, SkSLType type, Layout layout) {
         // Src validation
         SkASSERT(src);

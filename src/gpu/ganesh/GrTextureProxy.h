@@ -11,7 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrSurface.h"
@@ -83,7 +83,7 @@ public:
      * Return the texture proxy's unique key. It will be invalid if the proxy doesn't have one.
      */
     const skgpu::UniqueKey& getUniqueKey() const override {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         if (this->isInstantiated() && fUniqueKey.isValid() && fSyncTargetKey &&
             fCreatingProvider == GrDDLProvider::kNo) {
             GrSurface* surface = this->peekSurface();

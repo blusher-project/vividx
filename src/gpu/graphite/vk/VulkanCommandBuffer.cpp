@@ -1313,7 +1313,7 @@ void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
         SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) < bindUniformBufferInfo.size());
         const auto& bindInfo = bindUniformBufferInfo[descriptorBindingIndex];
         if (bindInfo.fBuffer) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
             static uint64_t maxBufferRange =
                 sharedContext->caps()->storageBufferSupport()
                     ? sharedContext->vulkanCaps().maxStorageBufferRange()
@@ -1993,7 +1993,7 @@ void VulkanCommandBuffer::pipelineBarrier(const Resource* resource,
     // TODO: Do we need to handle wrapped command buffers?
     // SkASSERT(!this->isWrapped());
     SkASSERT(fActive);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // For images we can have barriers inside of render passes but they require us to add more
     // support in subpasses which need self dependencies to have barriers inside them. Also, we can
     // never have buffer barriers inside of a render pass. For now we will just assert that we are

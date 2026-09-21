@@ -8,7 +8,7 @@
 #ifndef SkSemaphore_DEFINED
 #define SkSemaphore_DEFINED
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkOnce.h"
 #include "include/private/SkThreadAnnotations.h"
 

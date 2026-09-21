@@ -18,7 +18,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkPathRef.h"
 #include "src/core/SkPathData.h"

@@ -48,7 +48,7 @@ private:
     void internalMap();
     void internalUnmap(size_t writtenOffset, size_t writtenSize);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const;
 #endif
 

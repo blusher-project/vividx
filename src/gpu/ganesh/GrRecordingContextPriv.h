@@ -12,7 +12,7 @@
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/Device.h"

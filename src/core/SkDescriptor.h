@@ -10,7 +10,7 @@
 
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkNoncopyable.h"
 #include "src/core/SkScalerContext.h"
 
@@ -46,7 +46,7 @@ public:
     // Assumes that getLength <= capacity of this SkDescriptor.
     bool isValid() const;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void assertChecksum() const {
         SkASSERT(SkDescriptor::ComputeChecksum(this) == fChecksum);
     }

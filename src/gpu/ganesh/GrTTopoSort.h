@@ -15,7 +15,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 template <typename T, typename Traits = T>
 void GrTTopoSort_CheckAllUnmarked(SkSpan<const sk_sp<T>> graph) {
     for (const auto& node : graph) {
@@ -96,7 +96,7 @@ template <typename T, typename Traits = T>
 bool GrTTopoSort(SkSpan<sk_sp<T>> graph, uint32_t offset = 0) {
     uint32_t counter = offset;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     GrTTopoSort_CheckAllUnmarked<T, Traits>(graph);
 #endif
 
@@ -126,7 +126,7 @@ bool GrTTopoSort(SkSpan<sk_sp<T>> graph, uint32_t offset = 0) {
         }
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     GrTTopoSort_CleanExit<T, Traits>(graph, offset);
 #endif
     return succeeded;

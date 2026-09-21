@@ -10,7 +10,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkChecksum.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkPtrRecorder.h"

@@ -15,7 +15,7 @@
 #include "include/core/SkRegion.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkCPUTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
 
@@ -246,7 +246,7 @@ private:
     const SkRegion* fRgn;
 };
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 class SkRectClipCheckBlitter final : public SkBlitter {
 public:
     void init(SkBlitter* blitter, const SkIRect& clipRect) {

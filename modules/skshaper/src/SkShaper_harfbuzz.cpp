@@ -24,7 +24,7 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMutex.h"
 #include "include/private/SkTArray.h"

@@ -13,7 +13,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMath.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"

@@ -9,7 +9,7 @@
 #define SkShaderUtils_DEFINED
 
 #include "include/core/SkSpan.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 #include <cstdint>
 #include <functional>

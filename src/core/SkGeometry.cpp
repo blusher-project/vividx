@@ -11,7 +11,7 @@
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"
@@ -907,7 +907,7 @@ static int collaps_duplicates(SkScalar array[], int count) {
     return count;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 #define TEST_COLLAPS_ENTRY(array)   array, std::size(array)
 

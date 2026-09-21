@@ -9,7 +9,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "src/core/SkTime.h"
 #include "tools/timer/TimeUtils.h"

@@ -309,7 +309,7 @@ static constexpr DXGI_FORMAT kDxgiFormats[] = {
 };
 
 void GrD3DCaps::setColorType(GrColorType colorType, std::initializer_list<DXGI_FORMAT> formats) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (size_t i = 0; i < kNumDxgiFormats; ++i) {
         const auto& formatInfo = fFormatTable[i];
         for (int j = 0; j < formatInfo.fColorTypeInfoCount; ++j) {

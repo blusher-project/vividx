@@ -9,7 +9,7 @@
 
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/pathops/SkPathOpsPoint.h"
@@ -24,7 +24,7 @@ class SkTSect;
 class SkTSpan;
 struct SkDLine;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 typedef uint8_t SkOpDebugBool;
 #else
 typedef bool SkOpDebugBool;
@@ -37,7 +37,7 @@ public:
     }
 
     void debugInit() {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         this->fPerpPt.fX = this->fPerpPt.fY = SK_ScalarNaN;
         this->fPerpT = SK_ScalarNaN;
         this->fMatch = 0xFF;
@@ -97,7 +97,7 @@ public:
     bool contains(double t) const;
 
     void debugInit(const SkTCurve& curve, SkArenaAlloc& heap) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         SkTCurve* fake = curve.make(heap);
         fake->debugInit();
         init(*fake);
@@ -109,7 +109,7 @@ public:
 
     const SkTSect* debugOpp() const;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void debugSetGlobalState(SkOpGlobalState* state) {
         fDebugGlobalState = state;
     }
@@ -256,7 +256,7 @@ public:
         return SkDEBUGRELEASE(fOppSect, nullptr);
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     const SkTSpan* debugSpan(int id) const;
     const SkTSpan* debugT(double t) const;
 #endif

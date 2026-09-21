@@ -9,7 +9,7 @@
 
 #include "include/core/SkBlendMode.h"
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #include "include/core/SkString.h"
 #endif
 
@@ -125,7 +125,7 @@ ReducedBlendModeInfo GetReducedBlendModeInfo(SkBlendMode mode) {
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 namespace {
 
@@ -193,6 +193,6 @@ SkString BlendInfo::dump() const {
     return out;
 }
 
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 }  // namespace skgpu

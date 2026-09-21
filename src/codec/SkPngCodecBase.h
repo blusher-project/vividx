@@ -17,7 +17,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/SkGainmapInfo.h"
 #include "include/private/SkTemplates.h"

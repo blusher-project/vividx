@@ -8,7 +8,7 @@
 #ifndef skgpu_graphite_DrawListTypes_DEFINED
 #define skgpu_graphite_DrawListTypes_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkBlockAllocator.h"
 #include "src/core/SkTBlockList.h"

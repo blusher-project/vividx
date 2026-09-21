@@ -215,7 +215,7 @@ bool GrDynamicAtlas::instantiate(GrOnFlushResourceProvider* onFlushRP,
     SkASSERT(fTextureProxy->dimensions() == fDrawBounds);
 
     if (backingTexture) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         auto backingRT = backingTexture->asRenderTarget();
         SkASSERT(backingRT);
         SkASSERT(backingRT->backendFormat() == fTextureProxy->backendFormat());

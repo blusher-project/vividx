@@ -22,7 +22,7 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
 #include "include/private/chromium/Slug.h"

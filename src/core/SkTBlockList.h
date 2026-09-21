@@ -9,7 +9,7 @@
 #define SkTBlockList_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "src/core/SkBlockAllocator.h"
 
@@ -165,7 +165,7 @@ public:
      * Returns the item count.
      */
     int count() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         // Confirm total count matches sum of block counts
         int count = 0;
         for (const auto* b :fAllocator->blocks()) {

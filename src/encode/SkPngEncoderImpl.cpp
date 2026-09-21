@@ -23,7 +23,7 @@
 #include "include/encode/SkEncoder.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/SkGainmapInfo.h"
 #include "include/private/SkNoncopyable.h"

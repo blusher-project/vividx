@@ -21,7 +21,7 @@
 
 #include <utility>
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #endif
@@ -182,7 +182,7 @@ GrSurfaceProxy::LazySurfaceDesc GrRenderTargetProxy::callbackDesc() const {
     };
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrRenderTargetProxy::onValidateSurface(const GrSurface* surface) {
     // We do not check that surface->asTexture returns null since, when replaying DDLs we
     // can fulfill a renderTarget-only proxy w/ a textureRenderTarget.

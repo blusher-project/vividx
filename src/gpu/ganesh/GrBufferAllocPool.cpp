@@ -72,7 +72,7 @@ void GrBufferAllocPool::CpuBufferCache::releaseAll() {
 
 //////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     #define VALIDATE validate
 #else
     static void VALIDATE(bool = false) {}
@@ -141,7 +141,7 @@ bool GrBufferAllocPool::unmap() {
     return success;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrBufferAllocPool::validate(bool unusedBlockAllowed) const {
     bool wasDestroyed = false;
     if (fBufferPtr) {

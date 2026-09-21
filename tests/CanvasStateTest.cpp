@@ -27,7 +27,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/encode/SkPngEncoder.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTDArray.h"
 #include "include/utils/SkCanvasStateUtils.h"
 #include "src/core/SkTLazy.h"

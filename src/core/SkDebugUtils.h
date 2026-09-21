@@ -11,7 +11,7 @@
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 #include <array>
 #include <cstdint>

@@ -14,7 +14,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMath.h"
 #include "include/private/SkTDArray.h"
@@ -70,7 +70,7 @@ public:
         SkDEBUGFAIL("blitAntiH not implemented");
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void dump() const {
         SkDebugf("SkRgnBuilder: Top = %d\n", fTop);
         Scanline* line = (Scanline*)fStorage;
@@ -611,7 +611,7 @@ bool SkRegion::addBoundaryPath(SkPathBuilder* builder) const {
         find_link(e, stop);
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (e = start; e != stop; e++) {
         SkASSERT(e->fNext != nullptr);
         SkASSERT(e->fFlags == Edge::kCompleteLink);

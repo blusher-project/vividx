@@ -8,13 +8,13 @@
 #ifndef SkPoint_DEFINED
 #define SkPoint_DEFINED
 
-#include "include/private/SkAPI.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkSafe32.h"
 
 #include <cmath>
 #include <cstdint>
 
+#include <vividx/common.h>
 #include <vividx/core/point.h>
 
 struct SkIPoint;

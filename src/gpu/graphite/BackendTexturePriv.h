@@ -11,7 +11,7 @@
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 namespace skgpu { enum class BackendApi : unsigned int; }
 
@@ -21,7 +21,7 @@ class BackendTextureData {
 public:
     virtual ~BackendTextureData();
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     virtual skgpu::BackendApi type() const = 0;
 #endif
 protected:

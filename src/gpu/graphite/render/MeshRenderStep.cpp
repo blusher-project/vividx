@@ -10,7 +10,7 @@
 #include "src/gpu/graphite/PaintParamsKey.h"
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkMeshPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkSLTypeShared.h"
@@ -179,7 +179,7 @@ void MeshRenderStep::writeUniformsAndTextures(const DrawParams& params,
     const SkMesh& mesh = params.geometry().mesh();
     const SkMeshSpecification* spec = mesh.spec();
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     skia_private::TArray<Uniform> uniforms(kStepUniforms);
     uniforms.reserve_exact(this->numUniforms() + spec->uniforms().size());
 

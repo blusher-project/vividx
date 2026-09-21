@@ -12,7 +12,7 @@
 #include "include/core/SkSpan.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMacros.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkVx.h" // IWYU pragma: keep
@@ -40,7 +40,7 @@ struct SkV4;
 
 template <typename T> struct GrFPUniformType;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 // UNIFORM_TYPE allows C++ types to be mapped onto SkRuntimeEffect::Uniform::Type
 template <typename T> struct GrFPUniformType {
     template <typename U> struct add_a_UNIFORM_TYPE_specialization_for {};
@@ -161,7 +161,7 @@ public:
                                           std::unique_ptr<GrFragmentProcessor> inputFP,
                                           OptFlags optFlags,
                                           Args&&... args) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         checkArgs(effect->fUniforms.begin(),
                   effect->fUniforms.end(),
                   effect->fChildren.begin(),
@@ -315,7 +315,7 @@ private:
         this->appendArgs(uniformDataPtr, specializedPtr, std::forward<Args>(remainder)...);
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     using child_iterator = std::vector<SkRuntimeEffect::Child>::const_iterator;
     using uniform_iterator = std::vector<SkRuntimeEffect::Uniform>::const_iterator;
 

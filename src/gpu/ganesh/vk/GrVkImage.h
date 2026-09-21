@@ -18,7 +18,7 @@
 #include "include/gpu/ganesh/vk/GrVkTypes.h"
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/gpu/vk/VulkanTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
@@ -308,7 +308,7 @@ private:
         }
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         const GrManagedResource* asVkImageResource() const override { return this; }
 #endif
 

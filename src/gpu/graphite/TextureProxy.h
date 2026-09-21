@@ -130,7 +130,7 @@ private:
                  LazyInstantiateCallback&&);
     TextureProxy(sk_sp<Texture>);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validateTexture(const Texture*);
 #endif
 

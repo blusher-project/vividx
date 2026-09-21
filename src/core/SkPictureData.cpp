@@ -13,7 +13,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"

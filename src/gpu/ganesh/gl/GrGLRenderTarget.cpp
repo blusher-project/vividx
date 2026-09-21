@@ -16,7 +16,7 @@
 #include "include/gpu/ganesh/gl/GrGLFunctions.h"
 #include "include/gpu/ganesh/gl/GrGLInterface.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrAttachment.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
@@ -276,7 +276,7 @@ void GrGLRenderTarget::bindInternal(GrGLenum fboTarget, bool useMultisampleFBO) 
                                             GR_GL_RENDERBUFFER,
                                             0));
         }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         if (!this->getGLGpu()->glCaps().skipErrorChecks() &&
             !this->getGLGpu()->glCaps().rebindColorAttachmentAfterCheckFramebufferStatus()) {
             GrGLenum status;

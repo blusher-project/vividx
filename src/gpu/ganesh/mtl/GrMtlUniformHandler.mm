@@ -273,7 +273,7 @@ void GrMtlUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString*
         }
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool firstOffsetCheck = false;
     for (const MtlUniformInfo& localUniform : fUniforms.items()) {
         if (!firstOffsetCheck) {

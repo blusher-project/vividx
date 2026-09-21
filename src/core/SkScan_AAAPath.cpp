@@ -11,7 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkMath.h"
 #include "include/private/SkSafe32.h"
@@ -972,7 +972,7 @@ static SkAnalyticEdge* sort_edges(SkAnalyticEdge* list[], int count, SkAnalyticE
 }
 
 static void validate_sort(const SkAnalyticEdge* edge) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkFixed y = SkIntToFixed(-32768);
 
     while (edge->fUpperY != SK_MaxS32) {
@@ -1364,7 +1364,7 @@ static void insert_new_edges(SkAnalyticEdge* newEdge, SkFixed y, SkFixed* nextNe
 }
 
 static void validate_edges_for_y(const SkAnalyticEdge* edge, SkFixed y) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     while (edge->fUpperY <= y) {
         SkASSERT(edge->fPrev && edge->fNext);
         SkASSERT(edge->fPrev->fNext == edge);

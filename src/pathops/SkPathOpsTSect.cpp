@@ -138,7 +138,7 @@ double SkTSpan::closestBoundedT(const SkDPoint& pt) const {
     return result;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 bool SkTSpan::debugIsBefore(const SkTSpan* span) const {
     const SkTSpan* work = this;
@@ -548,7 +548,7 @@ SkTSpan* SkTSect::addOne() {
     ++fActiveCount;
     PATH_OPS_DEBUG_T_SECT_CODE(result->fID = fDebugCount++ * 2 + fID);
     SkDEBUGCODE(result->fDebugSect = this);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     result->debugInit(fCurve, fHeap);
     result->fCoinStart.debugInit();
     result->fCoinEnd.debugInit();
@@ -888,7 +888,7 @@ bool SkTSect::extractCoincident(
     SkOPASSERT(last->fCoinEnd.isMatch());
     oppLast = last->findOppT(last->fCoinEnd.perpT());
     SkDEBUGCODE(coinEnd = last->fEndT);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (!this->globalState() || !this->globalState()->debugSkipAssert()) {
         oppEndT = oppMatched ? oppLast->fEndT : oppLast->fStartT;
     }

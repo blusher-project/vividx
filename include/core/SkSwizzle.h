@@ -8,7 +8,7 @@
 #ifndef SkSwizzle_DEFINED
 #define SkSwizzle_DEFINED
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstdint>
 

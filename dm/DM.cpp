@@ -203,7 +203,7 @@ using sk_gpu_test::GLTestContext;
 
 static FILE* gVLog;
 
-static void vlog(const char* fmt, ...) SK_PRINTF_LIKE(1, 2);
+static void vlog(const char* fmt, ...) VX_PRINTF_LIKE(1, 2);
 
 static void vlog(const char* fmt, ...) {
     if (gVLog) {
@@ -215,7 +215,7 @@ static void vlog(const char* fmt, ...) {
     }
 }
 
-static void info(const char* fmt, ...) SK_PRINTF_LIKE(1, 2);
+static void info(const char* fmt, ...) VX_PRINTF_LIKE(1, 2);
 
 static void info(const char* fmt, ...) {
     va_list args;

@@ -14,7 +14,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkTArray.h"
 
 #include <cstddef>

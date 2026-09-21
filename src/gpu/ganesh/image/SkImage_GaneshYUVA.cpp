@@ -18,7 +18,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "src/core/SkSamplingPriv.h"
 #include "src/gpu/SkBackingFit.h"
@@ -142,7 +142,7 @@ bool SkImage_GaneshYUVA::onHasMipmaps() const {
 bool SkImage_GaneshYUVA::onIsProtected() const {
     skgpu::Protected isProtected = fYUVAProxies.proxy(0)->isProtected();
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     for (int i = 1; i < fYUVAProxies.numPlanes(); ++i) {
         SkASSERT(isProtected == fYUVAProxies.proxy(i)->isProtected());
     }

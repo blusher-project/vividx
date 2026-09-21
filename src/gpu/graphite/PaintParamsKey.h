@@ -135,7 +135,7 @@ public:
     // purposes.
     SkString toString(const Caps*, const ShaderCodeDictionary*) const;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void dump(const Caps*, const ShaderCodeDictionary*, UniquePaintParamsID) const;
 #endif
 
@@ -228,7 +228,7 @@ public:
         SkDEBUGCODE(this->popStack();)
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // Check that the builder has been reset to its initial state prior to creating a new key.
     void checkReset();
 #endif
@@ -330,7 +330,7 @@ private:
     bool fHasError = false; // if true, fData may not encode a valid/complete ShaderNode tree.
     int fDataHighWaterMark = 0;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void pushStack(int32_t codeSnippetID);
     void validateData(size_t dataSize);
     void validateReplacement(int32_t oldCodeSnippetID, int32_t newCodeSnippetID);

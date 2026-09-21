@@ -85,7 +85,7 @@ public:
     }
 
     void validate() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         const SkRasterClip& clip = this->rc();
         if (fRootBounds.isEmpty()) {
             SkASSERT(clip.isEmpty());

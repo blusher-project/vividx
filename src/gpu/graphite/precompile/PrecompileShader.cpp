@@ -34,7 +34,7 @@
 #include "src/gpu/graphite/precompile/PrecompileShadersPriv.h"
 #include "src/shaders/gradients/SkLinearGradient.h"
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 #include "src/core/SkMathPriv.h"
 #endif
 
@@ -1159,7 +1159,7 @@ private:
 
     bool isOpaque(int /*desiredCombination*/) const override {
         const SkRuntimeEffect* effect = GetKnownRuntimeEffect(StableKey::k1DBlur4);
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         // All blurs should behave the same
         for (int i = 0; i < kNumIntrinsicCombinations; ++i) {
             const SkRuntimeEffect* other = GetKnownRuntimeEffect(kIDs[i]);
@@ -1221,7 +1221,7 @@ private:
 
     bool isOpaque(int /*desiredCombination*/) const override {
         const SkRuntimeEffect* effect = GetKnownRuntimeEffect(StableKey::kMatrixConvUniforms);
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         // The other two stable key variants should be equivalent
         const SkRuntimeEffect* effectTexSm = GetKnownRuntimeEffect(StableKey::kMatrixConvTexSm);
         const SkRuntimeEffect* effectTexLg = GetKnownRuntimeEffect(StableKey::kMatrixConvTexLg);

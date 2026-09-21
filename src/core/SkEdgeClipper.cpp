@@ -538,7 +538,7 @@ std::optional<SkPathVerb> SkEdgeClipper::next(SkPoint pts[]) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static void assert_monotonic(const SkScalar coord[], int count) {
     if (coord[0] > coord[(count - 1) * 2]) {
         for (int i = 1; i < count; i++) {

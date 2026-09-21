@@ -20,7 +20,7 @@
 #include "include/core/SkStrikeRef.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"

@@ -79,7 +79,7 @@ void UniformManager::resetWithNewLayout(Layout layout) {
     fStructBaseAlignment = 0;
     fWrotePaintColor = false;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     fOffsetCalculator = UniformOffsetCalculator::ForTopLevel(layout);
     fMarkedOffsetCalculator = fOffsetCalculator;
     fSubstructCalculator = {};
@@ -168,7 +168,7 @@ void UniformManager::write(const Uniform& u, const void* data) {
 #undef GEN_WRITE_TABLE
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 
 void UniformManager::checkBeginStruct(int baseAlignment) {
     // Wrote a struct field before the struct was started
@@ -301,6 +301,6 @@ void UniformManager::doneWithExpectedUniforms() {
     fExpectedUniforms = {};
 }
 
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 } // namespace skgpu::graphite

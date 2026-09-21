@@ -119,7 +119,7 @@ void GrGLOpsRenderPass::onBindBuffers(sk_sp<const GrBuffer> indexBuffer,
     GrGLProgram* program = fGpu->currentProgram();
     SkASSERT(program);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     fDidBindInstanceBuffer = false;
     fDidBindVertexBuffer = false;
 #endif

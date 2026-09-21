@@ -13,7 +13,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkCPUTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkBlitMask.h"

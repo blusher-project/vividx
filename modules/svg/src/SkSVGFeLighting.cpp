@@ -11,7 +11,7 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkPoint3.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGFeLightSource.h"

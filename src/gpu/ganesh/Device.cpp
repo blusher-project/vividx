@@ -46,7 +46,7 @@
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/private/SingleOwner.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "include/private/chromium/Slug.h"  // IWYU pragma: keep
@@ -112,6 +112,8 @@
 #include <memory>
 #include <optional>
 #include <utility>
+
+#include <vividx/assert.h>
 
 class GrBackendSemaphore;
 struct SkDrawShadowRec;
@@ -1402,7 +1404,7 @@ sk_sp<sktext::gpu::Slug> Device::convertGlyphRunListToSlug(const sktext::GlyphRu
                                        SkStrikeCache::GlobalStrikeCache());
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 static bool valid_slug_matrices(const SkMatrix& creationMatrix, const SkMatrix& positionMatrix) {
     // A Slug can be drawn with:
     //   The exact same matrix that was used for creation
@@ -1431,7 +1433,7 @@ void Device::drawSlug(SkCanvas* canvas, const sktext::gpu::Slug* slug, const SkP
     SkASSERT(canvas);
     SkASSERT(slug);
     const sktext::gpu::SlugImpl* slugImpl = static_cast<const sktext::gpu::SlugImpl*>(slug);
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     if (!fContext->priv().options().fSupportBilerpFromGlyphAtlas) {
         // We can draw a slug if the atlas has padding or if the creation matrix and the
         // drawing matrix are the same (up to integer translation).

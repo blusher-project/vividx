@@ -18,7 +18,7 @@
 #include <cstdint>
 #include <utility>
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static int num_channels(uint32_t channelFlags) {
     switch (channelFlags) {
         case VX_COLOR_CHANNEL_FLAG_RED        : return 1;

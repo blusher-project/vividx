@@ -11,7 +11,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/partition_alloc/raw_ptr_exclusion.h"
@@ -87,7 +87,7 @@ struct SkDCubic {
 
     int findMaxCurvature(double tValues[]) const;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpGlobalState* globalState() const { return fDebugGlobalState; }
 #endif
 
@@ -176,7 +176,7 @@ inline int other_two(int one, int two) {
 
 struct SkDCubicPair {
     SkDCubic first() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         SkDCubic result;
         result.debugSet(&pts[0]);
         return result;
@@ -185,7 +185,7 @@ struct SkDCubicPair {
 #endif
     }
     SkDCubic second() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         SkDCubic result;
         result.debugSet(&pts[3]);
         return result;
@@ -218,7 +218,7 @@ public:
     void dumpID(int id) const override { return fCubic.dumpID(id); }
 #endif
     SkDVector dxdyAtT(double t) const override { return fCubic.dxdyAtT(t); }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpGlobalState* globalState() const override { return fCubic.globalState(); }
 #endif
     bool hullIntersects(const SkDQuad& quad, bool* isLinear) const override;

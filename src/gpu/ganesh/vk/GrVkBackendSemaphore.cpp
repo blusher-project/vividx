@@ -8,7 +8,7 @@
 
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/gpu/ganesh/GrBackendSemaphorePriv.h"
 
 class GrVkBackendSemaphoreData final : public GrBackendSemaphoreData {
@@ -22,7 +22,7 @@ private:
         data.emplace<GrVkBackendSemaphoreData>(fSemaphore);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kVulkan; }
 #endif
 

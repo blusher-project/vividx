@@ -487,7 +487,7 @@ void GrD3DGpu::copySurfaceAsCopyTexture(GrSurface* dst, GrSurface* src,
                                         GrD3DTextureResource* dstResource,
                                         GrD3DTextureResource* srcResource,
                                         const SkIRect& srcRect, const SkIPoint& dstPoint) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     int dstSampleCnt = get_surface_sample_cnt(dst);
     int srcSampleCnt = get_surface_sample_cnt(src);
     DXGI_FORMAT dstFormat = dstResource->dxgiFormat();

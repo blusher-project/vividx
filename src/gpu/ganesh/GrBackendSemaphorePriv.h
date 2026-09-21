@@ -17,7 +17,7 @@ class GrBackendSemaphoreData {
 public:
     virtual ~GrBackendSemaphoreData();
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     virtual GrBackendApi type() const = 0;
 #endif
 protected:

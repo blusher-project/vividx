@@ -210,8 +210,8 @@ private:
 };
 #endif // SK_BUILD_FOR_ANDROID_FRAMEWORK
 
-#ifdef SK_DEBUG
-static void skprintf_like_noop(const char format[], ...) SK_PRINTF_LIKE(1, 2);
+#ifdef VX_DEBUG
+static void skprintf_like_noop(const char format[], ...) VX_PRINTF_LIKE(1, 2);
 static inline void skprintf_like_noop(const char format[], ...) {}
 template <typename... Args>
 static inline void sk_noop(Args...) {}

@@ -9,7 +9,7 @@
 #define GrGLDirectContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <memory>
 

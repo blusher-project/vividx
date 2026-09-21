@@ -31,7 +31,7 @@
 
 #include <memory>
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 
@@ -180,7 +180,7 @@ void GrSurfaceProxy::assign(sk_sp<GrSurface> surface) {
 
     fTarget = std::move(surface);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (this->asRenderTargetProxy()) {
         SkASSERT(fTarget->asRenderTarget());
     }
@@ -271,7 +271,7 @@ bool GrSurfaceProxy::isFormatCompressed(const GrCaps* caps) const {
     return caps->isFormatCompressed(this->backendFormat());
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrSurfaceProxy::validate(GrContext_Base* context) const {
     if (fTarget) {
         SkASSERT(fTarget->getContext()->priv().matches(context));
@@ -479,7 +479,7 @@ bool GrSurfaceProxyPriv::doLazyInstantiation(GrResourceProvider* resourceProvide
     return true;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrSurfaceProxy::validateSurface(const GrSurface* surface) {
     SkASSERTF(surface->backendFormat() == fFormat, "%s != %s",
               surface->backendFormat().toStr().c_str(), fFormat.toStr().c_str());

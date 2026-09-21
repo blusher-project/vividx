@@ -14,7 +14,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTFitsIn.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMask.h"

@@ -612,7 +612,7 @@ static constexpr MTLPixelFormat kMtlFormats[] = {
 };
 
 void GrMtlCaps::setColorType(GrColorType colorType, std::initializer_list<MTLPixelFormat> formats) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (size_t i = 0; i < kNumMtlFormats; ++i) {
         const auto& formatInfo = fFormatTable[i];
         for (int j = 0; j < formatInfo.fColorTypeInfoCount; ++j) {

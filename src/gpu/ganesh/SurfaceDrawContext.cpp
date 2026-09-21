@@ -26,7 +26,7 @@
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/SingleOwner.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -1994,7 +1994,7 @@ void SurfaceDrawContext::addDrawOp(const GrClip* clip,
         if (!this->setupDstProxyView(drawOp->bounds(), drawNeedsMSAA, &dstProxyView)) {
             return;
         }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         if (fCanUseDynamicMSAA && drawNeedsMSAA && !this->caps()->msaaResolvesAutomatically()) {
             // Since we aren't literally writing to the render target texture while using a DMSAA
             // attachment, we need to resolve that texture before sampling it. Ensure the current
@@ -2028,7 +2028,7 @@ void SurfaceDrawContext::addDrawOp(const GrClip* clip,
                        std::move(appliedClip), dstProxyView,
                        GrTextureResolveManager(this->drawingManager()), *this->caps());
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (fCanUseDynamicMSAA && drawNeedsMSAA) {
         SkASSERT(opsTask->usesMSAASurface());
     }

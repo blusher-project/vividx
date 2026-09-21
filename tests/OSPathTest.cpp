@@ -7,7 +7,7 @@
 
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 

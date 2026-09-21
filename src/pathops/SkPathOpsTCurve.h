@@ -41,7 +41,7 @@ public:
     virtual SkDPoint ptAtT(double t) const = 0;
     virtual void setBounds(SkDRect* ) const = 0;
     virtual void subDivide(double t1, double t2, SkTCurve* curve) const = 0;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     virtual SkOpGlobalState* globalState() const = 0;
 #endif
 };

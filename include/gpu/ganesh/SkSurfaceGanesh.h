@@ -13,7 +13,7 @@
 #include "include/core/SkSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 class GrBackendRenderTarget;
 class GrBackendTexture;

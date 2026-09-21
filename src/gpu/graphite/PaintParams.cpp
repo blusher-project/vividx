@@ -231,7 +231,7 @@ PaintParams PaintParams::makeWithMesh(const SkMesh& mesh) const {
     return copy;
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 PaintParams PaintParams::MakeOpaque(const PaintParams& paint) {
     PaintParams opaque = paint;
     opaque.fFinalBlend = {nullptr, SkBlendMode::kSrc};
@@ -252,7 +252,7 @@ ShadingParams::ShadingParams(const Caps* caps,
         , fNonMSAAClip(nonMSAAClip)
         , fClipShader(clipShader)
         , fDstUsage(get_dst_usage(caps, targetFormat, paint, coverage, fClipShader, fNonMSAAClip))
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         , fCoverage(coverage)
 #endif
         {}
@@ -647,7 +647,7 @@ UniquePaintParamsID ShadingParams::optimizeForOpacity(const KeyContext& keyConte
     return opaqueID;
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 
 UniquePaintParamsID ShadingParams::validateOpacityOptimization(const KeyContext& keyContext) const {
     // Validate that the modified paint ID matches what we would have reached with a ShadingParams

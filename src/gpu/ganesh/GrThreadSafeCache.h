@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "include/private/SkThreadAnnotations.h"
 #include "src/core/SkArenaAlloc.h"

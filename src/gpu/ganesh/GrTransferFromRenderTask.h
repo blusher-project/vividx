@@ -12,7 +12,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
@@ -59,7 +59,7 @@ private:
 #if defined(GPU_TEST_UTILS)
     const char* name() const final { return "TransferFrom"; }
 #endif
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void visitProxies_debugOnly(const GrVisitProxyFunc& func) const override {
         func(fSrcProxy.get(), skgpu::Mipmapped::kNo);
     }

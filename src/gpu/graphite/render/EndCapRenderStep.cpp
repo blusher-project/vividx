@@ -9,7 +9,7 @@
 
 #include "include/core/SkPath.h"
 #include "include/gpu/graphite/Recorder.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkSLTypeShared.h"
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/graphite/AtlasProvider.h"

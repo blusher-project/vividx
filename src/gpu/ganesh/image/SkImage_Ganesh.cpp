@@ -149,7 +149,7 @@ inline skgpu::Protected SkImage_Ganesh::ProxyChooser::isProtected() const {
     return isProtected;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 inline const GrBackendFormat& SkImage_Ganesh::ProxyChooser::backendFormat() {
     SkAutoSpinlock hold(fLock);
     if (fVolatileProxy) {
@@ -171,7 +171,7 @@ SkImage_Ganesh::SkImage_Ganesh(sk_sp<GrImageContext> context,
         , fChooser(view.detachProxy())
         , fSwizzle(view.swizzle())
         , fOrigin(view.origin()) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     const GrBackendFormat& format = fChooser.backendFormat();
     const GrCaps* caps = this->context()->priv().caps();
     GrColorType grCT = SkColorTypeToGrColorType(this->colorType());
@@ -196,7 +196,7 @@ SkImage_Ganesh::SkImage_Ganesh(sk_sp<GrDirectContext> dContext,
                    volatileSrcTargetCount)
         , fSwizzle(volatileSrc.swizzle())
         , fOrigin(volatileSrc.origin()) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     const GrBackendFormat& format = fChooser.backendFormat();
     const GrCaps* caps = this->context()->priv().caps();
     GrColorType grCT = SkColorTypeToGrColorType(this->colorType());

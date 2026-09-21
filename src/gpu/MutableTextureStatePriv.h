@@ -18,7 +18,7 @@ class MutableTextureStateData {
 public:
     virtual ~MutableTextureStateData();
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     virtual BackendApi type() const = 0;
 #endif
 protected:

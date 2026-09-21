@@ -9,7 +9,7 @@
 #define SkAnalyticEdge_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkSafe32.h"
 
@@ -85,7 +85,7 @@ struct SkAnalyticEdge {
     // return true if we're NOT done with this edge
     bool update(SkFixed last_y);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void dump() const {
         SkDebugf("edge: upperY:%d lowerY:%d y:%g x:%g dx:%g w:%d\n",
                  fUpperY,

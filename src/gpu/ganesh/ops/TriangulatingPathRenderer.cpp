@@ -140,7 +140,7 @@ public:
             , fCanMapVB(canMapVB) {
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     ~StaticVertexAllocator() override {
         SkASSERT(!fLockStride && !fVertices && !fVertexBuffer && !fVertexData);
     }
@@ -462,7 +462,7 @@ private:
             return;
         }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         auto vertexStride = sizeof(SkPoint);
         if (fAntiAlias) {
             vertexStride += sizeof(float);

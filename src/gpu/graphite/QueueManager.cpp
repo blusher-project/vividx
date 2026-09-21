@@ -316,7 +316,7 @@ bool QueueManager::submitToGpu(const SubmitInfo& submitInfo) {
         return true;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (!fCurrentCommandBuffer->hasWork()) {
         SKIA_LOG_D("Submitting empty command buffer!");
     }

@@ -84,7 +84,7 @@ bool GrGLCheckLinkStatus(const GrGLGpu* gpu,
     GR_GL_CALL(gli, GetProgramiv(programID, GR_GL_LINK_STATUS, &linked));
     if (!linked && errorHandler) {
         std::string allShaders;
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         #define SKSL_FORMAT "// Vertex SKSL\n%s\n// Fragment SKSL\n%s\n"
 #else
         #define SKSL_FORMAT "%s\n%s\n"

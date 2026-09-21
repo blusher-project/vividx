@@ -14,7 +14,7 @@
 
 namespace skgpu::graphite {
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 bool ProxyReadCountMap::hasPendingReads() const {
     bool hasPendingReads = false;
     fCounts.foreach([&hasPendingReads](const TextureProxy*, int proxyReadCount) {

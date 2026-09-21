@@ -200,7 +200,7 @@ GrVkDescriptorSetManager* GrVkDescriptorSetManager::Create(
         GrVkGpu* gpu, VkDescriptorType type,
         const TArray<uint32_t>& visibilities,
         const TArray<const GrVkSampler*>& immutableSamplers) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (type == VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER) {
         SkASSERT(visibilities.size() == immutableSamplers.size());
     } else {

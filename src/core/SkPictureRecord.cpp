@@ -177,7 +177,7 @@ void SkPictureRecord::recordSaveLayer(const SaveLayerRec& rec) {
     this->validate(initialOffset, size);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 /*
  * Read the op code from 'offset' in 'writer' and extract the size too.
  */
@@ -288,7 +288,7 @@ void SkPictureRecord::fillRestoreOffsetPlaceholdersForCurrentStackLevel(uint32_t
         offset = peek;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // offset of 0 has been disabled, so we skip it
     if (offset > 0) {
         // assert that the final offset value points to a save verb

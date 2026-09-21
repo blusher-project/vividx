@@ -56,7 +56,7 @@ std::string get_uniforms(UniformOffsetCalculator* offsetter,
 
         if (u.isPaintColor() && wrotePaintColor) {
             if (*wrotePaintColor) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
                 SkSL::String::appendf(&result, "// deduplicated %s\n", u.name());
 #endif
                 continue;
@@ -114,7 +114,7 @@ std::string get_node_uniforms(UniformOffsetCalculator* offsetter,
                                   node->entry()->fUniformStructName,
                                   node->keyIndex());
         } else {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
             SkSL::String::appendf(&result, "// %d - %s uniforms\n",
                                   node->keyIndex(), node->entry()->fName);
 #endif
@@ -140,7 +140,7 @@ std::string get_ssbo_fields(SkSpan<const Uniform> uniforms,
 
         if (u.isPaintColor() && wrotePaintColor) {
             if (*wrotePaintColor) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
                 SkSL::String::appendf(&result, "// deduplicated %s\n", u.name());
 #endif
                 continue;
@@ -182,7 +182,7 @@ std::string get_node_ssbo_fields(const ShaderNode* node,
             SkSL::String::appendf(&result, "%s node_%d;",
                                   node->entry()->fUniformStructName, node->keyIndex());
         } else {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
             SkSL::String::appendf(&result, "// %d - %s uniforms\n",
                                   node->keyIndex(), node->entry()->fName);
 #endif
@@ -498,7 +498,7 @@ std::string get_node_texture_samplers(const ResourceBindingRequirements& binding
     SkSpan<const TextureAndSampler> samplers = node->entry()->fTexturesAndSamplers;
 
     if (!samplers.empty()) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         SkSL::String::appendf(&result, "// %d - %s samplers\n",
                               node->keyIndex(), node->entry()->fName);
 #endif
@@ -638,7 +638,7 @@ void emit_preambles(const ShaderInfo& shaderInfo,
                                            ? node->entry()->fPreambleGenerator(shaderInfo, node)
                                            : node->generateDefaultPreamble(shaderInfo);
         if (!nodePreamble.empty()) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
             SkSL::String::appendf(preamble,
                                   "// [%d]   %s: %s\n",
                                   node->keyIndex(),
@@ -1167,7 +1167,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                       Swizzle writeSwizzle,
                                       skia_private::TArray<SamplerDesc>* outDescs,
                                       const SharedGeneratorData& sharedData) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     // Validate the root count of the key.
     SkASSERT(sharedData.fRootsInfo.fRoots.size() >= 2 && sharedData.fRootsInfo.fRoots.size() <= 4);
     // With source color node all snippets return a half4, so we just require that its signature
@@ -1376,7 +1376,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
             // The dst texture should have been written to with the appropriate write swizzle, so we
             // do not need to worry about the read swizzle when accessing that value for blending.
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
             mainBody += "// Read color from input attachment\n";
 #endif
             mainBody += "dstColor = subpassLoad(DstTextureInput);\n";
@@ -1549,13 +1549,13 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
             }
         };
         if (!staticAttrs.empty()) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
             vsPreamble.append("// static attrs\n");
 #endif
             add_attrs(staticAttrs);
         }
         if (!appendAttrs.empty()) {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
             vsPreamble.append("// append attrs\n");
 #endif
             add_attrs(appendAttrs);

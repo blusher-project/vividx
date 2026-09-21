@@ -8,7 +8,7 @@
 #ifndef skgpu_graphite_BackendSemaphore_DEFINED
 #define skgpu_graphite_BackendSemaphore_DEFINED
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkAnySubclass.h"
 
 #include <cstddef>

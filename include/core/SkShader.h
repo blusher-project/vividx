@@ -12,7 +12,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 class SkBlender;
 class SkColorFilter;

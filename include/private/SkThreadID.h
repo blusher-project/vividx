@@ -8,8 +8,8 @@
 #ifndef SkThreadID_DEFINED
 #define SkThreadID_DEFINED
 
-#include "include/private/SkAPI.h"
-#include "include/private/SkDebug.h"
+#include <vividx/common.h>
+#include <vividx/assert.h>
 
 #include <cstdint>
 

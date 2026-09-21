@@ -123,7 +123,7 @@ inline GrOp::Owner OpsTask::OpChain::List::popHead() {
 }
 
 inline GrOp::Owner OpsTask::OpChain::List::removeOp(GrOp* op) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     auto head = op;
     while (head->prevInChain()) { head = head->prevInChain(); }
     SkASSERT(head == fHead.get());
@@ -164,7 +164,7 @@ inline void OpsTask::OpChain::List::pushTail(GrOp::Owner op) {
 }
 
 inline void OpsTask::OpChain::List::validate() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (fHead) {
         SkASSERT(fTail);
         fHead->validateChain(fTail);
@@ -395,7 +395,7 @@ GrOp::Owner OpsTask::OpChain::appendOp(
 }
 
 inline void OpsTask::OpChain::validate() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     fList.validate();
     for (const auto& op : GrOp::ChainRange<>(fList.head())) {
         // Not using SkRect::contains because we allow empty rects.
@@ -710,7 +710,7 @@ GrRenderTask::ExecutionResult OpsTask::onExecute(GrOpFlushState* flushState) {
         stencil->markAreaCleared(nativeBoundsRequiredByStencil);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     if (stencilLoadOp == GrLoadOp::kDiscard) {
         // The only time we should have a stencil discard load-op is when either:
         //    there is no stencil buffer
@@ -950,7 +950,7 @@ void OpsTask::dump(const SkString& label,
 }
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void OpsTask::visitProxies_debugOnly(const GrVisitProxyFunc& func) const {
     auto textureFunc = [func](GrSurfaceProxy* tex, skgpu::Mipmapped mipmapped) {
         func(tex, mipmapped);
@@ -980,7 +980,7 @@ bool OpsTask::onIsUsed(GrSurfaceProxy* proxyToCheck) const {
             break;
         }
     }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool usedSlow = false;
     auto visit = [proxyToCheck, &usedSlow](GrSurfaceProxy* p, skgpu::Mipmapped) {
         if (p == proxyToCheck) {
@@ -1058,7 +1058,7 @@ void OpsTask::recordOp(
         GrOp::Owner op, bool usesMSAA, GrProcessorSet::Analysis processorAnalysis,
         GrAppliedClip* clip, const GrDstProxyView* dstProxyView, const GrCaps& caps) {
     GrSurfaceProxy* proxy = this->target(0);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     op->validate();
     SkASSERT(processorAnalysis.requiresDstTexture() == (dstProxyView && dstProxyView->proxy()));
     SkASSERT(proxy);

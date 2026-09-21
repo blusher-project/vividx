@@ -9,7 +9,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkArenaAlloc.h"
@@ -114,7 +114,7 @@ public:
         GrXferBarrierFlags renderPassBarriers() const { return fRenderPassXferBarriers; }
         GrLoadOp colorLoadOp() const { return fColorLoadOp; }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         void validate() const {
             SkASSERT(fOp);
             SkASSERT(fSurfaceView);

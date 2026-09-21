@@ -9,7 +9,7 @@
 
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFontMetrics.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "src/core/SkGlyph.h"

@@ -10,7 +10,7 @@
 #include <stdint.h>
 
 #include "include/core/SkM44.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTPin.h"
 #include "src/core/SkRectPriv.h"
 #include "vividx/core/rect.h"

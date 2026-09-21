@@ -297,7 +297,7 @@ class TextureDataCache {
             }
 
             // Confirm that we're getting the right value back.
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
             auto t = TextureDataBlock::Make(textures, &fArena);
             SkASSERT(textures == t);
             return t;
@@ -360,7 +360,7 @@ public:
         fPaintTextureCount = 0;
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     // Check that the gatherer has been reset to its initial state prior to collecting new data.
     void checkReset() const {
         SkASSERT(fTextures.empty());
@@ -392,7 +392,7 @@ public:
             SkASSERT(sampler == oSampler);
         }
     }
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
     // If a renderstep performs shading, then alignment should occur on the combined
     // paint+renderstep, so no alignment is required and we simply mark the end of the paints. Else
@@ -455,7 +455,7 @@ private:
     int fPaintTextureCount = 0;
 };
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 class UniformExpectationsValidator {
 public:
     UniformExpectationsValidator(PipelineDataGatherer* gatherer,
@@ -477,7 +477,7 @@ private:
     UniformExpectationsValidator& operator=(UniformExpectationsValidator&&) = delete;
     UniformExpectationsValidator& operator=(const UniformExpectationsValidator&) = delete;
 };
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 } // namespace skgpu::graphite
 

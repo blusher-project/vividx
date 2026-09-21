@@ -16,7 +16,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSpan.h"
 #include "include/gpu/graphite/Recorder.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkDevice.h"
 #include "src/gpu/graphite/ClipStack.h"
@@ -391,7 +391,7 @@ private:
 
     const sktext::gpu::SubRunControl fSubRunControl;
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     // Tracks the flushing state to ensure recursive flushing does not occur.
     bool fIsFlushing = false;
 

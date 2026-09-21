@@ -87,7 +87,7 @@ public:
     }
 
     void defineConstantf(const char* type, const char* name, const char* fmt, ...)
-            SK_PRINTF_LIKE(4, 5) {
+            VX_PRINTF_LIKE(4, 5) {
         this->definitions().appendf("const %s %s = ", type, name);
         va_list args;
         va_start(args, fmt);
@@ -110,7 +110,7 @@ public:
     /**
      * Called by GrGLSLProcessors to add code to one of the shaders.
      */
-    void codeAppendf(const char format[], ...) SK_PRINTF_LIKE(2, 3) {
+    void codeAppendf(const char format[], ...) VX_PRINTF_LIKE(2, 3) {
        va_list args;
        va_start(args, format);
        this->code().appendVAList(format, args);
@@ -121,7 +121,7 @@ public:
 
     void codeAppend(const char* str, size_t length) { this->code().append(str, length); }
 
-    void codePrependf(const char format[], ...) SK_PRINTF_LIKE(2, 3) {
+    void codePrependf(const char format[], ...) VX_PRINTF_LIKE(2, 3) {
        va_list args;
        va_start(args, format);
        this->code().prependVAList(format, args);

@@ -9,7 +9,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkSize.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkYUVAInfoLocation.h"
 
 #include <algorithm>

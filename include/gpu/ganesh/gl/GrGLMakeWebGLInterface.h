@@ -8,7 +8,7 @@
 #define GrGLMakeWebGLInterface_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 struct GrGLInterface;
 

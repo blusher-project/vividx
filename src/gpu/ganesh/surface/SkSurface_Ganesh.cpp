@@ -581,7 +581,7 @@ sk_sp<SkSurface> RenderTarget(GrRecordingContext* rContext,
     }
 
     sk_sp<SkSurface> result = sk_make_sp<SkSurface_Ganesh>(std::move(device));
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (result) {
         SkASSERT(result->isCompatible(c));
     }

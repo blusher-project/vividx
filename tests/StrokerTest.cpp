@@ -12,7 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkFloatBits.h"
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkRandom.h"

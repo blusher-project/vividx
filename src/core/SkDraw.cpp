@@ -28,7 +28,7 @@
 #include "include/private/SkAlign.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkCPUTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTemplates.h"
@@ -1082,7 +1082,7 @@ void Draw::drawPath(const SkPath& origSrcPath,
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 void Draw::validate() const {
     SkASSERT(fCTM != nullptr);

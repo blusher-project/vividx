@@ -20,7 +20,7 @@
 #include "include/encode/SkEncoder.h"
 #include "include/encode/SkJpegEncoder.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTemplates.h"
 #include "src/codec/SkJpegConstants.h"

@@ -12,7 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -250,7 +250,7 @@ public:
     GrOp::Owner cutChain();
     SkDEBUGCODE(void validateChain(GrOp* expectedTail = nullptr) const;)
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     virtual void validate() const {}
 #endif
 

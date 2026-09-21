@@ -98,7 +98,7 @@ void SkStrokeRec::setStrokeStyle(SkScalar width, bool strokeAndFill) {
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // enables tweaking these values at runtime from Viewer
     bool gDebugStrokerErrorSet = false;
     SkScalar gDebugStrokerError;
@@ -115,7 +115,7 @@ bool SkStrokeRec::applyToPath(SkPathBuilder* dst, const SkPath& src) const {
     stroker.setMiterLimit(fMiterLimit);
     stroker.setWidth(fWidth);
     stroker.setDoFill(fStrokeAndFill);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     stroker.setResScale(gDebugStrokerErrorSet ? gDebugStrokerError : fResScale);
 #else
     stroker.setResScale(fResScale);

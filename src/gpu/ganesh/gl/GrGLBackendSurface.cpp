@@ -12,7 +12,7 @@
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 #include "src/gpu/ganesh/gl/GrGLBackendSurfacePriv.h"
@@ -71,7 +71,7 @@ private:
     }
 
     std::string toString() const override {
-#if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
+#if defined(VX_DEBUG) || defined(GPU_TEST_UTILS)
         return GrGLFormatToStr(fGLFormat);
 #else
         return "";
@@ -82,7 +82,7 @@ private:
         formatData.emplace<GrGLBackendFormatData>(fGLFormat);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kOpenGL; }
 #endif
 
@@ -272,7 +272,7 @@ private:
         rtData.emplace<GrGLBackendRenderTargetData>(fGLInfo);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kOpenGL; }
 #endif
 

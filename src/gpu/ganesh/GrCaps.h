@@ -84,7 +84,7 @@ public:
     // natively.)
     bool nativeDrawIndirectSupport() const { return fNativeDrawIndirectSupport; }
     bool useClientSideIndirectBuffers() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         if (!fNativeDrawIndirectSupport || fNativeDrawIndexedIndirectIsBroken) {
             // We might implement indirect draws with a polyfill, so the commands need to reside in
             // CPU memory.

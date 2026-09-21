@@ -10,7 +10,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "src/core/SkAAClip.h"
 #include "src/core/SkArenaAlloc.h"

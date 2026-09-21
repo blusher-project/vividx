@@ -21,7 +21,7 @@
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/gpu/ganesh/GrTypes.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkArenaAlloc.h"
@@ -280,7 +280,7 @@ public:
         }
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static void ValidateResourceLimits() {
         // The op implementation has an upper bound on the number of quads that it can represent.
         // However, the resource manager imposes its own limit on the number of quads, which should
@@ -764,7 +764,7 @@ private:
         SkASSERT(totVerticesSeen == desc->totalNumVertices());
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static int validate_op(GrTextureType textureType,
                            GrAAType aaType,
                            skgpu::Swizzle swizzle,
@@ -862,7 +862,7 @@ private:
     }
 
     int totNumQuads() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         int tmp = 0;
         for (unsigned p = 0; p < fMetadata.fProxyCount; ++p) {
             tmp += fViewCountPairs[p].fQuadCnt;

@@ -8,7 +8,7 @@
 #ifndef SkContextOptions_DEFINED
 #define SkContextOptions_DEFINED
 
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 struct SK_API SkContextOptions {};
 

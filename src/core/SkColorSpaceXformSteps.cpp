@@ -156,7 +156,7 @@ SkColorSpaceXformSteps::SkColorSpaceXformSteps(const SkColorSpace* src, vx_alpha
         this->fSrcToDstMatrix[7] = src_to_dst.vals[1][2] * scaleFactor;
         this->fSrcToDstMatrix[8] = src_to_dst.vals[2][2] * scaleFactor;
     } else {
-    #ifdef SK_DEBUG
+    #ifdef VX_DEBUG
         skcms_Matrix3x3 srcM, dstM;
         src->toXYZD50(&srcM);
         dst->toXYZD50(&dstM);
@@ -186,7 +186,7 @@ SkColorSpaceXformSteps::SkColorSpaceXformSteps(const SkColorSpace* src, vx_alpha
          this->fFlags.encode          &&
          src->transferFnHash() == dst->transferFnHash())
     {
-    #ifdef SK_DEBUG
+    #ifdef VX_DEBUG
         // PQ and HLG types use PQish and HLGish for fSrcTF, so this check is not valid for them.
         if (srcTfType != skcms_TFType_PQ && srcTfType != skcms_TFType_HLG) {
             skcms_TransferFunction dstTF;

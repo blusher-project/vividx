@@ -54,7 +54,7 @@ public:
             , fBaseVertex(baseVertex) {
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     ~GrEagerDynamicVertexAllocator() override {
         SkASSERT(!fLockCount);
     }
@@ -79,7 +79,7 @@ class GrCpuVertexAllocator : public GrEagerVertexAllocator {
 public:
     GrCpuVertexAllocator() = default;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     ~GrCpuVertexAllocator() override {
         SkASSERT(!fLockStride && !fVertices && !fVertexData);
     }

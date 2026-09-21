@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstddef>
 #include <cstdint>

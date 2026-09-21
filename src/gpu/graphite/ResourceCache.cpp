@@ -68,7 +68,7 @@ ResourceCache::ResourceCache(SingleOwner* singleOwner, uint32_t recorderID, size
     }
     // TODO: Maybe when things start using ResourceCache, then like Ganesh the compiler won't
     // complain about not using fSingleOwner in Release builds and we can delete this.
-#if !defined(SK_DEBUG)
+#if !defined(VX_DEBUG)
     (void)fSingleOwner;
 #endif
 }
@@ -567,7 +567,7 @@ bool ResourceCache::inPurgeableQueue(const Resource* resource) const {
            fPurgeableQueue.at(index) == resource;
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 
 bool ResourceCache::inNonpurgeableArray(const Resource* resource) const {
     int index = *resource->accessCacheIndex();
@@ -588,7 +588,7 @@ bool ResourceCache::isInCache(const Resource* resource) const {
     return false;
 }
 
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 void ResourceCache::purgeResource(Resource* resource) {
     SkASSERT(resource->isPurgeable());
@@ -803,7 +803,7 @@ void ResourceCache::setMaxBudget(size_t bytes) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 void ResourceCache::validate() const {
     // Reduce the frequency of validations for large resource counts.
     static SkRandom gRandom;
@@ -923,7 +923,7 @@ void ResourceCache::validate() const {
     SkASSERT(stats.fPurgeableBytes == fPurgeableBytes);
 }
 
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 #if defined(GPU_TEST_UTILS)
 

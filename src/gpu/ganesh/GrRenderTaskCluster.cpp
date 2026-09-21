@@ -22,7 +22,7 @@ using namespace skia_private;
 
 static GrSurfaceProxy* first_target(GrRenderTask* task) { return task->target(0); }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 [[maybe_unused]] static SkString describe_task(GrRenderTask* t) {
     if (GrSurfaceProxy* target = first_target(t)) {
         return SkStringPrintf("%s(%u)", target->getDebugName().c_str(), t->uniqueID());
@@ -67,7 +67,7 @@ static void validate(SkSpan<const sk_sp<GrRenderTask>> input,
     SkASSERT(seen.empty());
 }
 
-#endif  // SK_DEBUG
+#endif  // VX_DEBUG
 
 // Returns whether `dependee` is a formal dependent or if it uses a surface `depender` targets.
 static bool depends_on(GrRenderTask* depender, GrRenderTask* dependee) {
@@ -182,7 +182,7 @@ bool GrClusterRenderTasks(SkSpan<const sk_sp<GrRenderTask>> input,
         CLUSTER_DEBUGF("Cluster: Output order is now: %s\n", describe_tasks(*llist).c_str());
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (didReorder) {
         validate(input, *llist);
     }

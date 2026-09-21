@@ -356,7 +356,7 @@ void GrVkUniformHandler::appendUniformDecls(GrShaderFlags visibility, SkString* 
         }
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool firstOffsetCheck = false;
     for (const VkUniformInfo& localUniform : fUniforms.items()) {
         if (!firstOffsetCheck) {

@@ -8,7 +8,7 @@
 #define SkRecorder_DEFINED
 
 #include "include/core/SkPicture.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkTArray.h"
 
 class SkCanvas;

@@ -88,7 +88,7 @@ public:
 #endif
 
 private:
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #define GR_PIPELINE_STATE_CACHE_STATS
 #endif
 

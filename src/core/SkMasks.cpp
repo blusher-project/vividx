@@ -6,7 +6,7 @@
  */
 #include "src/core/SkMasks.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 /*
  *

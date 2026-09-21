@@ -12,7 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
@@ -740,7 +740,7 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
     SkMatrix dfMatrix(drawMatrix);
     dfMatrix.postTranslate(SK_DistanceFieldPad, SK_DistanceFieldPad);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkPath xformPath = path.makeTransform(dfMatrix);
     SkIRect pathBounds = xformPath.getBounds().roundOut();
     SkIRect expectPathBounds = SkIRect::MakeWH(width, height);

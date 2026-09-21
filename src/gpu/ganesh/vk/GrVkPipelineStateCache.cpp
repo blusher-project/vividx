@@ -8,7 +8,7 @@
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/core/SkLRUCache.h"
@@ -25,7 +25,7 @@
 
 #include <memory>
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 // Display pipeline state cache usage
 static const bool c_DisplayVkPipelineCache{false};
 #endif
@@ -53,7 +53,7 @@ GrVkResourceProvider::PipelineStateCache::PipelineStateCache(GrVkGpu* gpu)
 GrVkResourceProvider::PipelineStateCache::~PipelineStateCache() {
     SkASSERT(0 == fMap.count());
     // dump stats
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (c_DisplayVkPipelineCache) {
         using CacheResult = Stats::ProgramCacheResult;
 
@@ -80,7 +80,7 @@ GrVkPipelineState* GrVkResourceProvider::PipelineStateCache::findOrCreatePipelin
         const GrProgramInfo& programInfo,
         VkRenderPass compatibleRenderPass,
         bool overrideSubpassForResolveLoad) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (programInfo.isStencilEnabled()) {
         SkASSERT(renderTarget->getStencilAttachment(programInfo.numSamples() > 1));
         SkASSERT(renderTarget->numStencilBits(programInfo.numSamples() > 1) == 8);

@@ -28,7 +28,7 @@
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/SkAlign.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
@@ -429,7 +429,7 @@ bool GrVkGpu::submitCommandBuffer(const GrSubmitInfo& submitInfo) {
 sk_sp<GrGpuBuffer> GrVkGpu::onCreateBuffer(size_t size,
                                            GrGpuBufferType type,
                                            GrAccessPattern accessPattern) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     switch (type) {
         case GrGpuBufferType::kVertex:
         case GrGpuBufferType::kIndex:
@@ -2266,7 +2266,7 @@ void GrVkGpu::copySurfaceAsCopyImage(GrSurface* dst,
         return;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     int dstSampleCnt = dstImage->numSamples();
     int srcSampleCnt = srcImage->numSamples();
     bool dstHasYcbcr = dstImage->ycbcrConversionInfo().isValid();
@@ -2331,7 +2331,7 @@ void GrVkGpu::copySurfaceAsBlit(GrSurface* dst,
         return;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     int dstSampleCnt = dstImage->numSamples();
     int srcSampleCnt = srcImage->numSamples();
     bool dstHasYcbcr = dstImage->ycbcrConversionInfo().isValid();
@@ -2406,7 +2406,7 @@ void GrVkGpu::copySurfaceAsResolve(GrSurface* dst, GrSurface* src, const SkIRect
 bool GrVkGpu::onCopySurface(GrSurface* dst, const SkIRect& dstRect,
                             GrSurface* src, const SkIRect& srcRect,
                             GrSamplerState::Filter filter) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (GrVkRenderTarget* srcRT = static_cast<GrVkRenderTarget*>(src->asRenderTarget())) {
         SkASSERT(!srcRT->wrapsSecondaryCommandBuffer());
     }
@@ -2626,7 +2626,7 @@ bool GrVkGpu::beginRenderPass(const GrVkRenderPass* renderPass,
     }
     SkASSERT (!framebuffer->isExternal());
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     uint32_t index;
     bool result = renderPass->colorAttachmentIndex(&index);
     SkASSERT(result && 0 == index);

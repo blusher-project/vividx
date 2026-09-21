@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include <vividx/assert.h>
 #include "include/private/SkLog.h"
 

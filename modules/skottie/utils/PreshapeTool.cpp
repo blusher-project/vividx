@@ -10,7 +10,7 @@
 #include "include/core/SkGraphics.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include <vividx/assert.h>
 #include "modules/skottie/utils/TextPreshape.h"
 #include "modules/skresources/include/SkResources.h"

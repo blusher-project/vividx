@@ -9,7 +9,7 @@
 
 #include "src/gpu/graphite/DrawListBase.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "src/core/SkBlockAllocator.h"
 #include "src/core/SkTBlockList.h"

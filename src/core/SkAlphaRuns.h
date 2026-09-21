@@ -11,10 +11,11 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkCPUTypes.h"
-#include "include/private/SkDebug.h"
 #include "include/private/SkTo.h"
 
 #include <cstdint>
+
+#include <vividx/assert.h>
 
 /** Sparse array of run-length-encoded alpha (supersampling coverage) values.
     Sparseness allows us to independently compose several paths into the
@@ -112,8 +113,8 @@ public:
         return SkToS32(lastAlpha - fAlpha);  // new offsetX
     }
 
-    SkDEBUGCODE(void assertValid(int y, int maxStep) const;)
-    SkDEBUGCODE(void dump() const;)
+    VX_DEBUGCODE(void assertValid(int y, int maxStep) const;)
+    VX_DEBUGCODE(void dump() const;)
 
     /**
      * Break the runs in the buffer at offsets x and x+count, properly

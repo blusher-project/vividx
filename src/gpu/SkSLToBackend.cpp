@@ -8,7 +8,7 @@
 #include "src/gpu/SkSLToBackend.h"
 
 #include "include/gpu/ShaderErrorHandler.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/codegen/SkSLNativeShader.h"
 #include "src/sksl/ir/SkSLProgram.h"
@@ -28,7 +28,7 @@ bool SkSLToBackend(const SkSL::ShaderCaps* caps,
                    SkSL::NativeShader* output,
                    SkSL::ProgramInterface* outInterface,
                    ShaderErrorHandler* errorHandler) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     std::string src = SkShaderUtils::PrettyPrint(sksl);
 #else
     const std::string& src = sksl;

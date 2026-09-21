@@ -21,7 +21,7 @@ template<typename TSubclass> class GrNonAtomicRef : public SkNoncopyable {
 public:
     GrNonAtomicRef() : fRefCnt(1) {}
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     ~GrNonAtomicRef() {
         // fRefCnt can be one when a subclass is created statically
         SkASSERT((0 == fRefCnt || 1 == fRefCnt));

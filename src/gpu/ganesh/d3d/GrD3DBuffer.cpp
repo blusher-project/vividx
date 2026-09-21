@@ -10,7 +10,7 @@
 #include "src/gpu/ganesh/d3d/GrD3DGpu.h"
 #include "src/gpu/ganesh/d3d/GrD3DUtil.h"
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #define VALIDATE() this->validate()
 #else
 #define VALIDATE() do {} while(false)
@@ -277,7 +277,7 @@ void GrD3DBuffer::onSetLabel() {
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrD3DBuffer::validate() const {
     SkASSERT(this->intendedType() == GrGpuBufferType::kVertex ||
              this->intendedType() == GrGpuBufferType::kIndex ||

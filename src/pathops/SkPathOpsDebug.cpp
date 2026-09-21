@@ -12,7 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMath.h"
 #include "include/private/SkMutex.h"
 #include "src/core/SkPathPriv.h"
@@ -49,7 +49,7 @@ int SkPathOpsDebug::gSortCount;
 const char* SkPathOpsDebug::kPathOpStr[] = {"diff", "sect", "union", "xor", "rdiff"};
 #endif
 
-#if defined SK_DEBUG || !FORCE_RELEASE
+#if defined VX_DEBUG || !FORCE_RELEASE
 
 int SkPathOpsDebug::gContourID = 0;
 int SkPathOpsDebug::gSegmentID = 0;
@@ -483,7 +483,7 @@ void SkPathOpsDebug::DumpGlitchType(GlitchType glitchType) {
 }
 #endif
 
-#if defined SK_DEBUG || !FORCE_RELEASE
+#if defined VX_DEBUG || !FORCE_RELEASE
 void SkPathOpsDebug::MathematicaIze(char* str, size_t bufferLen) {
     size_t len = strlen(str);
     bool num = false;
@@ -512,7 +512,7 @@ void SkPathOpsDebug::WindingPrintf(int wind) {
         SkDebugf("%d", wind);
     }
 }
-#endif //  defined SK_DEBUG || !FORCE_RELEASE
+#endif //  defined VX_DEBUG || !FORCE_RELEASE
 
 
 static void show_function_header(const char* functionName) {
@@ -1378,7 +1378,7 @@ void SkOpAngle::debugValidateNext() const {
 #endif
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkCoincidentSpans::debugStartCheck(const SkOpSpanBase* outer, const SkOpSpanBase* over,
         const SkOpGlobalState* debugState) const {
     SkASSERT(coinPtTEnd()->span() == over || !SkOpGlobalState::DebugRunFail());
@@ -2487,7 +2487,7 @@ void SkOpSpanBase::debugMergeMatches(SkPathOpsDebug::GlitchLog* log, const SkOpS
 //                        inner->setDeleted();
                     }
                 }
-#ifdef SK_DEBUG   // assert if another undeleted entry points to segment
+#ifdef VX_DEBUG   // assert if another undeleted entry points to segment
                 const SkOpPtT* debugInner = inner;
                 while ((debugInner = debugInner->next()) != innerStop) {
                     if (debugInner->segment() != segment) {
@@ -2654,7 +2654,7 @@ int SkIntersections::debugCoincidentUsed() const {
         if (fIsCoincident[0] & (1 << index)) {
             ++count;
         }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         if (fIsCoincident[1] & (1 << index)) {
             ++count2;
         }

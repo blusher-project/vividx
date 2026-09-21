@@ -11,7 +11,7 @@
 #include <vividx/core/alpha-type.h>
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMacros.h"
 #include "include/private/SkSLSampleUsage.h"
 #include "include/private/SkTArray.h"

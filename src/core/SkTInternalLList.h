@@ -9,7 +9,7 @@
 #define SkTInternalLList_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 
 /**
@@ -56,7 +56,7 @@ public:
         entry->fPrev = nullptr;
         entry->fNext = nullptr;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         entry->fList = nullptr;
 #endif
     }
@@ -75,7 +75,7 @@ public:
             fTail = entry;
         }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         entry->fList = this;
 #endif
     }
@@ -94,7 +94,7 @@ public:
             fHead = entry;
         }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         entry->fList = this;
 #endif
     }
@@ -123,7 +123,7 @@ public:
         } else {
             prev->fNext = newEntry;
         }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         newEntry->fList = this;
 #endif
     }
@@ -152,7 +152,7 @@ public:
         } else {
             next->fPrev = newEntry;
         }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         newEntry->fList = this;
 #endif
     }
@@ -172,7 +172,7 @@ public:
         }
         fTail = list.fTail;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         for (T* node = list.fHead; node; node = node->fNext) {
             SkASSERT(node->fList == &list);
             node->fList = this;
@@ -254,7 +254,7 @@ public:
 
     Iter end() const { return Iter(); }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const {
         SkASSERT(!fHead == !fTail);
         Iter iter;

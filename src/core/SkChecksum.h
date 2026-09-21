@@ -9,7 +9,7 @@
 #define SkChecksum_DEFINED
 
 #include "include/core/SkString.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstddef>
 #include <cstdint>

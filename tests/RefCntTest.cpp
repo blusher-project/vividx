@@ -7,7 +7,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkWeakRefCnt.h"
 #include "tests/Test.h"
 

@@ -22,7 +22,7 @@ public:
     MtlBackendSemaphoreData(CFTypeRef mtlEvent, uint64_t value)
             : fMtlEvent(mtlEvent), fMtlValue(value) {}
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     skgpu::BackendApi type() const override { return skgpu::BackendApi::kMetal; }
 #endif
 

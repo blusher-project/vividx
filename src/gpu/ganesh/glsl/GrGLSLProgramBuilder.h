@@ -8,7 +8,7 @@
 #ifndef GrGLSLProgramBuilder_DEFINED
 #define GrGLSLProgramBuilder_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/Swizzle.h"
@@ -182,7 +182,7 @@ private:
     SamplerHandle emitInputSampler(const skgpu::Swizzle& swizzle, const char* name);
     bool checkSamplerCounts();
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void verify(const GrGeometryProcessor&);
     void verify(const GrFragmentProcessor&);
     void verify(const GrXferProcessor&);

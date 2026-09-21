@@ -158,7 +158,7 @@ bool SkLineClipper::IntersectLine(const SkPoint src[2], const SkRect& clip,
     if (tmp[index1].fX > clip.fRight) {
         tmp[index1].set(clip.fRight, sect_with_vertical(tmp, clip.fRight));
     }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bounds.set(tmp[0], tmp[1]);
     SkASSERT(containsNoEmptyCheck(clip, bounds));
 #endif
@@ -166,7 +166,7 @@ bool SkLineClipper::IntersectLine(const SkPoint src[2], const SkRect& clip,
     return true;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 // return value between the two limits, where the limits are either ascending
 // or descending.
 static bool is_between_unsorted(SkScalar value,

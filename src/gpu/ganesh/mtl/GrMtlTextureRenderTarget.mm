@@ -151,7 +151,7 @@ size_t GrMtlTextureRenderTarget::onGpuMemorySize() const {
     // the msaa and stencil attachments track their own size because they do get cached separately.
     // For all GrTexture* based things we will continue to to use the GrTexture* to report size and
     // the owned attachments will have no size and be uncached.
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // The nonMSAA attachment (either color or resolve depending on numSamples should have size of
     // zero since it is a texture attachment.
     SkASSERT(this->nonMSAAAttachment()->gpuMemorySize() == 0);

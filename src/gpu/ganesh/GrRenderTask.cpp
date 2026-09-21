@@ -60,7 +60,7 @@ void GrRenderTask::makeSkippable() {
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 GrRenderTask::~GrRenderTask() {
     SkASSERT(this->isSetFlag(kDisowned_Flag));
 }
@@ -201,7 +201,7 @@ void GrRenderTask::addDependency(GrDrawingManager* drawingMgr,
         SkASSERT(!dependedOnTask || dependedOnTask->isClosed());
         SkASSERT(drawingMgr->getLastRenderTask(dependedOn) == fTextureResolveTask);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         // addProxy() should have called addDependency (in this instance, recursively) on
         // fTextureResolveTask.
         if (dependedOnTask) {
@@ -275,7 +275,7 @@ void GrRenderTask::addDependent(GrRenderTask* dependent) {
     fDependents.push_back(dependent);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 bool GrRenderTask::isDependent(const GrRenderTask* dependent) const {
     for (int i = 0; i < fDependents.size(); ++i) {
         if (fDependents[i] == dependent) {

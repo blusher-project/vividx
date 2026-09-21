@@ -7,7 +7,7 @@
 
 #include "src/sksl/SkSLCompiler.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkTraceEvent.h"
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"

@@ -1,3 +1,5 @@
+#include <vividx/common.h>
+
 #include <stdint.h>
 
 #include <limits>

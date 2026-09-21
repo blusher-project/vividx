@@ -43,9 +43,9 @@ public:
 
     void writeString(const std::string& s);
 
-    void printf(const char format[], ...) SK_PRINTF_LIKE(2, 3);
+    void printf(const char format[], ...) VX_PRINTF_LIKE(2, 3);
 
-    void appendVAList(const char format[], va_list args) SK_PRINTF_LIKE(2, 0);
+    void appendVAList(const char format[], va_list args) VX_PRINTF_LIKE(2, 0);
 
     virtual ~OutputStream() {}
 

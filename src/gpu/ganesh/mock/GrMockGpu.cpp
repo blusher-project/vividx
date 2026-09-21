@@ -8,7 +8,7 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/mock/GrMockBackendSurface.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMath.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
@@ -149,7 +149,7 @@ sk_sp<GrTexture> GrMockGpu::onCreateCompressedTexture(SkISize dimensions,
         return nullptr;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // Uncompressed formats should go through onCreateTexture
     SkTextureCompressionType compression = GrBackendFormats::AsMockCompressionType(format);
     SkASSERT(compression != SkTextureCompressionType::kNone);

@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/effects/SkColorMatrix.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "modules/svg/include/SkSVGFe.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"

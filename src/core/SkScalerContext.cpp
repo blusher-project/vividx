@@ -21,7 +21,7 @@
 #include "include/core/SkStrokeRec.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkCPUTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMutex.h"

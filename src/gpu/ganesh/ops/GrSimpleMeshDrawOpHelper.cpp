@@ -56,7 +56,7 @@ bool GrSimpleMeshDrawOpHelper::isCompatible(const GrSimpleMeshDrawOpHelper& that
         }
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (ignoreAAType) {
         // If we're ignoring AA it should be bc we already know they are the same or that
         // the are different but are compatible (i.e., one is AA and the other is None)

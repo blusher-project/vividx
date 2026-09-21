@@ -16,7 +16,7 @@
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkCPUTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "src/core/SkArenaAlloc.h"
 
@@ -78,7 +78,7 @@ struct SkBitmapProcState {
     // are ignored
     ShaderProc32 getShaderProc32() const { return fShaderProc32; }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     MatrixProc getMatrixProc() const;
 #else
     MatrixProc getMatrixProc() const { return fMatrixProc; }
@@ -103,7 +103,7 @@ private:
     // Return false if we failed to setup for fast translate (e.g. overflow)
     bool setupForTranslate();
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static void DebugMatrixProc(const SkBitmapProcState&,
                                 uint32_t[], int count, int x, int y);
 #endif
@@ -123,7 +123,7 @@ private:
     #define UNPACK_SECONDARY_SHORT(packed)  ((uint32_t)(packed) >> 16)
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static inline uint32_t pack_two_shorts(U16CPU pri, U16CPU sec) {
         SkASSERT((uint16_t)pri == pri);
         SkASSERT((uint16_t)sec == sec);

@@ -78,7 +78,7 @@ private:
     class AutoMutexWritable;
 
 public:
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const;
 #else
     void validate() const {}

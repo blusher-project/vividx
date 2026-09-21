@@ -109,7 +109,7 @@ public:
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     // Creates a new PaintParams that is opaque and won't depend on the dst
     static PaintParams MakeOpaque(const PaintParams& paint);
 #endif
@@ -193,7 +193,7 @@ private:
     // not actually opaque it will be adjusted accordingly.
     const SkEnumBitMask<DstUsage> fDstUsage;
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     UniquePaintParamsID validateOpacityOptimization(const KeyContext&) const;
 
     const Coverage fCoverage;

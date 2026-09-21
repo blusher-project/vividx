@@ -11,7 +11,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkAlign.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTPin.h"
@@ -731,7 +731,7 @@ std::vector<uint8_t> SkDynamicMemoryWStream::detachAsVector() {
     return result;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkDynamicMemoryWStream::validate() const {
     if (!fHead) {
         SkASSERT(!fTail);

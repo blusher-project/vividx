@@ -11,9 +11,9 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSpan.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTypeTraits.h"
 
 #include <cstddef>

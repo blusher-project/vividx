@@ -14,7 +14,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkUTF.h"
 #include "src/core/SkUtils.h"
 #include "src/shaders/SkShaderBase.h"

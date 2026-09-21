@@ -12,9 +12,9 @@
 #include "include/core/SkSize.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkAnySubclass.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 
 class GrBackendFormatData;

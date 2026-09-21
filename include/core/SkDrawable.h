@@ -11,7 +11,7 @@
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstddef>
 #include <cstdint>

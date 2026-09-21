@@ -11,7 +11,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 #include <atomic>
 #include <unordered_set>
@@ -40,7 +40,7 @@ ComputeStep::ComputeStep(std::string_view name,
         , fResources(resources.data(), resources.size())
         , fWorkgroupBuffers(workgroupBuffers.data(), workgroupBuffers.size())
         , fLocalDispatchSize(localDispatchSize) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     std::unordered_set<int> slots;
     for (const ResourceDesc& r : fResources) {
         // Validate that slot assignments within a ComputeStep are unique.
@@ -51,7 +51,7 @@ ComputeStep::ComputeStep(std::string_view name,
             SkASSERT(inserted);
         }
     }
-#endif  // SK_DEBUG
+#endif  // VX_DEBUG
 }
 
 void ComputeStep::prepareStorageBuffer(int, const ResourceDesc&, BufferWriter&&) const {

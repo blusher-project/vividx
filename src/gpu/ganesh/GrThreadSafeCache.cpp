@@ -137,7 +137,7 @@ std::tuple<GrSurfaceProxyView, sk_sp<SkData>> GrThreadSafeCache::internalFind(
     return {};
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 bool GrThreadSafeCache::has(const skgpu::UniqueKey& key) {
     SkAutoSpinlock lock{fSpinLock};
 

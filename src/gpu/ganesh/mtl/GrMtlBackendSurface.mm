@@ -46,7 +46,7 @@ private:
     }
 
     std::string toString() const override {
-#if defined(SK_DEBUG) || GPU_TEST_UTILS
+#if defined(VX_DEBUG) || GPU_TEST_UTILS
         return skgpu::MtlFormatToString(fFormat);
 #else
         return "";
@@ -57,7 +57,7 @@ private:
         formatData.emplace<GrMtlBackendFormatData>(fFormat);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kMetal; }
 #endif
 
@@ -120,7 +120,7 @@ private:
         return GrBackendFormats::MakeMtl(GrGetMTLPixelFormatFromMtlTextureInfo(fTexInfo));
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kMetal; }
 #endif
 
@@ -188,7 +188,7 @@ private:
         rtData.emplace<GrMtlBackendRenderTargetData>(fTexInfo);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kMetal; }
 #endif
 

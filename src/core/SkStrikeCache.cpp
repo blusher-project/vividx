@@ -10,9 +10,9 @@
 #include "include/core/SkGraphics.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTraceMemoryDump.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMutex.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkStrike.h"
@@ -319,7 +319,7 @@ void SkStrikeCache::internalRemoveStrike(SkStrike* strike) {
 }
 
 void SkStrikeCache::validate() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     size_t computedBytes = 0;
     int computedCount = 0;
 

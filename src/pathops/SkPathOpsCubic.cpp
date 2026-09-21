@@ -409,7 +409,7 @@ nextRoot:
 
 // TODO(skbug.com/40045140) Deduplicate with SkCubics::RootsReal
 int SkDCubic::RootsReal(double A, double B, double C, double D, double s[3]) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     #if ONE_OFF_DEBUG && ONE_OFF_DEBUG_MATHEMATICA
     // create a string mathematica understands
     // GDB set print repe 15 # if repeated digits is a bother

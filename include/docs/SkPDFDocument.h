@@ -9,7 +9,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkMacros.h"
 #include "include/private/SkNoncopyable.h"
 

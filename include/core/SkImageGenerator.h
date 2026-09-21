@@ -13,7 +13,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkYUVAPixmaps.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstddef>
 #include <cstdint>

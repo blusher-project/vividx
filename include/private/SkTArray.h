@@ -12,7 +12,7 @@
 #include "include/private/SkASAN.h"  // IWYU pragma: keep
 #include "include/private/SkAlignedStorage.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkAttributes.h"
+#include <vividx/common.h>
 #include "include/private/SkContainers.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkMath.h"

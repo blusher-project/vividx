@@ -84,7 +84,7 @@ public:
         return this->fixedFunctionFlags() & FixedFunctionFlags::kUsesStencil;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool fAddDrawOpCalled = false;
 
     void validate() const override {

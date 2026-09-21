@@ -151,7 +151,7 @@ SkImageInfo SkImageInfo::MakeUnknown(int width, int height) {
     return Make({width, height}, VX_COLOR_TYPE_UNKNOWN, VX_ALPHA_TYPE_UNKNOWN, nullptr);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkImageInfo::validate() const {
     SkASSERT(fDimensions.width() >= 0);
     SkASSERT(fDimensions.height() >= 0);

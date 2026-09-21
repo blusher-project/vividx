@@ -27,7 +27,7 @@ GrDeferredDisplayList::GrDeferredDisplayList(const GrSurfaceCharacterization& ch
 }
 
 GrDeferredDisplayList::~GrDeferredDisplayList() {
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     for (auto& renderTask : fRenderTasks) {
         SkASSERT(renderTask->unique());
     }

@@ -367,7 +367,7 @@ void GrResourceCache::notifyARefCntReachedZero(GrGpuResource* resource,
         return;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // When the timestamp overflows validate() is called. validate() checks that resources in
     // the nonpurgeable array are indeed not purgeable. However, the movement from the array to
     // the purgeable queue happens just below in this function. So we mark it as an exception.
@@ -803,7 +803,7 @@ void GrResourceCache::dumpStatsKeyValuePairs(TArray<SkString>* keys,
 #endif // defined(GPU_TEST_UTILS)
 #endif // GR_CACHE_STATS
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrResourceCache::validate() const {
     // Reduce the frequency of validations for large resource counts.
     static SkRandom gRandom;
@@ -932,7 +932,7 @@ bool GrResourceCache::isInCache(const GrGpuResource* resource) const {
     return false;
 }
 
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 #if defined(GPU_TEST_UTILS)
 

@@ -15,7 +15,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkHdrMetadata.h"
 #include "include/private/SkTo.h"
 #include "modules/skcms/skcms.h"

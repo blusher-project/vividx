@@ -139,7 +139,7 @@ void SkCachedData::inMutexUnlock() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkCachedData::validate() const {
     if (fIsLocked) {
         SkASSERT((fInCache && fRefCnt > 1) || !fInCache);

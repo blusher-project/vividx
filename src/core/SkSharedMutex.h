@@ -8,11 +8,11 @@
 #ifndef SkSharedLock_DEFINED
 #define SkSharedLock_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkSemaphore.h"
 #include "include/private/SkThreadAnnotations.h"
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     #include "include/private/SkMutex.h"
 
     #include <array>
@@ -54,7 +54,7 @@ public:
     void assertHeldShared() const SK_ASSERT_SHARED_CAPABILITY(this);
 
 private:
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     class ThreadIDSet;
     std::unique_ptr<ThreadIDSet> fCurrentShared;
     std::unique_ptr<ThreadIDSet> fWaitingExclusive;

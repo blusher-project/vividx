@@ -14,7 +14,7 @@
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkBlitter.h"
 #include <cstdint>
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 class SkPath;
 class SkRegion;
@@ -58,7 +58,7 @@ public:
         return this->quickContains(r.fLeft, r.fTop, r.fRight, r.fBottom);
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const;
     void debug(bool compress_y=false) const;
 #else

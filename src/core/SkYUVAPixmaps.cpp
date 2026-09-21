@@ -8,7 +8,7 @@
 #include "include/core/SkYUVAPixmaps.h"
 
 #include <vividx/core/alpha-type.h>
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkRectMemcpy.h"
 #include "src/core/SkYUVAInfoLocation.h"

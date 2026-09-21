@@ -21,7 +21,7 @@ static float eval_poly(float t, float m, float b, Rest... rest) {
 }
 
 static float cubic_solver(float A, float B, float C, float D) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     auto valid = [](float t) { return t >= 0 && t <= 1; };
 #endif
 

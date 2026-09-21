@@ -26,7 +26,7 @@ private:
         data.emplace<GrMtlBackendSemaphoreData>(fEvent, fValue);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kMetal; }
 #endif
 

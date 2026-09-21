@@ -17,7 +17,7 @@
 #include "include/core/SkStrokeRec.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTDArray.h"
 #include "include/private/SkTo.h"
@@ -355,7 +355,7 @@ private:
             fCurIdx + indicesNeeded > fIndices + fIndicesInChunk) {
             // We are about to run out of space (possibly)
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
             // To maintain continuity, we need to remember one or two points from the current mesh.
             // Lines only need the last point, fills need the first point from the current contour.
             // We always grab both here, and append the ones we need at the end of this process.

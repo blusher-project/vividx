@@ -18,7 +18,7 @@
 #include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "include/gpu/ganesh/gl/GrGLFunctions.h"
 #include "include/gpu/ganesh/gl/GrGLInterface.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMath.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -3606,7 +3606,7 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
 
     this->setupSampleCounts(ctxInfo, gli);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (int i = 0; i < kGrGLColorFormatCount; ++i) {
         if (GrGLFormat::kUnknown == static_cast<GrGLFormat>(i)) {
             continue;

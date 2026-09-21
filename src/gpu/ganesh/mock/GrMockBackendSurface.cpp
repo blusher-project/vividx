@@ -60,7 +60,7 @@ private:
     }
 
     std::string toString() const override {
-#if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
+#if defined(VX_DEBUG) || defined(GPU_TEST_UTILS)
         std::string str = GrColorTypeToStr(fColorType);
         str += "-";
         str += skgpu::CompressionTypeToStr(fCompressionType);
@@ -77,7 +77,7 @@ private:
         formatData.emplace<GrMockBackendFormatData>(fColorType, fCompressionType, fIsStencilFormat);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kMock; }
 #endif
 
@@ -185,7 +185,7 @@ private:
 
     GrBackendFormat getBackendFormat() const override { return fInfo.getBackendFormat(); }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kMock; }
 #endif
 
@@ -249,7 +249,7 @@ private:
 
     GrBackendFormat getBackendFormat() const override { return fInfo.getBackendFormat(); }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kMock; }
 #endif
 

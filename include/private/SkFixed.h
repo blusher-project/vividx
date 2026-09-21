@@ -9,7 +9,7 @@
 #define SkFixed_DEFINED
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMath.h" // IWYU pragma: keep
 #include "include/private/SkTPin.h" // IWYU pragma: keep
 

@@ -18,7 +18,7 @@ class VulkanBackendSemaphoreData final : public BackendSemaphoreData {
 public:
     VulkanBackendSemaphoreData(VkSemaphore sem) : fVkSemaphore(sem) {}
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     skgpu::BackendApi type() const override { return skgpu::BackendApi::kVulkan; }
 #endif
 

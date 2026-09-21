@@ -13,7 +13,7 @@
 #include "include/core/SkRRect.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkFloatingPoint.h"
 #include "src/core/SkRRectPriv.h"

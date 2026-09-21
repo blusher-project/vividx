@@ -10,7 +10,7 @@
 
 #include "include/core/SkString.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTBlockList.h"
@@ -19,7 +19,7 @@
 class GrGLSLProgramBuilder;
 class GrGeometryProcessor;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static bool is_matrix(SkSLType type) {
     switch (type) {
         case SkSLType::kFloat2x2:

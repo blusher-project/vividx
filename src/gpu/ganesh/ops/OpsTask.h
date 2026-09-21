@@ -11,7 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "include/private/SkTypeTraits.h"
@@ -107,7 +107,7 @@ public:
     // renderPass compatible. Return the number of tasks merged into 'this'.
     int mergeFrom(SkSpan<const sk_sp<GrRenderTask>> tasks);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     int numClips() const override { return fNumClips; }
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override;
 #endif

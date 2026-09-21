@@ -17,10 +17,9 @@
 // #include "include/private/SkLoadUserConfig.h"
 
 // Any includes or defines below can be configured by the user config file.
-#include "include/private/SkAPI.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkAttributes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/common.h>
+#include <vividx/assert.h>
 // IWYU pragma: end_exports
 
 #include <cstdint>

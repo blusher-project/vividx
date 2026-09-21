@@ -42,7 +42,7 @@ inline SkFDot6 SkScalarRoundToFDot6(SkScalar x, int shift)
 #define SK_FDot6One         (64)
 #define SK_FDot6Half        (32)
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     constexpr inline SkFDot6 SkIntToFDot6(int x) {
         SkASSERT(     (std::numeric_limits<SkFDot6>::min() >> 6) <= x &&
                  x <= (std::numeric_limits<SkFDot6>::max() >> 6));

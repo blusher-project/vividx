@@ -11,7 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/gpu/ganesh/GrBackendSurfacePriv.h"
 #include "src/gpu/ganesh/gl/GrGLTypesPriv.h"
 
@@ -42,7 +42,7 @@ private:
     bool isProtected() const override;
     bool isSameTexture(const GrBackendTextureData* that) const override;
     GrBackendFormat getBackendFormat() const override;
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     GrBackendApi type() const override { return GrBackendApi::kOpenGL; }
 #endif
 #if defined(GPU_TEST_UTILS)

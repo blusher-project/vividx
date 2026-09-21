@@ -7,7 +7,7 @@
 
 #include "include/core/SkString.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTPin.h"
@@ -33,7 +33,7 @@ struct StringBuffer {
 
 template <int SIZE>
 static StringBuffer apply_format_string(const char* format, va_list args, char (&stackBuffer)[SIZE],
-                                        SkString* heapBuffer) SK_PRINTF_LIKE(1, 0);
+                                        SkString* heapBuffer) VX_PRINTF_LIKE(1, 0);
 
 template <int SIZE>
 static StringBuffer apply_format_string(const char* format, va_list args, char (&stackBuffer)[SIZE],
@@ -259,7 +259,7 @@ bool SkString::Rec::unique() const {
     return fRefCnt.load(std::memory_order_acquire) == 1;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 int32_t SkString::Rec::getRefCnt() const {
     return fRefCnt.load(std::memory_order_relaxed);
 }

@@ -10,7 +10,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 #include <array>
 #include <cstring>
@@ -1154,7 +1154,7 @@ void SkColorMatrix_DumpYUVMatrixTables() {
         SkM44 m44, im44;
         colormatrix_to_matrix44(m, &m44);
         float im[20];
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         // be sure our coversion between matrix44 and colormatrix is perfect
         matrix44_to_colormatrix(m44, im);
         SkASSERT(memcmp(m, im, sizeof(im)) == 0);

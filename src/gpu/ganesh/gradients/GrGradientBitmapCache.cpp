@@ -222,7 +222,7 @@ void GrGradientBitmapCache::getGradient(const SkPMColor4f* colors,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 void GrGradientBitmapCache::validate() const {
     SkASSERT(fEntryCount >= 0 && fEntryCount <= fMaxEntries);

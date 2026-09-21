@@ -220,7 +220,7 @@ sk_sp<TextureProxy> TextureProxy::Wrap(sk_sp<Texture> texture) {
     return sk_sp<TextureProxy>(new TextureProxy(std::move(texture)));
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void TextureProxy::validateTexture(const Texture* texture) {
     SkASSERT(this->isFullyLazy() || fDimensions == texture->dimensions());
     SkASSERTF(fInfo.canBeFulfilledBy(texture->textureInfo()),

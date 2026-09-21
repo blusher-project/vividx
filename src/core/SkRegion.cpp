@@ -67,7 +67,7 @@ constexpr int kRunArrayStackCount = 256;
 class RunArray {
 public:
     RunArray() { fPtr = fStack; }
-    #ifdef SK_DEBUG
+    #ifdef VX_DEBUG
     int count() const { return fCount; }
     #endif
     SkRegionPriv::RunType& operator[](int i) {
@@ -102,7 +102,7 @@ private:
  */
 static SkRegionPriv::RunType* skip_intervals(const SkRegionPriv::RunType runs[]) {
     int intervals = runs[-1];
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (intervals > 0) {
         SkASSERT(runs[0] < runs[1]);
         SkASSERT(runs[1] < SkRegion_kRunTypeSentinel);
@@ -699,7 +699,7 @@ bool SkRegion::setRects(SkSpan<const SkIRect> rects) {
 #pragma warning ( disable : 4701 )
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static void assert_valid_pair(int left, int rite)
 {
     SkASSERT(left == SkRegion_kRunTypeSentinel || left < rite);
@@ -1380,7 +1380,7 @@ bool SkRegion::isValid() const {
                         fRunHead->getYSpanCount(), fRunHead->getIntervalCount());
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkRegionPriv::Validate(const SkRegion& rgn) { SkASSERT(rgn.isValid()); }
 
 void SkRegion::dump() const {

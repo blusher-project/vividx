@@ -130,7 +130,7 @@ void VulkanMemory::GetNonCoherentMappedMemoryRange(const VulkanAlloc& alloc,
     VkDeviceSize offsetDiff = offset & (alignment -1);
     offset = offset - offsetDiff;
     size = (size + alignment - 1) & ~(alignment - 1);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkASSERT(offset >= alloc.fOffset);
     SkASSERT(offset + size <= alloc.fOffset + alloc.fSize);
     SkASSERT(0 == (offset & (alignment-1)));

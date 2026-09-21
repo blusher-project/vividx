@@ -12,7 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/private/SkAlign.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkTo.h"

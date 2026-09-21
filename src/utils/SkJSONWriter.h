@@ -331,7 +331,7 @@ private:
         kArrayValue,
     };
 
-    void appendf(const char* fmt, ...) SK_PRINTF_LIKE(2, 3);
+    void appendf(const char* fmt, ...) VX_PRINTF_LIKE(2, 3);
 
     void beginValue(bool structure = false) {
         SkASSERT(State::kObjectName == fState ||

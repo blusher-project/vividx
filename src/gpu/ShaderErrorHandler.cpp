@@ -7,7 +7,7 @@
 
 #include "include/gpu/ShaderErrorHandler.h"
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/utils/SkShaderUtils.h"
 
 #include <functional>

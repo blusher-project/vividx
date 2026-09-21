@@ -10,7 +10,7 @@
 
 #include "include/core/SkDataTable.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkHdrMetadata.h"
 
 // TODO(kjlubick) update clients to directly include this

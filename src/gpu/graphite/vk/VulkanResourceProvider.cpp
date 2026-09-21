@@ -572,7 +572,7 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
     // map back to a TextureFormat.
     bool importAsExternalFormat = hwbFormatProps.format == VK_FORMAT_UNDEFINED ||
             VkFormatToTextureFormat(hwbFormatProps.format) == TextureFormat::kUnsupported;
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     if (importAsExternalFormat && hwbFormatProps.format != VK_FORMAT_UNDEFINED) {
         SKIA_LOG_D("Ignoring AHardwareBuffer VkFormat(%d) because it is not supported by graphite."
                     " Falling back to importing as external format.\n", hwbFormatProps.format);

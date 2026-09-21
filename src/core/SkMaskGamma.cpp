@@ -8,7 +8,7 @@
 #include "src/core/SkMaskGamma.h"
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTo.h"
 

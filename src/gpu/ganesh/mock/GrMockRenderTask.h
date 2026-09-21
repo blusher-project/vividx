@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrRenderTask.h"
@@ -35,7 +35,7 @@ public:
     void addUsed(sk_sp<GrSurfaceProxy> proxy) { fUsed.push_back(std::move(proxy)); }
 
     // Overrides.
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override { return; }
 #endif
     void gatherProxyIntervals(GrResourceAllocator*) const override {}

@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 
-static void SkMaybeDebugf(const char* fmt, ...) SK_PRINTF_LIKE(1, 2);
+static void SkMaybeDebugf(const char* fmt, ...) VX_PRINTF_LIKE(1, 2);
 
 static void SkMaybeDebugf(const char* format, ...) {
     if ((false)) {

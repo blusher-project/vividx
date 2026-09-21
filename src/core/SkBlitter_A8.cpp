@@ -13,7 +13,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkShader.h" // IWYU pragma: keep
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkDrawTypes.h"
 #include "src/core/SkMask.h"

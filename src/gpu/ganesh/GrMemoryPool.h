@@ -8,7 +8,7 @@
 #ifndef GrMemoryPool_DEFINED
 #define GrMemoryPool_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkBlockAllocator.h"
 
 #include <cstddef>
@@ -16,7 +16,7 @@
 #include <memory>
 #include <type_traits>
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #include "src/core/SkTHash.h"
 #endif
 
@@ -105,7 +105,7 @@ public:
         fAllocator.resetScratchSpace();
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const;
 #endif
 
@@ -115,17 +115,17 @@ private:
     struct Header {
         int fStart;
         int fEnd;
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
         int fID;       // ID that can be used to track down leaks by clients.
 #endif
-#if defined(SK_DEBUG) || defined(SK_SANITIZE_ADDRESS)
+#if defined(VX_DEBUG) || defined(SK_SANITIZE_ADDRESS)
         uint32_t fSentinel; // set to a known value to check for memory stomping; poisoned in ASAN mode
 #endif
     };
 
     GrMemoryPool(size_t preallocSize, size_t minAllocSize);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // Because this exists preallocSize wants to use offsetof, so keep GrMemoryPool standard layout
     // without depending on THashSet being standard layout. Note that std::unique_ptr may not be
     // standard layout.

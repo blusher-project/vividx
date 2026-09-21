@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstdint>
 

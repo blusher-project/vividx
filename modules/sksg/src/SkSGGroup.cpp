@@ -9,7 +9,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "modules/sksg/include/SkSGNode.h"
 
 #include <algorithm>

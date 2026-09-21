@@ -64,7 +64,7 @@ void GrOp::execute(GrOpFlushState* state, const SkRect& chainBounds) {
     this->onExecute(state, chainBounds);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrOp::validateChain(GrOp* expectedTail) const {
     SkASSERT(this->isChainHead());
     uint32_t classID = this->classID();

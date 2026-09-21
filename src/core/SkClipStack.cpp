@@ -11,7 +11,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkRectPriv.h"
 
 #include <array>
@@ -919,7 +919,7 @@ uint32_t SkClipStack::getTopmostGenID() const {
     return back->getGenID();
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkClipStack::Element::dump() const {
     static constexpr auto kTypeStrings = std::to_array<const char *>({
         "empty",

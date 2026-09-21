@@ -9,7 +9,7 @@
 
 #include "include/core/SkRect.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTDArray.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 
@@ -227,7 +227,7 @@ private:
     float* packQuad(const GrQuad& quad, float* coords);
     const float* unpackQuad(GrQuad::Type type, const float* coords, GrQuad* quad) const;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate(const char* entry, int expectedCount) const;
 #endif
 };
@@ -316,7 +316,7 @@ void GrQuadBuffer<T>::concat(const GrQuadBuffer<T>& that) {
     }
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 template<typename T>
 void GrQuadBuffer<T>::validate(const char* entry, int expectedCount) const {
     // Triggers if accessing before next() is called on an iterator

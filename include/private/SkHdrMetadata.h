@@ -10,7 +10,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkData.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <algorithm>
 #include <cmath>

@@ -23,7 +23,7 @@
 
 namespace skgpu::ganesh {
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void PathRenderer::StencilPathArgs::validate() const {
     SkASSERT(fContext);
     SkASSERT(fSurfaceDrawContext);
@@ -46,7 +46,7 @@ PathRenderer::StencilSupport PathRenderer::getStencilSupport(const GrStyledShape
 }
 
 bool PathRenderer::drawPath(const DrawPathArgs& args) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     args.validate();
     CanDrawPathArgs canArgs;
     canArgs.fCaps = args.fContext->priv().caps();

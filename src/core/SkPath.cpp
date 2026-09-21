@@ -94,7 +94,7 @@ bool SkPath::isValid() const { return this->isFinite(); }
 
 uint32_t SkPath::getGenerationID() const { return fPathData->uniqueID(); }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkPath::validate() const {}
 #endif
 
@@ -397,7 +397,7 @@ SkPathIter SkPath::iter() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 SkPath::Iter::Iter() {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     fPts = nullptr;
     fConicWeights = nullptr;
     fMoveTo.fX = fMoveTo.fY = fLastPt.fX = fLastPt.fY = 0;

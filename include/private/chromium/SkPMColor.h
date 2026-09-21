@@ -9,7 +9,7 @@
 #define SkPMColor_DEFINED
 
 #include "include/core/SkColor.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <cstdint>
 

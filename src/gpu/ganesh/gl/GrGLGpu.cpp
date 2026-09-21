@@ -2488,7 +2488,7 @@ void GrGLGpu::flushRenderTarget(GrGLRenderTarget* target, bool useMultisampleFBO
         fHWBoundFramebufferIsMSAA != useMultisampleFBO ||
         target->mustRebind(useMultisampleFBO)) {
         target->bind(useMultisampleFBO);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         // don't do this check in Chromium -- this is causing
         // lots of repeated command buffer flushes when the compositor is
         // rendering with Ganesh, which is really slow; even too slow for
@@ -2851,7 +2851,7 @@ void GrGLGpu::bindTexture(int unitIdx, GrSamplerState samplerState, const skgpu:
                           GrGLTexture* texture) {
     SkASSERT(texture);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (!this->caps()->npotTextureTileSupport()) {
         if (samplerState.isRepeatedX()) {
             const int w = texture->width();
@@ -3212,7 +3212,7 @@ void GrGLGpu::onFBOChanged() {
         this->caps()->workarounds().flush_queries_before_deleting_or_unbinding_fbo) {
         this->forcefullyFlushQueries();
     }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (fIsExecutingCommandBuffer_DebugOnly) {
         SkDebugf("WARNING: GL FBO binding changed while executing a command buffer. "
                  "This will severely hurt performance.\n");

@@ -32,7 +32,7 @@ public:
 
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SamplerDesc&) SK_EXCLUDES(fSpinLock);
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     size_t getResourceCacheLimit() const SK_EXCLUDES(fSpinLock);
     size_t getResourceCacheCurrentBudgetedBytes() const SK_EXCLUDES(fSpinLock);
     size_t getResourceCacheCurrentPurgeableBytes() const SK_EXCLUDES(fSpinLock);

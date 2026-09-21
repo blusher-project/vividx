@@ -88,7 +88,7 @@ static gr_cp<ID3DBlob> GrCompileHLSLShader(GrD3DGpu* gpu,
     }
 
     uint32_t compileFlags = 0;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // Enable better shader debugging with the graphics debugging tools.
     compileFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif
@@ -651,7 +651,7 @@ sk_sp<GrD3DPipeline> GrD3DPipelineStateBuilder::MakeComputePipeline(GrD3DGpu* gp
     {
         TRACE_EVENT0("skia.shaders", "driver_compile_shader");
         uint32_t compileFlags = 0;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         // Enable better shader debugging with the graphics debugging tools.
         compileFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif

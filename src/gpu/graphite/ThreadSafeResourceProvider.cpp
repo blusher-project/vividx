@@ -24,7 +24,7 @@ sk_sp<Sampler> ThreadSafeResourceProvider::findOrCreateCompatibleSampler(const S
     return sampler;
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 size_t ThreadSafeResourceProvider::getResourceCacheLimit() const {
     SkAutoSpinlock lock{fSpinLock};
     return fWrappedProvider->getResourceCacheLimit();

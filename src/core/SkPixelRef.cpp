@@ -8,7 +8,7 @@
 #include "include/core/SkPixelRef.h"
 
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkPixelStorage.h"
 #include "src/core/SkBitmapCache.h"
 #include "src/core/SkNextID.h"
@@ -102,7 +102,7 @@ void SkPixelRef::callGenIDChangeListeners() {
 }
 
 void SkPixelRef::notifyPixelsChanged() {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (this->isImmutable()) {
         SkDebugf("========== notifyPixelsChanged called on immutable pixelref");
     }

@@ -12,7 +12,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkEnumBitMask.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkSLTypeShared.h"

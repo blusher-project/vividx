@@ -64,7 +64,7 @@ public:
 
     static Result Ok() { return Result{Status::Ok, {}}; }
 
-    static Result Fatal(const char* fmt, ...) SK_PRINTF_LIKE(1, 2) {
+    static Result Fatal(const char* fmt, ...) VX_PRINTF_LIKE(1, 2) {
         SkString msg;
         va_list args;
         va_start(args, fmt);
@@ -74,7 +74,7 @@ public:
         return Result{Status::Fatal, std::move(msg)};
     }
 
-    static Result Skip(const char* fmt, ...) SK_PRINTF_LIKE(1, 2) {
+    static Result Skip(const char* fmt, ...) VX_PRINTF_LIKE(1, 2) {
         SkString msg;
         va_list args;
         va_start(args, fmt);

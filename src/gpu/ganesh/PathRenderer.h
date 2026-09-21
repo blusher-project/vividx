@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/gpu/ganesh/GrPaint.h"
 
 #include <string.h>
@@ -102,7 +102,7 @@ public:
         // This is only used by TessellationPathRenderer
         bool                        fHasUserStencilSettings;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         void validate() const {
             SkASSERT(fCaps);
             SkASSERT(fProxy);
@@ -135,7 +135,7 @@ public:
         const GrStyledShape*         fShape;
         GrAAType                     fAAType;
         bool                         fGammaCorrect;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         void validate() const {
             SkASSERT(fContext);
             SkASSERT(fUserStencilSettings);

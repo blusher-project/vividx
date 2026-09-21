@@ -16,7 +16,7 @@
 #include "include/effects/SkColorMatrix.h"
 #include "include/effects/SkImageFilters.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "modules/svg/include/SkSVGRenderContext.h"
 #include "modules/svg/include/SkSVGTypes.h"
 

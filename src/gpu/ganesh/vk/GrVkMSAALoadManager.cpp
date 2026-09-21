@@ -12,7 +12,7 @@
 #include "include/core/SkScalar.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/GpuRefCnt.h"

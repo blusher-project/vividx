@@ -11,7 +11,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/docs/SkPDFDocument.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "src/core/SkStreamPriv.h"
 #include "src/core/SkUTF.h"

@@ -226,12 +226,12 @@ public:
     void prependHex(uint32_t value, int minDigits = 0) { this->insertHex(0, value, minDigits); }
     void prependScalar(SkScalar value) { this->insertScalar((size_t)-1, value); }
 
-    void printf(const char format[], ...) SK_PRINTF_LIKE(2, 3);
-    void printVAList(const char format[], va_list) SK_PRINTF_LIKE(2, 0);
-    void appendf(const char format[], ...) SK_PRINTF_LIKE(2, 3);
-    void appendVAList(const char format[], va_list) SK_PRINTF_LIKE(2, 0);
-    void prependf(const char format[], ...) SK_PRINTF_LIKE(2, 3);
-    void prependVAList(const char format[], va_list) SK_PRINTF_LIKE(2, 0);
+    void printf(const char format[], ...) VX_PRINTF_LIKE(2, 3);
+    void printVAList(const char format[], va_list) VX_PRINTF_LIKE(2, 0);
+    void appendf(const char format[], ...) VX_PRINTF_LIKE(2, 3);
+    void appendVAList(const char format[], va_list) VX_PRINTF_LIKE(2, 0);
+    void prependf(const char format[], ...) VX_PRINTF_LIKE(2, 3);
+    void prependVAList(const char format[], va_list) VX_PRINTF_LIKE(2, 0);
 
     void remove(size_t offset, size_t length);
 
@@ -285,7 +285,7 @@ private:
 };
 
 /// Creates a new string and writes into it using a printf()-style format.
-SK_API SkString SkStringPrintf(const char* format, ...) SK_PRINTF_LIKE(1, 2);
+SK_API SkString SkStringPrintf(const char* format, ...) VX_PRINTF_LIKE(1, 2);
 /// This makes it easier to write a caller as a VAR_ARGS function where the format string is
 /// optional.
 static inline SkString SkStringPrintf() { return SkString(); }

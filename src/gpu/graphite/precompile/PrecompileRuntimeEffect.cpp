@@ -25,7 +25,7 @@ namespace skgpu::graphite {
 
 namespace {
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 bool precompilebase_is_valid_as_child(const PrecompileBase *child) {
     if (!child) {
@@ -42,7 +42,7 @@ bool precompilebase_is_valid_as_child(const PrecompileBase *child) {
     }
 }
 
-#endif // SK_DEBUG
+#endif // VX_DEBUG
 
 int num_options_in_set(const SkSpan<const sk_sp<PrecompileBase>>& optionSet) {
     int numOptions = 0;

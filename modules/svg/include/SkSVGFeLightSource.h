@@ -10,8 +10,8 @@
 
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
-#include "include/private/SkDebug.h"
+#include <vividx/common.h>
+#include <vividx/assert.h>
 #include "modules/svg/include/SkSVGHiddenContainer.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"

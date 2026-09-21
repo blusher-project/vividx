@@ -9,7 +9,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkCubics.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkVx.h"

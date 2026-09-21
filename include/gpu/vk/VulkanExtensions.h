@@ -10,8 +10,8 @@
 
 #include "include/core/SkString.h"
 #include "include/gpu/vk/VulkanTypes.h"
-#include "include/private/SkAPI.h"
-#include "include/private/SkDebug.h"
+#include <vividx/common.h>
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 

@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkTHash.h"
@@ -202,7 +202,7 @@ private:
         sk_sp<GrSurface>  fExistingSurface; // queried from resource cache. may be null.
         bool              fAccountedForInBudget = false;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         uint32_t         fUniqueID;
 
         static uint32_t  CreateUniqueID();
@@ -264,7 +264,7 @@ private:
         Register*        fRegister = nullptr;
         AllowRecycling   fAllowRecycling = AllowRecycling::kYes;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         uint32_t        fUniqueID;
 
         static uint32_t CreateUniqueID();
@@ -309,7 +309,7 @@ private:
 
     bool fFailedInstantiation = false;
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     bool fPlanned = false;
     bool fAssigned = false;
 #endif

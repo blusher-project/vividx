@@ -10,7 +10,7 @@
 #include <vividx/core/color-type.h>
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTemplates.h"
 #include "modules/skcms/skcms.h"
 #include "src/core/SkImageInfoPriv.h"

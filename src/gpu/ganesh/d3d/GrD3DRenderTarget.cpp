@@ -203,7 +203,7 @@ void GrD3DRenderTarget::genKey(skgpu::KeyBuilder* b) const {
     b->add32(this->dxgiFormat());
     b->add32(this->numSamples());
     b->add32(this->stencilDxgiFormat());
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (const GrAttachment* stencil = this->getStencilAttachment()) {
         SkASSERT(stencil->numSamples() == this->numSamples());
     }

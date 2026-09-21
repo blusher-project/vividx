@@ -28,7 +28,7 @@ bool EncodeGradientStopToHalf(float offset, float* mantissa, float* exponent) {
         return false;
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     SkHalf halfM = SkFloatToHalf(mant);
     float restored = std::ldexp(SkHalfToFloat(halfM), exp);
     SkASSERT(std::abs(restored - offset) < 0.001f);

@@ -17,7 +17,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkDashPathEffect.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTPin.h"
 #include "modules/svg/include/SkSVGAttribute.h"

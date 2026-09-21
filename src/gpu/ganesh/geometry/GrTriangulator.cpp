@@ -9,7 +9,7 @@
 
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkMath.h"
 #include "include/private/SkTPin.h"
@@ -1532,7 +1532,7 @@ void VertexList::dump() const {
 }
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static void validate_edge_pair(Edge* left, Edge* right, const Comparator& c) {
     if (!left || !right) {
         return;
@@ -1654,7 +1654,7 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
                 return SimplifyResult::kFailed;
             }
         } while (restartChecks);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         validate_edge_list(&activeEdges, c);
 #endif
         for (Edge* e = v->fFirstEdgeAbove; e; e = e->fNextEdgeAbove) {

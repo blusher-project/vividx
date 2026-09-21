@@ -301,7 +301,7 @@ static inline SkPMColor SkBlendARGB32(SkPMColor src, SkPMColor dst, U8CPU aa) {
 #define SkG32ToG16_MACRO(g)   ((unsigned)(g) >> (SK_G32_BITS - SK_G16_BITS))
 #define SkB32ToB16_MACRO(b)   ((unsigned)(b) >> (SK_B32_BITS - SK_B16_BITS))
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static inline unsigned SkR32ToR16(unsigned r) {
         SkR32Assert(r);
         return SkR32ToR16_MACRO(r);

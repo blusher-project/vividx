@@ -10,7 +10,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMalloc.h"
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCubic.h"
@@ -30,7 +30,7 @@ class SkIntersections {
 public:
     SkIntersections(SkDEBUGCODE(SkOpGlobalState* globalState = nullptr))
         : fSwap(0)
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         SkDEBUGPARAMS(fDebugGlobalState(globalState))
         , fDepth(0)
 #endif
@@ -116,7 +116,7 @@ public:
         return intersect(cubic, line);
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpGlobalState* globalState() const { return fDebugGlobalState; }
 #endif
 
@@ -299,7 +299,7 @@ public:
     static int VerticalIntercept(const SkDConic& conic, SkScalar x, double* roots);
 
     int depth() const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         return fDepth;
 #else
         return 0;
@@ -334,7 +334,7 @@ private:
     unsigned char fMax;
     bool fAllowNear;
     bool fSwap;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkOpGlobalState* fDebugGlobalState;
     int fDepth;
 #endif

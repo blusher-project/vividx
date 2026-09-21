@@ -100,7 +100,7 @@ private:
                 fFormatFeatures[index] = featureList;
             } else {
                 // Allow concatenation, so long as there aren't duplicate features
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
                 for (const ExtensionLimitedFlags& priorExt : fFormatFeatures[index]) {
                     for (const ExtensionLimitedFlags& newExt : featureList) {
                         SkASSERT(priorExt.first != newExt.first);

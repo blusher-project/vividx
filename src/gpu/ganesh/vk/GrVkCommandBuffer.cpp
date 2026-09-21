@@ -10,7 +10,7 @@
 #include "include/core/SkRect.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/ganesh/GrGpuBuffer.h"
 #include "src/gpu/ganesh/vk/GrVkBuffer.h"
@@ -90,7 +90,7 @@ void GrVkCommandBuffer::pipelineBarrier(const GrVkGpu* gpu,
                                         void* barrier) {
     SkASSERT(!this->isWrapped());
     SkASSERT(fIsActive);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // For images we can have barriers inside of render passes but they require us to add more
     // support in subpasses which need self dependencies to have barriers inside them. Also, we can
     // never have buffer barriers inside of a render pass. For now we will just assert that we are
@@ -239,7 +239,7 @@ void GrVkCommandBuffer::clearAttachments(const GrVkGpu* gpu,
 
     this->addingWork(gpu);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (int i = 0; i < numAttachments; ++i) {
         if (attachments[i].aspectMask == VK_IMAGE_ASPECT_COLOR_BIT) {
             uint32_t testIndex;
@@ -879,7 +879,7 @@ void GrVkPrimaryCommandBuffer::copyBuffer(GrVkGpu* gpu,
     SkASSERT(fIsActive);
     SkASSERT(!fActiveRenderPass);
     this->addingWork(gpu);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (uint32_t i = 0; i < regionCount; ++i) {
         const VkBufferCopy& region = regions[i];
         SkASSERT(region.size > 0);

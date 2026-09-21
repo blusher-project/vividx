@@ -24,7 +24,7 @@
 #include <limits>
 #include <utility>
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #include <atomic>
 
 uint32_t GrResourceAllocator::Interval::CreateUniqueID() {
@@ -80,7 +80,7 @@ void GrResourceAllocator::addInterval(GrSurfaceProxy* proxy, unsigned int start,
     if (Interval** intvlPtr = fIntvlHash.find(proxyID)) {
         // Revise the interval for an existing use
         Interval* intvl = *intvlPtr;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         if (0 == start && 0 == end) {
             // This interval is for the initial upload to a deferred proxy. Due to the vagaries
             // of how deferred proxies are collected they can appear as uploads multiple times
@@ -279,7 +279,7 @@ void GrResourceAllocator::IntervalList::insertByIncreasingEnd(Interval* intvl) {
     SkDEBUGCODE(this->validate());
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrResourceAllocator::IntervalList::validate() const {
     SkASSERT(SkToBool(fHead) == SkToBool(fTail));
 

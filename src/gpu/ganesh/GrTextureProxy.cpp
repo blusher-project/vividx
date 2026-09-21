@@ -226,7 +226,7 @@ GrSurfaceProxy::LazySurfaceDesc GrTextureProxy::callbackDesc() const {
     };
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrTextureProxy::onValidateSurface(const GrSurface* surface) {
     SkASSERT(!surface->asRenderTarget());
 

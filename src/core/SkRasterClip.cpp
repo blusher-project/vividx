@@ -12,7 +12,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkScalar.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkRegionPriv.h"
 
 class SkBlitter;
@@ -281,7 +281,7 @@ void SkRasterClip::convertToAA() {
     (void)this->updateCacheAndReturnNonEmpty(false);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkRasterClip::validate() const {
     // can't ever assert that fBW is empty, since we may have called forceGetBW
     if (fIsBW) {

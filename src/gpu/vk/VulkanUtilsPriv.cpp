@@ -372,7 +372,7 @@ VulkanYcbcrConversionInfo::VulkanYcbcrConversionInfo(VkFormat format,
         , fChromaFilter(chromaFilter)
         , fForceExplicitReconstruction(forceExplicitReconstruction)
         , fComponents(components) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // Graphite can recreate these two flags so they don't reflect actual settings
     constexpr VkFormatFeatureFlags kIgnoredFlags =
         VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_SEPARATE_RECONSTRUCTION_FILTER_BIT |

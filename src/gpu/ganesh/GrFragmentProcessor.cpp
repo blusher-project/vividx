@@ -142,7 +142,7 @@ int GrFragmentProcessor::numNonNullChildProcessors() const {
                          [](const auto& c) { return c != nullptr; });
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 bool GrFragmentProcessor::isInstantiated() const {
     bool result = true;
     this->visitTextureEffects([&result](const GrTextureEffect& te) {

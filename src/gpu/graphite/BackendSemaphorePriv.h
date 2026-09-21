@@ -8,7 +8,7 @@
 #define skgpu_graphite_BackendSemaphorePriv_DEFINED
 
 #include "include/gpu/graphite/BackendSemaphore.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 namespace skgpu { enum class BackendApi : unsigned int; }
 
@@ -18,7 +18,7 @@ class BackendSemaphoreData {
 public:
     virtual ~BackendSemaphoreData();
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     virtual skgpu::BackendApi type() const = 0;
 #endif
 protected:

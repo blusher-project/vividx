@@ -8,7 +8,7 @@
 #ifndef SkSynchronizedResourceCache_DEFINED
 #define SkSynchronizedResourceCache_DEFINED
 
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMutex.h"
 #include "src/core/SkResourceCache.h"
 

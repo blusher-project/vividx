@@ -373,7 +373,7 @@ bool GrVkOpsRenderPass::set(GrRenderTarget* rt,
     SkASSERT(!fRenderTarget);
     SkASSERT(fGpu == rt->getContext()->priv().getGpu());
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     fIsActive = true;
 #endif
 
@@ -437,7 +437,7 @@ void GrVkOpsRenderPass::reset() {
     fLoadFromResolve = LoadFromResolve::kNo;
     fOverridePipelinesForResolveLoad = false;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     fIsActive = false;
 #endif
 }
@@ -710,7 +710,7 @@ void GrVkOpsRenderPass::onSetScissorRect(const SkIRect& scissor) {
                                              fOrigin, combinedScissorRect);
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void check_sampled_texture(GrTexture* tex, GrAttachment* colorAttachment, GrVkGpu* gpu) {
     SkASSERT(!tex->isProtected() || (colorAttachment->isProtected() && gpu->protectedContext()));
     auto vkTex = static_cast<GrVkTexture*>(tex)->textureImage();
@@ -721,7 +721,7 @@ void check_sampled_texture(GrTexture* tex, GrAttachment* colorAttachment, GrVkGp
 bool GrVkOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,
                                        const GrSurfaceProxy* const geomProcTextures[],
                                        const GrPipeline& pipeline) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkASSERT(fCurrentPipelineState);
     auto colorAttachment = fFramebuffer->colorAttachment();
     for (int i = 0; i < geomProc.numTextureSamplers(); ++i) {

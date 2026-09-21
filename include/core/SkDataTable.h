@@ -9,7 +9,7 @@
 #define SkDataTable_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkAssert.h"
 
 #include <cstdint>

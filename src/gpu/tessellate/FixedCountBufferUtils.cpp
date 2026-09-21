@@ -8,7 +8,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "src/core/SkMathPriv.h"
 #include "src/gpu/BufferWriter.h"

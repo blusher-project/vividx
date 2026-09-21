@@ -68,7 +68,7 @@ bool GrTexture::StealBackendTexture(sk_sp<GrTexture> texture,
     if (!texture->onStealBackendTexture(backendTexture, releaseProc)) {
         return false;
     }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     GrResourceCache* cache = texture->getContext()->priv().getResourceCache();
     int preCount = cache->getResourceCount();
 #endif
@@ -80,7 +80,7 @@ bool GrTexture::StealBackendTexture(sk_sp<GrTexture> texture,
     if (texture->resourcePriv().getScratchKey().isValid()) {
         texture->resourcePriv().removeScratchKey();
     }
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     texture.reset();
     int postCount = cache->getResourceCount();
     SkASSERT(postCount < preCount);

@@ -49,7 +49,7 @@ public:
 
     virtual ~CommandBuffer();
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     bool hasWork() { return fHasWork; }
     bool isResourceTracked(const Resource* resource);
 #endif
@@ -208,7 +208,7 @@ private:
     virtual bool onSynchronizeBufferToCpu(const Buffer*, bool* outDidResultInWork) = 0;
     virtual bool onClearBuffer(const Buffer*, size_t offset, size_t size) = 0;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool fHasWork = false;
 #endif
     inline static constexpr int kInitialTrackedResourcesCount = 32;

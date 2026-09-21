@@ -87,7 +87,7 @@ const GrDrawingManager* SurfaceContext::drawingManager() const {
     return fContext->priv().drawingManager();
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 skgpu::SingleOwner* SurfaceContext::singleOwner() const { return fContext->priv().singleOwner(); }
 #endif
 
@@ -1508,7 +1508,7 @@ SurfaceContext::PixelTransferResult SurfaceContext::transferPixels(GrColorType d
     return result;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SurfaceContext::validate() const {
     SkASSERT(fReadView.proxy());
     fReadView.proxy()->validate(fContext);

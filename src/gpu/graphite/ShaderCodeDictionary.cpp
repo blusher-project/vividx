@@ -256,7 +256,7 @@ std::string ShaderNode::invokeAndAssign(const ShaderInfo& shaderInfo,
                                         std::string* funcBody) const {
     std::string expr = invoke_node(shaderInfo, this, args);
     std::string outputVar = get_mangled_name("outColor", this->keyIndex());
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     SkSL::String::appendf(funcBody,
                           "// [%d] %s\n"
                           "half4 %s = %s;",
@@ -494,7 +494,7 @@ std::string GenerateComposePreamble(const ShaderInfo& shaderInfo, const ShaderNo
 
     const ShaderNode* outer = node->child(node->numChildren() - 1);
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     const int numOuterParameters =
             SkToBool((outer->requiredFlags() & SnippetRequirementFlags::kPriorStageOutput)) +
             SkToBool((outer->requiredFlags() & SnippetRequirementFlags::kBlenderDstColor)) +
@@ -520,7 +520,7 @@ std::string GenerateComposePreamble(const ShaderInfo& shaderInfo, const ShaderNo
     return SkSL::String::printf("%s { return %s; }", decl.c_str(), invokeOuter.c_str());
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 // The toLinearSRGB and fromLinearSRGB RTE built-ins should only be colorspace transform functions.
 // This recurses the node to make sure it contains only Compose, Passthrough, or CSXform blocks.
 void validate_linearsrgb_node(const ShaderNode* node) {
@@ -803,7 +803,7 @@ std::string ShaderCodeDictionary::GenerateMeshFSPreamble(const ShaderInfo& shade
     return fsCallbacks.fPreamble;
 }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
 bool ShaderCodeDictionary::isValidID(int snippetID) const {
     if (snippetID < 0) {
         return false;

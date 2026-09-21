@@ -26,7 +26,7 @@ public:
 private:
     SkRectClipBlitter   fRectBlitter;
     SkRgnClipBlitter    fRgnBlitter;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkRectClipCheckBlitter fRectClipCheckBlitter;
 #endif
     SkBlitter*          fBlitter;

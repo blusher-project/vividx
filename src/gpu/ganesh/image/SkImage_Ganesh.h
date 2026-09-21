@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkThreadAnnotations.h"
 #include "src/core/SkSpinlock.h"
 #include "src/gpu/Swizzle.h"
@@ -172,7 +172,7 @@ private:
         size_t gpuMemorySize() const SK_EXCLUDES(fLock);
         skgpu::Mipmapped mipmapped() const SK_EXCLUDES(fLock);
         skgpu::Protected isProtected() const SK_EXCLUDES(fLock);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         const GrBackendFormat& backendFormat() SK_EXCLUDES(fLock);
 #endif
 

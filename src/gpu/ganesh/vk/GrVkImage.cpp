@@ -278,7 +278,7 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
 void GrVkImage::init(GrVkGpu* gpu, bool forSecondaryCB) {
     SkASSERT(skgpu::MutableTextureStates::GetVkImageLayout(fMutableState.get()) == fInfo.fImageLayout);
     SkASSERT(skgpu::MutableTextureStates::GetVkQueueFamilyIndex(fMutableState.get()) == fInfo.fCurrentQueueFamily);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (fInfo.fImageUsageFlags & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT) {
         SkASSERT(SkToBool(fInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT));
     } else {
@@ -406,7 +406,7 @@ void GrVkImage::setImageLayoutAndQueueIndex(const GrVkGpu* gpu,
     VkImageLayout currentLayout = this->currentLayout();
     uint32_t currentQueueIndex = this->currentQueueFamilyIndex();
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (fInfo.fSharingMode == VK_SHARING_MODE_CONCURRENT) {
         if (newQueueFamilyIndex == VK_QUEUE_FAMILY_IGNORED) {
             SkASSERT(currentQueueIndex == VK_QUEUE_FAMILY_IGNORED ||

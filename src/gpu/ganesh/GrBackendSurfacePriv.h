@@ -12,7 +12,7 @@
 #include "include/gpu/MutableTextureState.h"  // IWYU pragma: keep
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 
 #include <cstddef>
@@ -34,7 +34,7 @@ public:
     virtual size_t bytesPerBlock() const = 0;
     virtual int stencilBits() const = 0;
     virtual bool equal(const GrBackendFormatData* that) const = 0;
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     virtual GrBackendApi type() const = 0;
 #endif
 protected:
@@ -57,7 +57,7 @@ private:
 class GrBackendTextureData {
 public:
     virtual ~GrBackendTextureData();
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     virtual GrBackendApi type() const = 0;
 #endif
 protected:
@@ -84,7 +84,7 @@ private:
 class GrBackendRenderTargetData {
 public:
     virtual ~GrBackendRenderTargetData();
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     virtual GrBackendApi type() const = 0;
 #endif
 protected:

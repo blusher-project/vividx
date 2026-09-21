@@ -70,7 +70,7 @@ private:
               bool close) const final;
     const char* name() const final { return "DDL"; }
 #endif
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void visitProxies_debugOnly(const GrVisitProxyFunc&) const override {}
 #endif
 

@@ -9,7 +9,7 @@
 #define SkRefCnt_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 
 #include <atomic>
 #include <cstddef>

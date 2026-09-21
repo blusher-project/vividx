@@ -11,7 +11,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkGeometry.h"
@@ -330,7 +330,7 @@ SkScalar SkContourMeasureIter::Impl::compute_line_seg(SkPoint p0, SkPoint p1, Sk
     return distance;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void SkContourMeasureIter::Impl::validate() const {
     const SkContourMeasure::Segment* seg = fSegments.begin();
     const SkContourMeasure::Segment* stop = fSegments.end();

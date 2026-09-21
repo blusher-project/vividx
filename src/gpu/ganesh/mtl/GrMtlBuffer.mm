@@ -16,7 +16,7 @@
 #error This file must be compiled with Arc. Use -fobjc-arc flag
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 #define VALIDATE() this->validate()
 #else
 #define VALIDATE() do {} while(false)
@@ -199,7 +199,7 @@ bool GrMtlBuffer::onClearToZero() {
     return true;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 void GrMtlBuffer::validate() const {
     SkASSERT(fMtlBuffer == nil ||
              this->intendedType() == GrGpuBufferType::kVertex ||

@@ -20,7 +20,7 @@ public:
     VulkanBackendTextureData(VulkanAlloc alloc, sk_sp<skgpu::MutableTextureState> mts, VkImage vImg)
             : fMemoryAlloc(alloc), fMutableState(mts), fVkImage(vImg) {}
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     skgpu::BackendApi type() const override { return skgpu::BackendApi::kVulkan; }
 #endif
 

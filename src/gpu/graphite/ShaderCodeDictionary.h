@@ -265,7 +265,7 @@ public:
         return this->lookup(id).toString(caps, this);
     }
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     bool isValidID(int snippetID) const SK_EXCLUDES(fSpinLock);
 
     void dump(const Caps*, UniquePaintParamsID) const;

@@ -10,7 +10,7 @@
 
 #include "include/gpu/graphite/Context.h"
 #include "include/ports/SkCFObject.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #import <CoreFoundation/CoreFoundation.h>
 #include <memory>

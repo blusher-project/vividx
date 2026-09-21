@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/gpu/ganesh/vk/GrVkTypes.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 class GrBackendTexture;
 class GrBackendRenderTarget;

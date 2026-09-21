@@ -14,7 +14,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkIPoint16.h"
@@ -376,7 +376,7 @@ public:
                                         fBytesPerPixel));
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void resetListPtrs() {
         fPrev = fNext = nullptr;
         fList = nullptr;

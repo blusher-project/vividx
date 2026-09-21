@@ -314,7 +314,7 @@ private:
     void makeBudgeted();
     void makeUnbudgeted();
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     friend class GrGpu;  // for assert in GrGpu to access getGpu
 #endif
 

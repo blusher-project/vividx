@@ -16,7 +16,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/core/SkSurfaceProps.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkDrawTypes.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkZip.h"
@@ -250,7 +250,7 @@ public:
     const SkRasterClip* fRC{nullptr};          // required
     const SkSurfaceProps* fProps{nullptr};     // optional
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const;
 #else
     void validate() const {}

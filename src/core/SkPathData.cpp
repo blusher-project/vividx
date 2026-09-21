@@ -153,7 +153,7 @@ SkPathData::SkPathData(size_t npts, size_t nvbs, size_t ncns)
     SkASSERT((npts == 0 && nvbs == 0 && ncns == 0) ||
              (npts != 0 && nvbs != 0));
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     {
         SkSafeAccumulator accum(sizeof(*this));
         accum.addMul(npts, sizeof(SkPoint))

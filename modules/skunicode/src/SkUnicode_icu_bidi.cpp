@@ -7,7 +7,7 @@
 #include "modules/skunicode/src/SkUnicode_icu_bidi.h"
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTFitsIn.h"
 #include "src/core/SkUTF.h"
 

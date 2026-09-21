@@ -164,7 +164,7 @@ private:
     void deleteBlocks();
     [[nodiscard]] bool flushCpuData(const BufferBlock& block, size_t flushSize);
     void resetCpuData(size_t newSize);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate(bool unusedBlockAllowed = false) const;
 #endif
     size_t fBytesInUse = 0;

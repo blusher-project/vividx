@@ -50,7 +50,7 @@ GrResourceProvider::GrResourceProvider(GrGpu* gpu,
                                        skgpu::SingleOwner* owner)
         : fCache(cache)
         , fGpu(gpu)
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         , fSingleOwner(owner)
 #endif
 {

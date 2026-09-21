@@ -252,7 +252,7 @@ extern void (*gVerboseFinalize)();
 std::optional<SkPath> OpDebug(const SkPath& one, const SkPath& two, SkPathOp op
         SkDEBUGPARAMS(bool skipAssert) SkDEBUGPARAMS(const char* testName)) {
 #if DEBUG_DUMP_VERIFY
-#ifndef SK_DEBUG
+#ifndef VX_DEBUG
     const char* testName = "release";
 #endif
     if (SkPathOpsDebug::gDumpOp) {

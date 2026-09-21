@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SingleOwner.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <chrono>
 #include <memory>

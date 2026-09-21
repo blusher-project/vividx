@@ -37,7 +37,7 @@ public:
 
     wgpu::CommandBuffer finishEncoding();
 
-#if defined(SK_DEBUG)
+#if defined(VX_DEBUG)
     bool hasActivePassEncoder() const {
         return fActiveRenderPassEncoder || fActiveComputePassEncoder;
     }

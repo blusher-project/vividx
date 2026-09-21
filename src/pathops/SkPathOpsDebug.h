@@ -13,6 +13,8 @@
 
 #include <cstddef>
 
+#include <vividx/assert.h>
+
 class SkOpAngle;
 class SkOpCoincidence;
 class SkOpContour;
@@ -114,7 +116,7 @@ struct SkDQuad;
 
 #endif
 
-#ifdef SK_RELEASE
+#ifdef VX_RELEASE
     #define SkDEBUGRELEASE(a, b) b
     #define SkDEBUGPARAMS(...)
 #else
@@ -295,7 +297,7 @@ public:
     static CoinDict gCoinVistedDict;
 #endif
 
-#if defined(SK_DEBUG) || !FORCE_RELEASE
+#if defined(VX_DEBUG) || !FORCE_RELEASE
     static int gContourID;
     static int gSegmentID;
 #endif

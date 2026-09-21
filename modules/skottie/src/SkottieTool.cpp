@@ -24,7 +24,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/encode/SkPngEncoder.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"
 #include "modules/skottie/include/ExternalLayer.h"

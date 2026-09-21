@@ -9,7 +9,7 @@
 #define GrGLBackendSurface_DEFINED
 
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 
 #include <string_view>
 

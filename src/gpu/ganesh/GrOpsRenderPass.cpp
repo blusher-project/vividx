@@ -8,7 +8,7 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTo.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrCpuBuffer.h"
@@ -30,7 +30,7 @@
 
 void GrOpsRenderPass::begin() {
     fDrawPipelineStatus = DrawPipelineStatus::kNotConfigured;
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     fScissorStatus = DynamicStateStatus::kDisabled;
     fTextureBindingStatus = DynamicStateStatus::kDisabled;
     fHasIndexBuffer = false;
@@ -69,7 +69,7 @@ void GrOpsRenderPass::executeDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler
 }
 
 void GrOpsRenderPass::bindPipeline(const GrProgramInfo& programInfo, const SkRect& drawBounds) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // Both the 'programInfo' and this renderPass have an origin. Since they come from the same
     // place (i.e., the target renderTargetProxy) they had best agree.
     SkASSERT(programInfo.origin() == fOrigin);
@@ -107,7 +107,7 @@ void GrOpsRenderPass::bindPipeline(const GrProgramInfo& programInfo, const SkRec
         return;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     fScissorStatus = (programInfo.pipeline().isScissorTestEnabled()) ?
             DynamicStateStatus::kUninitialized : DynamicStateStatus::kDisabled;
     bool hasTextures = (programInfo.geomProc().numTextureSamplers() > 0);
@@ -141,7 +141,7 @@ void GrOpsRenderPass::setScissorRect(const SkIRect& scissor) {
 void GrOpsRenderPass::bindTextures(const GrGeometryProcessor& geomProc,
                                    const GrSurfaceProxy* const geomProcTextures[],
                                    const GrPipeline& pipeline) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkASSERT((geomProc.numTextureSamplers() > 0) == SkToBool(geomProcTextures));
     for (int i = 0; i < geomProc.numTextureSamplers(); ++i) {
         const auto& sampler = geomProc.textureSampler(i);
@@ -186,7 +186,7 @@ void GrOpsRenderPass::bindBuffers(sk_sp<const GrBuffer> indexBuffer,
         return;
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (indexBuffer) {
         fHasIndexBuffer = true;
     }

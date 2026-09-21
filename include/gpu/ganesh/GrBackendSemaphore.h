@@ -8,7 +8,7 @@
 #define GrBackendSemaphore_DEFINED
 
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "include/private/SkAnySubclass.h"
 
 #include <cstddef>

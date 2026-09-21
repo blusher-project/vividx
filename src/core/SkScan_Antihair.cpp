@@ -11,7 +11,7 @@
 #include "include/core/SkScalar.h"
 #include "include/private/SkAssert.h"
 #include "include/private/SkCPUTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkFixed.h"
 #include "include/private/SkMath.h"
 #include "include/private/SkSafe32.h"
@@ -272,7 +272,7 @@ static int any_bad_ints(int a, int b, int c, int d) {
 }
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 static bool canConvertFDot6ToFixed(SkFDot6 x) {
     const int maxDot6 = SK_MaxS32 >> (16 - 6);
     return SkAbs32(x) <= maxDot6;
@@ -512,7 +512,7 @@ static void do_anti_hairline(SkFDot6 x0, SkFDot6 y0, SkFDot6 x1, SkFDot6 y1,
     SkASSERT(hairBlitter);
     hairBlitter->setup(blitter);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     if (startCoverage > 0 && stopCoverage > 0) {
         // be sure we don't draw twice in the same pixel
         SkASSERT(istart < istop - 1);

@@ -137,7 +137,7 @@ public:
 
     int count() const { return fCount; }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     template <typename Fn>  // f(T) or f(const T&)
     void foreach(Fn&& fn) const {
         fHash.foreach([&](const ValueList& vl) {

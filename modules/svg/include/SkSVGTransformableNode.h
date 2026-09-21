@@ -10,7 +10,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
-#include "include/private/SkAPI.h"
+#include <vividx/common.h>
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
 #include "modules/svg/include/SkSVGValue.h"

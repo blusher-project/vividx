@@ -18,7 +18,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAlphaRuns.h"
@@ -770,7 +770,7 @@ SkShaderBlitter::~SkShaderBlitter() = default;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 
 void SkRectClipCheckBlitter::blitH(int x, int y, int width) {
     SkASSERT(fClipRect.contains(SkIRect::MakeXYWH(x, y, width, 1)));

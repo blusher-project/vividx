@@ -11,7 +11,7 @@
 #include "include/core/SkDrawable.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTArray.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 #include "src/gpu/ganesh/GrDeferredUpload.h"
@@ -65,7 +65,7 @@ public:
 
     void submit();
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     bool isActive() const { return fIsActive; }
 #endif
 
@@ -137,7 +137,7 @@ private:
 
     GrVkGpu*                                    fGpu;
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     // When we are actively recording into the GrVkOpsRenderPass we set this flag to true. This
     // then allows us to assert that we never submit a primary command buffer to the queue while in
     // a recording state. This is needed since when we submit to the queue we change command pools

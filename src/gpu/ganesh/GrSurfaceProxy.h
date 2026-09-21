@@ -15,7 +15,7 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkMacros.h"
 #include "include/private/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -365,7 +365,7 @@ public:
     SkString dump() const;
 #endif
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate(GrContext_Base*) const;
     SkString getDebugName() {
         return fDebugName.isEmpty() ? SkStringPrintf("%u", this->uniqueID().asUInt()) : fDebugName;

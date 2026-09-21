@@ -8,7 +8,7 @@
 #include "src/gpu/ganesh/mock/GrMockCaps.h"
 
 #include "include/gpu/ganesh/mock/GrMockBackendSurface.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "src/core/SkMathPriv.h"
 #include "src/gpu/ganesh/GrProgramDesc.h"
 #include "src/gpu/ganesh/TestFormatColorTypeCombination.h"
@@ -37,7 +37,7 @@ GrProgramDesc GrMockCaps::makeDesc(GrRenderTarget* /* rt */,
 }
 
 uint64_t GrMockCaps::computeFormatKey(const GrBackendFormat& format) const {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     SkTextureCompressionType compression = GrBackendFormats::AsMockCompressionType(format);
     SkASSERT(compression == SkTextureCompressionType::kNone);
 #endif
@@ -78,7 +78,7 @@ std::vector<GrTest::TestFormatColorTypeCombination> GrMockCaps::getTestingCombin
         { GCT::kRGBA_8888,        GrBackendFormats::MakeMockCompressionType(TCT::kBC1_RGBA8_UNORM)},
     };
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     for (const GrTest::TestFormatColorTypeCombination& combo : combos) {
         SkASSERT(this->onAreColorTypeAndFormatCompatible(combo.fColorType, combo.fFormat));
     }

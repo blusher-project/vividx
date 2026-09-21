@@ -13,7 +13,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkAlign.h"
 #include "include/private/SkAlignedStorage.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 
@@ -126,7 +126,7 @@ protected:
         return &fKey[kMetaDataCnt];
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void dump() const {
         if (!this->isValid()) {
             SkDebugf("Invalid Key\n");
@@ -267,7 +267,7 @@ public:
 
     const uint32_t* data() const { return this->ResourceKey::data(); }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     uint32_t domain() const { return this->ResourceKey::domain(); }
     size_t dataSize() const { return this->ResourceKey::dataSize(); }
 

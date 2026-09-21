@@ -27,7 +27,7 @@ public:
     // of the rect may be 1. It should never be empty.
     static void VisitSpans(const SkRegion& rgn, const std::function<void(const SkIRect&)>&);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     static void Validate(const SkRegion& rgn);
 #endif
 };
@@ -38,7 +38,7 @@ inline bool SkRegionValueIsSentinel(int32_t value) {
     return value == (int32_t)SkRegion_kRunTypeSentinel;
 }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
 // Given the first interval (just past the interval-count), compute the
 // interval count, by search for the x-sentinel
 //
@@ -148,7 +148,7 @@ public:
 
         const int intervals = runs[1];
         SkASSERT(runs[2 + intervals * 2] == SkRegion_kRunTypeSentinel);
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         {
             int n = compute_intervalcount(&runs[2]);
             SkASSERT(n == intervals);
@@ -209,7 +209,7 @@ public:
             SkASSERT(intervals < SkRegion_kRunTypeSentinel);
 
             if (intervals > 0) {
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
                 {
                     int n = compute_intervalcount(runs);
                     SkASSERT(n == intervals);
@@ -236,7 +236,7 @@ public:
             // test Y-sentinel
         } while (SkRegion_kRunTypeSentinel > *runs);
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
         // +1 to skip the last Y-sentinel
         int runCount = SkToInt(runs - this->writable_runs() + 1);
         SkASSERT(runCount == fRunCount);

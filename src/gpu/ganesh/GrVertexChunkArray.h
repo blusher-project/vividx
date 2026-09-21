@@ -10,7 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTypeTraits.h"

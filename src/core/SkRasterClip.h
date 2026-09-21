@@ -13,7 +13,7 @@
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
 #include "include/private/SkAssert.h"
-#include "include/private/SkDebug.h"
+#include <vividx/assert.h>
 #include "include/private/SkNoncopyable.h"
 #include "src/core/SkAAClip.h"
 
@@ -86,7 +86,7 @@ public:
         return !SkIRect::Intersects(this->getBounds(), rect);
     }
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     void validate() const;
 #else
     void validate() const {}
@@ -143,7 +143,7 @@ private:
     const SkRasterClip& fRC;
 };
 
-#ifdef SK_DEBUG
+#ifdef VX_DEBUG
     #define AUTO_RASTERCLIP_VALIDATE(rc)    SkAutoRasterClipValidate arcv(rc)
 #else
     #define AUTO_RASTERCLIP_VALIDATE(rc)
