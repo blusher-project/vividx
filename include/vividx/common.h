@@ -312,10 +312,18 @@ uint16_t vx_float_to_uint16(float f);
 // Usage:
 //    Calls to this function must be wrapped in `SK_UNSAFE_BUFFERS()`.
 //    SK_UNSAFE_BUFFER_USAGE void Func(T* input, T* end);
-#if __has_cpp_attribute(clang::unsafe_buffer_usage)
-#define SK_UNSAFE_BUFFER_USAGE [[clang::unsafe_buffer_usage]]
+#ifdef __cplusplus
+    #if __has_cpp_attribute(clang::unsafe_buffer_usage)
+    #define SK_UNSAFE_BUFFER_USAGE [[clang::unsafe_buffer_usage]]
+    #else
+    #define SK_UNSAFE_BUFFER_USAGE
+    #endif
 #else
-#define SK_UNSAFE_BUFFER_USAGE
+    #if defined(__has_c_attribute) && __has_c_attribute(clang::unsafe_buffer_usage)
+    #define SK_UNSAFE_BUFFER_USAGE [[clang::unsafe_buffer_usage]]
+    #else
+    #define SK_UNSAFE_BUFFER_USAGE
+    #endif
 #endif
 
 // Annotates code indicating that it should be permanently exempted from

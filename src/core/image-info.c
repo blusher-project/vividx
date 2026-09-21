@@ -135,6 +135,30 @@ int vx_color_info_shift_per_pixel(const vx_color_info_t *ct)
 }
 
 
+enum vx_alpha_type vx_image_info_alpha_type(const vx_image_info_t *info)
+{
+    return info->color_info.alpha_type;
+}
+
+enum vx_color_type vx_image_info_color_type(const vx_image_info_t *info)
+{
+    return info->color_info.color_type;
+}
+
+uint64_t vx_image_info_min_row_bytes64(const vx_image_info_t *info)
+{
+    return (uint64_t)vx_int64_mul(
+        info->dimensions.width, vx_image_info_bytes_per_pixel(info));
+}
+size_t vx_image_info_min_row_bytes(const vx_image_info_t *info)
+{
+    uint64_t min_row_bytes = vx_image_info_min_row_bytes64(info);
+    if (min_row_bytes > INT32_MAX) {
+        return 0;
+    }
+    return (size_t)min_row_bytes;
+}
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -17,13 +17,13 @@ extern "C" {
 //!< Float
 //!<===========
 
-inline float VX_FLOAT_SQRT2 = 1.41421356f;
-inline float VX_FLOAT_PI    = 3.14159265f;
-inline double VX_DOUBLE_PI  = 3.14159265358979323846264338327950288;
+static const float VX_FLOAT_SQRT2 = 1.41421356f;
+static const float VX_FLOAT_PI    = 3.14159265f;
+static const double VX_DOUBLE_PI  = 3.14159265358979323846264338327950288;
 
-inline float VX_FLOAT_NAN = NAN;
-inline float VX_FLOAT_INFINITY = INFINITY;
-inline float VX_FLOAT_NEGATIVE_INFINITY = -VX_FLOAT_INFINITY;
+static const float VX_FLOAT_NAN = NAN;
+static const float VX_FLOAT_INFINITY = INFINITY;
+static const float VX_FLOAT_NEGATIVE_INFINITY = -VX_FLOAT_INFINITY;
 
 #define VX_FLOAT_1                  1.0f
 #define VX_FLOAT_HALF               0.5f
@@ -186,6 +186,21 @@ static inline bool vx_float_array_eq(const float a[], const float b[], int n)
 //!<===========
 
 #define vx_int_to_float(x)          (float)(x)
+
+static inline int64_t vx_int64_mul(int64_t a, int64_t b)
+{
+    return a * b;
+}
+
+static inline int32_t vx_int32_left_shift(int32_t value, int32_t shift)
+{
+    return (int32_t) ((uint32_t) value << shift);
+}
+
+static inline int64_t vx_int64_left_shift(int64_t value, int32_t shift)
+{
+    return (int64_t) ((uint64_t) value << shift);
+}
 
 #ifdef __cplusplus
 }

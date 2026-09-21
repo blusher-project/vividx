@@ -368,8 +368,8 @@ enum vx_log_priority {
     #define VX_DEBUGFAILF(fmt, ...)    VX_ABORT(fmt, ##__VA_ARGS__)
     #define VXAssertResult(cond)      VX_ASSERT(cond)
 #else
-    #define VX_ASSERT(cond)            static_cast<void>(0)
-    #define VX_ASSERTF(cond, fmt, ...) static_cast<void>(0)
+    #define VX_ASSERT(cond)             ((void)0)
+    #define VX_ASSERTF(cond, fmt, ...)  ((void)0)
     #define VX_DEBUGFAIL(message)
     #define VX_DEBUGFAILF(fmt, ...)
 

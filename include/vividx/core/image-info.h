@@ -15,6 +15,7 @@
 #include <vividx/common.h>
 #include <vividx/core/alpha-type.h>
 #include <vividx/core/color-type.h>
+#include <vividx/core/math.h>
 #include <vividx/core/size.h>
 
 #ifdef __cplusplus
@@ -182,17 +183,168 @@ VX_PUBLIC int vx_color_info_shift_per_pixel(const vx_color_info_t *ct);
 //!<==================
 
 struct vx_image_info_t {
-    vx_color_info_t *color_info;
+    vx_color_info_t color_info;
     vx_size_i_t dimensions;
 };
 
-// static vx_image_info_t vx_image_info_make()
-// {
-//     vx_image_info_t info;
-//     info.color_info = vx_color_info_make();
-//     info.dimensions = vx_size_i_make(0, 0);
-//     return info;
-// }
+static vx_image_info_t vx_image_info_make(vx_size_i_t dimensions,
+                                          const vx_color_info_t *color_info)
+{
+    vx_image_info_t info;
+    info.color_info = *color_info;
+    info.dimensions = dimensions;
+    return info;
+}
+
+VX_PUBLIC
+enum vx_alpha_type vx_image_info_alpha_type(const vx_image_info_t *info);
+
+VX_PUBLIC
+enum vx_color_type vx_image_info_color_type(const vx_image_info_t *info);
+
+VX_PUBLIC
+vx_color_space_t* vx_image_info_color_space(const vx_image_info_t *info);
+
+static inline bool vx_image_info_is_empty(const vx_image_info_t *info)
+{
+    return vx_size_i_is_empty(info->dimensions);
+}
+
+static inline bool vx_image_info_is_opaque(const vx_image_info_t *info)
+{
+    return vx_color_info_is_opaque(&info->color_info);
+}
+
+static inline bool vx_image_info_gamma_close_to_srgb(const vx_image_info_t *i)
+{
+    return vx_color_info_gamma_close_to_srgb(&i->color_info);
+}
+
+static inline int vx_image_info_bytes_per_pixel(const vx_image_info_t *info)
+{
+    return vx_color_info_bytes_per_pixel(&info->color_info);
+}
+
+static inline int vx_image_info_shift_per_pixel(const vx_image_info_t *info)
+{
+    return vx_color_info_shift_per_pixel(&info->color_info);
+}
+
+/** Returns minimum bytes per row, computed from pixel width() and SkColorType, which
+    specifies bytesPerPixel(). SkBitmap maximum value for row bytes must fit
+    in 31 bits.
+
+    @return  width() times bytesPerPixel() as unsigned 64-bit integer
+*/
+VX_PUBLIC uint64_t vx_image_info_min_row_bytes64(const vx_image_info_t *info);
+
+/** Returns minimum bytes per row, computed from pixel width() and SkColorType, which
+    specifies bytesPerPixel(). SkBitmap maximum value for row bytes must fit
+    in 31 bits.
+
+    @return  width() times bytesPerPixel() as size_t
+*/
+VX_PUBLIC size_t vx_image_info_min_row_bytes(const vx_image_info_t *info);
+
+/** Returns byte offset of pixel from pixel base address.
+
+    Asserts in debug build if x or y is outside of bounds. Does not assert if
+    rowBytes is smaller than minRowBytes(), even though result may be incorrect.
+
+    @param x         column index, zero or greater, and less than width()
+    @param y         row index, zero or greater, and less than height()
+    @param rowBytes  size of pixel row or larger
+    @return          offset within pixel array
+
+    example: https://fiddle.skia.org/c/@ImageInfo_computeOffset
+*/
+VX_PUBLIC size_t vx_image_info_compute_offset(const vx_image_info_t *info,
+                                              int x,
+                                              int y,
+                                              size_t rowBytes);
+
+/** Compares SkImageInfo with other, and returns true if width, height, SkColorType,
+    SkAlphaType, and SkColorSpace are equivalent.
+
+    @param other  SkImageInfo to compare
+    @return       true if SkImageInfo equals other
+*/
+static inline bool vx_image_info_eq(const vx_image_info_t *info,
+                                    const vx_image_info_t *other)
+{
+    return vx_size_i_eq(info->dimensions, other->dimensions) &&
+        vx_color_info_eq(&info->color_info, &other->color_info);
+}
+
+/** Compares SkImageInfo with other, and returns true if width, height, SkColorType,
+    SkAlphaType, and SkColorSpace are not equivalent.
+
+    @param other  SkImageInfo to compare
+    @return       true if SkImageInfo is not equal to other
+*/
+static inline bool vx_image_info_ne(const vx_image_info_t *info,
+                                    const vx_image_info_t *other)
+{
+    return !(vx_image_info_eq(info, other));
+}
+
+/** Returns storage required by pixel array, given SkImageInfo dimensions, SkColorType,
+    and rowBytes. rowBytes is assumed to be at least as large as minRowBytes().
+
+    Returns zero if height is zero.
+    Returns SIZE_MAX if answer exceeds the range of size_t.
+
+    @param rowBytes  size of pixel row or larger
+    @return          memory required by pixel buffer
+*/
+VX_PUBLIC size_t vx_image_info_compute_byte_size(const vx_image_info_t *info,
+                                                 size_t row_bytes);
+
+/** Returns storage required by pixel array, given SkImageInfo dimensions, and
+    SkColorType. Uses minRowBytes() to compute bytes for pixel row.
+
+    Returns zero if height is zero.
+    Returns SIZE_MAX if answer exceeds the range of size_t.
+
+    @return  least memory required by pixel buffer
+*/
+static inline size_t vx_image_info_compute_min_byte_size(
+    const vx_image_info_t *info)
+{
+    return vx_image_info_compute_byte_size(info,
+        vx_image_info_min_row_bytes(info));
+}
+
+/** Returns true if byteSize equals SIZE_MAX. computeByteSize() and
+    computeMinByteSize() return SIZE_MAX if size_t can not hold buffer size.
+
+    @param byteSize  result of computeByteSize() or computeMinByteSize()
+    @return          true if computeByteSize() or computeMinByteSize() result exceeds size_t
+*/
+static inline
+bool vx_image_info_byte_size_overflowed(const vx_image_info_t *info,
+                                        size_t byte_size)
+{
+    (void)info;
+    return SIZE_MAX == byte_size;
+}
+
+/** Returns true if rowBytes is valid for this SkImageInfo.
+
+    @param rowBytes  size of pixel row including padding
+    @return          true if rowBytes is large enough to contain pixel row and is properly
+                        aligned
+*/
+static inline bool vx_image_info_valid_row_bytes(const vx_image_info_t *info,
+                                                 size_t row_bytes)
+{
+    if (row_bytes < vx_image_info_min_row_bytes64(info)) {
+        return false;
+    }
+    int shift = vx_image_info_shift_per_pixel(info);
+    size_t aligned_row_bytes = row_bytes >> shift << shift;
+    return aligned_row_bytes == row_bytes;
+}
 
 #ifdef __cplusplus
 }
