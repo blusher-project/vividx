@@ -11,7 +11,6 @@
 #include <cstdarg>
 
 #include <vividx/common.h>
-#include <vividx/common.h>
 // #include "include/private/SkLoadUserConfig.h" // IWYU pragma: keep
 // #include "include/private/SkLogPriority.h"
 
